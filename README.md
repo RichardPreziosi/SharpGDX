@@ -23,6 +23,8 @@ Very few methods have had their casing fixed, all casing will be fixed eventuall
 
 The collection types work (Array\<T\>, CharArray, FloatArray, etc.), however I would not use them in your own code unless absolutely necessary. They are technically unnecessary in C# for what their stated purpose is. For now I am leaving them in to keep the API the same, but they very well may be removed in future phases. When in doubt, default to using .Net collection types.
 
+The `Poolable` interface is no longer nested inside of `Pool` since `Pool` has been changed to `Pool<T>`.
+
 ## Conversion Chart
 
 - IllegalArgumentException => ArgumentException
