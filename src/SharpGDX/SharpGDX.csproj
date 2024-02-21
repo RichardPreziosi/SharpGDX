@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Folder Include="assets\" />
-    <Folder Include="files\" />
-    <Folder Include="graphics\" />
     <Folder Include="input\" />
     <Folder Include="maps\" />
-    <Folder Include="net\" />
     <Folder Include="scenes\scene2d\" />
-    <Folder Include="shims\" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,8 @@ I have had to shim quite a bit of functionality in an effort to keep the API the
 
 `equals` and `hashCode` methods have been converted to `Equals` and `GetHashCode` respectively so that they can work as appropriate overrides for base C# functionality.
 
+`Files.internal` has been renamed to `Files.Internal` as `internal` is a C# keyword and cannot be used as a method name.
+
 Very few methods have had their casing fixed, all casing will be fixed eventually, but the current fixes are only to accomodate conflicting variable/field names. Other casing fixes will come as part of a future phase.
 
 The collection types work (Array\<T\>, CharArray, FloatArray, etc.), however I would not use them in your own code unless absolutely necessary. They are technically unnecessary in C# for what their stated purpose is. For now I am leaving them in to keep the API the same, but they very well may be removed in future phases. When in doubt, default to using .Net collection types.
@@ -31,3 +33,4 @@ The collection types work (Array\<T\>, CharArray, FloatArray, etc.), however I w
 - IllegalStateException => InvalidOperationException
 - NumberFormatException => FormatException
 - ArrayIndexOutOfBoundsException => IndexOutOfRangeException
+- NullPointerException => NullReferenceException

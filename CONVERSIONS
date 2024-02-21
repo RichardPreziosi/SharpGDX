@@ -1,24 +1,24 @@
 SharpGDX
 --------
--		-	AbstractGraphics
+- DONE	-	AbstractGraphics
 - DONE	-	AbstractInput
--		-	Application
+- DONE	-	Application
 - DONE	-	ApplicationAdapter
 - DONE	-	ApplicationListener
 - DONE	-	ApplicationLogger
--		-	Audio
--		-	Files
--		-	Game
--		-	Gdx
--		-	Graphics
+- DONE	-	Audio
+- DONE	-	Files
+- DONE	-	Game
+- DONE	-	Gdx
+- DONE	-	Graphics
 - DONE	-	Input
 - DONE	-	InputAdapter
--		-	InputEventQueue
--		-	InputMultiplexer
+- DONE	-	InputEventQueue
+- DONE	-	InputMultiplexer
 - DONE	-	InputProcessor
 - DONE	-	LifecycleListener
--		-	Net
--		-	Preferences
+- DONE	-	Net
+- DONE	-	Preferences
 - DONE	-	Screen
 - DONE	-	ScreenAdapter
 - DONE	-	Version
@@ -69,7 +69,7 @@ SharpGDX\Audio
 
 SharpGDX\Files
 --------------
--		-	FileHandle
+- STUB	-	FileHandle
 -		-	FileHandleStream
 
 SharpGDX\Graphics
@@ -79,17 +79,17 @@ SharpGDX\Graphics
 -		-	Colors
 -		-	Cubemap
 -		-	CubemapData
--		-	Cursor
+- DONE	-	Cursor
 -		-	FPSLogger
--		-	GL20
--		-	GL30
--		-	GL31
--		-	GL32
+- DONE	-	GL20
+- DONE	-	GL30
+- DONE	-	GL31
+- DONE	-	GL32
 -		-	GLTexture
 -		-	Mesh
 -		-	OrthographicCamera
 -		-	PerspectiveCamera
--		-	Pixmap
+- STUB	-	Pixmap
 -		-	PixmapIO
 -		-	Texture
 -		-	Texture3D
@@ -142,7 +142,7 @@ SharpGDX\Graphics\GLUtils
 -		-	FrameBufferCubemap
 -		-	GLFrameBuffer
 -		-	GLOnlyTextureData
--		-	GLVersion
+- DONE	-	GLVersion
 -		-	HdpiMode
 -		-	HdpiUtils
 -		-	ImmediateModeRenderer
@@ -287,14 +287,14 @@ SharpGDX\Net
 -		-	HttpRequestBuilder
 -		-	HttpRequestHeader
 -		-	HttpResponseHeader
--		-	HttpStatus
+- DONE	-	HttpStatus
 -		-	NetJavaImpl
 -		-	NetJavaServerSocketImpl
 -		-	NetJavaSocketImpl
--		-	ServerSocket
--		-	ServerSocketHints
--		-	Socket
--		-	SocketHints
+- DONE	-	ServerSocket
+- DONE	-	ServerSocketHints
+- DONE	-	Socket
+- DONE	-	SocketHints
 
 SharpGDX\Scenes\Scene2D
 -----------------------
@@ -447,7 +447,7 @@ SharpGDX\Utils
 - DONE	-	LongArray
 -		-	LongMap
 -		-	LongQueue
--		-	Null
+- DONE	-	Null
 -		-	NumberUtils
 -		-	ObjectFloatMap
 -		-	ObjectIntMap
@@ -459,7 +459,7 @@ SharpGDX\Utils
 -		-	PauseableThread
 -		-	PerformanceCounter
 -		-	PerformanceCounters
--		-	Pool
+- DONE	-	Pool
 -		-	PooledLinkedList
 -		-	Pools
 - DONE	-	Predicate
@@ -473,7 +473,7 @@ SharpGDX\Utils
 - DONE	-	Select
 -		-	SerializationException
 - DONE	-	ShortArray
--		-	SnapshotArray
+- DONE	-	SnapshotArray
 - DONE	-	Sort
 -		-	SortedIntList
 -		-	StreamUtils
@@ -541,3 +541,13 @@ SharpGDX\Utils\Viewport
 
 SharpGDX\Shims
 --------------
+- STUB	-	Map
+- STUB	-	InputStream
+- STUB	-	OutputStream
+- STUB	-	Buffer
+- STUB	-	FloatBuffer
+- STUB	-	ShortBuffer
+- STUB	-	ByteBuffer
+- STUB	-	IntBuffer
+- STUB	-	LongBuffer
+- STUB	-	HashMap
