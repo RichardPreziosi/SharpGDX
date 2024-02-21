@@ -19,6 +19,8 @@ I have had to shim quite a bit of functionality in an effort to keep the API the
 
 Very few methods have had their casing fixed, all casing will be fixed eventually, but the current fixes are only to accomodate conflicting variable/field names. Other casing fixes will come as part of a future phase.
 
+The collection types work (Array\<T\>, CharArray, FloatArray, etc.), however I would not use them in your own code unless absolutely necessary. They are technically unnecessary in C# for what their stated purpose is. For now I am leaving them in to keep the API the same, but they very well may be removed in future phases. When in doubt, default to using .Net collection types.
+
 ## Conversion Chart
 
 - IllegalArgumentException => ArgumentException
@@ -28,3 +30,4 @@ Very few methods have had their casing fixed, all casing will be fixed eventuall
 - NoSuchElementException => InvalidOperationException
 - IllegalStateException => InvalidOperationException
 - NumberFormatException => FormatException
+- ArrayIndexOutOfBoundsException => IndexOutOfRangeException

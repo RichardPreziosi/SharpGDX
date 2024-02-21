@@ -408,7 +408,7 @@ SharpGDX\Scenes\Scene2D\Utils
 SharpGDX\Utils
 --------------
 -		- 	Align
--		-	Array
+- DONE	-	Array
 -		-	ArrayMap
 -		-	AtomicQueue
 -		-	Base64Coder
@@ -421,7 +421,7 @@ SharpGDX\Utils
 - DONE	-	CharArray
 - DONE	-	Clipboard
 - DONE	-	Collections
--		-	ComparableTimSort
+- DONE	-	ComparableTimSort
 -		-	DataBuffer
 -		-	DataInput
 -		-	DataOutput
@@ -462,7 +462,7 @@ SharpGDX\Utils
 -		-	Pool
 -		-	PooledLinkedList
 -		-	Pools
--		-	Predicate
+- DONE	-	Predicate
 -		-	PropertiesUtils
 -		-	QuadTreeFloat
 -		-	Queue
@@ -474,12 +474,12 @@ SharpGDX\Utils
 -		-	SerializationException
 - DONE	-	ShortArray
 -		-	SnapshotArray
--		-	Sort
+- DONE	-	Sort
 -		-	SortedIntList
 -		-	StreamUtils
 -		-	StringBuilder
 -		-	TextFormatter
--		-	TimSort
+- DONE	-	TimSort
 - DONE	-	TimeUtils
 -		-	Timer
 -		-	UBJsonReader
@@ -522,7 +522,7 @@ SharpGDX\Utils\Compression\RangeCoder
 SharpGDX\Utils\Reflect
 ----------------------
 -		-	Annotation
--		-	ArrayReflection
+- DONE	-	ArrayReflection
 -		-	ClassReflection
 -		-	Constructor
 -		-	Field
