@@ -1,4 +1,5 @@
-﻿using SharpGDX.math;
+﻿using System.Collections;
+using SharpGDX.math;
 using SharpGDX.utils;
 
 namespace Drop;
@@ -7,17 +8,13 @@ internal class Program
 {
 	private static void Main()
 	{
-		var array = new Array<Vector2>();
+		LongMap<string> l = new();
 
-		array.add(new Vector2(1, 1));
-		array.add(new Vector2(2, 2));
-		array.add(new Vector2(3, 3));
+		l.put(2, "Hi");
 
-		Console.WriteLine(array.size);
-
-		foreach (var x in array)
+		foreach (var f in l)
 		{
-			Console.WriteLine(x);
+			Console.WriteLine(f.value);
 		}
 
 		Console.Read();

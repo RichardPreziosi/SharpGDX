@@ -16,11 +16,10 @@ namespace SharpGDX.utils
  * last element is moved to the removed element's position).
  * @author Nathan Sweet */
 	public class Array<T> : IEnumerable<T> 
-	where T: class
 	{
 	/** Provides direct access to the underlying array. If the Array's generic type is not Object, this field may only be accessed
 	 * if the {@link Array#Array(boolean, int, Class)} constructor was used. */
-	public T[] items;
+	public T?[] items;
 
 	public int size;
 	public bool ordered;
@@ -217,7 +216,10 @@ namespace SharpGDX.utils
 		if (identity || value == null)
 		{
 			while (i >= 0)
-				if (items[i--] == value) return true;
+			{
+				// TODO: This will cause boxing which negates the purpose of this class
+					if ((object)items[i--] == (object?)value) return true;
+			}
 		}
 		else
 		{
@@ -259,7 +261,10 @@ namespace SharpGDX.utils
 		if (identity || value == null)
 		{
 			for (int i = 0, n = size; i < n; i++)
-				if (items[i] == value) return i;
+			{
+				// TODO: This will cause boxing which negates the purpose of this class
+					if ((object)items[i] == (object?)value) return i;
+			}
 		}
 		else
 		{
@@ -280,7 +285,10 @@ namespace SharpGDX.utils
 		if (identity || value == null)
 		{
 			for (int i = size - 1; i >= 0; i--)
-				if (items[i] == value) return i;
+			{
+				// TODO: This will cause boxing which negates the purpose of this class
+					if ((object)items[i] == (object?)value) return i;
+			}
 		}
 		else
 		{
@@ -301,7 +309,8 @@ namespace SharpGDX.utils
 		{
 			for (int i = 0, n = size; i < n; i++)
 			{
-				if (items[i] == value)
+				// TODO: This will cause boxing which negates the purpose of this class
+				if ((object)items[i] == (object?)value)
 				{
 					removeIndex(i);
 					return true;
@@ -326,14 +335,14 @@ namespace SharpGDX.utils
 	public T removeIndex(int index)
 	{
 		if (index >= size) throw new IndexOutOfRangeException("index can't be >= size: " + index + " >= " + size);
-		T[] items = this.items;
-		T value = items[index];
+		T?[] items = this.items;
+		T? value = items[index];
 		size--;
 		if (ordered)
 			Array.Copy(items, index + 1, items, index, size - index);
 		else
 			items[index] = items[size];
-		items[size] = null;
+		items[size] = default;
 		return value;
 	}
 
@@ -353,7 +362,7 @@ namespace SharpGDX.utils
 			Array.Copy(items, i, items, start, n - i);
 		}
 		for (int i = lastIndex; i < n; i++)
-			items[i] = null;
+			items[i] = default;
 		size = n - count;
 	}
 
@@ -372,7 +381,7 @@ namespace SharpGDX.utils
 				T item = array.get(i);
 				for (int ii = 0; ii < size; ii++)
 				{
-					if (item == items[ii])
+					if ((object)item == (object?)items[ii])
 					{
 						removeIndex(ii);
 						size--;
@@ -401,12 +410,12 @@ namespace SharpGDX.utils
 	}
 
 	/** Removes and returns the last item. */
-	public T pop()
+	public T? pop()
 	{
 		if (size == 0) throw new InvalidOperationException("Array is empty.");
 		--size;
-		T item = items[size];
-		items[size] = null;
+		T? item = items[size];
+		items[size] = default;
 		return item;
 	}
 
@@ -438,7 +447,7 @@ namespace SharpGDX.utils
 
 	public void clear()
 	{
-		Array.Fill(items, null, 0, size);
+		Array.Fill(items, default, 0, size);
 		size = 0;
 	}
 
@@ -581,7 +590,7 @@ namespace SharpGDX.utils
 		if (newSize < 0) throw new ArgumentException("newSize must be >= 0: " + newSize);
 		if (size <= newSize) return;
 		for (int i = newSize; i < size; i++)
-			items[i] = null;
+			items[i] = default;
 		size = newSize;
 	}
 
@@ -589,7 +598,7 @@ namespace SharpGDX.utils
 		[Null]
 		public  T random()
 	{
-		if (size == 0) return null;
+		if (size == 0) return default;
 		return items[MathUtils.random(0, size - 1)];
 	}
 
@@ -610,12 +619,12 @@ namespace SharpGDX.utils
 	public override int GetHashCode()
 	{
 		if (!ordered) return base.GetHashCode();
-		Object[] items = this.items;
+		T[] items = this.items;
 		int h = 1;
 		for (int i = 0, n = size; i < n; i++)
 		{
 			h *= 31;
-			Object item = items[i];
+			T item = items[i];
 			if (item != null) h += item.GetHashCode();
 		}
 		return h;
@@ -636,7 +645,7 @@ namespace SharpGDX.utils
 		if (!array.ordered) return false;
 		int n = size;
 		if (n != array.size) return false;
-		Object[] items1 = this.items, items2 = array.items;
+		T[] items1 = this.items, items2 = array.items;
 		for (int i = 0; i < n; i++)
 		{
 			Object o1 = items1[i], o2 = items2[i];
@@ -655,9 +664,9 @@ namespace SharpGDX.utils
 		if (!array.ordered) return false;
 		int n = size;
 		if (n != array.size) return false;
-		Object[] items1 = this.items, items2 = array.items;
+		T[] items1 = this.items, items2 = array.items;
 		for (int i = 0; i < n; i++)
-			if (items1[i] != items2[i]) return false;
+			if ((object?)items1[i] != (object?)items2[i]) return false;
 		return true;
 	}
 
@@ -710,7 +719,6 @@ namespace SharpGDX.utils
 	}
 
 	public class ArrayIterator<T> : IEnumerator<T>, IEnumerable<T>
-	where T: class
 	{
 		private readonly Array<T> array;
 		private readonly bool allowRemove;
@@ -790,7 +798,6 @@ namespace SharpGDX.utils
 	}
 
 public class ArrayIterable<T> : IEnumerable<T>
-where T : class
 {
 		private readonly Array<T> array;
 private readonly bool allowRemove;

@@ -73,7 +73,7 @@ namespace SharpGDX.utils
 			int tableSize = ObjectSet.tableSize(initialCapacity, loadFactor);
 			threshold = (int)(tableSize * loadFactor);
 			mask = tableSize - 1;
-			shift = BitOperations.LeadingZeroCount((uint)mask);
+			shift = BitOperations.LeadingZeroCount((ulong)mask);
 
 			keyTable = new int[tableSize];
 		}
@@ -290,7 +290,7 @@ namespace SharpGDX.utils
 			int oldCapacity = keyTable.Length;
 			threshold = (int)(newSize * loadFactor);
 			mask = newSize - 1;
-			shift = BitOperations.LeadingZeroCount((uint)mask);
+			shift = BitOperations.LeadingZeroCount((ulong)mask);
 
 			int[] oldKeyTable = keyTable;
 

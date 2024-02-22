@@ -24,7 +24,6 @@ namespace SharpGDX.utils
  * state of an ongoing sort, assuming the input array is large enough to warrant the full-blown TimSort. Small arrays are sorted
  * in place, using a binary insertion sort. */
 	class TimSort<T>
-	where T : class
 	{
 		/** This is the minimum sized sequence that will be merged. Shorter sequences will be lengthened by calling binarySort. If the
 		 * entire array is less than this length, no merges will be performed.
@@ -135,7 +134,7 @@ namespace SharpGDX.utils
 			this.c = null;
 			T[] tmp = this.tmp;
 			for (int i = 0, n = tmpCount; i < n; i++)
-				tmp[i] = null;
+				tmp[i] = default;
 		}
 
 		/** Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -149,7 +148,7 @@ namespace SharpGDX.utils
 
 			// Allocate temp storage (which may be increased later if necessary)
 			int len = a.Length;
-			T[] newArray = (T[])new Object[len < 2 * INITIAL_TMP_STORAGE_LENGTH ? len >>> 1 : INITIAL_TMP_STORAGE_LENGTH];
+			T[] newArray = (T[])new T[len < 2 * INITIAL_TMP_STORAGE_LENGTH ? len >>> 1 : INITIAL_TMP_STORAGE_LENGTH];
 			tmp = newArray;
 
 			/*
@@ -332,12 +331,12 @@ namespace SharpGDX.utils
 		 * @param a the array in which a range is to be reversed
 		 * @param lo the index of the first element in the range to be reversed
 		 * @param hi the index after the last element in the range to be reversed */
-		private static void reverseRange(Object[] a, int lo, int hi)
+		private static void reverseRange(T[] a, int lo, int hi)
 		{
 			hi--;
 			while (lo < hi)
 			{
-				Object t = a[lo];
+				T t = a[lo];
 				a[lo++] = a[hi];
 				a[hi--] = t;
 			}

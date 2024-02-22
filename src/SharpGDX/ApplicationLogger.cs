@@ -15,7 +15,7 @@ public interface ApplicationLogger
 	/**
 	 * Logs a debug message and exception with a tag
 	 */
-	public void debug(string tag, string message, ExecutionContext exception);
+	public void debug(string tag, string message, Exception exception);
 
 	/**
 	 * Logs an error message with a tag
@@ -25,7 +25,7 @@ public interface ApplicationLogger
 	/**
 	 * Logs an error message and exception with a tag
 	 */
-	public void error(string tag, string message, ExecutionContext exception);
+	public void error(string tag, string message, Exception exception);
 
 	/**
 	 * Logs a message with a tag
@@ -35,5 +35,5 @@ public interface ApplicationLogger
 	/**
 	 * Logs a message and exception with a tag
 	 */
-	public void log(string tag, string message, ExecutionContext exception);
+	public void log(string tag, string message, Exception exception);
 }

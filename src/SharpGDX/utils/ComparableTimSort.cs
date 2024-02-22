@@ -15,7 +15,6 @@ namespace SharpGDX.utils
  * conjunction with a comparator that simply returns {@code ((Comparable)first).compareTo(Second)}. If this is the case, you are
  * better off deleting ComparableTimSort to eliminate the code duplication. (See Arrays.java for details.) */
 	class ComparableTimSort<T>
-	where T : class
 	{
 		/** This is the minimum sized sequence that will be merged. Shorter sequences will be lengthened by calling binarySort. If the
 		 * entire array is less than this length, no merges will be performed.
@@ -30,7 +29,7 @@ namespace SharpGDX.utils
 		private static readonly int MIN_MERGE = 32;
 
 		/** The array being sorted. */
-		private T[] a;
+		private T?[]? a;
 
 		/** When we get into galloping mode, we stay there until both runs win less often than MIN_GALLOP consecutive times. */
 		private static readonly int MIN_GALLOP = 7;
@@ -119,9 +118,9 @@ namespace SharpGDX.utils
 			if (DEBUG) Debug.Assert(stackSize == 1);
 
 			this.a = null;
-			Object[] tmp = this.tmp;
+			T?[] tmp = this.tmp;
 			for (int i = 0, n = tmpCount; i < n; i++)
-				tmp[i] = null;
+				tmp[i] = default;
 		}
 
 		/** Creates a TimSort instance to maintain the state of an ongoing sort.

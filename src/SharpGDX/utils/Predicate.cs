@@ -10,20 +10,18 @@ namespace SharpGDX.utils
 	/** Interface used to select items within an iterator against a predicate.
  * @author Xoppa */
 	public interface Predicate<T>
-	where T: class
 	{
 
 		/** @return true if the item matches the criteria and should be included in the iterator's items */
 		bool evaluate(T arg0);
 
 		public class PredicateIterator<T> : IEnumerator<T>
-		where T: class
 		{
 		public IEnumerator<T> iterator;
 		public Predicate<T> predicate;
 		public bool end = false;
 		public bool peeked = false;
-		public T? next = null;
+		public T? next = default;
 
 		public PredicateIterator( IEnumerable<T> iterable,  Predicate<T> predicate)
 		: this(iterable.GetEnumerator(), predicate)
@@ -46,7 +44,7 @@ namespace SharpGDX.utils
 			this.iterator = iterator;
 			this.predicate = predicate;
 			end = peeked = false;
-			next = null;
+			next = default;
 		}
 
 		public bool MoveNext()
@@ -80,9 +78,9 @@ namespace SharpGDX.utils
 		{
 			get
 			{
-				if (next == null && !MoveNext()) return null;
+				if (next == null && !MoveNext()) return default;
 				T result = next;
-				next = null;
+				next = default;
 				peeked = false;
 				return result;
 				}
@@ -98,7 +96,6 @@ namespace SharpGDX.utils
 		}
 
 	public class PredicateIterable<T> : IEnumerable<T> 
-	where T: class
 	{
 		public IEnumerable<T> iterable;
 	public Predicate<T> predicate;

@@ -14,7 +14,6 @@ namespace SharpGDX.utils
  * short, or byte).
  * @author Nathan Sweet */
 	public class Sort<T>
-	where T: class
 	{
 		static private Sort<T> _instance;
 
