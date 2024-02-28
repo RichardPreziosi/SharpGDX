@@ -1,32 +1,23 @@
 ﻿using SharpGDX.files;
 using SharpGDX.shims;
-using SharpGDX.utils;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using static SharpGDX.Files;
 
-namespace SharpGDX.Headless
+namespace SharpGDX.Desktop
 {
-	public class HeadlessPreferences : Preferences
+	public class DesktopPreferences : Preferences
 	{
 		private readonly Map<string, string> properties = new();
 		private readonly FileHandle file;
 
-		public HeadlessPreferences(String name, String directory)
+		public DesktopPreferences(String name, String directory)
 		{
-			// TODO: PORT
-			// this(new HeadlessFileHandle(new File(directory, name), FileType.External));
+			// TODO: this(new DesktopFileHandle(new File(directory, name), FileType.External));
 		}
 
-		public HeadlessPreferences(FileHandle file)
+		public DesktopPreferences(FileHandle file)
 		{
-			// TODO: Port
-			//this.file = file;
+			// TODO: 
+			//	this.file = file;
 			//if (!file.exists()) return;
 			//InputStream in = null;
 			//try
@@ -166,14 +157,15 @@ namespace SharpGDX.Headless
 			properties.clear();
 		}
 
+
 		public void flush()
 		{
-			// TODO: Port
-			//OutputStream @out = null;
+			// TODO:
+			//OutputStream out = null;
 			//try
 			//{
-			//	@out = new BufferedOutputStream(file.write(false));
-			//	properties.storeToXML(@out, null);
+			//		out = new BufferedOutputStream(file.write(false));
+			//	properties.storeToXML(out, null);
 			//}
 			//catch (Exception ex)
 			//{
@@ -181,7 +173,7 @@ namespace SharpGDX.Headless
 			//}
 			//finally
 			//{
-			//	StreamUtils.closeQuietly(@out);
+			//	StreamUtils.closeQuietly(out);
 			//}
 			throw new NotImplementedException();
 		}

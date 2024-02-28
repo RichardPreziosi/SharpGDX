@@ -1,10 +1,19 @@
-﻿using System.Collections;
-using System.Text;
+﻿using SharpGDX.shims;
+using SharpGDX.utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace SharpGDX.utils
 {
-	/** An unordered map where the keys are unboxed longs and values are objects. No allocation is done except when growing the table
+	/** An unordered map where the keys are unboxed ints and values are objects. No allocation is done except when growing the table
  * size.
  * <p>
  * This class performs fast contains and remove (typically O(1), worst case O(n) but that is rare in practice). Add may be
@@ -20,11 +29,11 @@ namespace SharpGDX.utils
  * Skarupke's blog post</a>). Linear probing continues to work even when all hashCodes collide, just more slowly.
  * @author Nathan Sweet
  * @author Tommy Ettinger */
-	public class LongMap<V> : IEnumerable<LongMap<V>.Entry<V>> 
+	public class IntMap<V> : IEnumerable<IntMap<V>.Entry<V>> 
 	{
 	public int size;
 
-	long[] keyTable;
+	int[] keyTable;
 	V[] valueTable;
 
 	V zeroValue;
@@ -33,18 +42,23 @@ namespace SharpGDX.utils
 	private readonly float loadFactor;
 	private int threshold;
 
-	/** Used by {@link #place(long)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
-	 * {@link #mask}). The shift can be negative, which is convenient to match the number of bits in mask: if mask is a 7-bit
-	 * number, a shift of -7 shifts the upper 7 bits into the lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64,
-	 * which if used with an int will still move the upper bits of an int to the lower bits due to Java's implicit modulus on
-	 * shifts.
-	 * <p>
-	 * {@link #mask} can also be used to mask the low bits of a number, which may be faster for some hashcodes, if
-	 * {@link #place(long)} is overridden. */
-	protected int shift;
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
+	}
+
+		/** Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+		 * {@link #mask}). The shift can be negative, which is convenient to match the number of bits in mask: if mask is a 7-bit
+		 * number, a shift of -7 shifts the upper 7 bits into the lowest 7 positions. This class sets the shift &gt; 32 and &lt; 64,
+		 * which if used with an int will still move the upper bits of an int to the lower bits due to Java's implicit modulus on
+		 * shifts.
+		 * <p>
+		 * {@link #mask} can also be used to mask the low bits of a number, which may be faster for some hashcodes, if
+		 * {@link #place(int)} is overridden. */
+		protected int shift;
 
 	/** A bitmask used to confine hashcodes to the size of the table. Must be all 1 bits in its low positions, ie a power of two
-	 * minus 1. If {@link #place(long)} is overriden, this can be used instead of {@link #shift} to isolate usable bits of a
+	 * minus 1. If {@link #place(int)} is overriden, this can be used instead of {@link #shift} to isolate usable bits of a
 	 * hash. */
 	protected int mask;
 
@@ -56,15 +70,15 @@ namespace SharpGDX.utils
 		private  Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public LongMap()
+	public IntMap()
 	: this(51, 0.8f)
 		{
-		
 	}
 
 	/** Creates a new map with a load factor of 0.8.
+	 *
 	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two. */
-	public LongMap(int initialCapacity)
+	public IntMap(int initialCapacity)
 	: this(initialCapacity, 0.8f)
 		{
 		
@@ -73,7 +87,7 @@ namespace SharpGDX.utils
 	/** Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity items before
 	 * growing the backing table.
 	 * @param initialCapacity The backing array size is initialCapacity / loadFactor, increased to the next power of two. */
-	public LongMap(int initialCapacity, float loadFactor)
+	public IntMap(int initialCapacity, float loadFactor)
 	{
 		if (loadFactor <= 0f || loadFactor >= 1f)
 			throw new ArgumentException("loadFactor must be > 0 and < 1: " + loadFactor);
@@ -84,29 +98,14 @@ namespace SharpGDX.utils
 		mask = tableSize - 1;
 		shift = BitOperations.LeadingZeroCount((ulong)mask);
 
-		keyTable = new long[tableSize];
+		keyTable = new int[tableSize];
 		valueTable = (V[])new V[tableSize];
 	}
 
-	public static int numberOfLeadingZeros(int i)
-	{
-		// HD, Figure 5-6
-		if (i == 0)
-			return 32;
-		int n = 1;
-		if (i >>> 16 == 0) { n += 16; i <<= 16; }
-		if (i >>> 24 == 0) { n += 8; i <<= 8; }
-		if (i >>> 28 == 0) { n += 4; i <<= 4; }
-		if (i >>> 30 == 0) { n += 2; i <<= 2; }
-		n -= i >>> 31;
-		return n;
-	}
-
-		/** Creates a new map identical to the specified map. */
-		public LongMap(LongMap<V> map)
+	/** Creates a new map identical to the specified map. */
+	public IntMap(IntMap< V> map)
 	: this((int)(map.keyTable.Length * map.loadFactor), map.loadFactor)
 		{
-		
 		Array.Copy(map.keyTable, 0, keyTable, 0, map.keyTable.Length);
 		Array.Copy(map.valueTable, 0, valueTable, 0, map.valueTable.Length);
 		size = map.size;
@@ -128,26 +127,26 @@ namespace SharpGDX.utils
 	 * This method can be overriden to customizing hashing. This may be useful eg in the unlikely event that most hashcodes are
 	 * Fibonacci numbers, if keys provide poor or incorrect hashcodes, or to simplify hashing if keys provide high quality
 	 * hashcodes and don't need Fibonacci hashing: {@code return item.hashCode() & mask;} */
-	protected int place(long item)
+	protected int place(int item)
 	{
-		return (int)((ulong)(item ^ item >>> 32) * 0x9E3779B97F4A7C15L >>> shift);
+		return (int)((ulong)item * 0x9E3779B97F4A7C15L >>> shift);
 	}
 
 	/** Returns the index of the key if already present, else -(index + 1) for the next empty index. This can be overridden in this
 	 * pacakge to compare for equality differently than {@link Object#equals(Object)}. */
-	private int locateKey(long key)
+	private int locateKey(int key)
 	{
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		for (int i = place(key); ; i = i + 1 & mask)
 		{
-			long other = keyTable[i];
+			int other = keyTable[i];
 			if (other == 0) return -(i + 1); // Empty space is available.
 			if (other == key) return i; // Same key was found.
 		}
 	}
 
 	[Null]
-		public  V put(long key, [Null] V value)
+		public  V put(int key, [Null] V value)
 	{
 		if (key == 0)
 		{
@@ -173,24 +172,24 @@ namespace SharpGDX.utils
 		if (++size >= threshold) resize(keyTable.Length << 1);
 		return default;
 	}
-
-	public void putAll(LongMap<V> map)
+		
+	public void putAll(IntMap< V> map)
 	{
 		ensureCapacity(map.size);
 		if (map.hasZeroValue) put(0, map.zeroValue);
-		long[] keyTable = map.keyTable;
+		int[] keyTable = map.keyTable;
 		V[] valueTable = map.valueTable;
 		for (int i = 0, n = keyTable.Length; i < n; i++)
 		{
-			long key = keyTable[i];
+			int key = keyTable[i];
 			if (key != 0) put(key, valueTable[i]);
 		}
 	}
 
 	/** Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0. */
-	private void putResize(long key, [Null] V value)
+	private void putResize(int key, [Null] V value)
 	{
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		for (int i = place(key); ; i = (i + 1) & mask)
 		{
 			if (keyTable[i] == 0)
@@ -202,15 +201,14 @@ namespace SharpGDX.utils
 		}
 	}
 
-	[Null]
-		public  V get(long key)
+	public V get(int key)
 	{
 		if (key == 0) return hasZeroValue ? zeroValue : default;
 		int i = locateKey(key);
 		return i >= 0 ? valueTable[i] : default;
 	}
 
-	public V get(long key, [Null] V defaultValue)
+	public V get(int key, [Null] V defaultValue)
 	{
 		if (key == 0) return hasZeroValue ? zeroValue : defaultValue;
 		int i = locateKey(key);
@@ -219,7 +217,7 @@ namespace SharpGDX.utils
 
 		/** Returns the value for the removed key, or null if the key is not in the map. */
 		[Null]
-		public  V remove(long key)
+		public  V remove(int key)
 		{
 			V oldValue;
 
@@ -227,7 +225,7 @@ namespace SharpGDX.utils
 		{
 			if (!hasZeroValue) return default;
 			hasZeroValue = false;
-			 oldValue = zeroValue;
+			oldValue = zeroValue;
 			zeroValue = default;
 			size--;
 			return oldValue;
@@ -235,9 +233,9 @@ namespace SharpGDX.utils
 
 		int i = locateKey(key);
 		if (i < 0) return default;
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		V[] valueTable = this.valueTable;
-		 oldValue = valueTable[i];
+		oldValue = valueTable[i];
 		int mask = this.mask, next = i + 1 & mask;
 		while ((key = keyTable[next]) != 0)
 		{
@@ -307,13 +305,13 @@ namespace SharpGDX.utils
 	 * be an expensive operation.
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *           {@link #equals(Object)}. */
-	public bool containsValue([Null] V value, bool identity)
+	public bool containsValue([Null] Object value, bool identity)
 	{
 		V[] valueTable = this.valueTable;
 		if (value == null)
 		{
 			if (hasZeroValue && zeroValue == null) return true;
-			long[] keyTable = this.keyTable;
+			int[] keyTable = this.keyTable;
 			for (int i = valueTable.Length - 1; i >= 0; i--)
 				if (keyTable[i] != 0 && valueTable[i] == null) return true;
 		}
@@ -333,7 +331,7 @@ namespace SharpGDX.utils
 
 	}
 
-	public bool containsKey(long key)
+	public bool containsKey(int key)
 	{
 		if (key == 0) return hasZeroValue;
 		return locateKey(key) >= 0;
@@ -343,21 +341,21 @@ namespace SharpGDX.utils
 	 * and compares every value, which may be an expensive operation.
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *           {@link #equals(Object)}. */
-	public long findKey([Null] V value, bool identity, long notFound)
+	public int findKey([Null] Object value, bool identity, int notFound)
 	{
 		V[] valueTable = this.valueTable;
 		if (value == null)
 		{
 			if (hasZeroValue && zeroValue == null) return 0;
-			long[] keyTable = this.keyTable;
+			int[] keyTable = this.keyTable;
 			for (int i = valueTable.Length - 1; i >= 0; i--)
 				if (keyTable[i] != 0 && valueTable[i] == null) return keyTable[i];
 		}
 		else if (identity)
 		{
-			if (object.ReferenceEquals(value, zeroValue)) return 0;
+			if (ReferenceEquals(value , zeroValue)) return 0;
 			for (int i = valueTable.Length - 1; i >= 0; i--)
-				if (object.ReferenceEquals(valueTable[i], value)) return keyTable[i];
+				if (ReferenceEquals(valueTable[i] , value)) return keyTable[i];
 		}
 		else
 		{
@@ -383,17 +381,17 @@ namespace SharpGDX.utils
 		mask = newSize - 1;
 		shift = BitOperations.LeadingZeroCount((ulong)mask);
 
-		long[] oldKeyTable = keyTable;
+		int[] oldKeyTable = keyTable;
 		V[] oldValueTable = valueTable;
 
-		keyTable = new long[newSize];
+		keyTable = new int[newSize];
 		valueTable = (V[])new V[newSize];
 
 		if (size > 0)
 		{
 			for (int i = 0; i < oldCapacity; i++)
 			{
-				long key = oldKeyTable[i];
+				int key = oldKeyTable[i];
 				if (key != 0) putResize(key, oldValueTable[i]);
 			}
 		}
@@ -403,14 +401,14 @@ namespace SharpGDX.utils
 	{
 		int h = size;
 		if (hasZeroValue && zeroValue != null) h += zeroValue.GetHashCode();
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		V[] valueTable = this.valueTable;
 		for (int i = 0, n = keyTable.Length; i < n; i++)
 		{
-			long key = keyTable[i];
+			int key = keyTable[i];
 			if (key != 0)
 			{
-				h += (int)(key * 31);
+				h += key * 31;
 				V value = valueTable[i];
 				if (value != null) h += value.GetHashCode();
 			}
@@ -418,16 +416,11 @@ namespace SharpGDX.utils
 		return h;
 	}
 
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return GetEnumerator();
-	}
-
 	public override bool Equals(Object? obj)
 	{
 		if (obj == this) return true;
-		if (!(obj is LongMap<V>)) return false;
-		LongMap<V> other = (LongMap<V>)obj;
+		if (!(obj is IntMap<V>)) return false;
+		IntMap<V> other = (IntMap<V>)obj;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue)
@@ -441,17 +434,17 @@ namespace SharpGDX.utils
 				if (!other.zeroValue.Equals(zeroValue)) return false;
 			}
 		}
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		V[] valueTable = this.valueTable;
 		for (int i = 0, n = keyTable.Length; i < n; i++)
 		{
-			long key = keyTable[i];
+			int key = keyTable[i];
 			if (key != 0)
 			{
 				V value = valueTable[i];
 				if (value == null)
 				{
-					if (other.get(key, (V?)ObjectMap<long,V>.dummy) != null) return false;
+					if (other.get(key, (V?)ObjectMap<int,V>.dummy) != null) return false;
 				}
 				else
 				{
@@ -466,17 +459,17 @@ namespace SharpGDX.utils
 	public bool equalsIdentity([Null] Object obj)
 	{
 		if (obj == this) return true;
-		if (!(obj is LongMap<V>)) return false;
-		LongMap<V> other = (LongMap<V>)obj;
+		if (!(obj is IntMap<V>)) return false;
+		IntMap<V> other = (IntMap<V>)obj;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue && !ReferenceEquals(zeroValue , other.zeroValue)) return false;
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		V[] valueTable = this.valueTable;
 		for (int i = 0, n = keyTable.Length; i < n; i++)
 		{
-			long key = keyTable[i];
-			if (key != 0 && !ReferenceEquals(valueTable[i] , (V?)other.get(key, (V?)ObjectMap<long, V>.dummy))) return false;
+			int key = keyTable[i];
+			if (key != 0 && !ReferenceEquals(valueTable[i] , other.get(key, (V?)ObjectMap<int, V>.dummy))) return false;
 		}
 		return true;
 	}
@@ -486,7 +479,7 @@ namespace SharpGDX.utils
 		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.Append('[');
-		long[] keyTable = this.keyTable;
+		int[] keyTable = this.keyTable;
 		V[] valueTable = this.valueTable;
 		int i = keyTable.Length;
 		if (hasZeroValue)
@@ -498,7 +491,7 @@ namespace SharpGDX.utils
 		{
 			while (i-- > 0)
 			{
-				long key = keyTable[i];
+				int key = keyTable[i];
 				if (key == 0) continue;
 				buffer.Append(key);
 				buffer.Append('=');
@@ -508,7 +501,7 @@ namespace SharpGDX.utils
 		}
 		while (i-- > 0)
 		{
-			long key = keyTable[i];
+			int key = keyTable[i];
 			if (key == 0) continue;
 			buffer.Append(", ");
 			buffer.Append(key);
@@ -533,8 +526,8 @@ namespace SharpGDX.utils
 		if (Collections.allocateIterators) return new Entries<V>(this);
 		if (entries1 == null)
 		{
-			entries1 = new Entries<V>(this);
-			entries2 = new Entries<V>(this);
+			entries1 = new (this);
+			entries2 = new (this);
 		}
 		if (!entries1.valid)
 		{
@@ -555,11 +548,11 @@ namespace SharpGDX.utils
 	 * Use the {@link Entries} constructor for nested or multithreaded iteration. */
 	public Values<V> values()
 	{
-		if (Collections.allocateIterators) return new Values<V>(this);
+		if (Collections.allocateIterators) return new (this);
 		if (values1 == null)
 		{
-			values1 = new Values<V>(this);
-			values2 = new Values<V>(this);
+			values1 = new (this);
+			values2 = new (this);
 		}
 		if (!values1.valid)
 		{
@@ -601,8 +594,10 @@ namespace SharpGDX.utils
 
 	public class Entry<V>
 	{
-		public long key;
-		[Null] public  V value;
+		public int key;
+
+		[Null]
+			public  V value;
 
 		public String toString()
 		{
@@ -611,17 +606,17 @@ namespace SharpGDX.utils
 	}
 
 	public class MapIterator<V>
-		{
+	{
 		static private readonly int INDEX_ILLEGAL = -2;
 		protected static readonly int INDEX_ZERO = -1;
 
-		public bool hasNext;
+		public bool _hasNext;
 
-		protected readonly LongMap<V> map;
+		protected readonly IntMap<V> map;
 		protected int nextIndex, currentIndex;
 		internal protected bool valid = true;
 
-		public MapIterator(LongMap<V> map)
+		public MapIterator(IntMap<V> map)
 		{
 			this.map = map;
 			reset();
@@ -632,23 +627,23 @@ namespace SharpGDX.utils
 			currentIndex = INDEX_ILLEGAL;
 			nextIndex = INDEX_ZERO;
 			if (map.hasZeroValue)
-				hasNext = true;
+				_hasNext = true;
 			else
 				findNextIndex();
 		}
 
 		protected void findNextIndex()
 		{
-			long[] keyTable = map.keyTable;
+			int[] keyTable = map.keyTable;
 			for (int n = keyTable.Length; ++nextIndex < n;)
 			{
 				if (keyTable[nextIndex] != 0)
 				{
-					hasNext = true;
+					_hasNext = true;
 					return;
 				}
 			}
-			hasNext = false;
+			_hasNext = false;
 		}
 
 		public void remove()
@@ -665,10 +660,9 @@ namespace SharpGDX.utils
 			}
 			else
 			{
-				long[] keyTable = map.keyTable;
+				int[] keyTable = map.keyTable;
 				V[] valueTable = map.valueTable;
-				int mask = map.mask, next = i + 1 & mask;
-				long key;
+				int mask = map.mask, next = i + 1 & mask, key;
 				while ((key = keyTable[next]) != 0)
 				{
 					int placement = map.place(key);
@@ -689,16 +683,15 @@ namespace SharpGDX.utils
 		}
 	}
 
-	public class Entries<V> : MapIterator<V> , IEnumerable<Entry<V>>, IEnumerator<Entry<V>>
-		{
-		private readonly Entry<V> entry = new();
+	public class Entries<V> : MapIterator<V> , IEnumerable<Entry<V>>, IEnumerator<Entry<V>> 
+	 {
+		private readonly Entry<V> entry = new ();
 
-		public Entries (LongMap<V> map)
+		public Entries (IntMap<V> map)
 		: base(map)
 			{
 			
 		}
-
 		public void Reset()
 		{
 			// TODO: 
@@ -707,14 +700,14 @@ namespace SharpGDX.utils
 
 		object IEnumerator.Current => Current;
 
-		/** Note the same entry instance is returned each time this method is called. */
-		public Entry<V> Current
+			/** Note the same entry instance is returned each time this method is called. */
+			public Entry<V> Current
 		{
 			get
 			{
-				if (!hasNext) throw new InvalidOperationException("NoSuchElementException");
+				if (!_hasNext) throw new InvalidOperationException("NoSuchElementException");
 				if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
-				long[] keyTable = map.keyTable;
+				int[] keyTable = map.keyTable;
 				if (nextIndex == INDEX_ZERO)
 				{
 					entry.key = 0;
@@ -735,7 +728,7 @@ namespace SharpGDX.utils
 		public bool MoveNext()
 		{
 			if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
-			return hasNext;
+			return _hasNext;
 		}
 
 		public IEnumerator<Entry<V>> GetEnumerator()
@@ -751,22 +744,14 @@ namespace SharpGDX.utils
 		public void Dispose()
 		{
 		}
-	}
+		}
 
-	public class Values<V> : MapIterator<V> , IEnumerable<V>, IEnumerator<V>
-		{
-		public Values (LongMap<V> map)
+	public class Values<V> : MapIterator<V> , IEnumerable<V>, IEnumerator<V> 
+	{
+		public Values (IntMap<V> map)
 		: base(map)
 			{
 			
-		}
-
-		public void Dispose(){}
-
-		public bool MoveNext()
-		{
-			if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
-			return hasNext;
 		}
 
 		public void Reset()
@@ -777,12 +762,20 @@ namespace SharpGDX.utils
 
 		object IEnumerator.Current => Current;
 
+			public void Dispose() { }
+
+			public bool MoveNext()
+		{
+			if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
+			return _hasNext;
+		}
+
 		[Null]
 		public V Current
 		{
 			get
 			{
-				if (!hasNext) throw new InvalidOperationException("NoSuchElementException");
+				if (!_hasNext) throw new InvalidOperationException("NoSuchElementException");
 				if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
 				V value;
 				if (nextIndex == INDEX_ZERO)
@@ -795,7 +788,13 @@ namespace SharpGDX.utils
 			}
 		}
 
-		public IEnumerator<V> GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+			public IEnumerator<V> GetEnumerator()
+
 	{
 		return this;
 	}
@@ -803,49 +802,44 @@ namespace SharpGDX.utils
 	/** Returns a new array containing the remaining values. */
 	public Array<V> toArray()
 	{
-		Array<V> array = new Array<V>(true, map.size);
-		while (hasNext)
+		Array<V> array = new (true, map.size);
+		while (_hasNext)
 			array.add(Current);
 		return array;
 	}
-
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return GetEnumerator();
-	}
-	}
+}
 
 public class Keys : MapIterator<V>
 {
-		public Keys (LongMap<V> map)
+		public Keys (IntMap<V> map)
 		: base(map)
 			{
 	
 }
 
-public long next()
+public int next()
 {
-	if (!hasNext) throw new InvalidOperationException("NoSuchElementException");
+	if (!_hasNext) throw new InvalidOperationException("NoSuchElementException");
 	if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
-	long key = nextIndex == INDEX_ZERO ? 0 : map.keyTable[nextIndex];
+	int key = nextIndex == INDEX_ZERO ? 0 : map.keyTable[nextIndex];
 	currentIndex = nextIndex;
 	findNextIndex();
 	return key;
 }
 
 /** Returns a new array containing the remaining keys. */
-public LongArray toArray()
+public IntArray toArray()
 {
-	LongArray array = new LongArray(true, map.size);
-	while (hasNext)
+	IntArray array = new IntArray(true, map.size);
+	while (_hasNext)
 		array.add(next());
 	return array;
 }
 
 /** Adds the remaining values to the specified array. */
-public LongArray toArray(LongArray array)
+public IntArray toArray(IntArray array)
 {
-	while (hasNext)
+	while (_hasNext)
 		array.add(next());
 	return array;
 }

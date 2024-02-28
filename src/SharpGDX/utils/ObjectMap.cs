@@ -23,7 +23,6 @@ namespace SharpGDX.utils
  * @author Nathan Sweet
  * @author Tommy Ettinger */
 	public class ObjectMap<K, V> : IEnumerable<ObjectMap<K, V>.Entry<K, V>>
-		where V : class
 	{
 		internal static readonly Object dummy = new Object();
 
@@ -146,7 +145,7 @@ namespace SharpGDX.utils
 			keyTable[i] = key;
 			valueTable[i] = value;
 			if (++size >= threshold) resize(keyTable.Length << 1);
-			return null;
+			return default;
 		}
 
 		public void putAll(ObjectMap<K, V> map)
@@ -183,7 +182,7 @@ namespace SharpGDX.utils
 			where T : K
 		{
 			int i = locateKey(key);
-			return i < 0 ? null : valueTable[i];
+			return i < 0 ? default : valueTable[i];
 		}
 
 		/** Returns the value for the specified key, or the default value if the key is not in the map. */
@@ -198,7 +197,7 @@ namespace SharpGDX.utils
 		public V remove(K key)
 		{
 			int i = locateKey(key);
-			if (i < 0) return null;
+			if (i < 0) return default;
 			K[] keyTable = this.keyTable;
 			V[] valueTable = this.valueTable;
 			V oldValue = valueTable[i];
@@ -217,7 +216,7 @@ namespace SharpGDX.utils
 			}
 
 			keyTable[i] = default;
-			valueTable[i] = null;
+			valueTable[i] = default;
 			size--;
 			return oldValue;
 		}
@@ -263,14 +262,14 @@ namespace SharpGDX.utils
 			if (size == 0) return;
 			size = 0;
 			Array.Fill(keyTable, default);
-			Array.Fill(valueTable, null);
+			Array.Fill(valueTable, default);
 		}
 
 		/** Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may
 		 * be an expensive operation.
 		 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 		 *           {@link #equals(Object)}. */
-		public bool containsValue([Null] Object value, bool identity)
+		public bool containsValue([Null] V value, bool identity)
 		{
 			V[] valueTable = this.valueTable;
 			if (value == null)
@@ -283,7 +282,7 @@ namespace SharpGDX.utils
 			else if (identity)
 			{
 				for (int i = valueTable.Length - 1; i >= 0; i--)
-					if (valueTable[i] == value)
+					if (ReferenceEquals(valueTable[i] , value))
 						return true;
 			}
 			else
@@ -306,7 +305,7 @@ namespace SharpGDX.utils
 		 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 		 *           {@link #equals(Object)}. */
 		[Null]
-		public K findKey([Null] Object value, bool identity)
+		public K findKey([Null] V value, bool identity)
 		{
 			V[] valueTable = this.valueTable;
 			if (value == null)
@@ -319,7 +318,7 @@ namespace SharpGDX.utils
 			else if (identity)
 			{
 				for (int i = valueTable.Length - 1; i >= 0; i--)
-					if (valueTable[i] == value)
+					if (ReferenceEquals(valueTable[i] , value))
 						return keyTable[i];
 			}
 			else
@@ -427,7 +426,7 @@ namespace SharpGDX.utils
 			for (int i = 0, n = keyTable.Length; i < n; i++)
 			{
 				K key = keyTable[i];
-				if (key != null && valueTable[i] != other.get(key, (V)dummy)) return false;
+				if (key != null && !ReferenceEquals(valueTable[i] , other.get(key, (V)dummy)) ) return false;
 			}
 
 			return true;
@@ -460,7 +459,7 @@ namespace SharpGDX.utils
 				buffer.Append((object?)key == this ? "(this)" : key);
 				buffer.Append('=');
 				V value = valueTable[i];
-				buffer.Append(value == this ? "(this)" : value);
+				buffer.Append(ReferenceEquals(value , this) ? "(this)" : value);
 				break;
 			}
 
@@ -474,7 +473,7 @@ namespace SharpGDX.utils
 				buffer.Append((object?)key == this ? "(this)" : key);
 				buffer.Append('=');
 				V value = valueTable[i];
-				buffer.Append(value == this ? "(this)" : value);
+				buffer.Append(ReferenceEquals(value , this) ? "(this)" : value);
 			}
 
 			if (braces) buffer.Append('}');
@@ -568,7 +567,6 @@ namespace SharpGDX.utils
 		}
 
 		public class Entry<K, V>
-			where V : class
 		{
 			public K key;
 
@@ -581,7 +579,6 @@ namespace SharpGDX.utils
 		}
 
 		public abstract class MapIterator<K, V, I> : IEnumerator<I>, IEnumerable<I>
-			where V : class
 		{
 			public bool hasNext;
 
@@ -644,9 +641,8 @@ namespace SharpGDX.utils
 					next = next + 1 & mask;
 				}
 
-				// TODO: Verify this works
 				keyTable[i] = default;
-				valueTable[i] = null;
+				valueTable[i] = default;
 				map.size--;
 				if (i != currentIndex) --nextIndex;
 				currentIndex = -1;
@@ -661,7 +657,6 @@ namespace SharpGDX.utils
 		}
 
 		public class Entries<K, V> : MapIterator<K, V, Entry<K, V>>
-			where V : class
 		{
 			Entry<K, V> entry = new Entry<K, V>();
 
@@ -700,7 +695,6 @@ namespace SharpGDX.utils
 		}
 
 		public class Values<V> : MapIterator<K, V, V>
-		where V : class
 		{
 			public Values(ObjectMap<K, V> map)
 				: base((ObjectMap<K, V>)map)

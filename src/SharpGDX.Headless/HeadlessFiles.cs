@@ -11,9 +11,8 @@ namespace SharpGDX.Headless
  * @author Nathan Sweet */
 	public sealed class HeadlessFiles : Files
 	{
-		public static string externalPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-		public static string localPath => "";
+		public static readonly string externalPath  = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+		public static readonly string localPath = "";
 
 		public FileHandle getFileHandle(String fileName, Files.FileType type)
 		{

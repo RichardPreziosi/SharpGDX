@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX.shims;
 
-namespace SharpGDX.shims
+public class ShortBuffer : Buffer
 {
-	public class ShortBuffer
+	private short[] _buffer;
+
+	public static explicit operator short[](ShortBuffer b)
 	{
+		return b._buffer;
 	}
 }

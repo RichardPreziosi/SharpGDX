@@ -5,6 +5,11 @@ namespace SharpGDX.files
 {
 	public class FileHandle
 	{
+		public string extension()
+		{
+			throw new NotImplementedException();
+		}
+
 		protected Files.FileType type;
 
 		protected File File;

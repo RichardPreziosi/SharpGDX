@@ -7,6 +7,11 @@ public class Map<TKey, TValue>
 {
 	private readonly Dictionary<TKey, TValue> _dictionary = new();
 
+	public IEnumerable<TValue> values()
+	{
+		return _dictionary.Values;
+	}
+
 	public void clear()
 	{
 	}
@@ -27,6 +32,11 @@ public class Map<TKey, TValue>
 	public TValue get(TKey key, TValue defaultValue)
 	{
 		return _dictionary.GetValueOrDefault(key, defaultValue);
+	}
+
+	public TValue get(TKey key)
+	{
+		return _dictionary[key];
 	}
 
 	public void put(TKey key, TValue value)

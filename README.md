@@ -38,3 +38,4 @@ The `Poolable` interface is no longer nested inside of `Pool` since `Pool` has b
 - NullPointerException => NullReferenceException
 - InterruptedException => ThreadInterruptedException
 - Long.numberOfLeadingZeros() => BitOperations.LeadingZeroCount((ulong)mask)
+- CharSequence => string

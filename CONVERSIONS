@@ -75,7 +75,7 @@ SharpGDX\Files
 SharpGDX\Graphics
 -----------------
 -	-	Camera
--	-	Color
+- DONE	-	Color
 -	-	Colors
 -	-	Cubemap
 -	-	CubemapData
@@ -143,7 +143,7 @@ SharpGDX\Graphics\GLUtils
 -	-	GLFrameBuffer
 -	-	GLOnlyTextureData
 - DONE	-	GLVersion
--	-	HdpiMode
+- DONE	-	HdpiMode
 -	-	HdpiUtils
 -	-	ImmediateModeRenderer
 -	-	ImmediateModeRenderer20
@@ -416,7 +416,7 @@ SharpGDX\Utils
 -	-	BinaryHeap
 -	-	Bits
 - DONE	-	BooleanArray
--	-	BufferUtils
+- PROG	-	BufferUtils
 - DONE	-	ByteArray
 - DONE	-	CharArray
 - DONE	-	Clipboard
@@ -541,17 +541,22 @@ SharpGDX\Utils\Viewport
 
 SharpGDX\Shims
 --------------
-- STUB	-	Map
-- STUB	-	InputStream
-- STUB	-	OutputStream
 - STUB	-	Buffer
+- DONE	-	BufferOverflowException
+- PROG	-	ByteBuffer
+- DONE	-	ByteOrder
+- STUB	-	CharBuffer
+- STUB	-	DoubleBuffer
+- STUB	-	File
 - STUB	-	FloatBuffer
-- STUB	-	ShortBuffer
-- STUB	-	ByteBuffer
+- STUB	-	HashMap
+- STUB	-	InputStream
 - STUB	-	IntBuffer
 - STUB	-	LongBuffer
-- STUB	-	HashMap
-- STUB	-	File
+- PROG	-	Map
+- STUB	-	OutputStream
+- DONE	-	Runnable
+- STUB	-	ShortBuffer
 
 =============================================================
 
@@ -581,3 +586,43 @@ SharpGDX.Headless\Mock\Graphics
 SharpGDX.Headless\Mock\Input
 ----------------------------
 - DONE	-	MockInput
+
+=============================================================
+
+SharpGDX.Desktop
+-----------------
+- DONE	-	DefaultDesktopInput
+- DONE	-	DesktopApplication
+- DONE	-	DesktopApplicationBase
+- DONE	-	DesktopApplicationConfiguration
+- DONE	-	DesktopApplicationLogger
+- DONE	-	DesktopClipboard
+- PROG	-	DesktopCursor
+- DONE	-	DesktopFileHandle
+- DONE	-	DesktopFiles
+- STUB	-	DesktopGL20
+- STUB	-	DesktopGL30
+- STUB	-	DesktopGL31
+- STUB	-	DesktopGL32
+- DONE	-	DesktopGraphics
+- DONE	-	DesktopInput
+- PROG	-	DesktopNativesLoader
+- STUB	-	DesktopNet
+- PROG	-	DesktopPreferences
+- DONE	-	DesktopWindow
+- DONE	-	DesktopWindowAdapter
+- DONE	-	DesktopWindowConfiguration
+- DONE	-	DesktopWindowListener
+- DONE	-	Sync
+
+SharpGDX.Desktop\Audio
+----------------------
+- DONE	-	DesktopAudio
+
+SharpGDX.Desktop\Audio\Mock
+---------------------------
+- DONE	-	MockAudio
+- DONE	-	MockAudioDevice
+- DONE	-	MockAudioRecorder
+- DONE	-	MockMusic
+- DONE	-	MockSound
