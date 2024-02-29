@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -120,7 +121,7 @@ namespace SharpGDX.Desktop
 
 		public void glEnable(int cap)
 		{
-			throw new NotImplementedException();
+			GL.Enable((EnableCap)cap);
 		}
 
 		public void glFinish()
@@ -160,7 +161,7 @@ namespace SharpGDX.Desktop
 
 		public string glGetString(int name)
 		{
-			throw new NotImplementedException();
+			return GL.GetString((StringName)name);
 		}
 
 		public void glHint(int target, int mode)

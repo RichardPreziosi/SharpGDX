@@ -1,10 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
+using SharpGDX.shims;
 using File = SharpGDX.shims.File;
 
 namespace SharpGDX.files
 {
 	public class FileHandle
 	{
+		public InputStream read()
+		{
+			throw new NotImplementedException();
+		}
+
 		public string extension()
 		{
 			throw new NotImplementedException();

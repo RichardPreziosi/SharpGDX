@@ -617,7 +617,17 @@ SharpGDX.Desktop
 
 SharpGDX.Desktop\Audio
 ----------------------
+- STUB	-	DesktopAudioRecorder
 - DONE	-	DesktopAudio
+- 	-	MP3
+- 	-	Ogg
+- 	-	OggInputStream
+- DONE 	-	OpenALAudioDevice
+- DONE 	-	OpenALDesktopAudio	
+- DONE 	-	OpenALMusic
+- DONE 	-	OpenALSound
+- DONE	-	Wav
+
 
 SharpGDX.Desktop\Audio\Mock
 ---------------------------

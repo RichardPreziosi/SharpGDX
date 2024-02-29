@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX.shims;
 
-namespace SharpGDX.shims
+public class OutputStream
 {
-	public class OutputStream
+	private readonly Stream _stream;
+
+	public void write(byte[] buffer, int offset, int count)
 	{
+		_stream.Write(buffer, offset, count);
 	}
 }

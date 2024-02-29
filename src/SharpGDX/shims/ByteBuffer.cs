@@ -6,6 +6,11 @@ public class ByteBuffer : Buffer
 
 	private byte[] _buffer;
 
+	public ByteBuffer(int capacity)
+	{
+		_buffer = new byte[capacity];
+	}
+
 	public static explicit operator byte[](ByteBuffer b)
 	{
 		return b._buffer;
@@ -18,8 +23,7 @@ public class ByteBuffer : Buffer
 			throw new ArgumentException();
 		}
 
-		// TODO: return BufferFactory.newDirectByteBuffer(capacity);
-		throw new NotImplementedException();
+		return BufferFactory.newDirectByteBuffer(capacity);
 	}
 
 	public ByteBuffer order(ByteOrder byteOrder)
@@ -61,7 +65,7 @@ public class ByteBuffer : Buffer
 
 	public IntBuffer asIntBuffer()
 	{
-		throw new NotImplementedException();
+		return new IntBuffer(_buffer);
 	}
 
 	public DoubleBuffer asDoubleBuffer()

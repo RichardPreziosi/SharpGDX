@@ -11,6 +11,12 @@ This is a major work in progress that will be broken up into several phases.
 
 Please see the `CONVERSIONS` file for the current state of each file.
 
+## Thoughts
+
+As I am porting this, I want to keep the API the same, however I really want to get rid of the Buffer classes. To get them to work, they actually cause a little bit of overhead and have the potential to create garbage. I haven't dug into this enough to determine if it can be avoided, but my initial thought is that it cannot.
+
+I think that I would eventually like to get rid of everything in the `Shims` namespace. It is just a lot less code changes to leave it for now, and I would like to think carefully about changing the API.
+
 ## Special Notes
 
 I have had to shim quite a bit of functionality in an effort to keep the API the same. Some of these shims may or may not go away in phase 2 as I solidify the purpose of this project.

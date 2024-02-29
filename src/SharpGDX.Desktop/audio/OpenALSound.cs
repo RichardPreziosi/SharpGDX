@@ -24,7 +24,7 @@ namespace SharpGDX.Desktop.audio
 		this.audio = audio;
 	}
 
-	void setup(byte[] pcm, int channels, int sampleRate)
+	protected void setup(byte[] pcm, int channels, int sampleRate)
 	{
 		int validBytes = pcm.Length - (pcm.Length % (channels > 1 ? 4 : 2));
 		ByteBuffer buffer = BufferUtils.newByteBuffer(validBytes);
@@ -34,7 +34,7 @@ namespace SharpGDX.Desktop.audio
 		setup(buffer.asShortBuffer(), channels, sampleRate);
 	}
 
-	void setup(ShortBuffer pcm, int channels, int sampleRate)
+	protected void setup(ShortBuffer pcm, int channels, int sampleRate)
 	{
 		this.channels = channels;
 		this.sampleRate = sampleRate;

@@ -5,7 +5,7 @@
 		static public bool disableNativesLoading = false;
 
 		static private bool nativesLoaded;
-		static private object lockObject;
+		static private object lockObject = new object();
 
 		/** Loads the libgdx native libraries if they have not already been loaded. */
 		static public void load()
