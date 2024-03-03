@@ -274,27 +274,20 @@ namespace SharpGDX.Desktop
 
 	internal static DesktopGraphics.DesktopMonitor toDesktopMonitor(GLFWMonitor* glfwMonitor)
 	{
-		IntBuffer tmp = BufferUtils.createIntBuffer(1);
-		IntBuffer tmp2 = BufferUtils.createIntBuffer(1);
-		GLFW.GetMonitorPos(glfwMonitor, out tmp[0], out tmp2[0]);
-		int virtualX = tmp.get(0);
-		int virtualY = tmp2.get(0);
+		GLFW.GetMonitorPos(glfwMonitor, out var virtualX, out var virtualY);
 		String name = GLFW.GetMonitorName(glfwMonitor);
 		return new DesktopGraphics.DesktopMonitor(glfwMonitor, virtualX, virtualY, name);
 	}
 
 	internal static GridPoint2 calculateCenteredWindowPosition(DesktopGraphics.DesktopMonitor monitor, int newWidth, int newHeight)
 	{
-		IntBuffer tmp = BufferUtils.createIntBuffer(1);
-		IntBuffer tmp2 = BufferUtils.createIntBuffer(1);
-		IntBuffer tmp3 = BufferUtils.createIntBuffer(1);
-		IntBuffer tmp4 = BufferUtils.createIntBuffer(1);
+		
 
 		DisplayMode displayMode = getDisplayMode(monitor);
 
-		GLFW.GetMonitorWorkarea(monitor.getMonitorHandle(), out tmp[0], out tmp2[0], out tmp3[0], out tmp4[0]);
-		int workareaWidth = tmp3.get(0);
-		int workareaHeight = tmp4.get(0);
+		GLFW.GetMonitorWorkarea(monitor.getMonitorHandle(), out var x, out var y, out var width, out var height);
+		int workareaWidth = width;
+		int workareaHeight = height;
 
 		int minX, minY, maxX, maxY;
 
@@ -307,7 +300,7 @@ namespace SharpGDX.Desktop
 		}
 		else
 		{
-			minX = tmp.get(0);
+			minX = x;
 			maxX = workareaWidth;
 		}
 		// The same is true for height
@@ -318,7 +311,7 @@ namespace SharpGDX.Desktop
 		}
 		else
 		{
-			minY = tmp2.get(0);
+			minY = y;
 			maxY = workareaHeight;
 		}
 

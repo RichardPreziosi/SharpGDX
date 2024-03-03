@@ -1,12 +1,5 @@
-﻿using System;
-using OpenTK.Graphics.OpenGL4;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenTK.Graphics.OpenGL4;
 using SharpGDX.graphics;
-using SharpGDX.shims;
-using Buffer = SharpGDX.shims.Buffer;
 
 namespace SharpGDX.Desktop
 {
@@ -52,14 +45,16 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize,
-			Buffer data)
+		public void glCompressedTexImage2D<T>(int target, int level, int internalformat, int width, int height, int border, int imageSize,
+			T[] data)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
-			int imageSize, Buffer data)
+		public void glCompressedTexSubImage2D<T>(int target, int level, int xoffset, int yoffset, int width, int height, int format,
+			int imageSize, T[] data)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -79,7 +74,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDeleteTextures(int n, IntBuffer textures)
+		public void glDeleteTextures(int n, int[] textures)
 		{
 			throw new NotImplementedException();
 		}
@@ -114,7 +109,8 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDrawElements(int mode, int count, int type, Buffer indices)
+		public void glDrawElements<T>(int mode, int count, int type, T[] indices)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -139,7 +135,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGenTextures(int n, IntBuffer textures)
+		public void glGenTextures(int n, int[] textures)
 		{
 			throw new NotImplementedException();
 		}
@@ -154,7 +150,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetIntegerv(int pname, IntBuffer @params)
+		public void glGetIntegerv(int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -184,7 +180,8 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
+		public void glReadPixels<T>(int x, int y, int width, int height, int format, int type, T[] pixels)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -209,8 +206,9 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
-			Buffer pixels)
+		public void glTexImage2D<T>(int target, int level, int internalformat, int width, int height, int border, int format, int type,
+			T[] pixels)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -220,8 +218,9 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
-			Buffer pixels)
+		public void glTexSubImage2D<T>(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
+			T[] pixels)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -276,12 +275,14 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glBufferData(int target, int size, Buffer data, int usage)
+		public void glBufferData<T>(int target, int size, T[] data, int usage)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glBufferSubData(int target, int offset, int size, Buffer data)
+		public void glBufferSubData<T>(int target, int offset, int size, T[] data)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -311,7 +312,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDeleteBuffers(int n, IntBuffer buffers)
+		public void glDeleteBuffers(int n, int[] buffers)
 		{
 			throw new NotImplementedException();
 		}
@@ -321,7 +322,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDeleteFramebuffers(int n, IntBuffer framebuffers)
+		public void glDeleteFramebuffers(int n, int[] framebuffers)
 		{
 			throw new NotImplementedException();
 		}
@@ -336,7 +337,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers)
+		public void glDeleteRenderbuffers(int n, int[] renderbuffers)
 		{
 			throw new NotImplementedException();
 		}
@@ -381,7 +382,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGenBuffers(int n, IntBuffer buffers)
+		public void glGenBuffers(int n, int[] buffers)
 		{
 			throw new NotImplementedException();
 		}
@@ -396,7 +397,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGenFramebuffers(int n, IntBuffer framebuffers)
+		public void glGenFramebuffers(int n, int[] framebuffers)
 		{
 			throw new NotImplementedException();
 		}
@@ -406,22 +407,23 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGenRenderbuffers(int n, IntBuffer renderbuffers)
+		public void glGenRenderbuffers(int n, int[] renderbuffers)
 		{
 			throw new NotImplementedException();
 		}
 
-		public string glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+		public string glGetActiveAttrib(int program, int index, int[] size, int[] type)
 		{
 			throw new NotImplementedException();
 		}
 
-		public string glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+		public string glGetActiveUniform(int program, int index, int[] size, int[] type)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders)
+		public void glGetAttachedShaders<T>(int program, int maxcount, T[] count, int[] shaders)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -431,27 +433,28 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetBooleanv(int pname, Buffer @params)
+		public void glGetBooleanv<T>(int pname, T[] @params)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetBufferParameteriv(int target, int pname, IntBuffer @params)
+		public void glGetBufferParameteriv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetFloatv(int pname, FloatBuffer @params)
+		public void glGetFloatv(int pname, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer @params)
+		public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetProgramiv(int program, int pname, IntBuffer @params)
+		public void glGetProgramiv(int program, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -461,12 +464,12 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer @params)
+		public void glGetRenderbufferParameteriv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetShaderiv(int shader, int pname, IntBuffer @params)
+		public void glGetShaderiv(int shader, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -476,27 +479,27 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+		public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, int[] range, int[] precision)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexParameterfv(int target, int pname, FloatBuffer @params)
+		public void glGetTexParameterfv(int target, int pname, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexParameteriv(int target, int pname, IntBuffer @params)
+		public void glGetTexParameteriv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetUniformfv(int program, int location, FloatBuffer @params)
+		public void glGetUniformfv(int program, int location, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetUniformiv(int program, int location, IntBuffer @params)
+		public void glGetUniformiv(int program, int location, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -506,17 +509,18 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetVertexAttribfv(int index, int pname, FloatBuffer @params)
+		public void glGetVertexAttribfv(int index, int pname, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetVertexAttribiv(int index, int pname, IntBuffer @params)
+		public void glGetVertexAttribiv(int index, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetVertexAttribPointerv(int index, int pname, Buffer pointer)
+		public void glGetVertexAttribPointerv<T>(int index, int pname, T[] pointer)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -576,7 +580,8 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length)
+		public void glShaderBinary<T>(int n, int[] shaders, int binaryformat, T[] binary, int length)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -601,7 +606,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glTexParameterfv(int target, int pname, FloatBuffer @params)
+		public void glTexParameterfv(int target, int pname, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -611,7 +616,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glTexParameteriv(int target, int pname, IntBuffer @params)
+		public void glTexParameteriv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -621,7 +626,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform1fv(int location, int count, FloatBuffer v)
+		public void glUniform1fv(int location, int count, float[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -636,7 +641,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform1iv(int location, int count, IntBuffer v)
+		public void glUniform1iv(int location, int count, int[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -651,7 +656,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform2fv(int location, int count, FloatBuffer v)
+		public void glUniform2fv(int location, int count, float[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -666,7 +671,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform2iv(int location, int count, IntBuffer v)
+		public void glUniform2iv(int location, int count, int[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -681,7 +686,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform3fv(int location, int count, FloatBuffer v)
+		public void glUniform3fv(int location, int count, float[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -696,7 +701,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform3iv(int location, int count, IntBuffer v)
+		public void glUniform3iv(int location, int count, int[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -711,7 +716,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform4fv(int location, int count, FloatBuffer v)
+		public void glUniform4fv(int location, int count, float[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -726,7 +731,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniform4iv(int location, int count, IntBuffer v)
+		public void glUniform4iv(int location, int count, int[] v)
 		{
 			throw new NotImplementedException();
 		}
@@ -736,7 +741,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniformMatrix2fv(int location, int count, bool transpose, FloatBuffer value)
+		public void glUniformMatrix2fv(int location, int count, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
@@ -746,7 +751,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniformMatrix3fv(int location, int count, bool transpose, FloatBuffer value)
+		public void glUniformMatrix3fv(int location, int count, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
@@ -756,7 +761,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glUniformMatrix4fv(int location, int count, bool transpose, FloatBuffer value)
+		public void glUniformMatrix4fv(int location, int count, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
@@ -781,7 +786,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glVertexAttrib1fv(int indx, FloatBuffer values)
+		public void glVertexAttrib1fv(int indx, float[] values)
 		{
 			throw new NotImplementedException();
 		}
@@ -791,7 +796,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glVertexAttrib2fv(int indx, FloatBuffer values)
+		public void glVertexAttrib2fv(int indx, float[] values)
 		{
 			throw new NotImplementedException();
 		}
@@ -801,7 +806,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glVertexAttrib3fv(int indx, FloatBuffer values)
+		public void glVertexAttrib3fv(int indx, float[] values)
 		{
 			throw new NotImplementedException();
 		}
@@ -811,12 +816,13 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glVertexAttrib4fv(int indx, FloatBuffer values)
+		public void glVertexAttrib4fv(int indx, float[] values)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, Buffer ptr)
+		public void glVertexAttribPointer<T>(int indx, int size, int type, bool normalized, int stride, T[] ptr)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}

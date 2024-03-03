@@ -36,8 +36,8 @@ namespace SharpGDX.Desktop
 	private int logLevel = LOG_INFO;
 	private ApplicationLogger applicationLogger;
 	private volatile bool running = true;
-	private readonly Array<Runnable> runnables = new Array<Runnable>();
-	private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
+	private readonly Array<Action> runnables = new Array<Action>();
+	private readonly Array<Action> executedRunnables = new Array<Action>();
 	private readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
 	private static GLFWErrorCallback? errorCallback;
 	private static GLVersion glVersion;
@@ -226,7 +226,7 @@ namespace SharpGDX.Desktop
 				executedRunnables.addAll(runnables);
 				runnables.clear();
 			}
-			foreach (Runnable runnable in executedRunnables)
+			foreach (Action runnable in executedRunnables)
 			{
 				runnable.Invoke();
 			}
@@ -431,7 +431,7 @@ namespace SharpGDX.Desktop
 		return clipboard;
 	}
 
-	public void postRunnable(Runnable runnable)
+	public void postRunnable(Action runnable)
 	{
 		lock(runnables) {
 			runnables.add(runnable);

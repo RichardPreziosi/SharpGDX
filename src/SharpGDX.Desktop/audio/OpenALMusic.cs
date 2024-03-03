@@ -1,17 +1,9 @@
 ﻿using OpenTK.Audio.OpenAL;
-using Buffer = SharpGDX.shims.Buffer;
 using SharpGDX.files;
 using SharpGDX.math;
-using SharpGDX.shims;
 using SharpGDX.utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpGDX.audio;
 using static SharpGDX.audio.Music;
-using static SharpGDX.graphics.Pixmap;
 
 namespace SharpGDX.Desktop.audio
 {
@@ -22,12 +14,12 @@ namespace SharpGDX.Desktop.audio
 	static private readonly int bufferCount = 3;
 	static private readonly int bytesPerSample = 2;
 	static private readonly byte[] tempBytes = new byte[bufferSize];
-	static private readonly ByteBuffer tempBuffer = BufferUtils.createByteBuffer(bufferSize);
+	static private readonly byte[] tempBuffer = new byte[bufferSize];
 
 	private FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
 
 	private readonly OpenALDesktopAudio audio;
-	private IntBuffer buffers;
+	private int[] buffers;
 	private int sourceID = -1;
 	private int format, sampleRate;
 	private bool _isLooping, _isPlaying;
@@ -65,7 +57,7 @@ namespace SharpGDX.Desktop.audio
 
 			if (buffers == null)
 			{
-				buffers = BufferUtils.createIntBuffer(bufferCount);
+				buffers = new int[bufferCount];
 				AL.GetError();
 					AL.GenBuffers((int[])buffers);
 				var errorCode = AL.GetError();
@@ -81,7 +73,7 @@ namespace SharpGDX.Desktop.audio
 			bool filled = false; // Check if there's anything to actually play.
 			for (int i = 0; i < bufferCount; i++)
 			{
-				int bufferID = buffers.get(i);
+				int bufferID = buffers[i];
 				if (!fill(bufferID)) break;
 				filled = true;
 				AL.SourceQueueBuffer(sourceID, bufferID);
@@ -191,7 +183,7 @@ namespace SharpGDX.Desktop.audio
 		bool filled = false;
 		for (int i = 0; i < bufferCount; i++)
 		{
-			int bufferID = buffers.get(i);
+			int bufferID = buffers[i];
 			if (!fill(bufferID)) break;
 			filled = true;
 			AL.SourceQueueBuffer(sourceID, bufferID);
@@ -270,7 +262,7 @@ namespace SharpGDX.Desktop.audio
 
 	private bool fill(int bufferID)
 	{
-		((Buffer)tempBuffer).clear();
+		Array.Clear(tempBuffer);
 		int length = read(tempBytes);
 		if (length <= 0)
 		{
@@ -291,7 +283,7 @@ namespace SharpGDX.Desktop.audio
 		float currentBufferSeconds = maxSecondsPerBuffer * (float)length / (float)bufferSize;
 		renderedSecondsQueue.insert(0, previousLoadedSeconds + currentBufferSeconds);
 
-		((Buffer)tempBuffer.put(tempBytes, 0, length)).flip();
+		Array.Copy(tempBytes, tempBuffer, length);
 		AL.BufferData(bufferID, (ALFormat)format, (byte[])tempBuffer, sampleRate);
 		return true;
 	}

@@ -1,7 +1,4 @@
-﻿using SharpGDX.shims;
-using Buffer = SharpGDX.shims.Buffer;
-
-namespace SharpGDX.graphics
+﻿namespace SharpGDX.graphics
 {
 	/** Interface wrapping all the methods of OpenGL ES 2.0
  * @author mzechner */
@@ -332,11 +329,15 @@ namespace SharpGDX.graphics
 		public void glClearDepthf(float depth);
 		public void glClearStencil(int s);
 		public void glColorMask(bool red, bool green, bool blue, bool alpha);
-		public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
-		int imageSize, Buffer data);
 
-		public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
-			int imageSize, Buffer data);
+		public void glCompressedTexImage2D<T>(int target, int level, int internalformat, int width, int height,
+			int border,
+			int imageSize, T[] data)
+			where T : struct;
+
+		public void glCompressedTexSubImage2D<T>(int target, int level, int xoffset, int yoffset, int width, int height, int format,
+			int imageSize, T[] data) 
+			where T : struct;
 
 		public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border);
 
@@ -344,7 +345,7 @@ namespace SharpGDX.graphics
 
 		public void glCullFace(int mode);
 
-		public void glDeleteTextures(int n, IntBuffer textures);
+		public void glDeleteTextures(int n, int[] textures);
 
 		public void glDeleteTexture(int texture);
 
@@ -359,7 +360,8 @@ namespace SharpGDX.graphics
 		public void glDrawArrays(int mode, int first, int count);
 
 		/** Not fully supported with GWT backend: indices content is ignored, only buffer position is used. */
-		public void glDrawElements(int mode, int count, int type, Buffer indices);
+		public void glDrawElements<T>(int mode, int count, int type, T[] indices)
+			where T : struct;
 
 		public void glEnable(int cap);
 
@@ -369,13 +371,13 @@ namespace SharpGDX.graphics
 
 		public void glFrontFace(int mode);
 
-		public void glGenTextures(int n, IntBuffer textures);
+		public void glGenTextures(int n, int[] textures);
 
 		public int glGenTexture();
 
 		public int glGetError();
 
-		public void glGetIntegerv(int pname, IntBuffer @params);
+		public void glGetIntegerv(int pname, int[] @params);
 
 		public String glGetString(int name);
 
@@ -387,7 +389,8 @@ namespace SharpGDX.graphics
 
 		public void glPolygonOffset(float factor, float units);
 
-		public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels);
+		public void glReadPixels<T>(int x, int y, int width, int height, int format, int type, T[] pixels)
+			where T : struct;
 
 		public void glScissor(int x, int y, int width, int height);
 
@@ -397,13 +400,15 @@ namespace SharpGDX.graphics
 
 		public void glStencilOp(int fail, int zfail, int zpass);
 
-		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
-			Buffer pixels);
+		public void glTexImage2D<T>(int target, int level, int internalformat, int width, int height, int border, int format, int type,
+			T[] pixels)
+			where T : struct;
 
 		public void glTexParameterf(int target, int pname, float param);
 
-		public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
-			Buffer pixels);
+		public void glTexSubImage2D<T>(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
+			T[] pixels)
+			where T : struct;
 
 		public void glViewport(int x, int y, int width, int height);
 
@@ -425,9 +430,11 @@ namespace SharpGDX.graphics
 
 		public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha);
 
-		public void glBufferData(int target, int size, Buffer data, int usage);
+		public void glBufferData<T>(int target, int size, T[] data, int usage) 
+			where T : struct;
 
-		public void glBufferSubData(int target, int offset, int size, Buffer data);
+		public void glBufferSubData<T>(int target, int offset, int size, T[] data)
+			where T : struct;
 
 		public int glCheckFramebufferStatus(int target);
 
@@ -439,17 +446,17 @@ namespace SharpGDX.graphics
 
 		public void glDeleteBuffer(int buffer);
 
-		public void glDeleteBuffers(int n, IntBuffer buffers);
+		public void glDeleteBuffers(int n, int[] buffers);
 
 		public void glDeleteFramebuffer(int framebuffer);
 
-		public void glDeleteFramebuffers(int n, IntBuffer framebuffers);
+		public void glDeleteFramebuffers(int n, int[] framebuffers);
 
 		public void glDeleteProgram(int program);
 
 		public void glDeleteRenderbuffer(int renderbuffer);
 
-		public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers);
+		public void glDeleteRenderbuffers(int n, int[] renderbuffers);
 
 		public void glDeleteShader(int shader);
 
@@ -467,65 +474,68 @@ namespace SharpGDX.graphics
 
 		public int glGenBuffer();
 
-		public void glGenBuffers(int n, IntBuffer buffers);
+		public void glGenBuffers(int n, int[] buffers);
 
 		public void glGenerateMipmap(int target);
 
 		public int glGenFramebuffer();
 
-		public void glGenFramebuffers(int n, IntBuffer framebuffers);
+		public void glGenFramebuffers(int n, int[] framebuffers);
 
 		public int glGenRenderbuffer();
 
-		public void glGenRenderbuffers(int n, IntBuffer renderbuffers);
+		public void glGenRenderbuffers(int n, int[] renderbuffers);
 
 		// deviates
-		public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type);
+		public String glGetActiveAttrib(int program, int index, int[] size, int[] type);
 
 		// deviates
-		public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type);
+		public String glGetActiveUniform(int program, int index, int[] size, int[] type);
 
-		public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders);
+		public void glGetAttachedShaders<T>(int program, int maxcount, T[] count, int[] shaders)
+			where T : struct;
 
 		public int glGetAttribLocation(int program, String name);
 
-		public void glGetBooleanv(int pname, Buffer @params);
+		public void glGetBooleanv<T>(int pname, T[] @params)
+			where T : struct;
 
-		public void glGetBufferParameteriv(int target, int pname, IntBuffer @params);
+		public void glGetBufferParameteriv(int target, int pname, int[] @params);
 
-		public void glGetFloatv(int pname, FloatBuffer @params);
+		public void glGetFloatv(int pname, float[] @params);
 
-		public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer @params);
+		public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, int[] @params);
 
-		public void glGetProgramiv(int program, int pname, IntBuffer @params);
+		public void glGetProgramiv(int program, int pname, int[] @params);
 
 		// deviates
 		public String glGetProgramInfoLog(int program);
 
-		public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer @params);
+		public void glGetRenderbufferParameteriv(int target, int pname, int[] @params);
 
-		public void glGetShaderiv(int shader, int pname, IntBuffer @params);
+		public void glGetShaderiv(int shader, int pname, int[] @params);
 
 		// deviates
 		public String glGetShaderInfoLog(int shader);
 
-		public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision);
+		public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, int[] range, int[] precision);
 
-		public void glGetTexParameterfv(int target, int pname, FloatBuffer @params);
+		public void glGetTexParameterfv(int target, int pname, float[] @params);
 
-		public void glGetTexParameteriv(int target, int pname, IntBuffer @params);
+		public void glGetTexParameteriv(int target, int pname, int[] @params);
 
-		public void glGetUniformfv(int program, int location, FloatBuffer @params);
+		public void glGetUniformfv(int program, int location, float[] @params);
 
-		public void glGetUniformiv(int program, int location, IntBuffer @params);
+		public void glGetUniformiv(int program, int location, int[] @params);
 
 		public int glGetUniformLocation(int program, String name);
 
-		public void glGetVertexAttribfv(int index, int pname, FloatBuffer @params);
+		public void glGetVertexAttribfv(int index, int pname, float[] @params);
 
-		public void glGetVertexAttribiv(int index, int pname, IntBuffer @params);
+		public void glGetVertexAttribiv(int index, int pname, int[] @params);
 
-		public void glGetVertexAttribPointerv(int index, int pname, Buffer pointer);
+		public void glGetVertexAttribPointerv<T>(int index, int pname, T[] pointer)
+			where T : struct;
 
 		public bool glIsBuffer(int buffer);
 
@@ -548,7 +558,8 @@ namespace SharpGDX.graphics
 
 		public void glSampleCoverage(float value, bool invert);
 
-		public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length);
+		public void glShaderBinary<T>(int n, int[] shaders, int binaryformat, T[] binary, int length)
+			where T : struct;
 
 		// Deviates
 		public void glShaderSource(int shader, String @string);
@@ -559,69 +570,69 @@ namespace SharpGDX.graphics
 
 		public void glStencilOpSeparate(int face, int fail, int zfail, int zpass);
 
-		public void glTexParameterfv(int target, int pname, FloatBuffer @params);
+		public void glTexParameterfv(int target, int pname, float[] @params);
 
 		public void glTexParameteri(int target, int pname, int param);
 
-		public void glTexParameteriv(int target, int pname, IntBuffer @params);
+		public void glTexParameteriv(int target, int pname, int[] @params);
 
 		public void glUniform1f(int location, float x);
 
-		public void glUniform1fv(int location, int count, FloatBuffer v);
+		public void glUniform1fv(int location, int count, float[] v);
 
 		public void glUniform1fv(int location, int count, float[] v, int offset);
 
 		public void glUniform1i(int location, int x);
 
-		public void glUniform1iv(int location, int count, IntBuffer v);
+		public void glUniform1iv(int location, int count, int[] v);
 
 		public void glUniform1iv(int location, int count, int[] v, int offset);
 
 		public void glUniform2f(int location, float x, float y);
 
-		public void glUniform2fv(int location, int count, FloatBuffer v);
+		public void glUniform2fv(int location, int count, float[] v);
 
 		public void glUniform2fv(int location, int count, float[] v, int offset);
 
 		public void glUniform2i(int location, int x, int y);
 
-		public void glUniform2iv(int location, int count, IntBuffer v);
+		public void glUniform2iv(int location, int count, int[] v);
 
 		public void glUniform2iv(int location, int count, int[] v, int offset);
 
 		public void glUniform3f(int location, float x, float y, float z);
 
-		public void glUniform3fv(int location, int count, FloatBuffer v);
+		public void glUniform3fv(int location, int count, float[] v);
 
 		public void glUniform3fv(int location, int count, float[] v, int offset);
 
 		public void glUniform3i(int location, int x, int y, int z);
 
-		public void glUniform3iv(int location, int count, IntBuffer v);
+		public void glUniform3iv(int location, int count, int[] v);
 
 		public void glUniform3iv(int location, int count, int[] v, int offset);
 
 		public void glUniform4f(int location, float x, float y, float z, float w);
 
-		public void glUniform4fv(int location, int count, FloatBuffer v);
+		public void glUniform4fv(int location, int count, float[] v);
 
 		public void glUniform4fv(int location, int count, float[] v, int offset);
 
 		public void glUniform4i(int location, int x, int y, int z, int w);
 
-		public void glUniform4iv(int location, int count, IntBuffer v);
+		public void glUniform4iv(int location, int count, int[] v);
 
 		public void glUniform4iv(int location, int count, int[] v, int offset);
 
-		public void glUniformMatrix2fv(int location, int count, bool transpose, FloatBuffer value);
+		public void glUniformMatrix2fv(int location, int count, bool transpose, float[] value);
 
 		public void glUniformMatrix2fv(int location, int count, bool transpose, float[] value, int offset);
 
-		public void glUniformMatrix3fv(int location, int count, bool transpose, FloatBuffer value);
+		public void glUniformMatrix3fv(int location, int count, bool transpose, float[] value);
 
 		public void glUniformMatrix3fv(int location, int count, bool transpose, float[] value, int offset);
 
-		public void glUniformMatrix4fv(int location, int count, bool transpose, FloatBuffer value);
+		public void glUniformMatrix4fv(int location, int count, bool transpose, float[] value);
 
 		public void glUniformMatrix4fv(int location, int count, bool transpose, float[] value, int offset);
 
@@ -631,23 +642,24 @@ namespace SharpGDX.graphics
 
 		public void glVertexAttrib1f(int indx, float x);
 
-		public void glVertexAttrib1fv(int indx, FloatBuffer values);
+		public void glVertexAttrib1fv(int indx, float[] values);
 
 		public void glVertexAttrib2f(int indx, float x, float y);
 
-		public void glVertexAttrib2fv(int indx, FloatBuffer values);
+		public void glVertexAttrib2fv(int indx, float[] values);
 
 		public void glVertexAttrib3f(int indx, float x, float y, float z);
 
-		public void glVertexAttrib3fv(int indx, FloatBuffer values);
+		public void glVertexAttrib3fv(int indx, float[] values);
 
 		public void glVertexAttrib4f(int indx, float x, float y, float z, float w);
 
-		public void glVertexAttrib4fv(int indx, FloatBuffer values);
+		public void glVertexAttrib4fv(int indx, float[] values);
 
 		/** In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid. In 3.0 and later, use the other version of
 		 * this function instead, pass a zero-based offset which references the buffer currently bound to GL_ARRAY_BUFFER. */
-		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, Buffer ptr);
+		public void glVertexAttribPointer<T>(int indx, int size, int type, bool normalized, int stride, T[] ptr)
+			where T : struct;
 
 		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, int ptr);
 	}

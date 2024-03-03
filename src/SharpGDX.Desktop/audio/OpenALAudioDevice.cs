@@ -1,16 +1,7 @@
 ﻿using OpenTK.Audio.OpenAL;
-using Buffer = SharpGDX.shims.Buffer;
 using SharpGDX.math;
-using SharpGDX.shims;
 using SharpGDX.utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using SharpGDX.audio;
-using static SharpGDX.graphics.Pixmap;
 
 namespace SharpGDX.Desktop.audio
 {
@@ -21,7 +12,7 @@ namespace SharpGDX.Desktop.audio
 
 		private readonly OpenALDesktopAudio audio;
 		private readonly int channels;
-		private IntBuffer buffers;
+		private int[] buffers;
 		private int sourceID = -1;
 		private int format, sampleRate;
 		private bool _isPlaying;
@@ -30,7 +21,7 @@ namespace SharpGDX.Desktop.audio
 		private byte[] bytes;
 		private readonly int bufferSize;
 		private readonly int bufferCount;
-		private readonly ByteBuffer tempBuffer;
+		private readonly byte[] tempBuffer;
 
 		public OpenALAudioDevice(OpenALDesktopAudio audio, int sampleRate, bool isMono, int bufferSize, int bufferCount)
 		{
@@ -41,7 +32,7 @@ namespace SharpGDX.Desktop.audio
 			this.format = channels > 1 ? (int)ALFormat.Stereo16 : (int)ALFormat.Mono16;
 			this.sampleRate = sampleRate;
 			secondsPerBuffer = (float)bufferSize / bytesPerSample / channels / sampleRate;
-			tempBuffer = BufferUtils.createByteBuffer(bufferSize);
+			tempBuffer = new byte[bufferSize];
 		}
 
 		public void writeSamples(short[] samples, int offset, int numSamples)
@@ -84,7 +75,7 @@ namespace SharpGDX.Desktop.audio
 				if (sourceID == -1) return;
 				if (buffers == null)
 				{
-					buffers = BufferUtils.createIntBuffer(bufferCount);
+					buffers = new int[bufferCount];
 					AL.GetError();
 					AL.GenBuffers((int[])buffers);
 					if (AL.GetError() != ALError.NoError)
@@ -96,10 +87,12 @@ namespace SharpGDX.Desktop.audio
 				// Fill initial buffers.
 				for (int i = 0; i < bufferCount; i++)
 				{
-					int bufferID = buffers.get(i);
+					int bufferID = buffers[i];
 					int written = Math.Min(bufferSize, length);
-					((Buffer)tempBuffer).clear();
-					((Buffer)tempBuffer.put(data, offset, written)).flip();
+
+					// TODO: Not sure or not if this really needs a new 'temp buffer' that is the exact length of the 'written'
+					Array.Clear(tempBuffer);
+					Array.Copy(data, offset, tempBuffer, 0, written);
 					AL.BufferData(bufferID, (ALFormat)format, (byte[])tempBuffer, sampleRate);
 					AL.SourceQueueBuffer(sourceID, bufferID);
 					length -= written;
@@ -133,11 +126,13 @@ namespace SharpGDX.Desktop.audio
 					if (bufferID == (int)ALError.InvalidValue) break;
 					renderedSeconds += secondsPerBuffer;
 
-					((Buffer)tempBuffer).clear();
-					((Buffer)tempBuffer.put(data, offset, written)).flip();
+					// TODO: Not sure or not if this really needs a new 'temp buffer' that is the exact length of the 'written'
+					Array.Clear(tempBuffer);
+					Array.Copy(data, offset, tempBuffer, 0, written);
+					
 					AL.BufferData(bufferID, (ALFormat)format, (byte[])tempBuffer, sampleRate);
-
 					AL.SourceQueueBuffer(sourceID, bufferID);
+
 					goto endOfOuter;
 				}
 

@@ -1,19 +1,9 @@
 ﻿using OpenTK.Audio.OpenAL;
 using SharpGDX.audio;
-using SharpGDX.Desktop.audio;
 using SharpGDX.files;
 using SharpGDX.math;
-using SharpGDX.shims;
 using SharpGDX.utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Buffer = SharpGDX.shims.Buffer;
+
 
 namespace SharpGDX.Desktop.audio
 {
@@ -50,8 +40,8 @@ namespace SharpGDX.Desktop.audio
 
 		//registerSound("ogg", Ogg.Sound.class);
 		//registerMusic("ogg", Ogg.Music.class);
-		//registerSound("wav", Wav.Sound.class);
-		//registerMusic("wav", Wav.Music.class);
+		registerSound("wav", typeof(Wav.Sound));
+		registerMusic("wav", typeof(Wav.Music));
 		//registerSound("mp3", Mp3.Sound.class);
 		//registerMusic("mp3", Mp3.Music.class);
 
@@ -88,15 +78,11 @@ idleSources = new IntArray(allSources);
 soundIdToSource = new LongMap<int>();
 sourceToSoundId = new IntMap<long>();
 
-FloatBuffer orientation = (FloatBuffer)BufferUtils.createFloatBuffer(6)
-	.put(new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f });
-((Buffer)orientation).flip();
+float[] orientation = new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f };
 AL.Listener(ALListenerfv.Orientation, (float[])orientation);
-FloatBuffer velocity = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
-((Buffer)velocity).flip();
+float[] velocity = new float[] { 0.0f, 0.0f, 0.0f };
 AL.Listener(ALListener3f.Velocity, velocity[0], velocity[1], velocity[2]);
-FloatBuffer position = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
-((Buffer)position).flip();
+float[] position = new float[] { 0.0f, 0.0f, 0.0f };
 AL.Listener(ALListener3f.Position, position[0], position[1], position[2]);
 
 // TODO: AL.Disable(SOFTXHoldOnDisconnect.AL_STOP_SOURCES_ON_DISCONNECT_SOFT);

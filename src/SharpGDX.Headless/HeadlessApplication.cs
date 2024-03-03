@@ -26,8 +26,8 @@ namespace SharpGDX.Headless
 		protected readonly MockInput input;
 		protected readonly MockGraphics graphics;
 		protected bool running = true;
-		protected readonly Array<Runnable> runnables = new Array<Runnable>();
-		protected readonly Array<Runnable> executedRunnables = new Array<Runnable>();
+		protected readonly Array<Action> runnables = new Array<Action>();
+		protected readonly Array<Action> executedRunnables = new Array<Action>();
 		protected readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
 		protected int logLevel = LOG_INFO;
 		protected ApplicationLogger applicationLogger;
@@ -231,7 +231,7 @@ namespace SharpGDX.Headless
 			return null;
 		}
 
-		public void postRunnable(Runnable runnable)
+		public void postRunnable(Action runnable)
 		{
 			lock (runnables)
 			{

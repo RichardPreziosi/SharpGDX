@@ -19,10 +19,8 @@ namespace SharpGDX.Desktop
 		private DesktopGraphics graphics;
 		private DesktopInput input;
 		private readonly DesktopApplicationConfiguration config;
-		private readonly Array<Runnable> runnables = new Array<Runnable>();
-		private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
-		private readonly IntBuffer tmpBuffer;
-		private readonly IntBuffer tmpBuffer2;
+		private readonly Array<Action> runnables = new Array<Action>();
+		private readonly Array<Action> executedRunnables = new Array<Action>();
 		bool iconified = false;
 		bool focused = false;
 		private bool _requestRendering = false;
@@ -136,8 +134,6 @@ internal 		DesktopWindow(ApplicationListener listener, DesktopApplicationConfigu
 			this.windowListener = config.windowListener;
 			this.config = config;
 			this.application = application;
-			this.tmpBuffer = BufferUtils.createIntBuffer(1);
-			this.tmpBuffer2 = BufferUtils.createIntBuffer(1);
 		}
 
 		internal void create(GLFWWindow* windowHandle)
@@ -178,7 +174,7 @@ internal 		DesktopWindow(ApplicationListener listener, DesktopApplicationConfigu
 
 		/** Post a {@link Runnable} to this window's event queue. Use this if you access statics like {@link Gdx#graphics} in your
 		 * runnable instead of {@link Application#postRunnable(Runnable)}. */
-		public void postRunnable(Runnable runnable)
+		public void postRunnable(Action runnable)
 		{
 			lock (runnables)
 			{
@@ -197,16 +193,16 @@ internal 		DesktopWindow(ApplicationListener listener, DesktopApplicationConfigu
 		 *         relative to the first monitor in the virtual surface. **/
 		public int getPositionX()
 		{
-			GLFW.GetWindowPos(windowHandle, out tmpBuffer[0], out tmpBuffer2[0]);
-			return tmpBuffer.get(0);
+			GLFW.GetWindowPos(windowHandle, out var x, out _);
+			return x;
 		}
 
 		/** @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
 		 *         relative to the first monitor in the virtual surface. **/
 		public int getPositionY()
 		{
-			GLFW.GetWindowPos(windowHandle, out tmpBuffer[0], out tmpBuffer2[0]);
-			return tmpBuffer2.get(0);
+			GLFW.GetWindowPos(windowHandle, out _, out var y);
+			return y;
 		}
 
 		/** Sets the visibility of the window. Invisible windows will still call their {@link ApplicationListener} */
@@ -390,7 +386,7 @@ internal 		DesktopWindow(ApplicationListener listener, DesktopApplicationConfigu
 				runnables.clear();
 			}
 
-			foreach (Runnable runnable in executedRunnables)
+			foreach (Action runnable in executedRunnables)
 			{
 				runnable.Invoke();
 			}

@@ -1,7 +1,4 @@
-﻿using SharpGDX.shims;
-using Buffer = SharpGDX.shims.Buffer;
-
-namespace SharpGDX.graphics
+﻿namespace SharpGDX.graphics
 {
 	public interface GL32 : GL31
 	{
@@ -245,7 +242,7 @@ namespace SharpGDX.graphics
 
 	void glDebugMessageControl(int source, int type, int severity,
 		// int count,
-		IntBuffer ids, bool enabled);
+		int[] ids, bool enabled);
 
 	// C function void glDebugMessageInsert ( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar
 	// *buf )
@@ -285,8 +282,8 @@ namespace SharpGDX.graphics
 	// C function GLuint glGetDebugMessageLog ( GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum
 	// *severities, GLsizei *lengths, GLchar *messageLog )
 
-	int glGetDebugMessageLog(int count, IntBuffer sources, IntBuffer types, IntBuffer ids,
-		IntBuffer severities, IntBuffer lengths, ByteBuffer messageLog);
+	int glGetDebugMessageLog(int count, int[] sources, int[] types, int[] ids,
+		int[] severities, int[] lengths, byte[] messageLog);
 
 	// C function GLuint glGetDebugMessageLog ( GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum
 	// *severities, GLsizei *lengths, GLchar *messageLog )
@@ -307,10 +304,10 @@ namespace SharpGDX.graphics
 
 	// String[] glGetDebugMessageLog(
 	// int count,
-	// IntBuffer sources,
-	// IntBuffer types,
-	// IntBuffer ids,
-	// IntBuffer severities);
+	// int[] sources,
+	// int[] types,
+	// int[] ids,
+	// int[] severities);
 
 	// C function void glPushDebugGroup ( GLenum source, GLuint id, GLsizei length, const GLchar *message )
 
@@ -378,24 +375,27 @@ namespace SharpGDX.graphics
 
 	// C function void glDrawElementsBaseVertex ( GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex )
 
-	void glDrawElementsBaseVertex(int mode, int count, int type, Buffer indices, int basevertex);
+	void glDrawElementsBaseVertex<T>(int mode, int count, int type, T[] indices, int basevertex)
+		where T : struct;
 
 	// C function void glDrawRangeElementsBaseVertex ( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const
 	// void *indices, GLint basevertex )
 
-	void glDrawRangeElementsBaseVertex(int mode, int start, int end, int count, int type, Buffer indices,
-		int basevertex);
+	void glDrawRangeElementsBaseVertex<T>(int mode, int start, int end, int count, int type, T[] indices,
+		int basevertex)
+		where T : struct;
 
-	// C function void glDrawElementsInstancedBaseVertex ( GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei
-	// instanceCount, GLint basevertex )
+		// C function void glDrawElementsInstancedBaseVertex ( GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei
+		// instanceCount, GLint basevertex )
 
-	void glDrawElementsInstancedBaseVertex(int mode, int count, int type, Buffer indices, int instanceCount,
-		int basevertex);
+		void glDrawElementsInstancedBaseVertex<T>(int mode, int count, int type, T[] indices, int instanceCount,
+		int basevertex)
+			where T : struct;
 
-	// C function void glDrawElementsInstancedBaseVertex ( GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei
-	// instanceCount, GLint basevertex )
+		// C function void glDrawElementsInstancedBaseVertex ( GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei
+		// instanceCount, GLint basevertex )
 
-	void glDrawElementsInstancedBaseVertex(int mode, int count, int type, int indicesOffset, int instanceCount, int basevertex);
+		void glDrawElementsInstancedBaseVertex(int mode, int count, int type, int indicesOffset, int instanceCount, int basevertex);
 
 	// C function void glFramebufferTexture ( GLenum target, GLenum attachment, GLuint texture, GLint level )
 
@@ -422,23 +422,24 @@ namespace SharpGDX.graphics
 	// C function void glReadnPixels ( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei
 	// bufSize, void *data )
 
-	void glReadnPixels(int x, int y, int width, int height, int format, int type, int bufSize, Buffer data);
+	void glReadnPixels<T>(int x, int y, int width, int height, int format, int type, int bufSize, T[] data)
+		where T : struct;
 
-	// C function void glGetnUniformfv ( GLuint program, GLint location, GLsizei bufSize, GLfloat *params )
+		// C function void glGetnUniformfv ( GLuint program, GLint location, GLsizei bufSize, GLfloat *params )
 
-	// void glGetnUniformfv(
-	// int program,
-	// int location,
-	// int bufSize,
-	// float[] params,
-	// int offset
-	// );
-
-	// C function void glGetnUniformfv ( GLuint program, GLint location, GLsizei bufSize, GLfloat *params )
-
-	void glGetnUniformfv(int program, int location,
+		// void glGetnUniformfv(
+		// int program,
+		// int location,
 		// int bufSize,
-		FloatBuffer @params);
+		// float[] params,
+		// int offset
+		// );
+
+		// C function void glGetnUniformfv ( GLuint program, GLint location, GLsizei bufSize, GLfloat *params )
+
+		void glGetnUniformfv(int program, int location,
+		// int bufSize,
+		float[] @params);
 
 	// C function void glGetnUniformiv ( GLuint program, GLint location, GLsizei bufSize, GLint *params )
 
@@ -454,7 +455,7 @@ namespace SharpGDX.graphics
 
 	void glGetnUniformiv(int program, int location,
 		// int bufSize,
-		IntBuffer @params);
+		int[] @params);
 
 	// C function void glGetnUniformuiv ( GLuint program, GLint location, GLsizei bufSize, GLuint *params )
 
@@ -470,7 +471,7 @@ namespace SharpGDX.graphics
 
 	void glGetnUniformuiv(int program, int location,
 		// int bufSize,
-		IntBuffer @params);
+		int[] @params);
 
 	// C function void glMinSampleShading ( GLfloat value )
 
@@ -491,7 +492,7 @@ namespace SharpGDX.graphics
 
 	// C function void glTexParameterIiv ( GLenum target, GLenum pname, const GLint *params )
 
-	void glTexParameterIiv(int target, int pname, IntBuffer @params);
+	void glTexParameterIiv(int target, int pname, int[] @params);
 
 	// C function void glTexParameterIuiv ( GLenum target, GLenum pname, const GLuint *params )
 
@@ -504,7 +505,7 @@ namespace SharpGDX.graphics
 
 	// C function void glTexParameterIuiv ( GLenum target, GLenum pname, const GLuint *params )
 
-	void glTexParameterIuiv(int target, int pname, IntBuffer @params);
+	void glTexParameterIuiv(int target, int pname, int[] @params);
 
 	// C function void glGetTexParameterIiv ( GLenum target, GLenum pname, GLint *params )
 
@@ -517,7 +518,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetTexParameterIiv ( GLenum target, GLenum pname, GLint *params )
 
-	void glGetTexParameterIiv(int target, int pname, IntBuffer @params);
+	void glGetTexParameterIiv(int target, int pname, int[] @params);
 
 	// C function void glGetTexParameterIuiv ( GLenum target, GLenum pname, GLuint *params )
 
@@ -530,7 +531,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetTexParameterIuiv ( GLenum target, GLenum pname, GLuint *params )
 
-	void glGetTexParameterIuiv(int target, int pname, IntBuffer @params);
+	void glGetTexParameterIuiv(int target, int pname, int[] @params);
 
 	// C function void glSamplerParameterIiv ( GLuint sampler, GLenum pname, const GLint *param )
 
@@ -543,7 +544,7 @@ namespace SharpGDX.graphics
 
 	// C function void glSamplerParameterIiv ( GLuint sampler, GLenum pname, const GLint *param )
 
-	void glSamplerParameterIiv(int sampler, int pname, IntBuffer param);
+	void glSamplerParameterIiv(int sampler, int pname, int[] param);
 
 	// C function void glSamplerParameterIuiv ( GLuint sampler, GLenum pname, const GLuint *param )
 
@@ -556,7 +557,7 @@ namespace SharpGDX.graphics
 
 	// C function void glSamplerParameterIuiv ( GLuint sampler, GLenum pname, const GLuint *param )
 
-	void glSamplerParameterIuiv(int sampler, int pname, IntBuffer param);
+	void glSamplerParameterIuiv(int sampler, int pname, int[] param);
 
 	// C function void glGetSamplerParameterIiv ( GLuint sampler, GLenum pname, GLint *params )
 
@@ -569,7 +570,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetSamplerParameterIiv ( GLuint sampler, GLenum pname, GLint *params )
 
-	void glGetSamplerParameterIiv(int sampler, int pname, IntBuffer @params);
+	void glGetSamplerParameterIiv(int sampler, int pname, int[] @params);
 
 	// C function void glGetSamplerParameterIuiv ( GLuint sampler, GLenum pname, GLuint *params )
 
@@ -582,7 +583,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetSamplerParameterIuiv ( GLuint sampler, GLenum pname, GLuint *params )
 
-	void glGetSamplerParameterIuiv(int sampler, int pname, IntBuffer @params);
+	void glGetSamplerParameterIuiv(int sampler, int pname, int[] @params);
 
 	// C function void glTexBuffer ( GLenum target, GLenum internalformat, GLuint buffer )
 

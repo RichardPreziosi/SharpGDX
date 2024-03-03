@@ -35,12 +35,12 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetFramebufferParameteriv(int target, int pname, IntBuffer @params)
+		public void glGetFramebufferParameteriv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetProgramInterfaceiv(int program, int programInterface, int pname, IntBuffer @params)
+		public void glGetProgramInterfaceiv(int program, int programInterface, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -55,8 +55,8 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetProgramResourceiv(int program, int programInterface, int index, IntBuffer props, IntBuffer length,
-			IntBuffer @params)
+		public void glGetProgramResourceiv(int program, int programInterface, int index, int[] props, int[] length,
+			int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -86,12 +86,12 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDeleteProgramPipelines(int n, IntBuffer pipelines)
+		public void glDeleteProgramPipelines(int n, int[] pipelines)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGenProgramPipelines(int n, IntBuffer pipelines)
+		public void glGenProgramPipelines(int n, int[] pipelines)
 		{
 			throw new NotImplementedException();
 		}
@@ -101,7 +101,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetProgramPipelineiv(int pipeline, int pname, IntBuffer @params)
+		public void glGetProgramPipelineiv(int pipeline, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -166,107 +166,107 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform1iv(int program, int location, IntBuffer value)
+		public void glProgramUniform1iv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform2iv(int program, int location, IntBuffer value)
+		public void glProgramUniform2iv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform3iv(int program, int location, IntBuffer value)
+		public void glProgramUniform3iv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform4iv(int program, int location, IntBuffer value)
+		public void glProgramUniform4iv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform1uiv(int program, int location, IntBuffer value)
+		public void glProgramUniform1uiv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform2uiv(int program, int location, IntBuffer value)
+		public void glProgramUniform2uiv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform3uiv(int program, int location, IntBuffer value)
+		public void glProgramUniform3uiv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform4uiv(int program, int location, IntBuffer value)
+		public void glProgramUniform4uiv(int program, int location, int[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform1fv(int program, int location, FloatBuffer value)
+		public void glProgramUniform1fv(int program, int location, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform2fv(int program, int location, FloatBuffer value)
+		public void glProgramUniform2fv(int program, int location, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform3fv(int program, int location, FloatBuffer value)
+		public void glProgramUniform3fv(int program, int location, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniform4fv(int program, int location, FloatBuffer value)
+		public void glProgramUniform4fv(int program, int location, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix2fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix2fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix3fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix3fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix4fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix4fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix2x3fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix2x3fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix3x2fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix3x2fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix2x4fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix2x4fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix4x2fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix4x2fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix3x4fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix3x4fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glProgramUniformMatrix4x3fv(int program, int location, bool transpose, FloatBuffer value)
+		public void glProgramUniformMatrix4x3fv(int program, int location, bool transpose, float[] value)
 		{
 			throw new NotImplementedException();
 		}
@@ -286,7 +286,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetBooleani_v(int target, int index, IntBuffer data)
+		public void glGetBooleani_v(int target, int index, int[] data)
 		{
 			throw new NotImplementedException();
 		}
@@ -307,7 +307,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetMultisamplefv(int pname, int index, FloatBuffer val)
+		public void glGetMultisamplefv(int pname, int index, float[] val)
 		{
 			throw new NotImplementedException();
 		}
@@ -317,12 +317,12 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexLevelParameteriv(int target, int level, int pname, IntBuffer @params)
+		public void glGetTexLevelParameteriv(int target, int level, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexLevelParameterfv(int target, int level, int pname, FloatBuffer @params)
+		public void glGetTexLevelParameterfv(int target, int level, int pname, float[] @params)
 		{
 			throw new NotImplementedException();
 		}

@@ -1,12 +1,4 @@
-﻿using SharpGDX.shims;
-using SharpGDX.utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using OpenTK.Audio.OpenAL;
-using Buffer = SharpGDX.shims.Buffer;
+﻿using OpenTK.Audio.OpenAL;
 using SharpGDX.audio;
 
 namespace SharpGDX.Desktop.audio
@@ -27,18 +19,18 @@ namespace SharpGDX.Desktop.audio
 	protected void setup(byte[] pcm, int channels, int sampleRate)
 	{
 		int validBytes = pcm.Length - (pcm.Length % (channels > 1 ? 4 : 2));
-		ByteBuffer buffer = BufferUtils.newByteBuffer(validBytes);
-		buffer.put(pcm, 0, validBytes);
-		((Buffer)buffer).flip();
+		short[] buffer = new short[validBytes];
 
-		setup(buffer.asShortBuffer(), channels, sampleRate);
+		Buffer.BlockCopy(pcm, 0, buffer, 0, pcm.Length);
+
+		setup(buffer, channels, sampleRate);
 	}
 
-	protected void setup(ShortBuffer pcm, int channels, int sampleRate)
+	protected void setup(short[] pcm, int channels, int sampleRate)
 	{
 		this.channels = channels;
 		this.sampleRate = sampleRate;
-		int sampleFrames = pcm.limit() / channels;
+		int sampleFrames = pcm.Length / channels;
 		_duration = sampleFrames / (float)sampleRate;
 
 		if (bufferID == -1)

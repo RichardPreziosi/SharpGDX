@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.graphics;
-using SharpGDX.shims;
-using Buffer = SharpGDX.shims.Buffer;
+﻿using SharpGDX.graphics;
 
 namespace SharpGDX.Desktop
 {
@@ -22,7 +15,7 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDebugMessageControl(int source, int type, int severity, IntBuffer ids, bool enabled)
+		public void glDebugMessageControl(int source, int type, int severity, int[] ids, bool enabled)
 		{
 			throw new NotImplementedException();
 		}
@@ -37,8 +30,8 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public int glGetDebugMessageLog(int count, IntBuffer sources, IntBuffer types, IntBuffer ids, IntBuffer severities,
-			IntBuffer lengths, ByteBuffer messageLog)
+		public int glGetDebugMessageLog(int count, int[] sources, int[] types, int[] ids, int[] severities,
+			int[] lengths, byte[] messageLog)
 		{
 			throw new NotImplementedException();
 		}
@@ -108,18 +101,21 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glDrawElementsBaseVertex(int mode, int count, int type, Buffer indices, int basevertex)
+		public void glDrawElementsBaseVertex<T>(int mode, int count, int type, T[] indices, int basevertex)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glDrawRangeElementsBaseVertex(int mode, int start, int end, int count, int type, Buffer indices, int basevertex)
+		public void glDrawRangeElementsBaseVertex<T>(int mode, int start, int end, int count, int type, T[] indices, int basevertex)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glDrawElementsInstancedBaseVertex(int mode, int count, int type, Buffer indices, int instanceCount,
+		public void glDrawElementsInstancedBaseVertex<T>(int mode, int count, int type, T[] indices, int instanceCount,
 			int basevertex)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
@@ -140,22 +136,23 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glReadnPixels(int x, int y, int width, int height, int format, int type, int bufSize, Buffer data)
+		public void glReadnPixels<T>(int x, int y, int width, int height, int format, int type, int bufSize, T[] data)
+			where T : struct
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetnUniformfv(int program, int location, FloatBuffer @params)
+		public void glGetnUniformfv(int program, int location, float[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetnUniformiv(int program, int location, IntBuffer @params)
+		public void glGetnUniformiv(int program, int location, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetnUniformuiv(int program, int location, IntBuffer @params)
+		public void glGetnUniformuiv(int program, int location, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
@@ -170,42 +167,42 @@ namespace SharpGDX.Desktop
 			throw new NotImplementedException();
 		}
 
-		public void glTexParameterIiv(int target, int pname, IntBuffer @params)
+		public void glTexParameterIiv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glTexParameterIuiv(int target, int pname, IntBuffer @params)
+		public void glTexParameterIuiv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexParameterIiv(int target, int pname, IntBuffer @params)
+		public void glGetTexParameterIiv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetTexParameterIuiv(int target, int pname, IntBuffer @params)
+		public void glGetTexParameterIuiv(int target, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glSamplerParameterIiv(int sampler, int pname, IntBuffer param)
+		public void glSamplerParameterIiv(int sampler, int pname, int[] param)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glSamplerParameterIuiv(int sampler, int pname, IntBuffer param)
+		public void glSamplerParameterIuiv(int sampler, int pname, int[] param)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetSamplerParameterIiv(int sampler, int pname, IntBuffer @params)
+		public void glGetSamplerParameterIiv(int sampler, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void glGetSamplerParameterIuiv(int sampler, int pname, IntBuffer @params)
+		public void glGetSamplerParameterIuiv(int sampler, int pname, int[] @params)
 		{
 			throw new NotImplementedException();
 		}

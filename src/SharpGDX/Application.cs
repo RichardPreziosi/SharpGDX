@@ -179,7 +179,7 @@ namespace SharpGDX
 		 * <code> final Graphics graphics = Gdx.graphics;
 		 *
 		 * @param runnable the runnable. */
-		public void postRunnable(Runnable runnable);
+		public void postRunnable(Action runnable);
 
 		/** Schedule an exit from the application. On android, this will cause a call to pause() and dispose() some time in the future,
 		 * it will not immediately finish your application. On iOS this should be avoided in production as it breaks Apples

@@ -47,10 +47,7 @@ namespace SharpGDX.Desktop
 		private int windowWidthBeforeFullscreen;
 		private int windowHeightBeforeFullscreen;
 		private Graphics.DisplayMode displayModeBeforeFullscreen = null;
-
-		IntBuffer tmpBuffer = BufferUtils.createIntBuffer(1);
-		IntBuffer tmpBuffer2 = BufferUtils.createIntBuffer(1);
-
+		
 		volatile bool posted;
 
 		private void resizeCallback(GLFWWindow* windowHandle, int width, int height)
@@ -169,12 +166,12 @@ namespace SharpGDX.Desktop
 
 		void updateFramebufferInfo()
 		{
-			GLFW.GetFramebufferSize(window.getWindowHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			this.backBufferWidth = tmpBuffer.get(0);
-			this.backBufferHeight = tmpBuffer2.get(0);
-			GLFW.GetWindowSize(window.getWindowHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			this.logicalWidth = tmpBuffer.get(0);
-			this.logicalHeight = tmpBuffer2.get(0);
+			GLFW.GetFramebufferSize(window.getWindowHandle(), out var bufferWidth, out var bufferHeight);
+			this.backBufferWidth = bufferWidth;
+			this.backBufferHeight = bufferHeight;
+			GLFW.GetWindowSize(window.getWindowHandle(), out var windowWidth, out var windowHeight);
+			this.logicalWidth = windowWidth;
+			this.logicalHeight = windowHeight;
 			DesktopApplicationConfiguration config = window.getConfig();
 			bufferFormat = new Graphics.BufferFormat(config.r, config.g, config.b, config.a, config.depth, config.stencil,
 				config.samples,
@@ -348,8 +345,7 @@ namespace SharpGDX.Desktop
 		public override float getPpcX()
 		{
 			DesktopMonitor monitor = (DesktopMonitor)getMonitor();
-			GLFW.GetMonitorPhysicalSize(monitor.getMonitorHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			int sizeX = tmpBuffer.get(0);
+			GLFW.GetMonitorPhysicalSize(monitor.getMonitorHandle(), out var sizeX, out _);
 			Graphics.DisplayMode mode = getDisplayMode();
 			return mode.width / (float)sizeX * 10;
 		}
@@ -357,8 +353,7 @@ namespace SharpGDX.Desktop
 		public override float getPpcY()
 		{
 			DesktopMonitor monitor = (DesktopMonitor)getMonitor();
-			GLFW.GetMonitorPhysicalSize(monitor.getMonitorHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			int sizeY = tmpBuffer2.get(0);
+			GLFW.GetMonitorPhysicalSize(monitor.getMonitorHandle(), out _, out var sizeY);
 			Graphics.DisplayMode mode = getDisplayMode();
 			return mode.height / (float)sizeY * 10;
 		}
@@ -378,14 +373,12 @@ namespace SharpGDX.Desktop
 			Monitor[] monitors = getMonitors();
 			Monitor result = monitors[0];
 
-			GLFW.GetWindowPos(window.getWindowHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			int windowX = tmpBuffer.get(0);
-			int windowY = tmpBuffer2.get(0);
-			GLFW.GetWindowSize(window.getWindowHandle(), out tmpBuffer[0], out tmpBuffer2[0]);
-			int windowWidth = tmpBuffer.get(0);
-			int windowHeight = tmpBuffer2.get(0);
+			GLFW.GetWindowPos(window.getWindowHandle(), out var windowX, out var windowY);
+			GLFW.GetWindowSize(window.getWindowHandle(), out var windowWidth, out var windowHeight);
+			
 			int overlap;
 			int bestOverlap = 0;
+
 			foreach (Monitor monitor in monitors) {
 				Graphics.DisplayMode mode = getDisplayMode(monitor);
 				overlap = Math.Max(0,

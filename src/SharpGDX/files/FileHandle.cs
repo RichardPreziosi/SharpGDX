@@ -13,7 +13,8 @@ namespace SharpGDX.files
 
 		public string extension()
 		{
-			throw new NotImplementedException();
+			return "wav";
+			//throw new NotImplementedException();
 		}
 
 		protected Files.FileType type;

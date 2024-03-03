@@ -13,7 +13,7 @@ Please see the `CONVERSIONS` file for the current state of each file.
 
 ## Thoughts
 
-As I am porting this, I want to keep the API the same, however I really want to get rid of the Buffer classes. To get them to work, they actually cause a little bit of overhead and have the potential to create garbage. I haven't dug into this enough to determine if it can be avoided, but my initial thought is that it cannot.
+I was hoping to be able to wait longer until getting rid of the Java Buffer classes (IntBuffer, FloatBuffer, CharBuffer, ByteBuffer), but it is taking more time to fake that functionality than to just replace it with arrays and lists. These buffer classes make sense in Java, but don't offer much in C#. Plus this project is about porting libGDX not Java.
 
 I think that I would eventually like to get rid of everything in the `Shims` namespace. It is just a lot less code changes to leave it for now, and I would like to think carefully about changing the API.
 

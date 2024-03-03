@@ -1,7 +1,4 @@
-﻿using SharpGDX.shims;
-using Buffer = SharpGDX.shims.Buffer;
-
-namespace SharpGDX.graphics
+﻿namespace SharpGDX.graphics
 {
 	/** OpenGL ES 3.0 */
 	public interface GL30 : GL20
@@ -321,7 +318,8 @@ namespace SharpGDX.graphics
 	// C function void glDrawRangeElements ( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid
 	// *indices )
 
-	public void glDrawRangeElements(int mode, int start, int end, int count, int type, Buffer indices);
+	public void glDrawRangeElements<T>(int mode, int start, int end, int count, int type, T[] indices)
+		where T : struct;
 
 	// C function void glDrawRangeElements ( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLsizei offset )
 
@@ -333,13 +331,14 @@ namespace SharpGDX.graphics
 	// C function void glTexImage3D ( GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei
 	// depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels )
 
-	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format,
-		int type, Buffer pixels);
+	public void glTexImage3D<T>(int target, int level, int internalformat, int width, int height, int depth, int border, int format,
+		int type, T[] pixels)
+		where T : struct;
 
-	// C function void glTexImage3D ( GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei
-	// depth, GLint border, GLenum format, GLenum type, GLsizei offset )
+		// C function void glTexImage3D ( GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei
+		// depth, GLint border, GLenum format, GLenum type, GLsizei offset )
 
-	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format,
+		public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format,
 		int type, int offset);
 
 	public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type,
@@ -348,13 +347,14 @@ namespace SharpGDX.graphics
 	// C function void glTexSubImage3D ( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
 	// GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels )
 
-	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
-		int format, int type, Buffer pixels);
+	public void glTexSubImage3D<T>(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
+		int format, int type, T[] pixels)
+		where T : struct;
 
-	// C function void glTexSubImage3D ( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
-	// GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei offset )
+		// C function void glTexSubImage3D ( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width,
+		// GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei offset )
 
-	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
+		public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
 		int format, int type, int offset);
 
 	// C function void glCopyTexSubImage3D ( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x,
@@ -433,7 +433,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGenQueries ( GLsizei n, GLuint *ids )
 
-	public void glGenQueries(int n, IntBuffer ids);
+	public void glGenQueries(int n, int[] ids);
 
 	// C function void glDeleteQueries ( GLsizei n, const GLuint *ids )
 
@@ -441,7 +441,7 @@ namespace SharpGDX.graphics
 
 	// C function void glDeleteQueries ( GLsizei n, const GLuint *ids )
 
-	public void glDeleteQueries(int n, IntBuffer ids);
+	public void glDeleteQueries(int n, int[] ids);
 
 	// C function GLboolean glIsQuery ( GLuint id )
 
@@ -466,7 +466,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetQueryiv ( GLenum target, GLenum pname, GLint *params )
 
-	public void glGetQueryiv(int target, int pname, IntBuffer @params);
+	public void glGetQueryiv(int target, int pname, int[] @params);
 
 	// // C function void glGetQueryObjectuiv ( GLuint id, GLenum pname, GLuint *params )
 	//
@@ -479,7 +479,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetQueryObjectuiv ( GLuint id, GLenum pname, GLuint *params )
 
-	public void glGetQueryObjectuiv(int id, int pname, IntBuffer @params);
+	public void glGetQueryObjectuiv(int id, int pname, int[] @params);
 
 	// C function GLboolean glUnmapBuffer ( GLenum target )
 
@@ -487,19 +487,20 @@ namespace SharpGDX.graphics
 
 	// C function void glGetBufferPointerv ( GLenum target, GLenum pname, GLvoid** params )
 
-	public Buffer glGetBufferPointerv(int target, int pname);
+	public T[] glGetBufferPointerv<T>(int target, int pname)
+		where T : struct;
 
-	// // C function void glDrawBuffers ( GLsizei n, const GLenum *bufs )
-	//
-	// public void glDrawBuffers(
-	// int n,
-	// int[] bufs,
-	// int offset
-	// );
+		// // C function void glDrawBuffers ( GLsizei n, const GLenum *bufs )
+		//
+		// public void glDrawBuffers(
+		// int n,
+		// int[] bufs,
+		// int offset
+		// );
 
-	// C function void glDrawBuffers ( GLsizei n, const GLenum *bufs )
+		// C function void glDrawBuffers ( GLsizei n, const GLenum *bufs )
 
-	public void glDrawBuffers(int n, IntBuffer bufs);
+		public void glDrawBuffers(int n, int[] bufs);
 
 	// // C function void glUniformMatrix2x3fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -513,7 +514,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix2x3fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix2x3fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix2x3fv(int location, int count, bool transpose, float[] value);
 
 	// // C function void glUniformMatrix3x2fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -527,7 +528,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix3x2fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix3x2fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix3x2fv(int location, int count, bool transpose, float[] value);
 
 	// // C function void glUniformMatrix2x4fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -541,7 +542,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix2x4fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix2x4fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix2x4fv(int location, int count, bool transpose, float[] value);
 
 	// // C function void glUniformMatrix4x2fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -555,7 +556,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix4x2fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix4x2fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix4x2fv(int location, int count, bool transpose, float[] value);
 
 	// // C function void glUniformMatrix3x4fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -569,7 +570,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix3x4fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix3x4fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix3x4fv(int location, int count, bool transpose, float[] value);
 
 	// // C function void glUniformMatrix4x3fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 	//
@@ -583,7 +584,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniformMatrix4x3fv ( GLint location, GLsizei count, GLboolean transpose, const GLfloat *value )
 
-	public void glUniformMatrix4x3fv(int location, int count, bool transpose, FloatBuffer value);
+	public void glUniformMatrix4x3fv(int location, int count, bool transpose, float[] value);
 
 	// C function void glBlitFramebuffer ( GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint
 	// dstX1, GLint dstY1, GLbitfield mask, GLenum filter )
@@ -602,11 +603,12 @@ namespace SharpGDX.graphics
 
 	// C function GLvoid * glMapBufferRange ( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access )
 
-	public Buffer glMapBufferRange(int target, int offset, int length, int access);
+	public T[] glMapBufferRange<T>(int target, int offset, int length, int access)
+		where T : struct;
 
-	// C function void glFlushMappedBufferRange ( GLenum target, GLintptr offset, GLsizeiptr length )
+		// C function void glFlushMappedBufferRange ( GLenum target, GLintptr offset, GLsizeiptr length )
 
-	public void glFlushMappedBufferRange(int target, int offset, int length);
+		public void glFlushMappedBufferRange(int target, int offset, int length);
 
 	// C function void glBindVertexArray ( GLuint array )
 
@@ -618,7 +620,7 @@ namespace SharpGDX.graphics
 
 	// C function void glDeleteVertexArrays ( GLsizei n, const GLuint *arrays )
 
-	public void glDeleteVertexArrays(int n, IntBuffer arrays);
+	public void glDeleteVertexArrays(int n, int[] arrays);
 
 	// C function void glGenVertexArrays ( GLsizei n, GLuint *arrays )
 
@@ -626,7 +628,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGenVertexArrays ( GLsizei n, GLuint *arrays )
 
-	public void glGenVertexArrays(int n, IntBuffer arrays);
+	public void glGenVertexArrays(int n, int[] arrays);
 
 	// C function GLboolean glIsVertexArray ( GLuint array )
 
@@ -647,7 +649,7 @@ namespace SharpGDX.graphics
 	// public void glGetIntegeri_v(
 	// int target,
 	// int index,
-	// IntBuffer data
+	// int[] data
 	// );
 
 	// C function void glBeginTransformFeedback ( GLenum primitiveMode )
@@ -694,9 +696,9 @@ namespace SharpGDX.graphics
 	// int program,
 	// int index,
 	// int bufsize,
-	// IntBuffer length,
-	// IntBuffer size,
-	// IntBuffer type,
+	// int[] length,
+	// int[] size,
+	// int[] type,
 	// byte name
 	// );
 	//
@@ -718,8 +720,8 @@ namespace SharpGDX.graphics
 	// public String glGetTransformFeedbackVarying(
 	// int program,
 	// int index,
-	// IntBuffer size,
-	// IntBuffer type
+	// int[] size,
+	// int[] type
 	// );
 
 	// C function void glVertexAttribIPointer ( GLuint index, GLint size, GLenum type, GLsizei stride, GLsizei offset )
@@ -737,7 +739,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetVertexAttribIiv ( GLuint index, GLenum pname, GLint *params )
 
-	public void glGetVertexAttribIiv(int index, int pname, IntBuffer @params);
+	public void glGetVertexAttribIiv(int index, int pname, int[] @params);
 
 	// // C function void glGetVertexAttribIuiv ( GLuint index, GLenum pname, GLuint *params )
 	//
@@ -750,7 +752,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetVertexAttribIuiv ( GLuint index, GLenum pname, GLuint *params )
 
-	public void glGetVertexAttribIuiv(int index, int pname, IntBuffer @params);
+	public void glGetVertexAttribIuiv(int index, int pname, int[] @params);
 
 	// C function void glVertexAttribI4i ( GLuint index, GLint x, GLint y, GLint z, GLint w )
 
@@ -772,7 +774,7 @@ namespace SharpGDX.graphics
 	//
 	// public void glVertexAttribI4iv(
 	// int index,
-	// IntBuffer v
+	// int[] v
 	// );
 	//
 	// // C function void glVertexAttribI4uiv ( GLuint index, const GLuint *v )
@@ -787,7 +789,7 @@ namespace SharpGDX.graphics
 	//
 	// public void glVertexAttribI4uiv(
 	// int index,
-	// IntBuffer v
+	// int[] v
 	// );
 	//
 	// // C function void glGetUniformuiv ( GLuint program, GLint location, GLuint *params )
@@ -801,7 +803,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetUniformuiv ( GLuint program, GLint location, GLuint *params )
 
-	public void glGetUniformuiv(int program, int location, IntBuffer @params);
+	public void glGetUniformuiv(int program, int location, int[] @params);
 
 	// C function GLint glGetFragDataLocation ( GLuint program, const GLchar *name )
 
@@ -852,7 +854,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniform1uiv ( GLint location, GLsizei count, const GLuint *value )
 
-	public void glUniform1uiv(int location, int count, IntBuffer value);
+	public void glUniform1uiv(int location, int count, int[] value);
 
 	// // C function void glUniform2uiv ( GLint location, GLsizei count, const GLuint *value )
 	//
@@ -868,7 +870,7 @@ namespace SharpGDX.graphics
 	// public void glUniform2uiv(
 	// int location,
 	// int count,
-	// IntBuffer value
+	// int[] value
 	// );
 	//
 	// // C function void glUniform3uiv ( GLint location, GLsizei count, const GLuint *value )
@@ -882,7 +884,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniform3uiv ( GLint location, GLsizei count, const GLuint *value )
 
-	public void glUniform3uiv(int location, int count, IntBuffer value);
+	public void glUniform3uiv(int location, int count, int[] value);
 
 	// // C function void glUniform4uiv ( GLint location, GLsizei count, const GLuint *value )
 	//
@@ -895,7 +897,7 @@ namespace SharpGDX.graphics
 
 	// C function void glUniform4uiv ( GLint location, GLsizei count, const GLuint *value )
 
-	public void glUniform4uiv(int location, int count, IntBuffer value);
+	public void glUniform4uiv(int location, int count, int[] value);
 
 	// // C function void glClearBufferiv ( GLenum buffer, GLint drawbuffer, const GLint *value )
 	//
@@ -908,7 +910,7 @@ namespace SharpGDX.graphics
 
 	// C function void glClearBufferiv ( GLenum buffer, GLint drawbuffer, const GLint *value )
 
-	public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value);
+	public void glClearBufferiv(int buffer, int drawbuffer, int[] value);
 
 	// // C function void glClearBufferuiv ( GLenum buffer, GLint drawbuffer, const GLuint *value )
 	//
@@ -921,7 +923,7 @@ namespace SharpGDX.graphics
 
 	// C function void glClearBufferuiv ( GLenum buffer, GLint drawbuffer, const GLuint *value )
 
-	public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value);
+	public void glClearBufferuiv(int buffer, int drawbuffer, int[] value);
 
 	// // C function void glClearBufferfv ( GLenum buffer, GLint drawbuffer, const GLfloat *value )
 	//
@@ -934,7 +936,7 @@ namespace SharpGDX.graphics
 
 	// C function void glClearBufferfv ( GLenum buffer, GLint drawbuffer, const GLfloat *value )
 
-	public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value);
+	public void glClearBufferfv(int buffer, int drawbuffer, float[] value);
 
 	// C function void glClearBufferfi ( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil )
 
@@ -962,7 +964,7 @@ namespace SharpGDX.graphics
 	// C function void glGetUniformIndices ( GLuint program, GLsizei uniformCount, const GLchar *const *uniformNames, GLuint
 	// *uniformIndices )
 
-	public void glGetUniformIndices(int program, String[] uniformNames, IntBuffer uniformIndices);
+	public void glGetUniformIndices(int program, String[] uniformNames, int[] uniformIndices);
 
 	// // C function void glGetActiveUniformsiv ( GLuint program, GLsizei uniformCount, const GLuint *uniformIndices, GLenum pname,
 	// GLint *params )
@@ -980,8 +982,8 @@ namespace SharpGDX.graphics
 	// C function void glGetActiveUniformsiv ( GLuint program, GLsizei uniformCount, const GLuint *uniformIndices, GLenum pname,
 	// GLint *params )
 
-	public void glGetActiveUniformsiv(int program, int uniformCount, IntBuffer uniformIndices, int pname,
-		IntBuffer @params);
+	public void glGetActiveUniformsiv(int program, int uniformCount, int[] uniformIndices, int pname,
+		int[] @params);
 
 	// C function GLuint glGetUniformBlockIndex ( GLuint program, const GLchar *uniformBlockName )
 
@@ -999,7 +1001,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetActiveUniformBlockiv ( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint *params )
 
-	public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, IntBuffer @params);
+	public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, int[] @params);
 
 	// // C function void glGetActiveUniformBlockName ( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length,
 	// GLchar *uniformBlockName )
@@ -1017,13 +1019,14 @@ namespace SharpGDX.graphics
 	// C function void glGetActiveUniformBlockName ( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length,
 	// GLchar *uniformBlockName )
 
-	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length,
-		Buffer uniformBlockName);
+	public void glGetActiveUniformBlockName<T>(int program, int uniformBlockIndex, T[] length,
+		T[] uniformBlockName)
+		where T : struct;
 
-	// C function void glGetActiveUniformBlockName ( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length,
-	// GLchar *uniformBlockName )
+		// C function void glGetActiveUniformBlockName ( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length,
+		// GLchar *uniformBlockName )
 
-	public String glGetActiveUniformBlockName(int program, int uniformBlockIndex);
+		public String glGetActiveUniformBlockName(int program, int uniformBlockIndex);
 
 	// C function void glUniformBlockBinding ( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding )
 
@@ -1094,7 +1097,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetInteger64v ( GLenum pname, GLint64 *params )
 
-	public void glGetInteger64v(int pname, LongBuffer @params);
+	public void glGetInteger64v(int pname, long[] @params);
 
 	// // C function void glGetSynciv ( GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length, GLint *values )
 	//
@@ -1114,8 +1117,8 @@ namespace SharpGDX.graphics
 	// long sync,
 	// int pname,
 	// int bufSize,
-	// IntBuffer length,
-	// IntBuffer values
+	// int[] length,
+	// int[] values
 	// );
 	//
 	// // C function void glGetInteger64i_v ( GLenum target, GLuint index, GLint64 *data )
@@ -1132,7 +1135,7 @@ namespace SharpGDX.graphics
 	// public void glGetInteger64i_v(
 	// int target,
 	// int index,
-	// LongBuffer data
+	// long[] data
 	// );
 	//
 	// // C function void glGetBufferParameteri64v ( GLenum target, GLenum pname, GLint64 *params )
@@ -1146,7 +1149,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetBufferParameteri64v ( GLenum target, GLenum pname, GLint64 *params )
 
-	public void glGetBufferParameteri64v(int target, int pname, LongBuffer @params);
+	public void glGetBufferParameteri64v(int target, int pname, long[] @params);
 
 	// C function void glGenSamplers ( GLsizei count, GLuint *samplers )
 
@@ -1154,7 +1157,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGenSamplers ( GLsizei count, GLuint *samplers )
 
-	public void glGenSamplers(int count, IntBuffer samplers);
+	public void glGenSamplers(int count, int[] samplers);
 
 	// C function void glDeleteSamplers ( GLsizei count, const GLuint *samplers )
 
@@ -1162,7 +1165,7 @@ namespace SharpGDX.graphics
 
 	// C function void glDeleteSamplers ( GLsizei count, const GLuint *samplers )
 
-	public void glDeleteSamplers(int count, IntBuffer samplers);
+	public void glDeleteSamplers(int count, int[] samplers);
 
 	// C function GLboolean glIsSampler ( GLuint sampler )
 
@@ -1187,7 +1190,7 @@ namespace SharpGDX.graphics
 
 	// C function void glSamplerParameteriv ( GLuint sampler, GLenum pname, const GLint *param )
 
-	public void glSamplerParameteriv(int sampler, int pname, IntBuffer param);
+	public void glSamplerParameteriv(int sampler, int pname, int[] param);
 
 	// C function void glSamplerParameterf ( GLuint sampler, GLenum pname, GLfloat param )
 
@@ -1204,7 +1207,7 @@ namespace SharpGDX.graphics
 
 	// C function void glSamplerParameterfv ( GLuint sampler, GLenum pname, const GLfloat *param )
 
-	public void glSamplerParameterfv(int sampler, int pname, FloatBuffer param);
+	public void glSamplerParameterfv(int sampler, int pname, float[] param);
 
 	// // C function void glGetSamplerParameteriv ( GLuint sampler, GLenum pname, GLint *params )
 	//
@@ -1217,7 +1220,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetSamplerParameteriv ( GLuint sampler, GLenum pname, GLint *params )
 
-	public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer @params);
+	public void glGetSamplerParameteriv(int sampler, int pname, int[] @params);
 
 	// // C function void glGetSamplerParameterfv ( GLuint sampler, GLenum pname, GLfloat *params )
 	//
@@ -1230,7 +1233,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGetSamplerParameterfv ( GLuint sampler, GLenum pname, GLfloat *params )
 
-	public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer @params);
+	public void glGetSamplerParameterfv(int sampler, int pname, float[] @params);
 
 	// C function void glVertexAttribDivisor ( GLuint index, GLuint divisor )
 
@@ -1246,7 +1249,7 @@ namespace SharpGDX.graphics
 
 	// C function void glDeleteTransformFeedbacks ( GLsizei n, const GLuint *ids )
 
-	public void glDeleteTransformFeedbacks(int n, IntBuffer ids);
+	public void glDeleteTransformFeedbacks(int n, int[] ids);
 
 	// C function void glGenTransformFeedbacks ( GLsizei n, GLuint *ids )
 
@@ -1254,7 +1257,7 @@ namespace SharpGDX.graphics
 
 	// C function void glGenTransformFeedbacks ( GLsizei n, GLuint *ids )
 
-	public void glGenTransformFeedbacks(int n, IntBuffer ids);
+	public void glGenTransformFeedbacks(int n, int[] ids);
 
 	// C function GLboolean glIsTransformFeedback ( GLuint id )
 
@@ -1287,8 +1290,8 @@ namespace SharpGDX.graphics
 	// public void glGetProgramBinary(
 	// int program,
 	// int bufSize,
-	// IntBuffer length,
-	// IntBuffer binaryFormat,
+	// int[] length,
+	// int[] binaryFormat,
 	// Buffer binary
 	// );
 	//
@@ -1316,7 +1319,7 @@ namespace SharpGDX.graphics
 
 	// C function void glInvalidateFramebuffer ( GLenum target, GLsizei numAttachments, const GLenum *attachments )
 
-	public void glInvalidateFramebuffer(int target, int numAttachments, IntBuffer attachments);
+	public void glInvalidateFramebuffer(int target, int numAttachments, int[] attachments);
 
 	// // C function void glInvalidateSubFramebuffer ( GLenum target, GLsizei numAttachments, const GLenum *attachments, GLint x,
 	// GLint y, GLsizei width, GLsizei height )
@@ -1335,7 +1338,7 @@ namespace SharpGDX.graphics
 	// C function void glInvalidateSubFramebuffer ( GLenum target, GLsizei numAttachments, const GLenum *attachments, GLint x,
 	// GLint y, GLsizei width, GLsizei height )
 
-	public void glInvalidateSubFramebuffer(int target, int numAttachments, IntBuffer attachments, int x, int y,
+	public void glInvalidateSubFramebuffer(int target, int numAttachments, int[] attachments, int x, int y,
 		int width, int height);
 
 		// // C function void glTexStorage2D ( GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height )
@@ -1378,12 +1381,13 @@ namespace SharpGDX.graphics
 		// int internalformat,
 		// int pname,
 		// int bufSize,
-		// IntBuffer params
+		// int[] params
 		// );
 
 		/** In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid. Use the other version of this function
 		 * instead, pass a zero-based offset which references the buffer currently bound to GL_ARRAY_BUFFER. */
 		[Obsolete]
-		void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, Buffer ptr);
-}
+		void glVertexAttribPointer<T>(int indx, int size, int type, bool normalized, int stride, T[] ptr)
+			where T : struct;
+	}
 }
