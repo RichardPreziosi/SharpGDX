@@ -18,7 +18,6 @@ using SharpGDX.Desktop.audio.mock;
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 using static SharpGDX.Application;
 using GLFWWindow = OpenTK.Windowing.GraphicsLibraryFramework.Window;
-using File =SharpGDX.shims.File;
 using GLFWErrorCallback = OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks.ErrorCallback;
 
 namespace SharpGDX.Desktop
@@ -420,7 +419,7 @@ namespace SharpGDX.Desktop
 		else
 		{
 			Preferences prefs = new DesktopPreferences(
-				new DesktopFileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
+				new DesktopFileHandle(new FileInfo(Path.Combine(config.preferencesDirectory, name)), config.preferencesFileType));
 			preferences.put(name, prefs);
 			return prefs;
 		}

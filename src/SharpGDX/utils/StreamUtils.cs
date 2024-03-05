@@ -83,7 +83,7 @@ namespace SharpGDX.utils
 
 		///** Copy the data from an {@link InputStream} to a byte array. The stream is not closed.
 		// * @param estimatedSize Used to allocate the output byte[] to possibly avoid an array copy. */
-		public static byte[] copyStreamToByteArray(InputStream input, int estimatedSize) // TODO: throws IOException
+		public static byte[] copyStreamToByteArray(Stream input, int estimatedSize) // TODO: throws IOException
 		{
 			// TODO:
 			throw new NotImplementedException();
@@ -151,13 +151,13 @@ namespace SharpGDX.utils
 			}
 		}
 
-		public static void closeQuietly(InputStream? reader)
+		public static void closeQuietly(Stream? reader)
 		{
 			if (reader != null)
 			{
 				try
 				{
-					reader.close();
+					reader.Close();
 				}
 				catch (Exception)
 				{
