@@ -17,7 +17,7 @@ internal class Drop : ApplicationAdapter
 		//bucketImage = new Texture(Gdx.files.internal ("bucket.png"));
 
 		// load the drop sound effect and the rain background "music"
-		//dropSound = Gdx.audio.newSound(Gdx.files.Internal("drop.wav"));
+		dropSound = Gdx.audio.newSound(Gdx.files.Internal("drop.wav"));
 		rainMusic = Gdx.audio.newMusic(Gdx.files.Internal("rain.wav"));
 
 		// start the playback of the background music immediately
@@ -29,10 +29,10 @@ internal class Drop : ApplicationAdapter
 
 	public override void render()
 	{
-		//if ((sec += Gdx.graphics.getDeltaTime()) >= 1)
-		//{
-		//	sec = 0;
-		//	dropSound.play();
-		//}
+		if ((sec += Gdx.graphics.getDeltaTime()) >= 2)
+		{
+			sec = 0;
+			dropSound.play();
+		}
 	}
 }

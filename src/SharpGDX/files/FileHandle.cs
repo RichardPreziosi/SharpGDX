@@ -31,18 +31,16 @@ namespace SharpGDX.files
 		 * Do not use this constructor in case you write something cross-platform. Use the {@link Files} interface instead.
 		 * @param fileName the filename. */
 		public FileHandle(String fileName)
+			: this(fileName, FileType.Absolute)
 		{
-			this.file = new FileInfo(fileName);
-			this.type = FileType.Absolute;
 		}
 
 		/** Creates a new absolute FileHandle for the {@link File}. Use this for tools on the desktop that don't need any of the
 		 * backends. Do not use this constructor in case you write something cross-platform. Use the {@link Files} interface instead.
 		 * @param file the file. */
 		public FileHandle(FileInfo file)
+			: this(file, FileType.Absolute)
 		{
-			this.file = file;
-			this.type = FileType.Absolute;
 		}
 
 		protected FileHandle(String fileName, FileType type)
@@ -61,9 +59,7 @@ namespace SharpGDX.files
 		 *         backward slashes will be replaced by forward slashes. */
 		public String path()
 		{
-			// TODO: 
-			throw new NotImplementedException();
-			//return file.getPath().replace('\\', '/');
+			return Path.GetDirectoryName(file.ToString()).Replace('\\', '/');
 		}
 
 		/** @return the name of the file, without any parent paths. */
@@ -850,9 +846,7 @@ public override int GetHashCode()
 
 public override String ToString()
 {
-	// TODO: 
-	throw new NotImplementedException();
-	//return file.getPath().replace('\\', '/');
+	return file.ToString().Replace('\\', '/');
 }
 
 static public FileHandle tempFile(String prefix)

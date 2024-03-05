@@ -15,7 +15,7 @@ namespace SharpGDX.Desktop.audio
 	{
 		public class Music : OpenALMusic
 		{
-			private WavInputStream input;
+			private WavInputStream? input;
 
 			public Music(OpenALDesktopAudio audio, FileHandle file)
 				: base(audio, file)
@@ -46,7 +46,7 @@ namespace SharpGDX.Desktop.audio
 
 			public override void reset()
 			{
-				StreamUtils.closeQuietly(input);
+				input?.closeQuietly();
 				input = null;
 			}
 		}
@@ -59,12 +59,11 @@ namespace SharpGDX.Desktop.audio
 
 				if (audio.noDevice) return;
 
-				WavInputStream input = null;
+				WavInputStream? input = null;
 				try
 				{
 					input = new WavInputStream(file);
-					setup(StreamUtils.copyStreamToByteArray(input, input.dataRemaining), input.channels,
-						input.sampleRate);
+					setup(input.readBytes(input.dataRemaining), input.channels, input.sampleRate);
 				}
 				catch (IOException ex)
 				{
@@ -72,42 +71,51 @@ namespace SharpGDX.Desktop.audio
 				}
 				finally
 				{
-					StreamUtils.closeQuietly(input);
+					input?.closeQuietly();
 				}
 			}
 		}
 
 		/** @author Nathan Sweet */
-		public class WavInputStream : Stream
+		public class WavInputStream
 		{
+			public byte[] readBytes(int count)
+			{
+				return _reader.ReadBytes(count);
+			}
+
+			public void closeQuietly()
+			{
+				StreamUtils.closeQuietly(_reader);
+			}
+
 			private readonly BinaryReader _reader;
 
 			public int channels, sampleRate, dataRemaining;
 
 			public WavInputStream(FileHandle file)
 			{
+				
 				_reader = new BinaryReader(file.read());
 
 				try
 				{
-					if (_reader.Read() != 'R' || _reader.Read() != 'I' || _reader.Read() != 'F' ||
-					    _reader.Read() != 'F')
+					if (_reader.Read() != 'R' || _reader.Read() != 'I' || _reader.Read() != 'F' || _reader.Read() != 'F')
 						throw new GdxRuntimeException("RIFF header not found: " + file);
 
 					skipFully(4);
 
-					if (_reader.Read() != 'W' || _reader.Read() != 'A' || _reader.Read() != 'V' ||
-					    _reader.Read() != 'E')
+					if (_reader.Read() != 'W' || _reader.Read() != 'A' || _reader.Read() != 'V' || _reader.Read() != 'E')
 						throw new GdxRuntimeException("Invalid wave file header: " + file);
 
 					int fmtChunkLength = seekToChunk('f', 'm', 't', ' ');
 
-					// http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
-					// http://soundfile.sapp.org/doc/WaveFormat/
-					int type = _reader.Read() & 0xff | (_reader.Read() & 0xff) << 8;
+					int type = _reader.ReadUInt16();
+
 					if (type != 1)
 					{
 						String name;
+
 						switch (type)
 						{
 							case 0x0002:
@@ -130,18 +138,20 @@ namespace SharpGDX.Desktop.audio
 								break;
 						}
 
-						throw new GdxRuntimeException("WAV files must be PCM, unsupported format: " + name + " (" +
-						                              type + ")");
+						throw new GdxRuntimeException($"WAV files must be PCM, unsupported format: {name} ({type})");
 					}
 
-					channels = _reader.Read() & 0xff | (_reader.Read() & 0xff) << 8;
+					channels = _reader.ReadUInt16();
+
 					if (channels != 1 && channels != 2)
 						throw new GdxRuntimeException("WAV files must have 1 or 2 channels: " + channels);
-					sampleRate = _reader.Read() & 0xff | (_reader.Read() & 0xff) << 8 | (_reader.Read() & 0xff) << 16 |
-					             (_reader.Read() & 0xff) << 24;
+
+					sampleRate = _reader.ReadInt32();
+					
 					skipFully(6);
 
-					int bitsPerSample = _reader.Read() & 0xff | (_reader.Read() & 0xff) << 8;
+					int bitsPerSample = _reader.ReadUInt16();
+					
 					if (bitsPerSample != 16)
 						throw new GdxRuntimeException("WAV files must have 16 bits per sample: " + bitsPerSample);
 
@@ -227,37 +237,6 @@ namespace SharpGDX.Desktop.audio
 
 				return offset;
 			}
-
-			public override void Flush()
-			{
-				throw new NotImplementedException();
-			}
-
-			public override int Read(byte[] buffer, int offset, int count)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override long Seek(long offset, SeekOrigin origin)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override void SetLength(long value)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override void Write(byte[] buffer, int offset, int count)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override bool CanRead { get; }
-			public override bool CanSeek { get; }
-			public override bool CanWrite { get; }
-			public override long Length { get; }
-			public override long Position { get; set; }
 		}
 	}
 }
