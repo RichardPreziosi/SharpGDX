@@ -1,57 +1,57 @@
-﻿namespace SharpGDX.graphics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NotImplementedException = System.NotImplementedException;
 
-public class Pixmap
+namespace SharpGDX.graphics
 {
-	public Pixmap(int width, int height, Format format)
+	public class Pixmap
 	{
-	}
+		public Pixmap(int width, int height, Format format)
+		{
+			throw new NotImplementedException();
+		}
 
-	public byte[] getPixels()
-	{
-		return [];
-	}
+		public enum Format
+		{
+			Alpha, Intensity, LuminanceAlpha, RGB565, RGBA4444, RGB888, RGBA8888
+		}
 
-	public enum Blending
-	{
-		None,
-		SourceOver
-	}
+		public enum Blending
+		{
+			None, SourceOver
+		}
 
-	public enum Format
-	{
-		Alpha,
-		Intensity,
-		LuminanceAlpha,
-		RGB565,
-		RGBA4444,
-		RGB888,
-		RGBA8888
-	}
+		public void dispose()
+		{
+			throw new NotImplementedException();
+		}
 
-	public void dispose()
-	{
-	}
+		public void drawPixmap(Pixmap pixmap, int x, int y)
+		{
+			throw new NotImplementedException();
+		}
 
-	public void drawPixmap(Pixmap pixmap, int width, int height)
-	{
-	}
+		public void setBlending(Blending blending)
+		{
+			throw new NotImplementedException();
+		}
 
-	public Format getFormat()
-	{
-		return Format.Alpha;
-	}
+		public Format getFormat()
+		{
+			throw new NotImplementedException();
+		}
 
-	public int getHeight()
-	{
-		return 0;
-	}
+		public int getWidth()
+		{
+			throw new NotImplementedException();
+		}
 
-	public int getWidth()
-	{
-		return 0;
-	}
-
-	public void setBlending(Blending blending)
-	{
+		public int getHeight()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="assets\" />
     <Folder Include="input\" />
     <Folder Include="maps\" />
     <Folder Include="scenes\scene2d\" />

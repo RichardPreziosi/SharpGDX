@@ -52,13 +52,13 @@ SharpGDX\Assets\Loaders
 
 SharpGDX\Assets\Loaders\Resolvers
 ---------------------------------
--	-	AbsoluteFileHandleResolver
--	-	ClasspathFIleHandleResolver
--	-	ExternalFileHandleResolver
--	-	InternalFileHandleResolver
--	-	LocalFileHandleResolver
--	-	PrefixFIleHandleResolver
--	-	ResolutionFileResolver
+- DONE	-	AbsoluteFileHandleResolver
+- DONE	-	ClasspathFIleHandleResolver
+- DONE	-	ExternalFileHandleResolver
+- DONE	-	InternalFileHandleResolver
+- DONE	-	LocalFileHandleResolver
+- DONE	-	PrefixFIleHandleResolver
+- DONE	-	ResolutionFileResolver
 
 SharpGDX\Audio
 --------------
@@ -69,7 +69,7 @@ SharpGDX\Audio
 
 SharpGDX\Files
 --------------
-- STUB	-	FileHandle
+- PROG	-	FileHandle
 -	-	FileHandleStream
 
 SharpGDX\Graphics
@@ -489,10 +489,10 @@ SharpGDX\Utils
 
 SharpGDX\Utils\Async
 --------------------
--	-	AsyncExecutor
--	-	AsyncResult
--	-	AsyncTask
--	-	ThreadUtils
+- PROG	-	AsyncExecutor
+- PROG	-	AsyncResult
+- PROG	-	AsyncTask
+- DELED	-	ThreadUtils
 
 SharpGDX\Utils\Compression
 --------------------------

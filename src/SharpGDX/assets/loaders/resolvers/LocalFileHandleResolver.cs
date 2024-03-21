@@ -1,0 +1,11 @@
+﻿using SharpGDX.files;
+
+namespace SharpGDX.assets.loaders.resolvers;
+
+public class LocalFileHandleResolver : FileHandleResolver
+{
+	public FileHandle resolve(string fileName)
+	{
+		return Gdx.files.local(fileName);
+	}
+}

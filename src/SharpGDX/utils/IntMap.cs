@@ -93,7 +93,7 @@ namespace SharpGDX.utils
 			throw new ArgumentException("loadFactor must be > 0 and < 1: " + loadFactor);
 		this.loadFactor = loadFactor;
 
-		int tableSize = ObjectSet.tableSize(initialCapacity, loadFactor);
+		int tableSize = ObjectSet<V>.tableSize(initialCapacity, loadFactor);
 		threshold = (int)(tableSize * loadFactor);
 		mask = tableSize - 1;
 		shift = BitOperations.LeadingZeroCount((ulong)mask);
@@ -272,14 +272,14 @@ namespace SharpGDX.utils
 	public void shrink(int maximumCapacity)
 	{
 		if (maximumCapacity < 0) throw new ArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
-		int tableSize = ObjectSet.tableSize(maximumCapacity, loadFactor);
+		int tableSize = ObjectSet<V>.tableSize(maximumCapacity, loadFactor);
 		if (keyTable.Length > tableSize) resize(tableSize);
 	}
 
 	/** Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger. */
 	public void clear(int maximumCapacity)
 	{
-		int tableSize = ObjectSet.tableSize(maximumCapacity, loadFactor);
+		int tableSize = ObjectSet<V>.tableSize(maximumCapacity, loadFactor);
 		if (keyTable.Length <= tableSize)
 		{
 			clear();
@@ -370,7 +370,7 @@ namespace SharpGDX.utils
 	 * adding many items to avoid multiple backing array resizes. */
 	public void ensureCapacity(int additionalCapacity)
 	{
-		int tableSize = ObjectSet.tableSize(size + additionalCapacity, loadFactor);
+		int tableSize = ObjectSet<V>.tableSize(size + additionalCapacity, loadFactor);
 		if (keyTable.Length < tableSize) resize(tableSize);
 	}
 
