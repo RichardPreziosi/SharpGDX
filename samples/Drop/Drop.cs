@@ -9,7 +9,7 @@ internal class Drop : ApplicationAdapter
 	//private Texture bucketImage;
 	private Sound dropSound;
 	private Music rainMusic;
-
+	private Sound test;
 	public override void create()
 	{
 		// load the images for the droplet and the bucket, 64x64 pixels each
@@ -26,7 +26,6 @@ internal class Drop : ApplicationAdapter
 	}
 
 	private float sec = 0;
-
 	public override void render()
 	{
 		if ((sec += Gdx.graphics.getDeltaTime()) >= 2)

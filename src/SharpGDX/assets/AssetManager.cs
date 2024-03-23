@@ -61,7 +61,7 @@ namespace SharpGDX.assets
 			//setLoader(BitmapFont.class, new BitmapFontLoader(resolver));
 			//setLoader(Music.class, new MusicLoader(resolver));
 			//setLoader(Pixmap.class, new PixmapLoader(resolver));
-			//setLoader(Sound.class, new SoundLoader(resolver));
+			setLoader(typeof(Sound), new SoundLoader(resolver));
 			//setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
 			//setLoader(Texture.class, new TextureLoader(resolver));
 			//setLoader(Skin.class, new SkinLoader(resolver));
