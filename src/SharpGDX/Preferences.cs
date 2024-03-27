@@ -41,7 +41,7 @@ public interface Preferences
 	 * Returns a read only Map
 	 * <String, Object> with all the key, objects of the preferences.
 	 */
-	public Map<string, object> get();
+	public Dictionary<string, object> get();
 
 	public bool getBoolean(string key);
 
@@ -61,7 +61,7 @@ public interface Preferences
 
 	public string getString(string key, string defValue);
 
-	public Preferences put(Map<string, object> vals);
+	public Preferences put(Dictionary<string, object> vals);
 	public Preferences putBoolean(string key, bool val);
 
 	public Preferences putFloat(string key, float val);

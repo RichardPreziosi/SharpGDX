@@ -64,7 +64,7 @@ namespace SharpGDX
 
 			/** Returns a Map of the headers. The keys are Strings that represent the header name. Each values is a List of Strings that
 			 * represent the corresponding header values. See {@link HttpResponseHeader}. */
-			Map<String, List<String>> getHeaders();
+			Dictionary<String, List<String>> getHeaders();
 		}
 
 		/** Provides common HTTP methods to use when creating a {@link HttpRequest}.
@@ -138,7 +138,7 @@ namespace SharpGDX
 
 		private String httpMethod;
 		private String url;
-		private Map<String, String> headers;
+		private Dictionary<String, String> headers;
 		private int timeOut = 0;
 
 		private String content;
@@ -151,7 +151,7 @@ namespace SharpGDX
 
 		public HttpRequest()
 		{
-			this.headers = new HashMap<String, String>();
+			this.headers = new Dictionary<String, String>();
 		}
 
 		/** Creates a new HTTP request with the specified HTTP method, see {@link HttpMethods}.
@@ -174,7 +174,7 @@ namespace SharpGDX
 		 * @param value the value of the header. */
 		public void setHeader(String name, String value)
 		{
-			headers.put(name, value);
+			headers[name]= value;
 		}
 
 		/** Sets the content to be used in the HTTP request.
@@ -266,7 +266,7 @@ public long getContentLength()
 }
 
 /** Returns a Map<String, String> with the headers of the HTTP request. */
-public Map<String, String> getHeaders()
+public Dictionary<String, String> getHeaders()
 {
 	return headers;
 }
@@ -287,7 +287,7 @@ public bool getIncludeCredentials()
 {
 	httpMethod = null;
 	url = null;
-	headers.clear();
+	headers.Clear();
 	timeOut = 0;
 
 	content = null;

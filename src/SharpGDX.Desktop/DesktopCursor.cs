@@ -16,7 +16,7 @@ namespace SharpGDX.Desktop
 	public unsafe class DesktopCursor : Cursor
 	{
 	static readonly Array<DesktopCursor> cursors = new Array<DesktopCursor>();
-	static readonly Map<Cursor.SystemCursor, IntPtr> systemCursors = new HashMap<Cursor.SystemCursor, IntPtr>();
+	static readonly Dictionary<Cursor.SystemCursor, IntPtr> systemCursors = new Dictionary<Cursor.SystemCursor, IntPtr>();
 
 	private static int inputModeBeforeNoneCursor = -1;
 
@@ -98,11 +98,11 @@ internal 	DesktopCursor(DesktopWindow window, Pixmap pixmap, int xHotspot, int y
 
 	internal static void disposeSystemCursors()
 	{
-		foreach (GLFWCursor* systemCursor in systemCursors.values())
+		foreach (GLFWCursor* systemCursor in systemCursors.Values)
 		{
 			GLFW.DestroyCursor(systemCursor);
 		}
-		systemCursors.clear();
+		systemCursors.Clear();
 	}
 
 	internal static void setSystemCursor(GLFWWindow* windowHandle, Cursor.SystemCursor systemCursor)
@@ -118,7 +118,7 @@ internal 	DesktopCursor(DesktopWindow window, Pixmap pixmap, int xHotspot, int y
 			GLFW.SetInputMode(windowHandle, CursorStateAttribute.Cursor, (CursorModeValue)inputModeBeforeNoneCursor);
 			inputModeBeforeNoneCursor = -1;
 		}
-		var glfwCursor = (GLFWCursor*)systemCursors.get(systemCursor);
+		var glfwCursor = (GLFWCursor*)systemCursors[systemCursor];
 		if (glfwCursor == null)
 		{
 			GLFWCursor* handle;
@@ -174,7 +174,7 @@ internal 	DesktopCursor(DesktopWindow window, Pixmap pixmap, int xHotspot, int y
 				return;
 			}
 			glfwCursor = handle;
-			systemCursors.put(systemCursor, (IntPtr)glfwCursor);
+				systemCursors[systemCursor]= (IntPtr)glfwCursor;
 		}
 		GLFW.SetCursor(windowHandle, glfwCursor);
 	}

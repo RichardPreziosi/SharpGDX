@@ -6,7 +6,7 @@ namespace SharpGDX.Desktop
 {
 	public class DesktopPreferences : Preferences
 	{
-		private readonly Map<string, string> properties = new();
+		private readonly Dictionary<string, string> properties = new();
 		private readonly FileHandle file;
 
 		public DesktopPreferences(String name, String directory)
@@ -37,43 +37,43 @@ namespace SharpGDX.Desktop
 
 		public Preferences putBoolean(String key, bool val)
 		{
-			properties.put(key, (val).ToString());
+			properties[key]= (val).ToString();
 			return this;
 		}
 
 		public Preferences putInteger(String key, int val)
 		{
-			properties.put(key, (val).ToString());
+			properties[key]= (val).ToString();
 			return this;
 		}
 
 		public Preferences putLong(String key, long val)
 		{
-			properties.put(key, val.ToString());
+			properties[key]= val.ToString();
 			return this;
 		}
 
 		public Preferences putFloat(String key, float val)
 		{
-			properties.put(key, (val).ToString(CultureInfo.InvariantCulture));
+			properties[key]= (val).ToString(CultureInfo.InvariantCulture);
 			return this;
 		}
 
 		public Preferences putString(String key, String val)
 		{
-			properties.put(key, val);
+			properties[key]= val;
 			return this;
 		}
 
-		public Preferences put(Map<String, object> vals)
+		public Preferences put(Dictionary<String, object> vals)
 		{
-			foreach (var val in vals.entrySet())
+			foreach (var val in vals)
 			{
-				if (val.getValue() is Boolean) putBoolean(val.getKey(), (Boolean)val.getValue());
-				if (val.getValue() is int) putInteger(val.getKey(), (int)val.getValue());
-				if (val.getValue() is long) putLong(val.getKey(), (long)val.getValue());
-				if (val.getValue() is String) putString(val.getKey(), (String)val.getValue());
-				if (val.getValue() is float) putFloat(val.getKey(), (float)val.getValue());
+				if (val.Value is Boolean) putBoolean(val.Key, (Boolean)val.Value);
+				if (val.Value is int) putInteger(val.Key, (int)val.Value);
+				if (val.Value is long) putLong(val.Key, (long)val.Value);
+				if (val.Value is String) putString(val.Key, (String)val.Value);
+				if (val.Value is float) putFloat(val.Key, (float)val.Value);
 			}
 
 			return this;
@@ -106,42 +106,42 @@ namespace SharpGDX.Desktop
 
 		public bool getBoolean(String key, bool defValue)
 		{
-			return Boolean.Parse(properties.get(key, (defValue).ToString()));
+			return Boolean.Parse(properties.GetValueOrDefault(key, (defValue).ToString()));
 		}
 
 		public int getInteger(String key, int defValue)
 		{
-			return int.Parse(properties.get(key, (defValue).ToString()));
+			return int.Parse(properties.GetValueOrDefault(key, (defValue).ToString()));
 		}
 
 		public long getLong(String key, long defValue)
 		{
-			return long.Parse(properties.get(key, (defValue).ToString()));
+			return long.Parse(properties.GetValueOrDefault(key, (defValue).ToString()));
 		}
 
 		public float getFloat(String key, float defValue)
 		{
-			return float.Parse(properties.get(key, (defValue).ToString(CultureInfo.InvariantCulture)));
+			return float.Parse(properties.GetValueOrDefault(key, (defValue).ToString(CultureInfo.InvariantCulture)));
 		}
 
 		public String getString(String key, String defValue)
 		{
-			return properties.get(key, defValue);
+			return properties.GetValueOrDefault(key, defValue);
 		}
 
-		public Map<String, object> get()
+		public Dictionary<String, object> get()
 		{
-			Map<String, Object> map = new HashMap<String, Object>();
+			Dictionary<String, Object> map = new Dictionary<String, Object>();
 
 			// TODO: This only 'mostly' works.
-			foreach (Map<string, string>.Entry<string, string> val in properties.entrySet())
+			foreach (var val in properties)
 			{
-				if (bool.TryParse(val.getValue(), out var b))
-					map.put(val.getKey(), b);
-				if (int.TryParse(val.getValue(), out var i)) map.put(val.getKey(), i);
-				if (long.TryParse(val.getValue(), out var l)) map.put(val.getKey(), l);
-				if (float.TryParse(val.getValue(), out var f)) map.put(val.getKey(), f);
-				map.put(val.getKey(), val.getValue());
+				if (bool.TryParse(val.Value, out var b))
+					map[val.Key]= b;
+				if (int.TryParse(val.Value, out var i)) map[val.Key]= i;
+				if (long.TryParse(val.Value, out var l)) map[val.Key]= l;
+				if (float.TryParse(val.Value, out var f)) map[val.Key]= f;
+				map[val.Key]= val.Value;
 			}
 
 			return map;
@@ -149,12 +149,12 @@ namespace SharpGDX.Desktop
 
 		public bool contains(String key)
 		{
-			return properties.containsKey(key);
+			return properties.ContainsKey(key);
 		}
 
 		public void clear()
 		{
-			properties.clear();
+			properties.Clear();
 		}
 
 
@@ -180,7 +180,7 @@ namespace SharpGDX.Desktop
 
 		public void remove(String key)
 		{
-			properties.remove(key);
+			properties.Remove(key);
 		}
 	}
 }
