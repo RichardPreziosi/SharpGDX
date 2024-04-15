@@ -8,6 +8,7 @@ namespace SharpGDX.Shims
 {
 	public class IllegalArgumentException : ArgumentException
 	{
+		public IllegalArgumentException() { }
 		public IllegalArgumentException(string message) : base(message) { }
 	}
 }

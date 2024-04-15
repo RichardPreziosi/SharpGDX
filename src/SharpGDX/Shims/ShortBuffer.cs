@@ -8,5 +8,13 @@ namespace SharpGDX.Shims
 {
 	public class ShortBuffer : Buffer
 	{
+		public ShortBuffer(int capacity) : base(capacity)
+		{
+		}
+
+		public override bool isReadOnly()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

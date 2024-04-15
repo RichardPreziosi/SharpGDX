@@ -8,5 +8,13 @@ namespace SharpGDX.Shims
 {
 	public class FloatBuffer : Buffer
 	{
+		public FloatBuffer(int capacity) : base(capacity)
+		{
+		}
+
+		public override bool isReadOnly()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

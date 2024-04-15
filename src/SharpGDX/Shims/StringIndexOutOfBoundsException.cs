@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class NullPointerException : Exception
+	public class StringIndexOutOfBoundsException : Exception
 	{
-		public NullPointerException() { }
-		public NullPointerException(string message) : base(message) { }
+		public StringIndexOutOfBoundsException() { }
 	}
 }

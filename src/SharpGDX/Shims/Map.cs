@@ -6,7 +6,37 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class Map<TValue, TKey>
+	public class Map<TKey, TValue>
 	{
+		private readonly Dictionary<TKey, TValue> _dictionary = new();
+
+		public void clear()
+		{
+			_dictionary.Clear();
+		}
+
+		public bool containsKey(TKey key)
+		{
+			return _dictionary.ContainsKey(key);
+		}
+
+		public TValue get(TKey key, TValue defaultValue)
+		{
+			return _dictionary.GetValueOrDefault(key, defaultValue);
+		}
+
+		public void remove(TKey key)
+		{
+			_dictionary.Remove(key);}
+
+		public IEnumerable<KeyValuePair<TKey, TValue>> entrySet()
+		{
+			return _dictionary;
+		}
+
+		public void put(TKey key, TValue value)
+		{
+			_dictionary[key] = value;
+		}
 	}
 }

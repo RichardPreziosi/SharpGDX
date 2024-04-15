@@ -8,5 +8,13 @@ namespace SharpGDX.Shims
 {
 	public class ByteBuffer : Buffer
 	{
+		public ByteBuffer(int capacity) : base(capacity)
+		{
+		}
+
+		public override bool isReadOnly()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -8,5 +8,13 @@ namespace SharpGDX.Shims
 {
 	public class LongBuffer : Buffer
 	{
+		public LongBuffer(int capacity) : base(capacity)
+		{
+		}
+
+		public override bool isReadOnly()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

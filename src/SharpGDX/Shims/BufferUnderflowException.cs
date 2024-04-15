@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class NullPointerException : Exception
+	public class BufferUnderflowException : Exception
 	{
-		public NullPointerException() { }
-		public NullPointerException(string message) : base(message) { }
 	}
 }
