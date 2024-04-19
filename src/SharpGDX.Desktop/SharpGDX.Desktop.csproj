@@ -10,4 +10,10 @@
     <ProjectReference Include="..\SharpGDX\SharpGDX.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="glfw3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

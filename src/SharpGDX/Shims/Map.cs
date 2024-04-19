@@ -10,6 +10,11 @@ namespace SharpGDX.Shims
 	{
 		private readonly Dictionary<TKey, TValue> _dictionary = new();
 
+		public IEnumerable<TValue> values()
+		{
+			return _dictionary.Values;
+		}
+
 		public void clear()
 		{
 			_dictionary.Clear();
@@ -23,6 +28,11 @@ namespace SharpGDX.Shims
 		public TValue get(TKey key, TValue defaultValue)
 		{
 			return _dictionary.GetValueOrDefault(key, defaultValue);
+		}
+
+		public TValue get(TKey key)
+		{
+			return _dictionary[key];
 		}
 
 		public void remove(TKey key)

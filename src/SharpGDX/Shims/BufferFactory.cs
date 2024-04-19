@@ -19,19 +19,19 @@ namespace SharpGDX.Shims
 		 * 
 		 * @param array The byte array
 		 * @return A new byte buffer based on the specified byte array. */
-		//public static ByteBuffer newByteBuffer(byte[] array)
-		//{
-		//	return new ReadWriteHeapByteBuffer(array);
-		//}
+		public static ByteBuffer newByteBuffer(byte[] array)
+		{
+			return new ReadWriteHeapByteBuffer(array);
+		}
 
 		/** Returns a new array based byte buffer with the specified capacity.
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new array based byte buffer with the specified capacity. */
-		//public static ByteBuffer newByteBuffer(int capacity)
-		//{
-		//	return new ReadWriteHeapByteBuffer(capacity);
-		//}
+		public static ByteBuffer newByteBuffer(int capacity)
+		{
+			return new ReadWriteHeapByteBuffer(capacity);
+		}
 
 		/** Returns a new char buffer based on the specified char array.
 		 * 
@@ -64,64 +64,65 @@ namespace SharpGDX.Shims
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new direct byte buffer with the specified capacity. */
-		//public static ByteBuffer newDirectByteBuffer(int capacity)
-		//{
-		//	return new DirectReadWriteByteBuffer(capacity);
-		//}
+		public static ByteBuffer newDirectByteBuffer(int capacity)
+		{
+			// TODO: return new DirectReadWriteByteBuffer(capacity);
+			throw new NotImplementedException();
+		}
 
 		/** Returns a new double buffer based on the specified double array.
 		 * 
 		 * @param array The double array
 		 * @return A new double buffer based on the specified double array. */
-		//public static DoubleBuffer newDoubleBuffer(double[] array)
-		//{
-		//	return new ReadWriteDoubleArrayBuffer(array);
-		//}
+		public static DoubleBuffer newDoubleBuffer(double[] array)
+		{
+			return new ReadWriteDoubleArrayBuffer(array);
+		}
 
 		/** Returns a new array based double buffer with the specified capacity.
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new array based double buffer with the specified capacity. */
-		//public static DoubleBuffer newDoubleBuffer(int capacity)
-		//{
-		//	return new ReadWriteDoubleArrayBuffer(capacity);
-		//}
+		public static DoubleBuffer newDoubleBuffer(int capacity)
+		{
+			return new ReadWriteDoubleArrayBuffer(capacity);
+		}
 
 		/** Returns a new float buffer based on the specified float array.
 		 * 
 		 * @param array The float array
 		 * @return A new float buffer based on the specified float array. */
-		//public static FloatBuffer newFloatBuffer(float[] array)
-		//{
-		//	return new ReadWriteFloatArrayBuffer(array);
-		//}
+		public static FloatBuffer newFloatBuffer(float[] array)
+		{
+			return new ReadWriteFloatArrayBuffer(array);
+		}
 
 		/** Returns a new array based float buffer with the specified capacity.
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new array based float buffer with the specified capacity. */
-		//public static FloatBuffer newFloatBuffer(int capacity)
-		//{
-		//	return new ReadWriteFloatArrayBuffer(capacity);
-		//}
+		public static FloatBuffer newFloatBuffer(int capacity)
+		{
+			return new ReadWriteFloatArrayBuffer(capacity);
+		}
 
 		/** Returns a new array based int buffer with the specified capacity.
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new array based int buffer with the specified capacity. */
-		//public static IntBuffer newIntBuffer(int capacity)
-		//{
-		//	return new ReadWriteIntArrayBuffer(capacity);
-		//}
+		public static IntBuffer newIntBuffer(int capacity)
+		{
+			return new ReadWriteIntArrayBuffer(capacity);
+		}
 
 		/** Returns a new int buffer based on the specified int array.
 		 * 
 		 * @param array The int array
 		 * @return A new int buffer based on the specified int array. */
-		//public static IntBuffer newIntBuffer(int[] array)
-		//{
-		//	return new ReadWriteIntArrayBuffer(array);
-		//}
+		public static IntBuffer newIntBuffer(int[] array)
+		{
+			return new ReadWriteIntArrayBuffer(array);
+		}
 
 		/** Returns a new array based long buffer with the specified capacity.
 		 * 

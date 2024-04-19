@@ -8,5 +8,8 @@ namespace SharpGDX.Shims
 {
 	public class UnsupportedOperationException : Exception
 	{
+		public UnsupportedOperationException() { }
+
+		public UnsupportedOperationException(string message) : base(message) { }
 	}
 }

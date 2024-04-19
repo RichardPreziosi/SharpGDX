@@ -5,8 +5,8 @@ namespace SharpGDX
 {
 	public interface GL32 : GL31
 	{
-
-	public static readonly int GL_CONTEXT_FLAG_DEBUG_BIT = 0x00000002;
+		public static readonly int GL_TEXTURE_CUBE_MAP_SEAMLESS = 0x884F;
+		public static readonly int GL_CONTEXT_FLAG_DEBUG_BIT = 0x00000002;
 
 	public static readonly int GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT = 0x00000004;
 

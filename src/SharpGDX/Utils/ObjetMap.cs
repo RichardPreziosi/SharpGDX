@@ -24,7 +24,7 @@ namespace SharpGDX.Utils
  * @author Tommy Ettinger */
 	public class ObjectMap<K, V> : IEnumerable<ObjectMap<K, V>.Entry>
 	{
-		static readonly V dummy =default;
+		internal static readonly V dummy =default;
 
 		public int size;
 

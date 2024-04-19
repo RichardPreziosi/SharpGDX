@@ -1,4 +1,6 @@
-﻿using StringWriter = SharpGDX.Shims.StringWriter;
+﻿using SharpGDX;
+using SharpGDX.Desktop;
+using StringWriter = SharpGDX.Shims.StringWriter;
 
 namespace Drop
 {
@@ -6,11 +8,17 @@ namespace Drop
 	{
 		static void Main(string[] args)
 		{
-			var writer = new StringWriter(12);
-
-			writer.append("hi");
-
-			var s = writer.ToString();
+			Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+			config.setTitle("Drop");
+			config.setWindowedMode(800, 480);
+			config.useVsync(true);
+			config.setForegroundFPS(60);
+			new Lwjgl3Application(new Drop(), config);
 		}
+	}
+
+	internal class Drop : ApplicationAdapter
+	{
+
 	}
 }
