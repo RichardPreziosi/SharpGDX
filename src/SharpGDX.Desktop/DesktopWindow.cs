@@ -40,19 +40,9 @@ namespace SharpGDX.Desktop
 				
 			});
 		}
-	
 
-	private void closeCallback (long windowHandle) {
-			postRunnable(() => {
-				
-					if (windowListener != null) {
-						if (!windowListener.closeRequested()) {
-							GLFW.glfwSetWindowShouldClose(windowHandle, false);
-						}
-					}
-				
-			});
-		}
+
+		private GLFW.GLFWWindowCloseCallback closeCallback;
 	
 
 	private void dropCallback (long windowHandle, int count, long names) {
@@ -68,15 +58,8 @@ namespace SharpGDX.Desktop
 					}
 			});
 		}
-	
-	private void refreshCallback (long windowHandle) {
-			postRunnable(() => {
-					if (windowListener != null) {
-						windowListener.refreshRequested();
-					}
-				
-			});
-		}
+
+		private GLFW.GLFWWindowRefreshCallback refreshCallback;
 
 	internal Lwjgl3Window (ApplicationListener listener, Lwjgl3ApplicationConfiguration config, Lwjgl3ApplicationBase application) {
 		this.listener = listener;
@@ -140,9 +123,38 @@ namespace SharpGDX.Desktop
 		);
 
 		GLFW.glfwSetWindowMaximizeCallback(windowHandle, maximizeCallback);
-		GLFW.glfwSetWindowCloseCallback(windowHandle, closeCallback);
+
+		GLFW.glfwSetWindowCloseCallback
+		(
+			windowHandle,
+			closeCallback = (_) => postRunnable(() =>
+			{
+
+				if (windowListener != null)
+				{
+					if (!windowListener.closeRequested())
+					{
+						GLFW.glfwSetWindowShouldClose(windowHandle, false);
+					}
+				}
+
+			})
+		);
+
 		GLFW.glfwSetDropCallback(windowHandle, dropCallback);
-		GLFW.glfwSetWindowRefreshCallback(windowHandle, refreshCallback);
+
+		GLFW.glfwSetWindowRefreshCallback
+		(
+			windowHandle,
+			refreshCallback = (_) => postRunnable(() =>
+			{
+				if (windowListener != null)
+				{
+					windowListener.refreshRequested();
+				}
+
+			})
+		);
 
 		if (windowListener != null) {
 			windowListener.created(this);

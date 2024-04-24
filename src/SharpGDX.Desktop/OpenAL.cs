@@ -1,228 +1,252 @@
-﻿using SharpGDX.Shims;
-using System;
-using System.Runtime.InteropServices;
-using static SharpGDX.Pixmap;
+﻿using System.Runtime.InteropServices;
+using SharpGDX.Shims;
 
-namespace SharpGDX.Desktop
+namespace SharpGDX.Desktop;
+
+internal static class OpenAL
 {
-	internal static class OpenAL
+	private const string Library = "openal32";
+
+	public static readonly int
+		AL_BUFFERS_QUEUED = 0x1015,
+		AL_BUFFERS_PROCESSED = 0x1016;
+
+	public static readonly int
+		AL_CONE_INNER_ANGLE = 0x1001,
+		AL_CONE_OUTER_ANGLE = 0x1002,
+		AL_PITCH = 0x1003,
+		AL_DIRECTION = 0x1005,
+		AL_LOOPING = 0x1007,
+		AL_BUFFER = 0x1009,
+		AL_SOURCE_STATE = 0x1010,
+		AL_CONE_OUTER_GAIN = 0x1022,
+		AL_SOURCE_TYPE = 0x1027;
+
+	public static readonly int
+		AL_FORMAT_MONO8 = 0x1100,
+		AL_FORMAT_MONO16 = 0x1101,
+		AL_FORMAT_STEREO8 = 0x1102,
+		AL_FORMAT_STEREO16 = 0x1103;
+
+	public static readonly int
+		AL_INITIAL = 0x1011,
+		AL_PLAYING = 0x1012,
+		AL_PAUSED = 0x1013,
+		AL_STOPPED = 0x1014;
+
+	/**
+	 * General tokens.
+	 */
+	public static readonly int
+		AL_INVALID = unchecked((int)0xFFFFFFFF),
+		AL_NONE = 0x0,
+		AL_FALSE = 0x0,
+		AL_TRUE = 0x1;
+
+	public static readonly int
+		AL_NO_ERROR = 0x0,
+		AL_INVALID_NAME = 0xA001,
+		AL_INVALID_ENUM = 0xA002,
+		AL_INVALID_VALUE = 0xA003,
+		AL_INVALID_OPERATION = 0xA004,
+		AL_OUT_OF_MEMORY = 0xA005;
+
+	public static readonly int AL_ORIENTATION = 0x100F;
+
+	public static readonly int
+		AL_POSITION = 0x1004,
+		AL_VELOCITY = 0x1006,
+		AL_GAIN = 0x100A;
+
+	public static void alBufferData(int id, int format, ShortBuffer buffer, int sampleRate)
 	{
-		private const string Library = "openal32";
+		var bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
-		public static readonly int
-			AL_CONE_INNER_ANGLE = 0x1001,
-			AL_CONE_OUTER_ANGLE = 0x1002,
-			AL_PITCH = 0x1003,
-			AL_DIRECTION = 0x1005,
-			AL_LOOPING = 0x1007,
-			AL_BUFFER = 0x1009,
-			AL_SOURCE_STATE = 0x1010,
-			AL_CONE_OUTER_GAIN = 0x1022,
-			AL_SOURCE_TYPE = 0x1027;
+		alBufferData(id, format, bufferHandle.AddrOfPinnedObject(), sampleRate);
 
-		/** General tokens. */
-		public static readonly int
-			AL_INVALID = unchecked((int)0xFFFFFFFF),
-			AL_NONE = 0x0,
-			AL_FALSE = 0x0,
-			AL_TRUE = 0x1;
-
-		public static readonly int
-			AL_POSITION = 0x1004,
-			AL_VELOCITY = 0x1006,
-			AL_GAIN = 0x100A;
-
-		public static int alGenBuffers(int n, IntBuffer bufferNames)
-		{
-			var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
-			var result = alGenBuffers(n, bufferNamesHandle.AddrOfPinnedObject());
-
-			bufferNamesHandle.Free();
-
-			return result;
-		}
+		bufferHandle.Free();
 
 		[DllImport(Library)]
-		public static extern void alSourceUnqueueBuffers(int sourceName, int numEntries, long bufferNames);
+		static extern void alBufferData(int id, int format, long buffer, int sampleRate);
+	}
+
+	public static void alBufferData(int id, int format, ByteBuffer buffer, int sampleRate)
+	{
+		var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
+
+		alBufferData(id, format, bufferHandle.AddrOfPinnedObject(), sampleRate);
+
+		bufferHandle.Free();
 
 		[DllImport(Library)]
-		public static extern void alSourceQueueBuffers(int id, int buffer);
+		static extern void alBufferData(int id, int format, long buffer, int sampleRate);
+	}
 
-		public static void alSourceUnqueueBuffers(int sourceName, IntBuffer bufferNames)
-		{
-			var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
-			alSourceUnqueueBuffers(sourceName, bufferNames.remaining(), bufferNamesHandle.AddrOfPinnedObject());
-			bufferNamesHandle.Free();
-		}
+	[DllImport(Library)]
+	public static extern void alDeleteBuffers(int n, long bufferNames);
 
-		public static int alSourceUnqueueBuffers(int sourceName)
-		{
-			IntBuffer bufferNames = BufferUtils.newIntBuffer(1);
-			var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
+	public static void alDeleteBuffers(IntBuffer buffer)
+	{
+		var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
 
-			alSourceUnqueueBuffers(sourceName, 1, bufferNamesHandle.AddrOfPinnedObject());
+		alDeleteBuffers(buffer.remaining(), bufferHandle.AddrOfPinnedObject());
 
-			bufferNamesHandle.Free();
+		bufferHandle.Free();
+	}
 
-			return bufferNames.get(0);
-		}
+	public static void alDeleteBuffers(int bufferName)
+	{
+		var buffer = IntBuffer.allocate(1);
+		buffer.put(bufferName);
+		var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
 
-		[DllImport(Library)]
-		public static extern int alGenBuffers(int n, long bufferNames);
+		alDeleteBuffers(1, bufferHandle.AddrOfPinnedObject());
 
-		public static int alGenBuffers(IntBuffer bufferNames)
-		{
-			var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
-			var result = alGenBuffers(bufferNames.remaining(), bufferNamesHandle.AddrOfPinnedObject());
+		bufferHandle.Free();
+	}
 
-			bufferNamesHandle.Free();
+	[DllImport(Library)]
+	public static extern void alDeleteSources(int id);
 
-			return result;
-		}
+	[DllImport(Library)]
+	public static extern void alDisable(int capability);
 
-		[DllImport(Library)]
-		public static extern void alSourcef(int id, int param, float value);
+	public static int alGenBuffers(int n, IntBuffer bufferNames)
+	{
+		var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
+		var result = alGenBuffers(n, bufferNamesHandle.AddrOfPinnedObject());
 
-		[DllImport(Library)]
-		public static extern float alGetSourcef(int id, int param); 
+		bufferNamesHandle.Free();
 
-		[DllImport(Library)]
-		public static extern void alSourcei(int id, int param, int value);
+		return result;
+	}
 
-		[DllImport(Library)]
-		public static extern int alGetError(); 
+	[DllImport(Library)]
+	public static extern int alGenBuffers(int n, long bufferNames);
 
-		public static readonly int
-			AL_INITIAL = 0x1011,
-			AL_PLAYING = 0x1012,
-			AL_PAUSED = 0x1013,
-			AL_STOPPED = 0x1014;
+	public static int alGenBuffers(IntBuffer bufferNames)
+	{
+		var bufferNamesHandle = GCHandle.Alloc(bufferNames.array(), GCHandleType.Pinned);
+		var result = alGenBuffers(bufferNames.remaining(), bufferNamesHandle.AddrOfPinnedObject());
 
-		[DllImport(Library)]
-		public static extern void alDisable(int capability);
+		bufferNamesHandle.Free();
 
-		[DllImport(Library)]
-		public static extern void alDeleteSources(int id);
+		return result;
+	}
 
-		public static int alGenSources(int n, IntBuffer sourceNames)
-		{
-			var bufferNamesHandle = GCHandle.Alloc(sourceNames.array(), GCHandleType.Pinned);
-			var result = alGenSources(n, bufferNamesHandle.AddrOfPinnedObject());
+	public static int alGenBuffers()
+	{
+		var umm = BufferUtils.newIntBuffer(1);
 
-			bufferNamesHandle.Free();
+		return alGenBuffers(1, umm);
+	}
 
-			return result;
+	public static int alGenSources(int n, IntBuffer sourceNames)
+	{
+		var bufferNamesHandle = GCHandle.Alloc(sourceNames.array(), GCHandleType.Pinned);
+		var result = alGenSources(n, bufferNamesHandle.AddrOfPinnedObject());
 
-			[DllImport(Library)]
-			static extern int alGenSources(int n, long bufferNames);
-		}
+		bufferNamesHandle.Free();
 
-		public static int alGenSources()
-		{
-			IntBuffer umm = BufferUtils.newIntBuffer(1);
-
-			return alGenSources(1, umm);
-		}
-
-		public static void alBufferData(int id, int format, ShortBuffer buffer, int sampleRate)
-		{
-			var bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-
-			alBufferData(id, format, bufferHandle.AddrOfPinnedObject(), sampleRate);
-
-			bufferHandle.Free();
-
-			[DllImport(Library)]
-			static extern void alBufferData(int id, int format, long buffer, int sampleRate);
-		}
-
-		public static void alBufferData(int id, int format, ByteBuffer buffer, int sampleRate)
-		{
-			var bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-
-			alBufferData(id, format, bufferHandle.AddrOfPinnedObject(), sampleRate);
-
-			bufferHandle.Free();
-
-			[DllImport(Library)]
-			static extern void alBufferData(int id, int format, long buffer, int sampleRate);
-		}
+		return result;
 
 		[DllImport(Library)]
-		public static extern void alDeleteBuffers(int n, long bufferNames);
+		static extern int alGenSources(int n, long bufferNames);
+	}
 
-		public static void alDeleteBuffers(IntBuffer buffer)
-		{
-			var bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+	public static int alGenSources()
+	{
+		var umm = BufferUtils.newIntBuffer(1);
 
-			alDeleteBuffers(buffer.remaining(), bufferHandle.AddrOfPinnedObject());
+		return alGenSources(1, umm);
+	}
 
-			bufferHandle.Free();
-		}
+	[DllImport(Library)]
+	public static extern int alGetError();
 
-		public static readonly int
-			AL_BUFFERS_QUEUED = 0x1015,
-			AL_BUFFERS_PROCESSED = 0x1016;
+	[DllImport(Library)]
+	public static extern float alGetSourcef(int id, int param);
 
-		public static void alDeleteBuffers(int bufferName)
-		{
-			IntBuffer buffer = IntBuffer.allocate(1);
-			buffer.put(bufferName);
-			var bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
-			alDeleteBuffers(1, bufferHandle.AddrOfPinnedObject());
+	public static int alGetSourcei(int source, int param)
+	{
+		var buffer = IntBuffer.allocate(1);
 
-			bufferHandle.Free();
-		}
+		var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
 
-		[DllImport(Library)]
-		public static extern void alSourceStop(int id);
+		alGetSourcei(source, param, bufferHandle.AddrOfPinnedObject());
 
-		[DllImport(Library)]
-		public static extern void alSourcePause(int id);
+		bufferHandle.Free();
+
+		return buffer.get(0);
 
 		[DllImport(Library)]
-		public static extern void alSourcePlay(int id); 
+		static extern void alGetSourcei(int source, int param, long value);
+	}
+
+	public static void alListenerfv(int param, FloatBuffer values)
+	{
+		var bufferHandle = GCHandle.Alloc(values.array(), GCHandleType.Pinned);
+
+		alListenerfv(param, bufferHandle.AddrOfPinnedObject());
+
+		bufferHandle.Free();
 
 		[DllImport(Library)]
-		public static extern int alGetSourcei(int id, int param); 
+		static extern void alListenerfv(int param, long values);
+	}
 
+	[DllImport(Library)]
+	public static extern void alSource3f(int id, int param, float value1, float value2, float value3);
+
+	[DllImport(Library)]
+	public static extern void alSourcef(int id, int param, float value);
+
+	[DllImport(Library)]
+	public static extern void alSourcei(int id, int param, int value);
+
+	[DllImport(Library)]
+	public static extern void alSourcePause(int id);
+
+	[DllImport(Library)]
+	public static extern void alSourcePlay(int id);
+
+	
+	public static void alSourceQueueBuffers(int id, int buffer)
+	{
+		var bufferNames = BufferUtils.newIntBuffer(1);
+		var bufferNamesHandle = GCHandle.Alloc(bufferNames.array(), GCHandleType.Pinned);
+
+		alSourceUnqueueBuffers(id, 1, bufferNamesHandle.AddrOfPinnedObject());
+
+		bufferNamesHandle.Free();
+		
 		[DllImport(Library)]
-		public static extern void alSource3f(int id, int param, float value1, float value2, float value3);
+		static extern void alSourceQueueBuffers(int id, int buffer, long bufferNames);
+	}
 
-		public static void alListenerfv(int param, FloatBuffer values)
-		{
-			var bufferHandle = GCHandle.Alloc(values.array(), GCHandleType.Pinned);
+	[DllImport(Library)]
+	public static extern void alSourceStop(int id);
 
-			alListenerfv(param, bufferHandle.AddrOfPinnedObject());
+	[DllImport(Library)]
+	public static extern void alSourceUnqueueBuffers(int sourceName, int numEntries, long bufferNames);
 
-			bufferHandle.Free();
+	public static void alSourceUnqueueBuffers(int sourceName, IntBuffer bufferNames)
+	{
+		var bufferNamesHandle = GCHandle.Alloc(bufferNames, GCHandleType.Pinned);
+		alSourceUnqueueBuffers(sourceName, bufferNames.remaining(), bufferNamesHandle.AddrOfPinnedObject());
+		bufferNamesHandle.Free();
+	}
 
-			[DllImport(Library)]
-			static extern void alListenerfv(int param, long values);
-		}
+	public static int alSourceUnqueueBuffers(int sourceName)
+	{
+		var bufferNames = BufferUtils.newIntBuffer(1);
+		var bufferNamesHandle = GCHandle.Alloc(bufferNames.array(), GCHandleType.Pinned);
 
-		public static readonly int
-			AL_NO_ERROR = 0x0,
-			AL_INVALID_NAME = 0xA001,
-			AL_INVALID_ENUM = 0xA002,
-			AL_INVALID_VALUE = 0xA003,
-			AL_INVALID_OPERATION = 0xA004,
-			AL_OUT_OF_MEMORY = 0xA005;
+		alSourceUnqueueBuffers(sourceName, 1, bufferNamesHandle.AddrOfPinnedObject());
 
-		public static readonly int AL_ORIENTATION = 0x100F;
+		bufferNamesHandle.Free();
 
-		public static int alGenBuffers()
-		{
-			IntBuffer umm = BufferUtils.newIntBuffer(1);
-
-			return alGenBuffers(1, umm);
-		}
-
-		public static readonly int
-			AL_FORMAT_MONO8 = 0x1100,
-			AL_FORMAT_MONO16 = 0x1101,
-			AL_FORMAT_STEREO8 = 0x1102,
-			AL_FORMAT_STEREO16 = 0x1103;
+		return bufferNames.get(0);
 	}
 }

@@ -566,7 +566,7 @@ internal static class GLFW
 	public static extern void glfwSetWindowAttrib(long window, int attrib, int value);
 
 	[DllImport(Library)]
-	public static extern void glfwSetWindowCloseCallback(long window, GLFWWindowCloseCallback callback);
+	public static extern IntPtr glfwSetWindowCloseCallback(long window, GLFWWindowCloseCallback callback);
 
 	[DllImport(Library)]
 	public static extern void glfwSetWindowFocusCallback(long window, GLFWWindowFocusCallback callback);

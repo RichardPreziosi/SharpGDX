@@ -47,34 +47,7 @@ private void scrollCallback(long window, double scrollX, double scrollY)
 private int logicalMouseY;
 private int logicalMouseX;
 
-		private void cursorPosCallback(long windowHandle, double x, double y)
-{
-	deltaX = (int)x - logicalMouseX;
-	deltaY = (int)y - logicalMouseY;
-	mouseX = logicalMouseX = (int)x;
-	mouseY = logicalMouseY = (int)y;
-
-	if (window.getConfig().hdpiMode == HdpiMode.Pixels)
-	{
-		float xScale = window.getGraphics().getBackBufferWidth() / (float)window.getGraphics().getLogicalWidth();
-		float yScale = window.getGraphics().getBackBufferHeight() / (float)window.getGraphics().getLogicalHeight();
-		deltaX = (int)(deltaX * xScale);
-		deltaY = (int)(deltaY * yScale);
-		mouseX = (int)(mouseX * xScale);
-		mouseY = (int)(mouseY * yScale);
-	}
-
-	this.window.getGraphics().requestRendering();
-	long time = TimeUtils.nanoTime();
-	if (mousePressed > 0)
-	{
-		eventQueue.touchDragged(mouseX, mouseY, 0, time);
-	}
-	else
-	{
-		eventQueue.mouseMoved(mouseX, mouseY, time);
-	}
-}
+private GLFW.GLFWCursorPosCallback cursorPosCallback;
 
 private void mouseButtonCallback(long window, int button, int action, int mods)
 {
@@ -169,7 +142,40 @@ public void resetPollingStates()
 	GLFW.glfwSetKeyCallback(window.getWindowHandle(), keyCallback);
 	GLFW.glfwSetCharCallback(window.getWindowHandle(), charCallback);
 	GLFW.glfwSetScrollCallback(window.getWindowHandle(), scrollCallback);
-	GLFW.glfwSetCursorPosCallback(window.getWindowHandle(), cursorPosCallback);
+
+	GLFW.glfwSetCursorPosCallback
+		(
+			window.getWindowHandle(),
+			cursorPosCallback = (long windowHandle, double x, double y) =>
+	{
+		deltaX = (int)x - logicalMouseX;
+		deltaY = (int)y - logicalMouseY;
+		mouseX = logicalMouseX = (int)x;
+		mouseY = logicalMouseY = (int)y;
+
+		if (window.getConfig().hdpiMode == HdpiMode.Pixels)
+		{
+			float xScale = window.getGraphics().getBackBufferWidth() / (float)window.getGraphics().getLogicalWidth();
+			float yScale = window.getGraphics().getBackBufferHeight() / (float)window.getGraphics().getLogicalHeight();
+			deltaX = (int)(deltaX * xScale);
+			deltaY = (int)(deltaY * yScale);
+			mouseX = (int)(mouseX * xScale);
+			mouseY = (int)(mouseY * yScale);
+		}
+
+		this.window.getGraphics().requestRendering();
+		long time = TimeUtils.nanoTime();
+		if (mousePressed > 0)
+		{
+			eventQueue.touchDragged(mouseX, mouseY, 0, time);
+		}
+		else
+		{
+			eventQueue.mouseMoved(mouseX, mouseY, time);
+		}
+	}
+			);
+
 	GLFW.glfwSetMouseButtonCallback(window.getWindowHandle(), mouseButtonCallback);
 }
 

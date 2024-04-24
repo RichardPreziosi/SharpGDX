@@ -22,7 +22,7 @@ namespace SharpGDX.Shims
 
 		public int  read(byte[] b, int off, int len)
 		{
-			throw new NotImplementedException();
+			return @in._stream.Read(b, off, len);
 		}
 
 		public void close() { }
