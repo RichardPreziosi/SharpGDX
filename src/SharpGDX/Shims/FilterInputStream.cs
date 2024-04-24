@@ -10,7 +10,7 @@ namespace SharpGDX.Shims
 	{
 		public int read()
 		{
-			throw new NotImplementedException();
+			return @in._stream.ReadByte();
 		}
 
 		protected InputStream @in;

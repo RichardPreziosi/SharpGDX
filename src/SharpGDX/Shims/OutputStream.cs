@@ -6,11 +6,25 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class OutputStream
+	public class OutputStream : Closeable
 	{
+		protected Stream stream;
 		public void write(byte[] buffer, int offset, int length)
 		{
 
+		}
+
+		public void flush()
+		{
+			stream.Flush();
+		}
+
+		public void write(byte[] bytes){}
+
+		public void close()
+		{
+			// TODO: Should probably be disposing honestly. -RP
+			stream.Close();
 		}
 	}
 }

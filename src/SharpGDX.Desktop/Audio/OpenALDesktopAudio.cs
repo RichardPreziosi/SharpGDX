@@ -44,8 +44,8 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 
 		//registerSound("ogg", Ogg.Sound.class);
 		//registerMusic("ogg", Ogg.Music.class);
-		//registerSound("wav", Wav.Sound.class);
-		//registerMusic("wav", Wav.Music.class);
+		registerSound("wav", typeof(Wav.Sound));
+		registerMusic("wav", typeof(Wav.Music));
 		//registerSound("mp3", Mp3.Sound.class);
 		//registerMusic("mp3", Mp3.Music.class);
 
@@ -78,16 +78,16 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		soundIdToSource = new LongMap<int>();
 		sourceToSoundId = new IntMap<long>();
 
-		// TODO: This was originally using the lwjgl BufferUtils.createFloatBuffer
-		// TODO: Not sure if switching to the libgdx BufferUtils.newFloatBuffer will work.
-		FloatBuffer orientation = (FloatBuffer)BufferUtils.newFloatBuffer(6)
+			// TODO: This was originally using the lwjgl BufferUtils.createFloatBuffer
+			// TODO: Not sure if switching to the libgdx FloatBuffer.allocate will work.
+			FloatBuffer orientation = FloatBuffer.allocate(6)
 			.put(new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f});
 		((Buffer)orientation).flip();
 		alListenerfv(AL_ORIENTATION, orientation);
-		FloatBuffer velocity = (FloatBuffer)BufferUtils.newFloatBuffer(3).put(new float[] {0.0f, 0.0f, 0.0f});
+		FloatBuffer velocity = FloatBuffer.allocate(3).put(new float[] {0.0f, 0.0f, 0.0f});
 		((Buffer)velocity).flip();
 		alListenerfv(AL_VELOCITY, velocity);
-		FloatBuffer position = (FloatBuffer)BufferUtils.newFloatBuffer(3).put(new float[] {0.0f, 0.0f, 0.0f});
+		FloatBuffer position = FloatBuffer.allocate(3).put(new float[] {0.0f, 0.0f, 0.0f});
 		((Buffer)position).flip();
 		alListenerfv(AL_POSITION, position);
 
@@ -153,30 +153,32 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 	}
 
 	public Sound newSound (FileHandle file) {
-		// TODO: 
-		throw new NotImplementedException();
-			//if (file == null) throw new IllegalArgumentException("file cannot be null.");
-			//Type soundClass = extensionToSoundClass.get(file.extension().toLowerCase());
-			//if (soundClass == null) throw new GdxRuntimeException("Unknown file extension for sound: " + file);
-			//try {
-			//	return soundClass.getConstructor(new Class[] {OpenALLwjgl3Audio.class, FileHandle.class}).newInstance(this, file);
-			//} catch (Exception ex) {
-			//	throw new GdxRuntimeException("Error creating sound " + soundClass.getName() + " for file: " + file, ex);
-			//}
+			if (file == null) throw new IllegalArgumentException("file cannot be null.");
+			Type soundClass = extensionToSoundClass.get(file.extension().ToLower());
+			if (soundClass == null) throw new GdxRuntimeException("Unknown file extension for sound: " + file);
+			try
+			{
+				return (Sound)soundClass.GetConstructor([typeof(OpenALLwjgl3Audio), typeof(FileHandle)]).Invoke([this, file]);
+			}
+			catch (Exception ex)
+			{
+				throw new GdxRuntimeException("Error creating sound " + soundClass.Name + " for file: " + file, ex);
+			}
 		}
 
 	public Music newMusic (FileHandle file) {
-		//if (file == null) throw new IllegalArgumentException("file cannot be null.");
-		//Type musicClass = extensionToMusicClass.get(file.extension().toLowerCase());
-		//if (musicClass == null) throw new GdxRuntimeException("Unknown file extension for music: " + file);
-		//try {
-		//	return musicClass.getConstructor(new Class[] {OpenALLwjgl3Audio.class, FileHandle.class}).newInstance(this, file);
-		//} catch (Exception ex) {
-		//	throw new GdxRuntimeException("Error creating music " + musicClass.getName() + " for file: " + file, ex);
-		//}
-		// TODO: 
-		throw new NotImplementedException();
-	}
+			if (file == null) throw new IllegalArgumentException("file cannot be null.");
+			Type musicClass = extensionToMusicClass.get(file.extension().ToLower());
+			if (musicClass == null) throw new GdxRuntimeException("Unknown file extension for music: " + file);
+			try
+			{
+				return (Music)musicClass.GetConstructor([typeof(OpenALLwjgl3Audio), typeof(FileHandle)]).Invoke([this, file]);
+			}
+			catch (Exception ex)
+			{
+				throw new GdxRuntimeException("Error creating music " + musicClass.Name + " for file: " + file, ex);
+			}
+		}
 
 	public bool switchOutputDevice (String deviceIdentifier) {
 		return switchOutputDevice(deviceIdentifier, true);

@@ -12,7 +12,7 @@ namespace SharpGDX.Shims
  * Many specialized readers for purposes like reading from a file already exist in this package.
  * 
  * @see Writer */
-	public abstract class Reader  {
+	public abstract class Reader :Closeable {
 	/*** The object used to synchronize access to the reader. */
 	protected Object _lock;
 

@@ -10,27 +10,27 @@ namespace SharpGDX
  * @author mzechner */
 	public abstract class ApplicationAdapter : ApplicationListener
 	{
-	public void create()
+	public virtual void create()
 	{
 	}
 
-	public void resize(int width, int height)
+		public virtual void resize(int width, int height)
 	{
 	}
 
-	public void render()
+		public virtual void render()
 	{
 	}
 
-	public void pause()
+		public virtual void pause()
 	{
 	}
 
-	public void resume()
+		public virtual void resume()
 	{
 	}
 
-	public void dispose()
+		public virtual void dispose()
 	{
 	}
 	}

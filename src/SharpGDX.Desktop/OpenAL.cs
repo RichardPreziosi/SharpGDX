@@ -7,7 +7,7 @@ namespace SharpGDX.Desktop
 {
 	internal static class OpenAL
 	{
-		private const string Library = "openal";
+		private const string Library = "openal32";
 
 		public static readonly int
 			AL_CONE_INNER_ANGLE = 0x1001,
@@ -106,7 +106,7 @@ namespace SharpGDX.Desktop
 
 		public static int alGenSources(int n, IntBuffer sourceNames)
 		{
-			var bufferNamesHandle = GCHandle.Alloc(sourceNames, GCHandleType.Pinned);
+			var bufferNamesHandle = GCHandle.Alloc(sourceNames.array(), GCHandleType.Pinned);
 			var result = alGenSources(n, bufferNamesHandle.AddrOfPinnedObject());
 
 			bufferNamesHandle.Free();
@@ -192,7 +192,7 @@ namespace SharpGDX.Desktop
 
 		public static void alListenerfv(int param, FloatBuffer values)
 		{
-			var bufferHandle = GCHandle.Alloc(values, GCHandleType.Pinned);
+			var bufferHandle = GCHandle.Alloc(values.array(), GCHandleType.Pinned);
 
 			alListenerfv(param, bufferHandle.AddrOfPinnedObject());
 

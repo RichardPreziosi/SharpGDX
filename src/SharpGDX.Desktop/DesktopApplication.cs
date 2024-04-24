@@ -109,8 +109,10 @@ namespace SharpGDX.Desktop
 
 		Gdx.app = this;
 		if (!config._disableAudio) {
-			try {
+			try
+			{
 				this.audio = createAudio(config);
+				
 			} catch (Exception t) {
 				log("Lwjgl3Application", "Couldn't initialize audio, disabling audio", t);
 				this.audio = new MockAudio();

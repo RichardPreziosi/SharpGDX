@@ -66,8 +66,7 @@ namespace SharpGDX.Shims
 		 * @return A new direct byte buffer with the specified capacity. */
 		public static ByteBuffer newDirectByteBuffer(int capacity)
 		{
-			// TODO: return new DirectReadWriteByteBuffer(capacity);
-			throw new NotImplementedException();
+			return new DirectReadWriteByteBuffer(capacity);
 		}
 
 		/** Returns a new double buffer based on the specified double array.

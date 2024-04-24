@@ -10,7 +10,7 @@ namespace SharpGDX.Desktop
 {
 	internal static class OpenALC
 	{
-		private const string Library = "openal";
+		private const string Library = "openal32";
 
 		public static readonly int ALC_CONNECTED = 0x313;
 
@@ -20,8 +20,21 @@ namespace SharpGDX.Desktop
 			ALC_CAPTURE_DEVICE_SPECIFIER = 0x310,
 			ALC_CAPTURE_DEFAULT_DEVICE_SPECIFIER = 0x311;
 
-		[DllImport(Library)]
-		public static extern int alcGetInteger(long device, int param);
+		public static int alcGetInteger(long device, int token)
+		{
+			var buffer = IntBuffer.allocate(1);
+			var bufferNamesHandle = GCHandle.Alloc(device, GCHandleType.Pinned);
+			var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
+			var result = alcGetIntegerv(bufferNamesHandle.AddrOfPinnedObject(), token, 1, bufferHandle.AddrOfPinnedObject());
+
+			bufferNamesHandle.Free();
+			bufferHandle.Free();
+
+			return buffer.get(0);
+
+			[DllImport(Library)]
+			static extern int alcGetIntegerv(long device, int param, int size, long dest);
+		}
 
 		[DllImport(Library)]
 		public static extern bool alcMakeContextCurrent(long context);
@@ -56,7 +69,12 @@ namespace SharpGDX.Desktop
 		
 		public static long alcCreateContext(long device, IntBuffer? buffer)
 		{
-			throw new NotImplementedException();
+			var bufferHandle = GCHandle.Alloc(buffer?.array(), GCHandleType.Pinned);
+			var result = alcCreateContext(device, bufferHandle.AddrOfPinnedObject());
+
+			bufferHandle.Free();
+
+			return result;
 
 			[DllImport(Library)]
 			static extern long alcCreateContext(long device, long buffer);

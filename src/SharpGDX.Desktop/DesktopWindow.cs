@@ -28,34 +28,9 @@ namespace SharpGDX.Desktop
 	bool focused = false;
 	private bool _requestRendering = false;
 
-	private void focusCallback(long windowHandle, bool focused) {
-			postRunnable(() =>{
-				
-					if (windowListener != null) {
-						if (focused) {
-							windowListener.focusGained();
-						} else {
-							windowListener.focusLost();
-						}
-						this.focused = focused;
-					}
-			});
-	}
+	private GLFW.GLFWWindowFocusCallback _focusCallback;
 
-	private void iconifyCallback (long windowHandle, bool iconified) {
-			postRunnable(() => {
-				
-					if (windowListener != null) {
-						windowListener.iconified(iconified);
-					}
-					this.iconified = iconified;
-					if (iconified) {
-						listener.pause();
-					} else {
-						listener.resume();
-					}
-			});
-	}
+	private GLFW.GLFWWindowIconifyCallback iconifyCallback;
 
 	private void maximizeCallback(long windowHandle,  bool maximized) {
 			postRunnable(() => {
@@ -119,8 +94,51 @@ namespace SharpGDX.Desktop
 		this.input = application.createInput(this);
 		this.graphics = new Lwjgl3Graphics(this);
 
-		GLFW.glfwSetWindowFocusCallback(windowHandle, focusCallback);
-		GLFW.glfwSetWindowIconifyCallback(windowHandle, iconifyCallback);
+		GLFW.glfwSetWindowFocusCallback
+		(
+			windowHandle,
+			_focusCallback = (_, focused) => postRunnable(() =>
+			{
+
+				if (windowListener != null)
+				{
+					if (focused)
+					{
+						windowListener.focusGained();
+					}
+					else
+					{
+						windowListener.focusLost();
+					}
+
+					this.focused = focused;
+				}
+			})
+		);
+
+		GLFW.glfwSetWindowIconifyCallback
+		(
+			windowHandle,
+			iconifyCallback = (_, iconified) => postRunnable(() =>
+			{
+
+				if (windowListener != null)
+				{
+					windowListener.iconified(iconified);
+				}
+
+				this.iconified = iconified;
+				if (iconified)
+				{
+					listener.pause();
+				}
+				else
+				{
+					listener.resume();
+				}
+			})
+		);
+
 		GLFW.glfwSetWindowMaximizeCallback(windowHandle, maximizeCallback);
 		GLFW.glfwSetWindowCloseCallback(windowHandle, closeCallback);
 		GLFW.glfwSetDropCallback(windowHandle, dropCallback);

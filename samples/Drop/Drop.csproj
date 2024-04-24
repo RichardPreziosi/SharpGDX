@@ -11,4 +11,10 @@
     <ProjectReference Include="..\..\src\SharpGDX.Desktop\SharpGDX.Desktop.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="rain.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

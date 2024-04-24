@@ -16,9 +16,4 @@ namespace Drop
 			new Lwjgl3Application(new Drop(), config);
 		}
 	}
-
-	internal class Drop : ApplicationAdapter
-	{
-
-	}
 }
