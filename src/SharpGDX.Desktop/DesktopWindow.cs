@@ -416,20 +416,16 @@ namespace SharpGDX.Desktop
 		Lwjgl3Cursor.dispose(this);
 		graphics.dispose();
 		input.dispose();
+
 		GLFW.glfwSetWindowFocusCallback(windowHandle, null);
 		GLFW.glfwSetWindowIconifyCallback(windowHandle, null);
+		GLFW.glfwSetWindowMaximizeCallback(windowHandle, null);
 		GLFW.glfwSetWindowCloseCallback(windowHandle, null);
 		GLFW.glfwSetDropCallback(windowHandle, null);
-		GLFW.glfwDestroyWindow(windowHandle);
+		GLFW.glfwSetWindowRefreshCallback(windowHandle, null);
 
-		// TODO: set to null
-		//focusCallback.free();
-		//iconifyCallback.free();
-		//maximizeCallback.free();
-		//closeCallback.free();
-		//dropCallback.free();
-		//refreshCallback.free();
-	}
+		GLFW.glfwDestroyWindow(windowHandle);
+		}
 
 	public override int GetHashCode () {
 		 int prime = 31;

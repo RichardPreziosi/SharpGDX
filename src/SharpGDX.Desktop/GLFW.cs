@@ -539,37 +539,37 @@ internal static class GLFW
 	public static extern void glfwSetCursorPos(long window, int xpos, int ypos);
 
 	[DllImport(Library)]
-	public static extern void glfwSetCursorPosCallback(long window, GLFWCursorPosCallback callback);
+	public static extern void glfwSetCursorPosCallback(long window, GLFWCursorPosCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetDropCallback(long window, GLFWDropCallback callback);
+	public static extern void glfwSetDropCallback(long window, GLFWDropCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetErrorCallback(GLFWErrorCallback callback);
+	public static extern void glfwSetErrorCallback(GLFWErrorCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetFramebufferSizeCallback(long window, GLFWFramebufferSizeCallback callback);
+	public static extern void glfwSetFramebufferSizeCallback(long window, GLFWFramebufferSizeCallback? callback);
 
 	[DllImport(Library)]
 	public static extern void glfwSetInputMode(long window, int mode, int value);
 
 	[DllImport(Library)]
-	public static extern void glfwSetKeyCallback(long window, GLFWKeyCallback callback);
+	public static extern void glfwSetKeyCallback(long window, GLFWKeyCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetMouseButtonCallback(long window, GLFWMouseButtonCallback callback);
+	public static extern void glfwSetMouseButtonCallback(long window, GLFWMouseButtonCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetScrollCallback(long window, GLFWScrollCallback callback);
+	public static extern void glfwSetScrollCallback(long window, GLFWScrollCallback? callback);
 
 	[DllImport(Library)]
 	public static extern void glfwSetWindowAttrib(long window, int attrib, int value);
 
 	[DllImport(Library)]
-	public static extern IntPtr glfwSetWindowCloseCallback(long window, GLFWWindowCloseCallback callback);
+	public static extern IntPtr glfwSetWindowCloseCallback(long window, GLFWWindowCloseCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetWindowFocusCallback(long window, GLFWWindowFocusCallback callback);
+	public static extern void glfwSetWindowFocusCallback(long window, GLFWWindowFocusCallback? callback);
 
 	public static void glfwSetWindowIcon(long window, Buffer buffer)
 	{
@@ -577,10 +577,10 @@ internal static class GLFW
 	}
 
 	[DllImport(Library)]
-	public static extern void glfwSetWindowIconifyCallback(long window, GLFWWindowIconifyCallback callback);
+	public static extern void glfwSetWindowIconifyCallback(long window, GLFWWindowIconifyCallback? callback);
 
 	[DllImport(Library)]
-	public static extern void glfwSetWindowMaximizeCallback(long window, GLFWWindowMaximizeCallback callback);
+	public static extern void glfwSetWindowMaximizeCallback(long window, GLFWWindowMaximizeCallback? callback);
 
 	[DllImport(Library)]
 	public static extern void glfwSetWindowMonitor(long window, long monitor, int xpos, int ypos, int width, int height,
@@ -590,7 +590,7 @@ internal static class GLFW
 	public static extern void glfwSetWindowPos(long window, int xpos, int ypos);
 
 	[DllImport(Library)]
-	public static extern void glfwSetWindowRefreshCallback(long window, GLFWWindowRefreshCallback callback);
+	public static extern void glfwSetWindowRefreshCallback(long window, GLFWWindowRefreshCallback? callback);
 
 	[DllImport(Library)]
 	public static extern void glfwSetWindowShouldClose(long window, bool shouldClose);
