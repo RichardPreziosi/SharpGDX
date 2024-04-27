@@ -8,6 +8,15 @@ namespace SharpGDX.Shims
 {
 	public static class Arrays
 	{
+		public static string toString(float[]? a)
+		{
+			if (a == null)
+			{
+				return "null";
+			}
+			return $"[{string.Join(", ", a)}]";
+		}
+
 		public static void sort<T>(T[] array)
 		{
 			Array.Sort(array);

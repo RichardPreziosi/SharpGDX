@@ -4,6 +4,14 @@ namespace SharpGDX;
 
 public class GLVersion
 {
+	public enum GLType
+	{
+		OpenGL,
+		GLES,
+		WebGL,
+		None
+	}
+
 	private const string Tag = "GLVersion";
 	
 	private readonly string _rendererString;

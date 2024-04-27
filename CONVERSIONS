@@ -1,0 +1,621 @@
+Should all instance of float.MinValue be replaced with Float.Epsilon? I think C# float.MinValue and Java Float.MIN_VALUE are technically different.
+
+SharpGDX
+--------
+- DONE	-	AbstractGraphics
+- DONE	-	AbstractInput
+- DONE	-	Application
+- DONE	-	ApplicationAdapter
+- DONE	-	ApplicationListener
+- DONE	-	ApplicationLogger
+- DONE	-	Audio
+- DONE	-	Files
+- DONE	-	Game
+- DONE	-	Gdx
+- DONE	-	Graphics
+- DONE	-	Input
+- DONE	-	InputAdapter
+- DONE	-	InputEventQueue
+- DONE	-	InputMultiplexer
+- DONE	-	InputProcessor
+- DONE	-	LifecycleListener
+- DONE	-	Net
+- DONE	-	Preferences
+- DONE	-	Screen
+- DONE	-	ScreenAdapter
+- DONE	-	Version
+
+SharpGDX\Assets
+---------------
+-	-	AssetDescriptor
+-	-	AssetErrorListener
+-	-	AssetLoaderParamters
+-	-	AssetLoadingTask
+-	-	AssetManager
+
+SharpGDX\Assets\Loaders
+-----------------------
+-	-	AssetLoader
+-	-	AsynchronousAssetLoader
+-	-	BitmapFontLoader
+-	-	CubemapLoader
+-	-	FIleHandleResolver
+-	-	I18NBundleLoader
+-	-	ModelLoader
+-	-	MusicLoader
+-	-	ParticleEffectLoader
+-	-	PixmapLoader
+-	-	ShaperProgramLoader
+-	-	SkinLoader
+-	-	SoundLoader
+-	-	SynchronousAssetLoader
+-	-	TextureAtlasLoader
+-	-	TextureLoader
+
+SharpGDX\Assets\Loaders\Resolvers
+---------------------------------
+- 	-	AbsoluteFileHandleResolver
+- 	-	ClasspathFIleHandleResolver
+- 	-	ExternalFileHandleResolver
+- 	-	InternalFileHandleResolver
+- 	-	LocalFileHandleResolver
+- 	-	PrefixFIleHandleResolver
+- 	-	ResolutionFileResolver
+
+SharpGDX\Audio
+--------------
+- DONE	-	AudioDevice
+- DONE	-	AudioRecorder
+- DONE	-	Music
+- DONE	-	Sound
+
+SharpGDX\Files
+--------------
+- PROG	-	FileHandle
+-	-	FileHandleStream
+
+SharpGDX\Graphics
+-----------------
+-	-	Camera
+- DONE	-	Color
+-	-	Colors
+-	-	Cubemap
+-	-	CubemapData
+- DONE	-	Cursor
+-	-	FPSLogger
+- DONE	-	GL20
+- DONE	-	GL30
+- DONE	-	GL31
+- DONE	-	GL32
+-	-	GLTexture
+-	-	Mesh
+-	-	OrthographicCamera
+-	-	PerspectiveCamera
+- STUB	-	Pixmap
+-	-	PixmapIO
+-	-	Texture
+-	-	Texture3D
+-	-	Texture3DData
+-	-	TextureArray
+-	-	TextureArrayData
+-	-	TextureData
+-	-	VertexAttribute
+-	-	VertexAttributes
+
+SharpGDX\Graphics\G2D
+---------------------
+-	-	Animation
+-	-	Batch
+-	-	BitmapFont
+-	-	BitmapFontCache
+-	-	CpuSpriteBatch
+-	-	DistanceFieldFont
+- DONE	-	Gdx2DPixmap
+-	-	GlyphLayout
+-	-	NinePatch
+-	-	ParticleEffect
+-	-	ParticleEffectPool
+-	-	ParticleEmitter
+-	-	PixmapPacker
+-	-	PixmapPackerIO
+-	-	PolygonBatch
+-	-	PolygonRegion
+-	-	PolygonRegionLoader
+-	-	PolygonSprite
+-	-	PolygonSpriteBatch
+-	-	RepeatablePolygonSprite
+-	-	Sprite
+-	-	SpriteBatch
+-	-	SpriteCache
+-	-	TextureAtlas
+-	-	TextureRegion
+
+SharpGDX\Graphics\GLUtils
+-------------------------
+-	-	CustomTexture3DData
+-	-	ETC1
+-	-	ETC1TextureData
+-	-	FacedCubemapData
+-	-	FileTextureArrayData
+-	-	FileTextureData
+-	-	FloatFrameBuffer
+-	-	FloatTextureData
+-	-	FrameBuffer
+-	-	FrameBufferCubemap
+-	-	GLFrameBuffer
+-	-	GLOnlyTextureData
+- DONE	-	GLVersion
+- DONE	-	HdpiMode
+-	-	HdpiUtils
+-	-	ImmediateModeRenderer
+-	-	ImmediateModeRenderer20
+-	-	IndexArray
+-	-	IndexBufferObject
+-	-	IndexBufferObjectSubData
+-	-	IndexData
+-	-	InstanceBufferObject
+-	-	InstanceBufferObjectSubData
+-	-	InstanceData
+-	-	KTXTextureData
+-	-	MipMapGenerator
+-	-	MipMapTextureData
+-	-	PixmapTextureData
+-	-	ShaderProgram
+-	-	ShapeRenderer
+-	-	VertexArray
+-	-	VertexBufferObject
+-	-	VertexBufferObjectSubData
+-	-	VertexBufferObjectWithVAO
+-	-	VertexData
+
+SharpGDX\Graphics\Profiling
+---------------------------
+-	-	GL20Interceptor
+-	-	GL30Interceptor
+-	-	GL31Interceptor
+-	-	GL32Interceptor
+-	-	GLErrorListener
+-	-	GLInterceptor
+-	-	GLProfiler
+
+SharpGDX\Input
+--------------
+-	-	GestureDetector
+-	-	RemoteInput
+-	-	RemoteSender
+
+SharpGDX\Maps
+-------------
+-	-	ImageResolver
+-	-	Map
+-	-	MapGroupLayer
+-	-	MapLayer
+-	-	MapLayers
+-	-	MapObject
+-	-	MapObjects
+-	-	MapProperties
+-	-	MapRenderer
+
+SharpGDX\Maps\Objects
+---------------------
+-	-	CircleMapObject
+-	-	EllipseMapObject
+-	-	PolygonMapObject
+-	-	PolylineMapObject
+-	-	RectangleMapObject
+-	-	TextureMapObject
+
+SharpGDX\Maps\Tiled
+-------------------
+-	-	AtlasTmxMapLoader
+-	-	BaseTmxMapLoader
+-	-	TideMapLoader
+-	-	TiledMap
+-	-	TiledMapImageLayer
+-	-	TiledMapRenderer
+-	-	TiledMapTile
+-	-	TiledMapTileLayer
+-	-	TiledMapTileSet
+-	-	TiledMapTileSets
+-	-	TmxMapLoader
+
+SharpGDX\Maps\Tiled\Objects
+---------------------------
+-	-	TiledMapTileMapObject
+
+SharpGDX\Maps\Tiled\Renderers
+-----------------------------
+-	-	BatchTiledMapRenderer
+-	-	HexagonalTiledMapRenderer
+-	-	IsometricStaggeredTiledMapRenderer
+-	-	IsometricTiledMapRenderer
+-	-	OrthoCachedTiledMapRenderer
+-	-	OrthogonalTiledMapRenderer
+
+SharpGDX\Maps\Tiled\Tiles
+-------------------------
+-	-	AnimatedTiledMapTile
+-	-	StaticTiledMapTile
+
+SharpGDX\Math
+-------------
+- DONE	-	Affine2
+- DONE	-	BSpline
+- DONE	-	Bezier
+- DONE	-	Bresenham2
+- DONE	-	CatmullRomSpline
+- DONE	-	Circle
+- DONE	-	ConvexHull
+- DONE	-	CumulativeDistribution
+- DONE	-	DelaunayTriangulator
+- DONE	-	EarClippingTriangulator
+- DONE	-	Ellipse
+- DONE	-	FloatCounter
+- DONE	-	Frustum
+- DONE	-	GeometryUtils
+- DONE	-	GridPoint2
+- DONE	-	GridPoint3
+- DONE	-	Interpolation
+- DONE	-	Intersector
+- DONE	-	MathUtils
+- DONE	-	Matrix3
+- DONE	-	Matrix4
+- DONE	-	Octree
+- DONE	-	Path
+- DONE	-	Plane
+- DONE	-	Polygon
+- DONE	-	Polyline
+- DONE	-	Quaternion
+- DONE	-	RandomXS128
+- DONE	-	Rectangle
+- DONE	-	Shape2D
+- DONE	-	Vector
+- DONE	-	Vector2
+- DONE	-	Vector3
+- DONE	-	Vector4
+- DONE	-	WindowedMean
+
+SharpGDX\Math\Collision
+-----------------------
+- DONE	-	BoundingBox
+- DONE	-	OrientedBoundingBox
+- DONE	-	Ray
+- DONE	-	Segment
+- DONE	-	Sphere
+
+SharpGDX\Net
+------------
+-	-	HttpParametersUtils
+-	-	HttpRequestBuilder
+-	-	HttpRequestHeader
+-	-	HttpResponseHeader
+-	-	HttpStatus
+-	-	NetJavaImpl
+-	-	NetJavaServerSocketImpl
+-	-	NetJavaSocketImpl
+- 	-	ServerSocket
+- 	-	ServerSocketHints
+- 	-	Socket
+- 	-	SocketHints
+
+SharpGDX\Scenes\Scene2D
+-----------------------
+-	-	Action
+-	-	Actor
+-	-	Event
+-	-	EventListener
+-	-	Group
+-	-	InputEvent
+-	-	InputListener
+-	-	Stage
+-	-	Touchable
+
+SharpGDX\Scenes\Scene2D\Actions
+-------------------------------
+-	-	Actions
+-	-	AddAction
+-	-	AddListenerAction
+-	-	AfterAction
+-	-	AlphaAction
+-	-	ColorAction
+-	-	CountdownEventAction
+-	-	DelayAction
+-	-	DelegateAction
+-	-	EventAction
+-	-	FloatAction
+-	-	IntAction
+-	-	LayoutAction
+-	-	MoveByAction
+-	-	MoveToAction
+-	-	ParallelAction
+-	-	RelativeTemporalAction
+-	-	RemoveAction
+-	-	RemoveActorAction
+-	-	RemoveListenerAction
+-	-	RepeatAction
+-	-	RotateByAction
+-	-	RotateToAction
+-	-	RunnableAction
+-	-	ScaleByAction
+-	-	ScaleToAction
+-	-	SequenceAction
+-	-	SizeByAction
+-	-	SizeToAction
+-	-	TemporalAction
+-	-	TimeScaleAction
+-	-	TouchableAction
+-	-	VisibleAction
+
+SharpGDX\Scenes\Scene2D\UI
+--------------------------
+-	-	Button
+-	-	ButtonGroup
+-	-	Cell
+-	-	CheckBox
+-	-	Container
+-	-	Dialog
+-	-	HorizontalGroup
+-	-	Image
+-	-	ImageButton
+-	-	ImageTextButton
+-	-	Label
+-	-	List
+-	-	ParticleEffectActor
+-	-	ProgressBar
+-	-	ScrollPane
+-	-	SelectBox
+-	-	Skin
+-	-	Slider
+-	-	SplitPane
+-	-	Stack
+-	-	Table
+-	-	TextArea
+-	-	TextButton
+-	-	TextField
+-	-	TextTooltip
+-	-	Tooltip
+-	-	TooltipManager
+-	-	Touchpad
+-	-	Tree
+-	-	Value
+-	-	VerticalGroup
+-	-	Widget
+-	-	WidgetGroup
+-	-	Window
+
+SharpGDX\Scenes\Scene2D\Utils
+-----------------------------
+-	-	ActorGestureListener
+-	-	ArraySelection
+-	-	BaseDrawable
+-	-	ChangeListener
+-	-	ClickListener
+-	-	Cullable
+-	-	Disableable
+-	-	DragAndDrop
+-	-	DragListener
+-	-	DragScrollListener
+-	-	Drawable
+-	-	FocusListener
+-	-	Layout
+-	-	NinePatchDrawable
+-	-	ScissorStack
+-	-	Selection
+-	-	SpriteDrawable
+-	-	TextureRegionDrawable
+-	-	TiledDrawable
+-	-	TransformDrawable
+-	-	UIUtils
+
+SharpGDX\Utils
+--------------
+- 	- 	Align
+- DONE	-	Array
+-	-	ArrayMap
+-	-	AtomicQueue
+-	-	Base64Coder
+-	-	BaseJsonReader
+-	-	BinaryHeap
+-	-	Bits
+- DONE	-	BooleanArray
+- 	-	BufferUtils
+- 	-	ByteArray
+- 	-	CharArray
+- DONE	-	Clipboard
+- DONE	-	Collections
+- DONE	-	ComparableTimSort
+-	-	DataBuffer
+-	-	DataInput
+-	-	DataOutput
+-	-	DelayedRemovalArray
+- DONE	-	Disposable
+- DONE	-	FloatArray
+- 	-	FlushablePool
+- PROG	-	GdxNativesLoader
+- DONE	-	GdxRuntimeException
+-	-	I18NBundle
+-	-	IdentityMap
+-DONE	-	IntArray
+-	-	IntFloatMap
+-	-	IntIntMap
+- DONE	-	IntMap
+- DONE	-	IntSet
+-	-	Json
+-	-	JsonReader
+-	-	JsonValue
+-	-	JsonWriter
+-	-	LittleEndianInputStream
+-	-	Logger
+- DONE	-	LongArray
+- DONE	-	LongMap
+-	-	LongQueue
+- 	-	Null
+- DONE	-	NumberUtils
+-	-	ObjectFloatMap
+- DONE	-	ObjectIntMap
+-	-	ObjectLongMap
+- DONE	-	ObjectMap
+- STUB	-	ObjectSet
+-	-	OrderedMap
+-	-	OrderedSet
+-	-	PauseableThread
+-	-	PerformanceCounter
+-	-	PerformanceCounters
+- DONE	-	Pool
+-	-	PooledLinkedList
+-	-	Pools
+- DONE	-	Predicate
+-	-	PropertiesUtils
+-	-	QuadTreeFloat
+-	-	Queue
+- DONE	-	QuickSelect
+-	-	ReflectionPool
+- DONE	-	Scaling
+-	-	ScreenUtils
+- DONE	-	Select
+-	-	SerializationException
+- DONE	-	ShortArray
+- DONE	-	SnapshotArray
+- DONE	-	Sort
+-	-	SortedIntList
+- DONE	-	StreamUtils
+-	-	StringBuilder
+-	-	TextFormatter
+- DONE	-	TimeUtils
+- DONE	-	TimSort
+-	-	Timer
+-	-	UBJsonReader
+-	-	UBJsonWriter
+-	-	XmlReader
+-	-	XmlWriter
+
+SharpGDX\Utils\Async
+--------------------
+- PROG	-	AsyncExecutor
+- PROG	-	AsyncResult
+- PROG	-	AsyncTask
+- DELED	-	ThreadUtils
+
+SharpGDX\Utils\Compression
+--------------------------
+-	-	CRC
+-	-	ICodeProgress
+-	-	Lzma
+
+SharpGDX\Utils\Compression\LZ
+-----------------------------
+-	-	BinTree
+-	-	InWindow
+-	-	OutWindow
+
+SharpGDX\Utils\Compression\LZMA
+-------------------------------
+-	-	Base
+-	-	Decoder
+-	-	Encoder
+
+SharpGDX\Utils\Compression\RangeCoder
+-------------------------------------
+-	-	BitTreeDecoder
+-	-	BitTreeEncoder
+-	-	Decoder
+-	-	Encoder
+
+SharpGDX\Utils\Reflect
+----------------------
+-	-	Annotation
+- DONE	-	ArrayReflect
+-	-	ClassReflection
+-	-	Constructor
+-	-	Field
+-	-	Method
+-	-	ReflectionException
+
+SharpGDX\Utils\Viewport
+-----------------------
+-	-	ExtendViewport
+-	-	FillViewport
+-	-	FitViewport
+-	-	ScalingViewport
+-	-	ScreenViewport
+-	-	StretchViewport
+-	-	Viewport
+
+=============================================================
+
+SharpGDX.Headless
+-----------------
+- DONE	-	HeadlessApplication
+- DONE	-	HeadlessApplicationConfiguration
+- DONE	-	HeadlessApplicationLogger
+- DONE	-	HeadlessFileHandle
+- DONE	-	HeadlessFiles
+- DONE	-	HeadlessNativesLoader
+- PROG	-	HeadlessNet
+- PROG	-	HeadlessPreferences
+
+SharpGDX.Headless\Mock\Audio
+----------------------------
+- DONE	-	MockAudio
+- DONE	-	MockAudioDevice
+- DONE	-	MockAudioRecorder
+- DONE	-	MockMusic
+- DONE	-	MockSound
+
+SharpGDX.Headless\Mock\Graphics
+-------------------------------
+- DONE	-	MockGraphics
+
+SharpGDX.Headless\Mock\Input
+----------------------------
+- DONE	-	MockInput
+
+=============================================================
+
+SharpGDX.Desktop
+-----------------
+- DONE	-	DefaultDesktopInput
+- DONE	-	DesktopApplication
+- DONE	-	DesktopApplicationBase
+- DONE	-	DesktopApplicationConfiguration
+- DONE	-	DesktopApplicationLogger
+- 	-	DesktopClipboard
+- 	-	DesktopCursor
+- DONE	-	DesktopFileHandle
+- DONE	-	DesktopFiles
+- 	-	DesktopGL20
+- 	-	DesktopGL30
+- 	-	DesktopGL31
+- 	-	DesktopGL32
+- DONE	-	DesktopGraphics
+- DONE	-	DesktopInput
+- 	-	DesktopNativesLoader
+- 	-	DesktopNet
+- 	-	DesktopPreferences
+- DONE	-	DesktopWindow
+- DONE	-	DesktopWindowAdapter
+- DONE	-	DesktopWindowConfiguration
+- DONE	-	DesktopWindowListener
+- DONE	-	Sync
+
+SharpGDX.Desktop\Audio
+----------------------
+- 	-	DesktopAudioRecorder
+- DONE	-	DesktopAudio
+- 	-	MP3
+- 	-	Ogg
+- 	-	OggInputStream
+- DONE 	-	OpenALAudioDevice
+- DONE 	-	OpenALDesktopAudio	
+- DONE 	-	OpenALMusic
+- DONE 	-	OpenALSound
+- DONE	-	Wav
+
+
+SharpGDX.Desktop\Audio\Mock
+---------------------------
+- DONE	-	MockAudio
+- DONE	-	MockAudioDevice
+- DONE	-	MockAudioRecorder
+- DONE	-	MockMusic
+- DONE	-	MockSound
