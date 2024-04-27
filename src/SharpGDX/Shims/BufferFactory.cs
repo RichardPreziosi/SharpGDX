@@ -145,19 +145,19 @@ namespace SharpGDX.Shims
 		 * 
 		 * @param capacity The capacity of the new buffer
 		 * @return A new array based short buffer with the specified capacity. */
-		//public static ShortBuffer newShortBuffer(int capacity)
-		//{
-		//	return new ReadWriteShortArrayBuffer(capacity);
-		//}
+		public static ShortBuffer newShortBuffer(int capacity)
+		{
+			return new ReadWriteShortArrayBuffer(capacity);
+		}
 
 		/** Returns a new short buffer based on the specified short array.
 		 * 
 		 * @param array The short array
 		 * @return A new short buffer based on the specified short array. */
-		//public static ShortBuffer newShortBuffer(short[] array)
-		//{
-		//	return new ReadWriteShortArrayBuffer(array);
-		//}
+		public static ShortBuffer newShortBuffer(short[] array)
+		{
+			return new ReadWriteShortArrayBuffer(array);
+		}
 
 	}
 }

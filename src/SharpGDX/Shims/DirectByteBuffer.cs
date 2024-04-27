@@ -22,25 +22,26 @@ namespace SharpGDX.Shims
 		internal Int8Array byteArray;
 
 		protected DirectByteBuffer(int capacity)
-		: this(new sbyte[capacity], capacity, 0)
+		: this(new byte[capacity], capacity, 0)
 		{
 
 		}
 
-		protected DirectByteBuffer(sbyte[] buf)
+		protected DirectByteBuffer(byte[] buf)
 		: this(buf, 1, 0)
 		//: this(buf, buf.byteLength(), 0)
 		{
 
 		}
 
-		protected DirectByteBuffer(sbyte[] buffer,
+		protected DirectByteBuffer(byte[] buffer,
 				   int capacity, int offset)
 		: base(capacity)
 		{
-
+			// TODO: Should this be ordered?
+			byteArray = new Int8Array(true, buffer, offset, capacity);
 			//byteArray = Int8Array.create(buffer, offset, capacity);
-			byteArray = new Int8Array(capacity);
+			//byteArray = new Int8Array(capacity);
 		}
 
 		//public ArrayBufferView getTypedArray()
@@ -245,7 +246,7 @@ namespace SharpGDX.Shims
 			{
 				for (int i = 3; i >= 0; i--)
 				{
-					byteArray.set(baseOffset + i, (sbyte)(value & 0xFF));
+					byteArray.set(baseOffset + i, (byte)(value & 0xFF));
 					value = value >> 8;
 				}
 			}
@@ -253,7 +254,7 @@ namespace SharpGDX.Shims
 			{
 				for (int i = 0; i <= 3; i++)
 				{
-					byteArray.set(baseOffset + i, (sbyte)(value & 0xFF));
+					byteArray.set(baseOffset + i, (byte)(value & 0xFF));
 					value = value >> 8;
 				}
 			}
@@ -265,7 +266,7 @@ namespace SharpGDX.Shims
 			{
 				for (int i = 7; i >= 0; i--)
 				{
-					byteArray.set(baseOffset + i, (sbyte)(value & 0xFF));
+					byteArray.set(baseOffset + i, (byte)(value & 0xFF));
 					value = value >> 8;
 				}
 			}
@@ -273,7 +274,7 @@ namespace SharpGDX.Shims
 			{
 				for (int i = 0; i <= 7; i++)
 				{
-					byteArray.set(baseOffset + i, (sbyte)(value & 0xFF));
+					byteArray.set(baseOffset + i, (byte)(value & 0xFF));
 					value = value >> 8;
 				}
 			}
@@ -283,13 +284,13 @@ namespace SharpGDX.Shims
 		{
 			if (_order == Endianness.BIG_ENDIAN)
 			{
-				byteArray.set(baseOffset, (sbyte)((value >> 8) & 0xFF));
-				byteArray.set(baseOffset + 1, (sbyte)(value & 0xFF));
+				byteArray.set(baseOffset, (byte)((value >> 8) & 0xFF));
+				byteArray.set(baseOffset + 1, (byte)(value & 0xFF));
 			}
 			else
 			{
-				byteArray.set(baseOffset + 1, (sbyte)((value >> 8) & 0xFF));
-				byteArray.set(baseOffset, (sbyte)(value & 0xFF));
+				byteArray.set(baseOffset + 1, (byte)((value >> 8) & 0xFF));
+				byteArray.set(baseOffset, (byte)(value & 0xFF));
 			}
 		}
 	}

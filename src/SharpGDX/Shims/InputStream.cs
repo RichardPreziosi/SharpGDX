@@ -10,7 +10,9 @@ namespace SharpGDX.Shims
 	{
 		internal readonly Stream _stream;
 
-		public InputStream(){}
+		protected InputStream()
+		{
+		}
 
 		public InputStream(Stream stream)
 		{
@@ -19,15 +21,16 @@ namespace SharpGDX.Shims
 
 		public int available()
 		{
-			return 0;
+			// TODO: This seems wrong. -RP
+			return (int)_stream.Length;
 		}
 
-		public int read(byte[] buffer)
+		public virtual int read(byte[] buffer)
 		{
 			return _stream.Read(buffer);
 		}
 
-		public int read(byte[] buffer, int offset, int length)
+		public virtual int read(byte[] buffer, int offset, int length)
 		{
 			return _stream.Read(buffer, offset, length);
 		}
@@ -46,7 +49,7 @@ namespace SharpGDX.Shims
 			return result;
 		}
 
-		public void close()
+		public virtual void close()
 		{
 			throw new NotImplementedException();
 		}

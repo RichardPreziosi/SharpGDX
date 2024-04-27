@@ -40,8 +40,8 @@ namespace SharpGDX.Desktop.Audio
 			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm, sampleRate);
 		}
 	}
-
-	public long play()
+		
+		public long play()
 	{
 		return play(1);
 	}

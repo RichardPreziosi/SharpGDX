@@ -3,8 +3,6 @@ using SharpGDX.Utils;
 using SharpGDX;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,12 +28,12 @@ namespace Drop
       //bucketImage = new Texture(Gdx.files.internal ("bucket.png"));
 
       // load the drop sound effect and the rain background "music"
-      //dropSound = Gdx.audio.newSound(Gdx.files.@internal ("drop.wav"));
-      rainMusic = Gdx.audio.newMusic(Gdx.files.@internal ("rain.wav"));
+      dropSound = Gdx.audio.newSound(Gdx.files.@internal ("drop.wav"));
+      //rainMusic = Gdx.audio.newMusic(Gdx.files.@internal ("rain.wav"));
 
       // start the playback of the background music immediately
-      rainMusic.setLooping(true);
-      rainMusic.play();
+     // rainMusic.setLooping(true);
+      //rainMusic.play();
 
       // create the camera and the SpriteBatch
       //camera = new OrthographicCamera();
@@ -50,9 +48,11 @@ namespace Drop
       //bucket.height = 64;
 
       // create the raindrops array and spawn the first raindrop
-      //raindrops = new Array<Rectangle>();
-      //spawnRaindrop();
-}
+      raindrops = new Array<Rectangle>();
+     // spawnRaindrop();
+
+     dropSound.play();
+	}
 
 private void spawnRaindrop()
 {
@@ -105,23 +105,23 @@ private void spawnRaindrop()
 //if (bucket.x > 800 - 64) bucket.x = 800 - 64;
 
 // check if we need to create a new raindrop
-//if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
+if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
 
-// move the raindrops, remove any that are beneath the bottom edge of
-// the screen or that hit the bucket. In the latter case we play back
-// a sound effect as well.
-//for (Iterator<Rectangle> iter = raindrops.iterator(); iter.hasNext();)
-//{
-	//Rectangle raindrop = iter.next();
-	//raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-	//if (raindrop.y + 64 < 0) iter.remove();
-	//if (raindrop.overlaps(bucket))
-	//{
-		//dropSound.play();
-		//iter.remove();
-	//}
-//}
-   }
+			// move the raindrops, remove any that are beneath the bottom edge of
+			// the screen or that hit the bucket. In the latter case we play back
+			// a sound effect as well.
+			//for (var iter = raindrops.GetEnumerator(); iter.MoveNext();)
+			//{
+				//Rectangle raindrop = iter.Current;
+				//raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
+				//if (raindrop.y + 64 < 0) iter.remove();
+				//if (raindrop.overlaps(bucket))
+				//{
+					//dropSound.play();
+					//iter.remove();
+				//}
+			//}
+		}
 
    public void dispose()
 {

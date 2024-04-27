@@ -1,41 +1,31 @@
 ﻿using SharpGDX.Mathematics;
+using SharpGDX.Shims;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX.Shims
+namespace SharpGDX.Utils
 {
-	/** A resizable, ordered or unordered byte array. Avoids the boxing that occurs with ArrayList<Short>. If unordered, this class
+	/** A resizable, ordered or unordered short array. Avoids the boxing that occurs with ArrayList<Short>. If unordered, this class
  * avoids a memory copy when removing elements (the last element is moved to the removed element's position).
  * @author Nathan Sweet */
-	public class Int8Array
+	public class ShortArray
 	{
-		public byte[] items;
+		public short[] items;
 		public int size;
 		public bool ordered;
 
-		internal int byteOffset()
-		{
-			// TODO: This really only matters if you're storing something that cannot be stored in a byte as a byte.
-			// TODO: Leave at 0 for now.
-			return 0;
-		}
-
-		internal byte[] buffer()
-		{
-			return this.toArray();
-		}
-
 		/** Creates an ordered array with a capacity of 16. */
-		public Int8Array()
+		public ShortArray()
 		: this(true, 16)
 		{
+			
 		}
 
 		/** Creates an ordered array with the specified capacity. */
-		public Int8Array(int capacity)
+		public ShortArray(int capacity)
 		: this(true, capacity)
 		{
 			
@@ -44,27 +34,26 @@ namespace SharpGDX.Shims
 		/** @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
 		 *           memory copy.
 		 * @param capacity Any elements added beyond this will cause the backing array to be grown. */
-		public Int8Array(bool ordered, int capacity)
+		public ShortArray(bool ordered, int capacity)
 		{
 			this.ordered = ordered;
-			items = new byte[capacity];
-			size = items.Length;
+			items = new short[capacity];
 		}
 
 		/** Creates a new array containing the elements in the specific array. The new array will be ordered if the specific array is
 		 * ordered. The capacity is set to the number of elements, so any subsequent elements added will cause the backing array to be
 		 * grown. */
-		public Int8Array(Int8Array array)
+		public ShortArray(ShortArray array)
 		{
 			this.ordered = array.ordered;
 			size = array.size;
-			items = new byte[size];
+			items = new short[size];
 			Array.Copy(array.items, 0, items, 0, size);
 		}
 
 		/** Creates a new ordered array containing the elements in the specified array. The capacity is set to the number of elements,
 		 * so any subsequent elements added will cause the backing array to be grown. */
-		public Int8Array(byte[] array)
+		public ShortArray(short[] array)
 		: this(true, array, 0, array.Length)
 		{
 			
@@ -74,7 +63,7 @@ namespace SharpGDX.Shims
 		 * subsequent elements added will cause the backing array to be grown.
 		 * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
 		 *           memory copy. */
-		public Int8Array(bool ordered, byte[] array, int startIndex, int count)
+		public ShortArray(bool ordered, short[] array, int startIndex, int count)
 		: this(ordered, count)
 		{
 			
@@ -82,33 +71,33 @@ namespace SharpGDX.Shims
 			Array.Copy(array, startIndex, items, 0, count);
 		}
 
-		/** Casts the specified value to byte and adds it. */
+		/** Casts the specified value to short and adds it. */
 		public void add(int value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size == items.Length) items = resize(Math.Max(8, (int)(size * 1.75f)));
-			items[size++] = (byte)value;
+			items[size++] = (short)value;
 		}
 
-		public void add(byte value)
+		public void add(short value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size == items.Length) items = resize(Math.Max(8, (int)(size * 1.75f)));
 			items[size++] = value;
 		}
 
-		public void add(byte value1, byte value2)
+		public void add(short value1, short value2)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size + 1 >= items.Length) items = resize(Math.Max(8, (int)(size * 1.75f)));
 			items[size] = value1;
 			items[size + 1] = value2;
 			size += 2;
 		}
 
-		public void add(byte value1, byte value2, byte value3)
+		public void add(short value1, short value2, short value3)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size + 2 >= items.Length) items = resize(Math.Max(8, (int)(size * 1.75f)));
 			items[size] = value1;
 			items[size + 1] = value2;
@@ -116,9 +105,9 @@ namespace SharpGDX.Shims
 			size += 3;
 		}
 
-		public void add(byte value1, byte value2, byte value3, byte value4)
+		public void add(short value1, short value2, short value3, short value4)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size + 3 >= items.Length) items = resize(Math.Max(8, (int)(size * 1.8f))); // 1.75 isn't enough when size=5.
 			items[size] = value1;
 			items[size + 1] = value2;
@@ -127,74 +116,74 @@ namespace SharpGDX.Shims
 			size += 4;
 		}
 
-		public void addAll(Int8Array array)
+		public void addAll(ShortArray array)
 		{
 			addAll(array.items, 0, array.size);
 		}
 
-		public void addAll(Int8Array array, int offset, int length)
+		public void addAll(ShortArray array, int offset, int length)
 		{
 			if (offset + length > array.size)
 				throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
 			addAll(array.items, offset, length);
 		}
 
-		public void addAll(byte[] array)
+		public void addAll(short[] array)
 		{
 			addAll(array, 0, array.Length);
 		}
 
-		public void addAll(byte[] array, int offset, int length)
+		public void addAll(short[] array, int offset, int length)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			int sizeNeeded = size + length;
 			if (sizeNeeded > items.Length) items = resize(Math.Max(Math.Max(8, sizeNeeded), (int)(size * 1.75f)));
 			Array.Copy(array, offset, items, size, length);
 			size += length;
 		}
 
-		public byte get(int index)
+		public short get(int index)
 		{
 			if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 			return items[index];
 		}
 
-		public void set(int index, byte value)
+		public void set(int index, short value)
 		{
 			if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 			items[index] = value;
 		}
 
-		public void incr(int index, byte value)
+		public void incr(int index, short value)
 		{
 			if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 			items[index] += value;
 		}
 
-		public void incr(byte value)
+		public void incr(short value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, n = size; i < n; i++)
 				items[i] += value;
 		}
 
-		public void mul(int index, byte value)
+		public void mul(int index, short value)
 		{
 			if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 			items[index] *= value;
 		}
 
-		public void mul(byte value)
+		public void mul(short value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, n = size; i < n; i++)
 				items[i] *= value;
 		}
 
-		public void insert(int index, byte value)
+		public void insert(int index, short value)
 		{
 			if (index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
-			byte[] items = this.items;
+			short[] items = this.items;
 			if (size == items.Length) items = resize(Math.Max(8, (int)(size * 1.75f)));
 			if (ordered)
 				Array.Copy(items, index, items, index + 1, size - index);
@@ -219,24 +208,24 @@ namespace SharpGDX.Shims
 		{
 			if (first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
 			if (second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
-			byte[] items = this.items;
-			byte firstValue = items[first];
+			short[] items = this.items;
+			short firstValue = items[first];
 			items[first] = items[second];
 			items[second] = firstValue;
 		}
 
-		public bool contains(byte value)
+		public bool contains(short value)
 		{
 			int i = size - 1;
-			byte[] items = this.items;
+			short[] items = this.items;
 			while (i >= 0)
 				if (items[i--] == value) return true;
 			return false;
 		}
 
-		public int indexOf(byte value)
+		public int indexOf(short value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, n = size; i < n; i++)
 				if (items[i] == value) return i;
 			return -1;
@@ -244,15 +233,15 @@ namespace SharpGDX.Shims
 
 		public int lastIndexOf(char value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = size - 1; i >= 0; i--)
 				if (items[i] == value) return i;
 			return -1;
 		}
 
-		public bool removeValue(byte value)
+		public bool removeValue(short value)
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, n = size; i < n; i++)
 			{
 				if (items[i] == value)
@@ -265,11 +254,11 @@ namespace SharpGDX.Shims
 		}
 
 		/** Removes and returns the item at the specified index. */
-		public byte removeIndex(int index)
+		public short removeIndex(int index)
 		{
 			if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
-			byte[] items = this.items;
-			byte value = items[index];
+			short[] items = this.items;
+			short value = items[index];
 			size--;
 			if (ordered)
 				Array.Copy(items, index + 1, items, index, size - index);
@@ -297,14 +286,14 @@ namespace SharpGDX.Shims
 
 		/** Removes from this array all of elements contained in the specified array.
 		 * @return true if this array was modified. */
-		public bool removeAll(Int8Array array)
+		public bool removeAll(ShortArray array)
 		{
 			int size = this.size;
 			int startSize = size;
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, n = array.size; i < n; i++)
 			{
-				byte item = array.get(i);
+				short item = array.get(i);
 				for (int ii = 0; ii < size; ii++)
 				{
 					if (item == items[ii])
@@ -319,19 +308,19 @@ namespace SharpGDX.Shims
 		}
 
 		/** Removes and returns the last item. */
-		public byte pop()
+		public short pop()
 		{
 			return items[--size];
 		}
 
 		/** Returns the last item. */
-		public byte peek()
+		public short peek()
 		{
 			return items[size - 1];
 		}
 
 		/** Returns the first item. */
-		public byte first()
+		public short first()
 		{
 			if (size == 0) throw new IllegalStateException("Array is empty.");
 			return items[0];
@@ -357,7 +346,7 @@ namespace SharpGDX.Shims
 		/** Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
 		 * have been removed, or if it is known that more items will not be added.
 		 * @return {@link #items} */
-		public byte[] shrink()
+		public short[] shrink()
 		{
 			if (items.Length != size) resize(size);
 			return items;
@@ -366,7 +355,7 @@ namespace SharpGDX.Shims
 		/** Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
 		 * items to avoid multiple backing array resizes.
 		 * @return {@link #items} */
-		public byte[] ensureCapacity(int additionalCapacity)
+		public short[] ensureCapacity(int additionalCapacity)
 		{
 			if (additionalCapacity < 0) throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
 			int sizeNeeded = size + additionalCapacity;
@@ -376,7 +365,7 @@ namespace SharpGDX.Shims
 
 		/** Sets the array size, leaving any values beyond the current size undefined.
 		 * @return {@link #items} */
-		public byte[] setSize(int newSize)
+		public short[] setSize(int newSize)
 		{
 			if (newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
 			if (newSize > items.Length) resize(Math.Max(8, newSize));
@@ -384,10 +373,10 @@ namespace SharpGDX.Shims
 			return items;
 		}
 
-		protected byte[] resize(int newSize)
+		protected short[] resize(int newSize)
 		{
-			byte[] newItems = new byte[newSize];
-			byte[] items = this.items;
+			short[] newItems = new short[newSize];
+			short[] items = this.items;
 			Array.Copy(items, 0, newItems, 0, Math.Min(size, newItems.Length));
 			this.items = newItems;
 			return newItems;
@@ -400,11 +389,11 @@ namespace SharpGDX.Shims
 
 		public void reverse()
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++)
 			{
 				int ii = lastIndex - i;
-				byte temp = items[i];
+				short temp = items[i];
 				items[i] = items[ii];
 				items[ii] = temp;
 			}
@@ -412,11 +401,11 @@ namespace SharpGDX.Shims
 
 		public void shuffle()
 		{
-			byte[] items = this.items;
+			short[] items = this.items;
 			for (int i = size - 1; i >= 0; i--)
 			{
 				int ii = MathUtils.random(i);
-				byte temp = items[i];
+				short temp = items[i];
 				items[i] = items[ii];
 				items[ii] = temp;
 			}
@@ -430,15 +419,15 @@ namespace SharpGDX.Shims
 		}
 
 		/** Returns a random item from the array, or zero if the array is empty. */
-		public byte random()
+		public short random()
 		{
 			if (size == 0) return 0;
 			return items[MathUtils.random(0, size - 1)];
 		}
 
-		public byte[] toArray()
+		public short[] toArray()
 		{
-			byte[] array = new byte[size];
+			short[] array = new short[size];
 			Array.Copy(items, 0, array, 0, size);
 			return array;
 		}
@@ -446,7 +435,7 @@ namespace SharpGDX.Shims
 		public override int GetHashCode()
 		{
 			if (!ordered) return base.GetHashCode();
-			byte[] items = this.items;
+			short[] items = this.items;
 			int h = 1;
 			for (int i = 0, n = size; i < n; i++)
 				h = h * 31 + items[i];
@@ -457,21 +446,21 @@ namespace SharpGDX.Shims
 		{
 			if (obj == this) return true;
 			if (!ordered) return false;
-			if (!(obj is Int8Array)) return false;
-			Int8Array array = (Int8Array)obj;
+			if (!(obj is ShortArray)) return false;
+			ShortArray array = (ShortArray)obj;
 			if (!array.ordered) return false;
 			int n = size;
 			if (n != array.size) return false;
-			byte[] items1 = this.items, items2 = array.items;
+			short[] items1 = this.items, items2 = array.items;
 			for (int i = 0; i < n; i++)
 				if (items1[i] != items2[i]) return false;
 			return true;
 		}
 
-		public String toString()
+		public override String ToString()
 		{
 			if (size == 0) return "[]";
-			byte[] items = this.items;
+			short[] items = this.items;
 			StringBuilder buffer = new StringBuilder(32);
 			buffer.Append('[');
 			buffer.Append(items[0]);
@@ -487,7 +476,7 @@ namespace SharpGDX.Shims
 		public String toString(String separator)
 		{
 			if (size == 0) return "";
-			byte[] items = this.items;
+			short[] items = this.items;
 			StringBuilder buffer = new StringBuilder(32);
 			buffer.Append(items[0]);
 			for (int i = 1; i < size; i++)
@@ -498,10 +487,10 @@ namespace SharpGDX.Shims
 			return buffer.ToString();
 		}
 
-		/** @see #ShortArray(byte[]) */
-		static public Int8Array with(byte[] array)
+		/** @see #ShortArray(short[]) */
+		static public ShortArray with(short[] array)
 		{
-			return new Int8Array(array);
+			return new ShortArray(array);
 		}
 	}
 }

@@ -60,7 +60,7 @@ internal static class OpenAL
 
 	public static void alBufferData(int bufferName, int format, ShortBuffer data, int frequency)
 	{
-		var bufferHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+		var bufferHandle = GCHandle.Alloc(data.array(), GCHandleType.Pinned);
 
 		alBufferData(bufferName, format, bufferHandle.AddrOfPinnedObject(), data.remaining() << 1, frequency);
 
@@ -209,10 +209,10 @@ internal static class OpenAL
 		alListenerfv(paramName, bufferHandle.AddrOfPinnedObject());
 
 		bufferHandle.Free();
-
-		[DllImport(Library)]
-		static extern void alListenerfv(int paramName, long values);
 	}
+
+	[DllImport(Library)]
+	static extern void alListenerfv(int paramName, long values);
 
 	[DllImport(Library)]
 	public static extern void alSource3f(int source, int param, float value1, float value2, float value3);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,15 +17,17 @@ namespace SharpGDX.Shims
 		protected InputStream @in;
 
 		protected FilterInputStream(InputStream @in)
+		
 		{
 			this.@in = @in;
 		}
 
-		public int  read(byte[] b, int off, int len)
+		public override int  read(byte[] b, int off, int len)
 		{
-			return @in._stream.Read(b, off, len);
+			var bytesRead = @in._stream.Read(b, off, len);
+			return bytesRead > 0 ? bytesRead : -1;
 		}
 
-		public void close() { }
+		public override void close() { }
 	}
 }

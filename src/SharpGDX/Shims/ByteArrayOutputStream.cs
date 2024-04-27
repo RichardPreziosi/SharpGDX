@@ -12,12 +12,12 @@ namespace SharpGDX.Shims
 
 		public void write(byte[] buffer, int offset, int count)
 		{
-
 		}
 
 		public byte[] toByteArray()
 		{
-			throw new NotImplementedException();
+			// TODO: Should this stay?
+				return stream.ToArray();
 		}
 	}
 }

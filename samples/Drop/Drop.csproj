@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="drop.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="rain.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

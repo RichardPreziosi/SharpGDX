@@ -33,6 +33,8 @@ namespace SharpGDX.Utils
 			{
 				output.write(buffer, 0, bytesRead);
 			}
+
+			var s = 1;
 		}
 
 		/** Allocates a {@value #DEFAULT_BUFFER_SIZE} byte[] for use as a temporary buffer and calls

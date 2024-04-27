@@ -85,7 +85,7 @@ namespace SharpGDX.Shims
 	// }
 	// }
 
-		public ShortBuffer asReadOnlyBuffer()
+		public override ShortBuffer asReadOnlyBuffer()
 	{
 		ShortToByteBufferAdapter buf = new ShortToByteBufferAdapter(byteBuffer.asReadOnlyBuffer());
 		buf._limit = _limit;
@@ -94,7 +94,7 @@ namespace SharpGDX.Shims
 		return buf;
 	}
 
-		public ShortBuffer compact()
+		public override ShortBuffer compact()
 	{
 		if (byteBuffer.isReadOnly())
 		{
@@ -110,7 +110,7 @@ namespace SharpGDX.Shims
 		return this;
 	}
 
-		public ShortBuffer duplicate()
+		public override ShortBuffer duplicate()
 	{
 		ShortToByteBufferAdapter buf = new ShortToByteBufferAdapter(byteBuffer.duplicate());
 		buf._limit = _limit;
@@ -119,7 +119,7 @@ namespace SharpGDX.Shims
 		return buf;
 	}
 
-		public short get()
+		public override short get()
 	{
 		if (_position == _limit)
 		{
@@ -128,7 +128,7 @@ namespace SharpGDX.Shims
 		return byteBuffer.getShort(_position++ << 1);
 	}
 
-		public short get(int index)
+		public override short get(int index)
 	{
 		if (index < 0 || index >= _limit)
 		{
@@ -137,37 +137,43 @@ namespace SharpGDX.Shims
 		return byteBuffer.getShort(index << 1);
 	}
 
-		public bool isDirect()
+		public override bool isDirect()
 	{
 		return byteBuffer.isDirect();
 	}
 
-		public bool isReadOnly()
+		public override bool isReadOnly()
 	{
 		return byteBuffer.isReadOnly();
 	}
 
-		public ByteOrder order()
+		public override ByteOrder order()
 	{
 		return byteBuffer.order();
 	}
 
-		protected short[] protectedArray()
+		protected override short[] protectedArray()
+		{
+			// TODO: Not sure if this stays or not. -RP
+			var data = byteBuffer.array();
+		short[] sdata = new short[(int)Math.Ceiling(data.Length / 2.0)];
+		System.Buffer.BlockCopy(data, 0, sdata, 0, data.Length);
+			//throw new UnsupportedOperationException();
+
+			return sdata;
+		}
+
+		protected override int protectedArrayOffset()
 	{
 		throw new UnsupportedOperationException();
 	}
 
-		protected int protectedArrayOffset()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-		protected bool protectedHasArray()
+		protected override bool protectedHasArray()
 	{
 		return false;
 	}
 
-		public ShortBuffer put(short c)
+		public override ShortBuffer put(short c)
 	{
 		if (_position == _limit)
 		{
@@ -177,7 +183,7 @@ namespace SharpGDX.Shims
 		return this;
 	}
 
-		public ShortBuffer put(int index, short c)
+		public override ShortBuffer put(int index, short c)
 	{
 		if (index < 0 || index >= _limit)
 		{
@@ -187,7 +193,7 @@ namespace SharpGDX.Shims
 		return this;
 	}
 
-		public ShortBuffer slice()
+		public override ShortBuffer slice()
 	{
 		byteBuffer.limit(_limit << 1);
 		byteBuffer.position(_position << 1);

@@ -34,7 +34,7 @@
 			
 		}
 
-		DirectReadWriteByteBuffer(sbyte[] backingArray, int capacity, int arrayOffset)
+		DirectReadWriteByteBuffer(byte[] backingArray, int capacity, int arrayOffset)
 		: base(backingArray, capacity, arrayOffset)
 		{
 
@@ -52,10 +52,9 @@
 			//return order() == ByteOrder.nativeOrder() ? DirectReadWriteIntBufferAdapter.wrap(this) : base.asIntBuffer();
 		}
 
-		public ShortBuffer asShortBuffer()
+		public override ShortBuffer asShortBuffer()
 		{
-			throw new NotImplementedException();
-			//return order() == ByteOrder.nativeOrder() ? DirectReadWriteShortBufferAdapter.wrap(this) : base.asShortBuffer();
+			return order() == ByteOrder.nativeOrder() ? DirectReadWriteShortBufferAdapter.wrap(this) : base.asShortBuffer();
 		}
 
 		public override ByteBuffer asReadOnlyBuffer()
@@ -94,7 +93,12 @@
 
 		protected override byte[] protectedArray()
 		{
-			throw new UnsupportedOperationException();
+			// TODO: Not sure if this stays. -RP
+
+			byte[] unsigned = new byte[this.byteArray.items.Length];
+			System.Buffer.BlockCopy(this.byteArray.items, 0, unsigned, 0, this.byteArray.items.Length);
+			return unsigned;
+			//throw new UnsupportedOperationException();
 		}
 
 		protected override int protectedArrayOffset()
@@ -113,7 +117,7 @@
 			// throw new BufferOverflowException();
 			// }
 			// TODO: I added the sbyte cast.
-			byteArray.set(_position++, (sbyte)b);
+			byteArray.set(_position++, b);
 			return this;
 		}
 
@@ -123,7 +127,7 @@
 			// throw new IndexOutOfBoundsException();
 			// }
 			// TODO: I added the sbyte cast.
-			byteArray.set(index, (sbyte)b);
+			byteArray.set(index, b);
 			return this;
 		}
 
@@ -151,7 +155,7 @@
 			for (int i = 0; i < len; i++)
 			{
 				// TODO: I added the sbyte cast.
-				byteArray.set(i + _position, (sbyte)src[off + i]);
+				byteArray.set(i + _position, src[off + i]);
 			}
 			_position += len;
 			return this;

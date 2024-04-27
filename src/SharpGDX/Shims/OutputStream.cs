@@ -8,9 +8,18 @@ namespace SharpGDX.Shims
 {
 	public class OutputStream : Closeable
 	{
-		protected Stream stream;
+		// TODO: Should this be a memory stream?
+		protected MemoryStream stream;
+		
+
+		protected OutputStream()
+		{
+			stream = new MemoryStream();
+		}
+
 		public void write(byte[] buffer, int offset, int length)
 		{
+			stream.Write(buffer, offset, length);
 
 		}
 
@@ -19,7 +28,10 @@ namespace SharpGDX.Shims
 			stream.Flush();
 		}
 
-		public void write(byte[] bytes){}
+		public void write(byte[] bytes)
+		{
+			var s = 1;
+		}
 
 		public void close()
 		{
