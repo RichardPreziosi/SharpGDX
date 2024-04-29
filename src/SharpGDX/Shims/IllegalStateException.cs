@@ -8,6 +8,7 @@ namespace SharpGDX.Shims
 {
 	public class IllegalStateException : InvalidOperationException
 	{
+		public IllegalStateException() { }
 		public IllegalStateException(string  message) : base(message) { }
 	}
 }

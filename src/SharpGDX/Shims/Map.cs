@@ -15,6 +15,11 @@ namespace SharpGDX.Shims
 			return _dictionary.Values;
 		}
 
+		public IEnumerable<TKey> keySet()
+		{
+			return _dictionary.Keys;
+		}
+
 		public void clear()
 		{
 			_dictionary.Clear();

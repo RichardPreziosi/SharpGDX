@@ -36,7 +36,7 @@ namespace SharpGDX
 
 	public class FormatUtils
 	{
-		public static int toGdx2DPixmapFormat(Format format)
+		public static int toGdx2DPixmapFormat(Format? format)
 		{
 			if (format == Format.Alpha) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
 			if (format == Format.Intensity) return Gdx2DPixmap.GDX2D_FORMAT_ALPHA;
@@ -131,7 +131,7 @@ public void setFilter(Filter filter)
  * @param width the width in pixels
  * @param height the height in pixels
  * @param format the {@link Format} */
-public Pixmap (int width, int height, Format format)
+public Pixmap (int width, int height, Format? format)
 {
 	pixmap = new Gdx2DPixmap(width, height, FormatUtils.toGdx2DPixmapFormat(format));
 	setColor(0, 0, 0, 0);
