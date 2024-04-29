@@ -24,10 +24,7 @@ namespace SharpGDX.Desktop
 	readonly bool[] justPressedButtons = new bool[5];
 	char lastCharacter;
 
-	private void keyCallbac(long window, int key, int scancode, int action, int mods)
-	{
-		keyCallback(window, key, scancode, action, mods);
-	}
+	private GLFW.GLFWKeyCallback keyCallback;
 
 
 private void charCallback(long window, uint codepoint)
@@ -88,39 +85,6 @@ public DefaultLwjgl3Input (Lwjgl3Window window)
 	windowHandleChanged(window.getWindowHandle());
 }
 
-void keyCallback(long window, int key, int scancode, int action, int mods)
-{
-	switch (action)
-	{
-		case GLFW.GLFW_PRESS:
-			key = getGdxKeyCode(key);
-			eventQueue.keyDown(key, TimeUtils.nanoTime());
-			pressedKeyCount++;
-			keyJustPressed = true;
-			pressedKeys[key] = true;
-			justPressedKeys[key] = true;
-			this.window.getGraphics().requestRendering();
-			lastCharacter = (char)0;
-			char character = characterForKeyCode(key);
-			if (character != 0) charCallback(window, character);
-			break;
-		case GLFW.GLFW_RELEASE:
-			key = getGdxKeyCode(key);
-			pressedKeyCount--;
-			pressedKeys[key] = false;
-			this.window.getGraphics().requestRendering();
-			eventQueue.keyUp(key, TimeUtils.nanoTime());
-			break;
-		case GLFW.GLFW_REPEAT:
-			if (lastCharacter != 0)
-			{
-				this.window.getGraphics().requestRendering();
-				eventQueue.keyTyped(lastCharacter, TimeUtils.nanoTime());
-			}
-			break;
-	}
-}
-
 public void resetPollingStates()
 {
 	_justTouched = false;
@@ -139,7 +103,38 @@ public void resetPollingStates()
 	public void windowHandleChanged(long windowHandle)
 {
 	resetPollingStates();
-	GLFW.glfwSetKeyCallback(window.getWindowHandle(), keyCallback);
+	GLFW.glfwSetKeyCallback(window.getWindowHandle(), keyCallback= (long window, int key, int scancode, int action, int mods) =>
+	{
+		switch (action)
+		{
+			case GLFW.GLFW_PRESS:
+				key = getGdxKeyCode(key);
+				eventQueue.keyDown(key, TimeUtils.nanoTime());
+				pressedKeyCount++;
+				keyJustPressed = true;
+				pressedKeys[key] = true;
+				justPressedKeys[key] = true;
+				this.window.getGraphics().requestRendering();
+				lastCharacter = (char)0;
+				char character = characterForKeyCode(key);
+				if (character != 0) charCallback(window, character);
+				break;
+			case GLFW.GLFW_RELEASE:
+				key = getGdxKeyCode(key);
+				pressedKeyCount--;
+				pressedKeys[key] = false;
+				this.window.getGraphics().requestRendering();
+				eventQueue.keyUp(key, TimeUtils.nanoTime());
+				break;
+			case GLFW.GLFW_REPEAT:
+				if (lastCharacter != 0)
+				{
+					this.window.getGraphics().requestRendering();
+					eventQueue.keyTyped(lastCharacter, TimeUtils.nanoTime());
+				}
+				break;
+		}
+	});
 	GLFW.glfwSetCharCallback(window.getWindowHandle(), charCallback);
 	GLFW.glfwSetScrollCallback(window.getWindowHandle(), scrollCallback);
 

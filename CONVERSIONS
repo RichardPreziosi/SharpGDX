@@ -491,9 +491,9 @@ SharpGDX\Utils
 
 SharpGDX\Utils\Async
 --------------------
-- 	-	AsyncExecutor
-- 	-	AsyncResult
-- 	-	AsyncTask
+- DONE 	-	AsyncExecutor
+- DONE 	-	AsyncResult
+- DONE 	-	AsyncTask
 - DONE	-	ThreadUtils
 
 SharpGDX\Utils\Compression

@@ -27,6 +27,12 @@ namespace SharpGDX.Shims
 
 		public virtual int read(byte[] buffer)
 		{
+			// TODO: I don't like this. -RP
+			if (_stream.Position == _stream.Length)
+			{
+				return -1;
+			}
+
 			return _stream.Read(buffer);
 		}
 

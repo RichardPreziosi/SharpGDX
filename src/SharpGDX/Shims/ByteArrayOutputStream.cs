@@ -12,6 +12,7 @@ namespace SharpGDX.Shims
 
 		public void write(byte[] buffer, int offset, int count)
 		{
+			var s = 1;
 		}
 
 		public byte[] toByteArray()
