@@ -1,32 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Runtime.InteropServices;
 
-namespace SharpGDX.Utils
+namespace SharpGDX.Utils;
+
+public class GdxNativesLoader
 {
-	public class GdxNativesLoader
+	private static readonly object Lock = new();
+
+	private static bool _nativesLoaded;
+
+	public static bool DisableNativesLoading { get; set; } = false;
+
+	/// <summary>
+	///     Loads the sharpGDX native libraries if they have not already been loaded.
+	/// </summary>
+	public static void Load()
 	{
-		static public bool disableNativesLoading = false;
-
-		static private bool nativesLoaded;
-
-		private static object _lock = new object();
-
-		/** Loads the libgdx native libraries if they have not already been loaded. */
-		static public void load()
+		lock (Lock)
 		{
-			lock (_lock)
+			if (_nativesLoaded)
 			{
-				if (nativesLoaded) return;
-
-				if (disableNativesLoading) return;
-
-				// TODO: ??? new SharedLibraryLoader().load("gdx");
-				nativesLoaded = true;
+				return;
 			}
+
+			if (DisableNativesLoading)
+			{
+				return;
+			}
+
+			NativeLibrary.Load("gdx2d");
+			_nativesLoaded = true;
 		}
 	}
 }

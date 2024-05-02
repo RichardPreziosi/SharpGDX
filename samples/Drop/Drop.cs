@@ -11,14 +11,14 @@ namespace Drop
 {
 	public class Drop : ApplicationAdapter
 	{
-		//private Texture dropImage;
-		//private Texture bucketImage;
+		private Texture dropImage;
+		private Texture bucketImage;
 		private Sound dropSound;
 
 		private Music rainMusic;
 
-		//private SpriteBatch batch;
-		//private OrthographicCamera camera;
+		private SpriteBatch batch;
+		private OrthographicCamera camera;
 		private Rectangle bucket;
 		private List<Rectangle> raindrops;
 		private long lastDropTime;
@@ -26,8 +26,8 @@ namespace Drop
 		public override void create()
 		{
 			// load the images for the droplet and the bucket, 64x64 pixels each
-			//dropImage = new Texture(Gdx.files.@internal("droplet.png"));
-			//bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
+			dropImage = new Texture(Gdx.files.@internal("droplet.png"));
+			bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
 
 			// load the drop sound effect and the rain background "music"
 			dropSound = Gdx.audio.newSound(Gdx.files.@internal("drop.wav"));
@@ -38,9 +38,9 @@ namespace Drop
 			rainMusic.play();
 
 			// create the camera and the SpriteBatch
-			//camera = new OrthographicCamera();
-			//camera.setToOrtho(false, 800, 480);
-			//batch = new SpriteBatch();
+			camera = new OrthographicCamera();
+			camera.setToOrtho(false, 800, 480);
+			batch = new SpriteBatch();
 
 			// create a Rectangle to logically represent the bucket
 			bucket = new Rectangle();

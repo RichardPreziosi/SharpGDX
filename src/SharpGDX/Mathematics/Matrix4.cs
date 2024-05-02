@@ -1,4 +1,5 @@
-﻿using SharpGDX.Utils;
+﻿using System.Runtime.InteropServices;
+using SharpGDX.Utils;
 using SharpGDX.Shims;
 
 namespace SharpGDX.Mathematics
@@ -1109,89 +1110,90 @@ public class Matrix4   {
 			+ "[" + val[M30] + "|" + val[M31] + "|" + val[M32] + "|" + val[M33] + "]\n";
 	}
 
-	// @off
-	/*JNI
-	#include <memory.h>
-	#include <stdio.h>
-	#include <string.h>
-	
-	#define M00 0
-	#define M01 4
-	#define M02 8
-	#define M03 12
-	#define M10 1
-	#define M11 5
-	#define M12 9
-	#define M13 13
-	#define M20 2
-	#define M21 6
-	#define M22 10
-	#define M23 14
-	#define M30 3
-	#define M31 7
-	#define M32 11
-	#define M33 15
-	
-	static inline void matrix4_mul(float* mata, float* matb) {
-		float tmp[16];
-		tmp[M00] = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20] + mata[M03] * matb[M30];
-		tmp[M01] = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21] + mata[M03] * matb[M31];
-		tmp[M02] = mata[M00] * matb[M02] + mata[M01] * matb[M12] + mata[M02] * matb[M22] + mata[M03] * matb[M32];
-		tmp[M03] = mata[M00] * matb[M03] + mata[M01] * matb[M13] + mata[M02] * matb[M23] + mata[M03] * matb[M33];
-		tmp[M10] = mata[M10] * matb[M00] + mata[M11] * matb[M10] + mata[M12] * matb[M20] + mata[M13] * matb[M30];
-		tmp[M11] = mata[M10] * matb[M01] + mata[M11] * matb[M11] + mata[M12] * matb[M21] + mata[M13] * matb[M31];
-		tmp[M12] = mata[M10] * matb[M02] + mata[M11] * matb[M12] + mata[M12] * matb[M22] + mata[M13] * matb[M32];
-		tmp[M13] = mata[M10] * matb[M03] + mata[M11] * matb[M13] + mata[M12] * matb[M23] + mata[M13] * matb[M33];
-		tmp[M20] = mata[M20] * matb[M00] + mata[M21] * matb[M10] + mata[M22] * matb[M20] + mata[M23] * matb[M30];
-		tmp[M21] = mata[M20] * matb[M01] + mata[M21] * matb[M11] + mata[M22] * matb[M21] + mata[M23] * matb[M31];
-		tmp[M22] = mata[M20] * matb[M02] + mata[M21] * matb[M12] + mata[M22] * matb[M22] + mata[M23] * matb[M32];
-		tmp[M23] = mata[M20] * matb[M03] + mata[M21] * matb[M13] + mata[M22] * matb[M23] + mata[M23] * matb[M33];
-		tmp[M30] = mata[M30] * matb[M00] + mata[M31] * matb[M10] + mata[M32] * matb[M20] + mata[M33] * matb[M30];
-		tmp[M31] = mata[M30] * matb[M01] + mata[M31] * matb[M11] + mata[M32] * matb[M21] + mata[M33] * matb[M31];
-		tmp[M32] = mata[M30] * matb[M02] + mata[M31] * matb[M12] + mata[M32] * matb[M22] + mata[M33] * matb[M32];
-		tmp[M33] = mata[M30] * matb[M03] + mata[M31] * matb[M13] + mata[M32] * matb[M23] + mata[M33] * matb[M33];
-		memcpy(mata, tmp, sizeof(float) *  16);
-	}
-	
-	static inline void matrix4_mulVec(float* mat, float* vec) {
-		float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03];
-		float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13];
-		float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23];
-		vec[0] = x;
-		vec[1] = y;
-		vec[2] = z;
-	}
-	
-	static inline void matrix4_proj(float* mat, float* vec) {
-		float inv_w = 1.0f / (vec[0] * mat[M30] + vec[1] * mat[M31] + vec[2] * mat[M32] + mat[M33]);
-		float x = (vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03]) * inv_w;
-		float y = (vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13]) * inv_w; 
-		float z = (vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23]) * inv_w;
-		vec[0] = x;
-		vec[1] = y;
-		vec[2] = z;
-	}
-	
-	static inline void matrix4_rot(float* mat, float* vec) {
-		float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02];
-		float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12];
-		float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22];
-		vec[0] = x;
-		vec[1] = y;
-		vec[2] = z;
-	}
-	 */
+		// @off
+		/*JNI
+		#include <memory.h>
+		#include <stdio.h>
+		#include <string.h>
 
-	/** Multiplies the vectors with the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get
-	 * from {@link Matrix4#val}. The vectors array is assumed to hold 3-component vectors. Offset specifies the offset into the
-	 * array where the x-component of the first vector is located. The numVecs parameter specifies the number of vectors stored in
-	 * the vectors array. The stride parameter specifies the number of floats between subsequent vectors and must be >= 3. This is
-	 * the same as {@link Vector3#mul(Matrix4)} applied to multiple vectors.
-	 * @param mat the matrix
-	 * @param vecs the vectors
-	 * @param offset the offset into the vectors array
-	 * @param numVecs the number of vectors
-	 * @param stride the stride between vectors in floats */
+		#define M00 0
+		#define M01 4
+		#define M02 8
+		#define M03 12
+		#define M10 1
+		#define M11 5
+		#define M12 9
+		#define M13 13
+		#define M20 2
+		#define M21 6
+		#define M22 10
+		#define M23 14
+		#define M30 3
+		#define M31 7
+		#define M32 11
+		#define M33 15
+
+		static inline void matrix4_mul(float* mata, float* matb) {
+			float tmp[16];
+			tmp[M00] = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20] + mata[M03] * matb[M30];
+			tmp[M01] = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21] + mata[M03] * matb[M31];
+			tmp[M02] = mata[M00] * matb[M02] + mata[M01] * matb[M12] + mata[M02] * matb[M22] + mata[M03] * matb[M32];
+			tmp[M03] = mata[M00] * matb[M03] + mata[M01] * matb[M13] + mata[M02] * matb[M23] + mata[M03] * matb[M33];
+			tmp[M10] = mata[M10] * matb[M00] + mata[M11] * matb[M10] + mata[M12] * matb[M20] + mata[M13] * matb[M30];
+			tmp[M11] = mata[M10] * matb[M01] + mata[M11] * matb[M11] + mata[M12] * matb[M21] + mata[M13] * matb[M31];
+			tmp[M12] = mata[M10] * matb[M02] + mata[M11] * matb[M12] + mata[M12] * matb[M22] + mata[M13] * matb[M32];
+			tmp[M13] = mata[M10] * matb[M03] + mata[M11] * matb[M13] + mata[M12] * matb[M23] + mata[M13] * matb[M33];
+			tmp[M20] = mata[M20] * matb[M00] + mata[M21] * matb[M10] + mata[M22] * matb[M20] + mata[M23] * matb[M30];
+			tmp[M21] = mata[M20] * matb[M01] + mata[M21] * matb[M11] + mata[M22] * matb[M21] + mata[M23] * matb[M31];
+			tmp[M22] = mata[M20] * matb[M02] + mata[M21] * matb[M12] + mata[M22] * matb[M22] + mata[M23] * matb[M32];
+			tmp[M23] = mata[M20] * matb[M03] + mata[M21] * matb[M13] + mata[M22] * matb[M23] + mata[M23] * matb[M33];
+			tmp[M30] = mata[M30] * matb[M00] + mata[M31] * matb[M10] + mata[M32] * matb[M20] + mata[M33] * matb[M30];
+			tmp[M31] = mata[M30] * matb[M01] + mata[M31] * matb[M11] + mata[M32] * matb[M21] + mata[M33] * matb[M31];
+			tmp[M32] = mata[M30] * matb[M02] + mata[M31] * matb[M12] + mata[M32] * matb[M22] + mata[M33] * matb[M32];
+			tmp[M33] = mata[M30] * matb[M03] + mata[M31] * matb[M13] + mata[M32] * matb[M23] + mata[M33] * matb[M33];
+			memcpy(mata, tmp, sizeof(float) *  16);
+		}
+
+		static inline void matrix4_mulVec(float* mat, float* vec) {
+			float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03];
+			float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13];
+			float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23];
+			vec[0] = x;
+			vec[1] = y;
+			vec[2] = z;
+		}
+
+		static inline void matrix4_proj(float* mat, float* vec) {
+			float inv_w = 1.0f / (vec[0] * mat[M30] + vec[1] * mat[M31] + vec[2] * mat[M32] + mat[M33]);
+			float x = (vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03]) * inv_w;
+			float y = (vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13]) * inv_w; 
+			float z = (vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23]) * inv_w;
+			vec[0] = x;
+			vec[1] = y;
+			vec[2] = z;
+		}
+
+		static inline void matrix4_rot(float* mat, float* vec) {
+			float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02];
+			float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12];
+			float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22];
+			vec[0] = x;
+			vec[1] = y;
+			vec[2] = z;
+		}
+		 */
+
+		/** Multiplies the vectors with the given matrix. The matrix array is assumed to hold a 4x4 column major matrix as you can get
+		 * from {@link Matrix4#val}. The vectors array is assumed to hold 3-component vectors. Offset specifies the offset into the
+		 * array where the x-component of the first vector is located. The numVecs parameter specifies the number of vectors stored in
+		 * the vectors array. The stride parameter specifies the number of floats between subsequent vectors and must be >= 3. This is
+		 * the same as {@link Vector3#mul(Matrix4)} applied to multiple vectors.
+		 * @param mat the matrix
+		 * @param vecs the vectors
+		 * @param offset the offset into the vectors array
+		 * @param numVecs the number of vectors
+		 * @param stride the stride between vectors in floats */
+		[DllImport("gdx2d.dll", EntryPoint = "matrix4_mulVec")]
 	public static extern void mulVec (float[] mat, float[] vecs, int offset, int numVecs, int stride) /*-{ }-*/; /*
 		float* vecPtr = vecs + offset;
 		for(int i = 0; i < numVecs; i++) {
@@ -1210,13 +1212,26 @@ public class Matrix4   {
 	 * @param offset the offset into the vectors array
 	 * @param numVecs the number of vectors
 	 * @param stride the stride between vectors in floats */
-	public static extern void prj (float[] mat, float[] vecs, int offset, int numVecs, int stride) /*-{ }-*/; /*
-		float* vecPtr = vecs + offset;
-		for(int i = 0; i < numVecs; i++) {
-			matrix4_proj(mat, vecPtr);
+
+	public static void prj(float[] mat, float[] vecs, int offset, int numVecs, int stride)
+	{
+		// TODO: Verify
+		var matHandle = GCHandle.Alloc(mat, GCHandleType.Pinned);
+		var vecsHandle = GCHandle.Alloc(vecs, GCHandleType.Pinned);
+		var vecPtr = vecsHandle.AddrOfPinnedObject() + offset;
+
+		for (int i = 0; i < numVecs; i++)
+		{
+			matrix4_proj(matHandle.AddrOfPinnedObject(), vecPtr);
 			vecPtr += stride;
 		}
-	*/
+
+		matHandle.Free();
+		vecsHandle.Free();
+
+		[DllImport("gdx2d", EntryPoint = "matrix4_proj")]
+		static extern void matrix4_proj(long mat, long vec);
+	}
 
 	/** Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix. The matrix array is assumed to hold a 4x4
 	 * column major matrix as you can get from {@link Matrix4#val}. The vectors array is assumed to hold 3-component vectors.
@@ -1228,7 +1243,8 @@ public class Matrix4   {
 	 * @param offset the offset into the vectors array
 	 * @param numVecs the number of vectors
 	 * @param stride the stride between vectors in floats */
-	public static extern void rot (float[] mat, float[] vecs, int offset, int numVecs, int stride) /*-{ }-*/; /*
+		[DllImport("gdx2d.dll", EntryPoint = "matrix4_rot")]
+		public static extern void rot (float[] mat, float[] vecs, int offset, int numVecs, int stride) /*-{ }-*/; /*
 		float* vecPtr = vecs + offset;
 		for(int i = 0; i < numVecs; i++) {
 			matrix4_rot(mat, vecPtr);

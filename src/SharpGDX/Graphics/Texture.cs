@@ -25,8 +25,8 @@ namespace SharpGDX
  * @author badlogicgames@gmail.com */
 public class Texture : GLTexture {
 	private static AssetManager assetManager;
-	readonly static Map<Application, Array<Texture>> managedTextures = new ();
-
+	readonly static Map<Application, Array<Texture>> managedTextures = new();
+		
 	public enum TextureFilter {
 		/** Fetch the nearest texel that best maps to the pixel on screen. */
 		Nearest=(GL20.GL_NEAREST),

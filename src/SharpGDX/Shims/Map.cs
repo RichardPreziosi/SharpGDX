@@ -35,9 +35,10 @@ namespace SharpGDX.Shims
 			return _dictionary.GetValueOrDefault(key, defaultValue);
 		}
 
-		public TValue get(TKey key)
+		public TValue? get(TKey key)
 		{
-			return _dictionary[key];
+			_dictionary.TryGetValue(key, out var value);
+			return value;
 		}
 
 		public void remove(TKey key)

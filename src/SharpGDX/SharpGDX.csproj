@@ -10,4 +10,10 @@
     <Folder Include="Input\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="gdx2d.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -83,8 +83,7 @@ namespace SharpGDX.Desktop
 
 		public void glBindTexture(int target, int texture)
 	{
-		throw new NotImplementedException();
-		//	GL.glBindTexture(target, texture);
+			GL.glBindTexture(target, texture);
 		}
 
 		public void glBlendColor(float red, float green, float blue, float alpha)
@@ -222,8 +221,7 @@ namespace SharpGDX.Desktop
 
 		public int glCreateShader(int type)
 	{
-		throw new NotImplementedException();
-		//return GL.glCreateShader(type);
+		return GL.glCreateShader(type);
 		}
 
 		public void glCullFace(int mode)
@@ -438,14 +436,12 @@ namespace SharpGDX.Desktop
 
 		public void glGenTextures(int n, IntBuffer textures)
 	{
-		throw new NotImplementedException();
-		//	GL.glGenTextures(textures);
+			GL.glGenTextures(textures);
 		}
 
 		public int glGenTexture()
 	{
-		throw new NotImplementedException();
-		//return GL.glGenTextures();
+		return GL.glGenTextures();
 		}
 
 		public void glGenerateMipmap(int target)
@@ -682,8 +678,7 @@ namespace SharpGDX.Desktop
 
 		public void glPixelStorei(int pname, int param)
 	{
-		throw new NotImplementedException();
-		//GL.glPixelStorei(pname, param);
+		GL.glPixelStorei(pname, param);
 		}
 
 		public void glPolygonOffset(float factor, float units)
@@ -735,10 +730,9 @@ namespace SharpGDX.Desktop
 		throw new UnsupportedOperationException("unsupported, won't implement");
 	}
 
-	public void glShaderSource(int shader, String @string)
-	{
-		throw new NotImplementedException();
-		//GL.glShaderSource(shader, @string);
+		public void glShaderSource(int shader, String @string)
+		{
+			GL.glShaderSource(shader, @string);
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)
@@ -780,22 +774,21 @@ namespace SharpGDX.Desktop
 		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
 		Buffer pixels)
 	{
-		throw new NotImplementedException();
-		//if (pixels == null)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)null);
-			//else if (pixels is ByteBuffer)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)pixels);
-			//else if (pixels is ShortBuffer)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ShortBuffer)pixels);
-			//else if (pixels is IntBuffer)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntBuffer)pixels);
-			//else if (pixels is FloatBuffer)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer)pixels);
-			//else if (pixels is DoubleBuffer)
-			//	GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer)pixels);
-			//else
-			//	throw new GdxRuntimeException("Can't use " + pixels.GetType().Name
-			//		+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
+		if (pixels == null)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)null);
+			else if (pixels is ByteBuffer)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)pixels);
+			else if (pixels is ShortBuffer)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ShortBuffer)pixels);
+			else if (pixels is IntBuffer)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntBuffer)pixels);
+			else if (pixels is FloatBuffer)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer)pixels);
+			else if (pixels is DoubleBuffer)
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer)pixels);
+			else
+				throw new GdxRuntimeException("Can't use " + pixels.GetType().Name
+					+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
 		}
 
 		public void glTexParameterf(int target, int pname, float param)
@@ -812,8 +805,7 @@ namespace SharpGDX.Desktop
 
 		public void glTexParameteri(int target, int pname, int param)
 	{
-		throw new NotImplementedException();
-		//GL.glTexParameteri(target, pname, param);
+		GL.glTexParameteri(target, pname, param);
 		}
 
 		public void glTexParameteriv(int target, int pname, IntBuffer @params)

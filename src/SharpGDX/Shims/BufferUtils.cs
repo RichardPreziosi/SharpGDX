@@ -539,7 +539,8 @@ namespace SharpGDX.Shims
 		 * {@link #disposeUnsafeByteBuffer(ByteBuffer)}. */
 		public static ByteBuffer newUnsafeByteBuffer(int numBytes)
 		{
-			ByteBuffer buffer = newDisposableByteBuffer(numBytes);
+			// TODO: This needs to be unsafe????
+			ByteBuffer buffer = BufferUtils.newByteBuffer(numBytes);// newDisposableByteBuffer(numBytes);
 			buffer.order(ByteOrder.nativeOrder());
 			allocatedUnsafe += numBytes;
 			lock(unsafeBuffers) {

@@ -9,10 +9,9 @@ namespace SharpGDX.Headless
 {
 	public class HeadlessNativesLoader
 	{
-
 		public static void load()
 		{
-			GdxNativesLoader.load();
+			GdxNativesLoader.Load();
 		}
 	}
 }
