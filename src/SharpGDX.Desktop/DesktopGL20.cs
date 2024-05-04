@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Unicode;
 using System.Threading.Tasks;
+using SharpGDX.OpenGL;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -180,7 +183,7 @@ namespace SharpGDX.Desktop
 	public void glCompileShader(int shader)
 	{
 		GL.glCompileShader(shader);
-	}
+		}
 
 	public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
 		int imageSize, Buffer data)
@@ -238,7 +241,11 @@ namespace SharpGDX.Desktop
 
 	public void glDeleteBuffer(int buffer)
 	{
-		GL.glDeleteBuffers(buffer);
+		IntBuffer intBuffer = IntBuffer.allocate(1);
+		intBuffer.put(buffer);
+		var bufferHandle = GCHandle.Alloc(intBuffer.array(), GCHandleType.Pinned);
+			GL.glDeleteBuffers(1, buffer);
+			bufferHandle.Free();
 	}
 
 	public void glDeleteFramebuffers(int n, IntBuffer framebuffers)
@@ -331,30 +338,42 @@ namespace SharpGDX.Desktop
 
 	public void glDrawElements(int mode, int count, int type, Buffer indices)
 	{
-		if (indices is ShortBuffer && type == GL20.GL_UNSIGNED_SHORT) {
+		GCHandle bufferHandle;
+
+		// TODO: Should this be in a try/finally?
+			if (indices is ShortBuffer && type == GL20.GL_UNSIGNED_SHORT) {
 			ShortBuffer sb = (ShortBuffer)indices;
 			int position = sb.position();
 			int oldLimit = sb.limit();
 			sb.limit(position + count);
-			GL.glDrawElements(mode, sb);
+
+			bufferHandle = GCHandle.Alloc(sb.array(), GCHandleType.Pinned);
+
+				GL.glDrawElements(mode, sb.remaining(), GL11.GL_UNSIGNED_SHORT, bufferHandle.AddrOfPinnedObject());
 			sb.limit(oldLimit);
 		} else if (indices is ByteBuffer && type == GL20.GL_UNSIGNED_SHORT) {
 			ShortBuffer sb = ((ByteBuffer)indices).asShortBuffer();
 			int position = sb.position();
 			int oldLimit = sb.limit();
 			sb.limit(position + count);
-			GL.glDrawElements(mode, sb);
+
+			bufferHandle = GCHandle.Alloc(sb.array(), GCHandleType.Pinned);
+				GL.glDrawElements(mode, sb.remaining(), GL11.GL_UNSIGNED_SHORT, bufferHandle.AddrOfPinnedObject());
 			sb.limit(oldLimit);
 		} else if (indices is ByteBuffer && type == GL20.GL_UNSIGNED_BYTE) {
 			ByteBuffer bb = (ByteBuffer)indices;
 			int position = bb.position();
 			int oldLimit = bb.limit();
 			bb.limit(position + count);
-			GL.glDrawElements(mode, bb);
+
+			bufferHandle = GCHandle.Alloc(bb.array(), GCHandleType.Pinned);
+				GL.glDrawElements(mode, bb.remaining(), GL11.GL_UNSIGNED_BYTE, bufferHandle.AddrOfPinnedObject());
 			bb.limit(oldLimit);
 		} else
 			throw new GdxRuntimeException("Can't use " + indices.GetType().Name
 				+ " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
+
+		bufferHandle.Free();
 	}
 
 	public void glEnable(int cap)
@@ -435,13 +454,24 @@ namespace SharpGDX.Desktop
 		}
 
 		public void glGenTextures(int n, IntBuffer textures)
-	{
-			GL.glGenTextures(textures);
+		{
+			var xHandle = GCHandle.Alloc(textures.array(), GCHandleType.Pinned);
+
+			GL.glGenTextures(textures.remaining(), xHandle.AddrOfPinnedObject());
+
+			xHandle.Free();
 		}
 
 		public int glGenTexture()
-	{
-		return GL.glGenTextures();
+		{
+			var textures = IntBuffer.allocate(1);
+			var xHandle = GCHandle.Alloc(textures.array(), GCHandleType.Pinned);
+
+			GL.glGenTextures(textures.remaining(), xHandle.AddrOfPinnedObject());
+
+			xHandle.Free();
+
+			return textures.get(0);
 		}
 
 		public void glGenerateMipmap(int target)
@@ -539,19 +569,25 @@ namespace SharpGDX.Desktop
 
 		public String glGetShaderInfoLog(int shader)
 	{
-		throw new NotImplementedException();
-		// //ByteBuffer buffer = ByteBuffer.allocateDirect(1024 * 10);
-		//buffer.order(ByteOrder.nativeOrder());
-		//ByteBuffer tmp = ByteBuffer.allocateDirect(4);
-		//tmp.order(ByteOrder.nativeOrder());
-		//IntBuffer intBuffer = tmp.asIntBuffer();
+			ByteBuffer buffer = ByteBuffer.allocateDirect(1024 * 10);
+			buffer.order(ByteOrder.nativeOrder());
+			ByteBuffer tmp = ByteBuffer.allocateDirect(4);
+			tmp.order(ByteOrder.nativeOrder());
+			IntBuffer intBuffer = tmp.asIntBuffer();
 
-		//GL.glGetShaderInfoLog(shader, intBuffer, buffer);
-		//int numBytes = intBuffer.get(0);
-		//byte[] bytes = new byte[numBytes];
-		//buffer.get(bytes);
-		//return new String(bytes);
-	}
+			var intBufferHandle = GCHandle.Alloc(intBuffer.array(), GCHandleType.Pinned);
+			var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
+
+			GL.glGetShaderInfoLog(shader, buffer.remaining(), intBufferHandle.AddrOfPinnedObject(), bufferHandle.AddrOfPinnedObject());
+
+			intBufferHandle.Free();
+			bufferHandle.Free();
+
+			int numBytes = intBuffer.get(0);
+			byte[] bytes = new byte[numBytes];
+			buffer.get(bytes);
+			return System.Text.Encoding.UTF8.GetString(bytes);
+		}
 
 	public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
 	{
@@ -560,11 +596,12 @@ namespace SharpGDX.Desktop
 
 	public void glGetShaderiv(int shader, int pname, IntBuffer @params)
 	{
-		throw new NotImplementedException();
-		//GL.glGetShaderiv(shader, pname, @params);
+		var arrayHandle = GCHandle.Alloc(@params.array(), GCHandleType.Pinned);
+		GL.glGetShaderiv(shader, pname, arrayHandle.AddrOfPinnedObject());
+		arrayHandle.Free();
 		}
 
-		public String glGetString(int name)
+	public String glGetString(int name)
 	{
 		return GL.glGetString(name);
 	}
@@ -732,7 +769,10 @@ namespace SharpGDX.Desktop
 
 		public void glShaderSource(int shader, String @string)
 		{
-			GL.glShaderSource(shader, @string);
+			// TODO: Verify
+			var arrayHandle = GCHandle.Alloc(new int[@string.Length], GCHandleType.Pinned);
+			GL.glShaderSource(shader, 1, new string[] { @string }, arrayHandle.AddrOfPinnedObject());
+			arrayHandle.Free();
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)
@@ -771,24 +811,55 @@ namespace SharpGDX.Desktop
 		//	GL.glStencilOpSeparate(face, fail, zfail, zpass);
 		}
 
-		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
-		Buffer pixels)
-	{
-		if (pixels == null)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)null);
+		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border,
+			int format, int type,
+			Buffer pixels)
+		{
+			GCHandle pixelHandle;
+
+			if (pixels == null)
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((ByteBuffer?)null)?.array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else if (pixels is ByteBuffer)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ByteBuffer)pixels);
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((ByteBuffer)pixels).array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else if (pixels is ShortBuffer)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (ShortBuffer)pixels);
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((ShortBuffer)pixels).array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else if (pixels is IntBuffer)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntBuffer)pixels);
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((IntBuffer)pixels).array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else if (pixels is FloatBuffer)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (FloatBuffer)pixels);
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((FloatBuffer)pixels).array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else if (pixels is DoubleBuffer)
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type, (DoubleBuffer)pixels);
+			{
+				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+					(pixelHandle = GCHandle.Alloc(((DoubleBuffer)pixels).array(), GCHandleType.Pinned))
+					.AddrOfPinnedObject());
+			}
 			else
+			{
 				throw new GdxRuntimeException("Can't use " + pixels.GetType().Name
-					+ " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
+				                                           + " with this method. Use ByteBuffer, ShortBuffer, IntBuffer, FloatBuffer or DoubleBuffer instead. Blame LWJGL");
+			}
+
+			pixelHandle.Free();
 		}
 
 		public void glTexParameterf(int target, int pname, float param)

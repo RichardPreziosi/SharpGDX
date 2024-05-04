@@ -5,6 +5,7 @@ using SharpGDX.Utils;
 using SharpGDX.Desktop.Audio;
 using SharpGDX.Desktop.Audio.Mock;
 using SharpGDX.Mathematics;
+using SharpGDX.OpenGL;
 
 namespace SharpGDX.Desktop
 {
@@ -509,7 +510,7 @@ namespace SharpGDX.Desktop
 				throw new GdxRuntimeException("Couldn't initialize GLES", e);
 			}
 		} else {
-			GL.createCapabilities();
+			// TODO: Not really necessary. GL.createCapabilities();
 		}
 
 		initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20);
