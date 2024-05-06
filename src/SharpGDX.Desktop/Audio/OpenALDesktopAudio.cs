@@ -2,8 +2,9 @@
 using SharpGDX.Utils;
 using SharpGDX.Desktop.Audio;
 using SharpGDX.Mathematics;
-using static SharpGDX.Desktop.OpenAL;
-using static SharpGDX.Desktop.OpenALC;
+using SharpGDX.OpenAL;
+using static SharpGDX.OpenAL.AL;
+using static SharpGDX.OpenAL.ALC;
 using SharpGDX.Shims;
 using BindingFlags = System.Reflection.BindingFlags;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -49,19 +50,19 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		//registerSound("mp3", Mp3.Sound.class);
 		//registerMusic("mp3", Mp3.Music.class);
 
-		device = alcOpenDevice((ByteBuffer)null);
+		device = alcOpenDevice(null);
 		if (device == 0L) {
 			noDevice = true;
 			return;
 		}
 		// TODO: ALCCapabilities deviceCapabilities = ALC.createCapabilities(device);
-			context = alcCreateContext(device, (IntBuffer)null);
+			context = alcCreateContext(new IntPtr(device), (int[]?)null);
 		if (context == 0L) {
-			alcCloseDevice(device);
+			alcCloseDevice(new IntPtr(device));
 			noDevice = true;
 			return;
 		}
-		if (!alcMakeContextCurrent(context)) {
+		if (alcMakeContextCurrent(new IntPtr(context)) == ALC_FALSE) {
 			noDevice = true;
 			return;
 		}
@@ -70,7 +71,7 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		alGetError();
 		allSources = new IntArray(false, simultaneousSources);
 		for (int i = 0; i < simultaneousSources; i++) {
-			int sourceID = alGenSources();
+			alGenSources(1, out int sourceID);
 			if (alGetError() != AL_NO_ERROR) break;
 			allSources.add(sourceID);
 		}
@@ -78,24 +79,18 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		soundIdToSource = new LongMap<int>();
 		sourceToSoundId = new IntMap<long>();
 
-			// TODO: This was originally using the lwjgl BufferUtils.createFloatBuffer
-			// TODO: Not sure if switching to the libgdx FloatBuffer.allocate will work.
-			FloatBuffer orientation = FloatBuffer.allocate(6)
-			.put(new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f});
-		((Buffer)orientation).flip();
-		alListenerfv(AL_ORIENTATION, orientation);
-		FloatBuffer velocity = FloatBuffer.allocate(3).put(new float[] {0.0f, 0.0f, 0.0f});
-		((Buffer)velocity).flip();
-		alListenerfv(AL_VELOCITY, velocity);
-		FloatBuffer position = FloatBuffer.allocate(3).put(new float[] {0.0f, 0.0f, 0.0f});
-		((Buffer)position).flip();
-		alListenerfv(AL_POSITION, position);
+			alListenerfv(AL_ORIENTATION, new float[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f });
+		alListenerfv(AL_VELOCITY, new float[] { 0.0f, 0.0f, 0.0f });
+		alListenerfv(AL_POSITION, new float[] { 0.0f, 0.0f, 0.0f });
 
 		alDisable(SOFTXHoldOnDisconnect.AL_STOP_SOURCES_ON_DISCONNECT_SOFT);
 		observerThread = new Thread(() => {
 
 				while (true) {
-					bool isConnected = alcGetInteger(device, ALC_CONNECTED) != 0;
+	int ALC_CONNECTED = 0x313;
+	// TODO: Verify
+	ALC.alcGetIntegerv(new IntPtr(device), ALC_CONNECTED, 1, out int state);
+		bool isConnected = state != 0;
 					if (!isConnected) {
 						// The device is at a state where it can't recover
 						// This is usually the windows path on removing a device
@@ -104,13 +99,13 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 					}
 					if (preferredOutputDevice != null) {
 						if (Arrays.asList(getAvailableOutputDevices()).Contains(preferredOutputDevice)) {
-							if (!preferredOutputDevice.Equals(alcGetString(device, ALC_ALL_DEVICES_SPECIFIER))) {
+							if (!preferredOutputDevice.Equals(alcGetString(new IntPtr(device), ALC_ALL_DEVICES_SPECIFIER))) {
 								// The preferred output device is reconnected, let's switch back to it
 								switchOutputDevice(preferredOutputDevice);
 							}
 						} else {
 							// This is usually the mac/linux path
-							if (preferredOutputDevice.Equals(alcGetString(device, ALC_ALL_DEVICES_SPECIFIER))) {
+							if (preferredOutputDevice.Equals(alcGetString(new IntPtr(device), ALC_ALL_DEVICES_SPECIFIER))) {
 								// The preferred output device is reconnected, let's switch back to it
 								switchOutputDevice(null, false);
 							}
@@ -193,7 +188,8 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 	}
 
 	public String[] getAvailableOutputDevices () {
-		List<String> devices = getStringList(0, ALC_ALL_DEVICES_SPECIFIER);
+		// TODO: Verify
+		var devices = ALC.alcGetStringv(0, ALC_ALL_DEVICES_SPECIFIER);
 		if (devices == null) return new String[0];
 		return devices.ToArray();
 	}
@@ -202,7 +198,7 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (noDevice) return 0;
 		for (int i = 0, n = idleSources.size; i < n; i++) {
 			int sourceId = idleSources.get(i);
-			int state = alGetSourcei(sourceId, AL_SOURCE_STATE);
+			alGetSourcei(sourceId, AL_SOURCE_STATE, out var state);
 			if (state != AL_PLAYING && state != AL_PAUSED) {
 				long oldSoundId = sourceToSoundId.remove(sourceId);
 				if (oldSoundId != null) soundIdToSource.remove(oldSoundId);
@@ -238,7 +234,8 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (noDevice) return;
 		for (int i = 0, n = idleSources.size; i < n; i++) {
 			int sourceID = idleSources.get(i);
-			if (alGetSourcei(sourceID, AL_BUFFER) == bufferID) {
+			alGetSourcei(sourceID, AL_BUFFER, out var buffer);
+			if (buffer == bufferID) {
 				long soundId = sourceToSoundId.remove(sourceID);
 				if (soundId != null) soundIdToSource.remove(soundId);
 				alSourceStop(sourceID);
@@ -251,7 +248,9 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (noDevice) return;
 		for (int i = 0, n = idleSources.size; i < n; i++) {
 			int sourceID = idleSources.get(i);
-			if (alGetSourcei(sourceID, AL_BUFFER) == bufferID) {
+			alGetSourcei(sourceID, AL_BUFFER, out var source);
+
+			if (source == bufferID) {
 				long soundId = sourceToSoundId.remove(sourceID);
 				if (soundId != null) soundIdToSource.remove(soundId);
 				alSourceStop(sourceID);
@@ -263,7 +262,8 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (noDevice) return;
 		for (int i = 0, n = idleSources.size; i < n; i++) {
 			int sourceID = idleSources.get(i);
-			if (alGetSourcei(sourceID, AL_BUFFER) == bufferID) alSourcePause(sourceID);
+			alGetSourcei(sourceID, AL_BUFFER, out var source);
+			if (source == bufferID) alSourcePause(sourceID);
 		}
 	}
 
@@ -271,8 +271,15 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (noDevice) return;
 		for (int i = 0, n = idleSources.size; i < n; i++) {
 			int sourceID = idleSources.get(i);
-			if (alGetSourcei(sourceID, AL_BUFFER) == bufferID) {
-				if (alGetSourcei(sourceID, AL_SOURCE_STATE) == AL_PAUSED) alSourcePlay(sourceID);
+			alGetSourcei(sourceID, AL_BUFFER, out var buffer);
+			if (buffer == bufferID)
+			{
+				alGetSourcei(sourceID, AL_SOURCE_STATE, out var state);
+				
+				if (state == AL_PAUSED)
+				{
+					alSourcePlay(sourceID);
+				}
 			}
 		}
 	}
@@ -303,9 +310,12 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		if (sourceId != null) alSourcePause(sourceId);
 	}
 
-	public void resumeSound (long soundId) {
+	public void resumeSound(long soundId)
+	{
 		int sourceId = soundIdToSource.get(soundId, -1);
-		if (sourceId != -1 && alGetSourcei(sourceId, AL_SOURCE_STATE) == AL_PAUSED) alSourcePlay(sourceId);
+		alGetSourcei(sourceId, AL_SOURCE_STATE, out int state);
+
+		if (sourceId != -1 && state == AL_PAUSED) alSourcePlay(sourceId);
 	}
 
 	public void setSoundGain (long soundId, float volume) {
@@ -337,16 +347,18 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		observerThread.Interrupt();
 		for (int i = 0, n = allSources.size; i < n; i++) {
 			int sourceID = allSources.get(i);
-			int state = alGetSourcei(sourceID, AL_SOURCE_STATE);
+			alGetSourcei(sourceID, AL_SOURCE_STATE, out int state);
 			if (state != AL_STOPPED) alSourceStop(sourceID);
-			alDeleteSources(sourceID);
+
+			// TODO: Verify
+			alDeleteSources(1, sourceID);
 		}
 
 		sourceToSoundId = null;
 		soundIdToSource = null;
 
-		alcDestroyContext(context);
-		alcCloseDevice(device);
+		alcDestroyContext(new IntPtr(context));
+		alcCloseDevice(new IntPtr(device));
 	}
 
 	public AudioDevice newAudioDevice (int sampleRate, bool isMono) {

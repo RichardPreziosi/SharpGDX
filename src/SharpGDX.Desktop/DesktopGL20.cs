@@ -577,8 +577,11 @@ namespace SharpGDX.Desktop
 
 			var intBufferHandle = GCHandle.Alloc(intBuffer.array(), GCHandleType.Pinned);
 			var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
+			var stringBuilder = new StringBuilder();
 
-			GL.glGetShaderInfoLog(shader, buffer.remaining(), intBufferHandle.AddrOfPinnedObject(), bufferHandle.AddrOfPinnedObject());
+			GL.glGetShaderInfoLog(shader, buffer.remaining(), intBuffer.array(), stringBuilder);
+
+			var s = stringBuilder.ToString();
 
 			intBufferHandle.Free();
 			bufferHandle.Free();
@@ -770,9 +773,9 @@ namespace SharpGDX.Desktop
 		public void glShaderSource(int shader, String @string)
 		{
 			// TODO: Verify
-			var arrayHandle = GCHandle.Alloc(new int[@string.Length], GCHandleType.Pinned);
-			GL.glShaderSource(shader, 1, new string[] { @string }, arrayHandle.AddrOfPinnedObject());
-			arrayHandle.Free();
+			var length = @string.Length;
+			GL.glShaderSource(shader, 1, new string[] { @string }, ref length);
+			//GL.glShaderSource(shader, 1, new string[] { @string }, new int[@string.Length]);
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)

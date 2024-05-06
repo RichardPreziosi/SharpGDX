@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
-using static SharpGDX.Desktop.OpenAL;
+using static SharpGDX.OpenAL.AL;
 
 namespace SharpGDX.Desktop.Audio
 {
@@ -24,10 +24,10 @@ namespace SharpGDX.Desktop.Audio
 		buffer.put(pcm, 0, validBytes);
 		((Buffer)buffer).flip();
 
-		setup(buffer.asShortBuffer(), channels, sampleRate);
+		setup(buffer, channels, sampleRate);
 	}
 
-	protected void setup(ShortBuffer pcm, int channels, int sampleRate)
+	protected void setup(ByteBuffer pcm, int channels, int sampleRate)
 	{
 		this.channels = channels;
 		this.sampleRate = sampleRate;
@@ -36,8 +36,9 @@ namespace SharpGDX.Desktop.Audio
 
 		if (bufferID == -1)
 		{
-			bufferID = alGenBuffers();
-			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm, sampleRate);
+			// TODO: Verify: Why?
+			alGenBuffers(1, out int bufferId);
+			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm.array(), pcm.remaining() << 1, sampleRate);
 		}
 	}
 		
@@ -97,7 +98,7 @@ namespace SharpGDX.Desktop.Audio
 		if (audio.noDevice) return;
 		if (bufferID == -1) return;
 		audio.freeBuffer(bufferID);
-		alDeleteBuffers(bufferID);
+		alDeleteBuffers(1, ref bufferID);
 		bufferID = -1;
 		audio.forget(this);
 	}

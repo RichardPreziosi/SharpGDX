@@ -1,7 +1,9 @@
 ﻿using SharpGDX.Mathematics;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using static SharpGDX.Desktop.OpenAL;
+using System.Linq;
+using System.Runtime.InteropServices;
+using static SharpGDX.OpenAL.AL;
 using Buffer = SharpGDX.Shims.Buffer;
 
 namespace SharpGDX.Desktop.Audio
@@ -81,8 +83,8 @@ namespace SharpGDX.Desktop.Audio
 					// TODO: This appeared to use the lwjgl BufferUtils.createIntBuffer, not sure if this is technically the same thing.
 					buffers = IntBuffer.allocate(bufferCount);
 					alGetError();
-					alGenBuffers(buffers);
-					if (alGetError() != AL_NO_ERROR) throw new GdxRuntimeException("Unabe to allocate audio buffers.");
+					alGenBuffers(buffers.remaining(), buffers.array());
+					if (alGetError() != AL_NO_ERROR) throw new GdxRuntimeException("Unable to allocate audio buffers.");
 				}
 
 				alSourcei(sourceID, AL_LOOPING, AL_FALSE);
@@ -94,8 +96,8 @@ namespace SharpGDX.Desktop.Audio
 					int written = Math.Min(bufferSize, length);
 					((Buffer)tempBuffer).clear();
 					((Buffer)tempBuffer.put(data, offset, written)).flip();
-					alBufferData(bufferID, format, tempBuffer, sampleRate);
-					alSourceQueueBuffers(sourceID, bufferID);
+					alBufferData(bufferID, format, tempBuffer.array(), tempBuffer.remaining(), sampleRate);
+					alSourceQueueBuffers(sourceID, 1, new []{ bufferID });
 					length -= written;
 					offset += written;
 				}
@@ -120,18 +122,23 @@ namespace SharpGDX.Desktop.Audio
 			outer:
 			while (true)
 			{
-				int buffers = alGetSourcei(sourceID, AL_BUFFERS_PROCESSED);
+				alGetSourcei(sourceID, AL_BUFFERS_PROCESSED, out int buffers);
 				while (buffers-- > 0)
 				{
-					int bufferID = alSourceUnqueueBuffers(sourceID);
+					// TODO: Verify it fills the bufferID
+					int bufferID = 0;
+					alSourceUnqueueBuffers(sourceID, 1,new []{ bufferID});
 					if (bufferID == AL_INVALID_VALUE) break;
 					renderedSeconds += secondsPerBuffer;
 
 					((Buffer)tempBuffer).clear();
 					((Buffer)tempBuffer.put(data, offset, written)).flip();
-					alBufferData(bufferID, format, tempBuffer, sampleRate);
+					
+					alBufferData(bufferID, format, tempBuffer.array(), tempBuffer.remaining(), sampleRate);
 
-					alSourceQueueBuffers(sourceID, bufferID);
+					// TODO: Why?
+					int buffer = 0;
+					alSourceQueueBuffers(sourceID, bufferID, new[] { buffer});
 					goto endOfOuter;
 				}
 
@@ -147,8 +154,9 @@ namespace SharpGDX.Desktop.Audio
 
 			endOfOuter:
 
+			alGetSourcei(sourceID, AL_SOURCE_STATE, out var state);
 			// A buffer underflow will cause the source to stop.
-			if (!_isPlaying || alGetSourcei(sourceID, AL_SOURCE_STATE) != AL_PLAYING)
+			if (!_isPlaying || state != AL_PLAYING)
 			{
 				alSourcePlay(sourceID);
 				_isPlaying = true;
@@ -181,7 +189,10 @@ namespace SharpGDX.Desktop.Audio
 		public float getPosition()
 		{
 			if (sourceID == -1) return 0;
-			return renderedSeconds + alGetSourcef(sourceID, AL11.AL_SEC_OFFSET);
+
+			alGetSourcef(sourceID, AL_SEC_OFFSET, out var offset);
+
+			return renderedSeconds + offset;
 		}
 
 		public void setPosition(float position)
@@ -208,7 +219,8 @@ namespace SharpGDX.Desktop.Audio
 				sourceID = -1;
 			}
 
-			alDeleteBuffers(buffers);
+			// TODO: Verify
+			alDeleteBuffers(buffers.remaining(), buffers.array());
 			buffers = null;
 		}
 

@@ -11,23 +11,23 @@ namespace Drop
 {
 	public class Drop : ApplicationAdapter
 	{
-		private Texture dropImage;
-		private Texture bucketImage;
+		//private Texture dropImage;
+		//private Texture bucketImage;
 		private Sound dropSound;
 
 		private Music rainMusic;
 
-		private SpriteBatch batch;
-		private OrthographicCamera camera;
-		private Rectangle bucket;
-		private List<Rectangle> raindrops;
-		private long lastDropTime;
+		//private SpriteBatch batch;
+		//private OrthographicCamera camera;
+		//private Rectangle bucket;
+		//private List<Rectangle> raindrops;
+		//private long lastDropTime;
 
 		public override void create()
 		{
 			// load the images for the droplet and the bucket, 64x64 pixels each
-			dropImage = new Texture(Gdx.files.@internal("droplet.png"));
-			bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
+			//dropImage = new Texture(Gdx.files.@internal("droplet.png"));
+			//bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
 
 			// load the drop sound effect and the rain background "music"
 			dropSound = Gdx.audio.newSound(Gdx.files.@internal("drop.wav"));
@@ -38,19 +38,19 @@ namespace Drop
 			rainMusic.play();
 
 			// create the camera and the SpriteBatch
-			camera = new OrthographicCamera();
-			camera.setToOrtho(false, 800, 480);
-			batch = new SpriteBatch();
+			//camera = new OrthographicCamera();
+			//camera.setToOrtho(false, 800, 480);
+			//batch = new SpriteBatch();
 
 			// create a Rectangle to logically represent the bucket
-			bucket = new Rectangle();
-			bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-			bucket.y = 20; // bottom left corner of the bucket is 20 pixels above the bottom screen edge
-			bucket.width = 64;
-			bucket.height = 64;
+			//bucket = new Rectangle();
+			//bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+			//bucket.y = 20; // bottom left corner of the bucket is 20 pixels above the bottom screen edge
+			//bucket.width = 64;
+			//bucket.height = 64;
 
 			// create the raindrops array and spawn the first raindrop
-			raindrops = new();
+			//raindrops = new();
 			spawnRaindrop();
 		}
 
@@ -61,8 +61,8 @@ namespace Drop
 			raindrop.y = 480;
 			raindrop.width = 64;
 			raindrop.height = 64;
-			raindrops.Add(raindrop);
-			lastDropTime = TimeUtils.nanoTime();
+			//raindrops.Add(raindrop);
+			//lastDropTime = TimeUtils.nanoTime();
 		}
 
 		public void render()
@@ -95,36 +95,36 @@ if (Gdx.input.isTouched())
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			//camera.unproject(touchPos);
-			bucket.x = touchPos.x - 64 / 2;
+			//bucket.x = touchPos.x - 64 / 2;
 }
-if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) bucket.x += 200 * Gdx.graphics.getDeltaTime();
+//if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) bucket.x -= 200 * Gdx.graphics.getDeltaTime();
+//if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) bucket.x += 200 * Gdx.graphics.getDeltaTime();
 
 // make sure the bucket stays within the screen bounds
-			if (bucket.x < 0) bucket.x = 0;
-			if (bucket.x > 800 - 64) bucket.x = 800 - 64;
+			//if (bucket.x < 0) bucket.x = 0;
+			//if (bucket.x > 800 - 64) bucket.x = 800 - 64;
 
 // check if we need to create a new raindrop
-			if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
+			//if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
 
 			// move the raindrops, remove any that are beneath the bottom edge of
 			// the screen or that hit the bucket. In the latter case we play back
 			// a sound effect as well.
-			for (var i = raindrops.Count() - 1; i >= 0; i--)
-			{
-				Rectangle raindrop = raindrops[i];
-				raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-				if (raindrop.y + 64 < 0)
-				{
-					raindrops.RemoveAt(i);
-				}
+			//for (var i = raindrops.Count() - 1; i >= 0; i--)
+			//{
+				//Rectangle raindrop = raindrops[i];
+				//raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
+				//if (raindrop.y + 64 < 0)
+				//{
+					//raindrops.RemoveAt(i);
+				//}
 
-				if (raindrop.overlaps(bucket))
-				{
-					dropSound.play();
-					raindrops.RemoveAt(i);
-				}
-			}
+				//if (raindrop.overlaps(bucket))
+				//{
+					//dropSound.play();
+					//raindrops.RemoveAt(i);
+				//}
+			//}
 		}
 
 		public void dispose()
