@@ -6,6 +6,8 @@ using SharpGDX.Shims;
 using SharpGDX.Utils;
 using static SharpGDX.Music;
 
+// TODO: Not fond of the creation of arrays just to pass queue and dequeue buffers.
+
 namespace SharpGDX.Desktop.Audio
 {
 	/** @author Nathan Sweet */
@@ -249,7 +251,7 @@ namespace SharpGDX.Desktop.Audio
 		while (buffers-- > 0)
 		{
 			// TODO: Verify
-			var bufferIds = new int[] { 0 };
+			var bufferIds = new int[1];
 			AL.alSourceUnqueueBuffers(sourceID, 1, bufferIds);
 			int bufferID = bufferIds[0];
 			if (bufferID == AL.AL_INVALID_VALUE) break;

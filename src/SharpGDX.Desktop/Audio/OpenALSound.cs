@@ -36,9 +36,11 @@ namespace SharpGDX.Desktop.Audio
 
 		if (bufferID == -1)
 		{
-			// TODO: Verify: Why?
-			alGenBuffers(1, out int bufferId);
-			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm.array(), pcm.remaining() << 1, sampleRate);
+			// TODO: I don't like this. -RP
+			var bufferIds =new int[1];
+			alGenBuffers(1, bufferIds);
+			bufferID = bufferIds[0];
+			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm.array(), pcm.remaining(), sampleRate);
 		}
 	}
 		
@@ -98,8 +100,9 @@ namespace SharpGDX.Desktop.Audio
 		if (audio.noDevice) return;
 		if (bufferID == -1) return;
 		audio.freeBuffer(bufferID);
-		alDeleteBuffers(1, ref bufferID);
-		bufferID = -1;
+		alDeleteBuffers(1, new[] { bufferID });
+
+	bufferID = -1;
 		audio.forget(this);
 	}
 

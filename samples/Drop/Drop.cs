@@ -15,7 +15,7 @@ namespace Drop
 		//private Texture bucketImage;
 		private Sound dropSound;
 
-		private Music rainMusic;
+		//private Music rainMusic;
 
 		//private SpriteBatch batch;
 		//private OrthographicCamera camera;
@@ -31,11 +31,12 @@ namespace Drop
 
 			// load the drop sound effect and the rain background "music"
 			dropSound = Gdx.audio.newSound(Gdx.files.@internal("drop.wav"));
-			rainMusic = Gdx.audio.newMusic(Gdx.files.@internal("rain.wav"));
+			//rainMusic = Gdx.audio.newMusic(Gdx.files.@internal("rain.wav"));
 
 			// start the playback of the background music immediately
-			rainMusic.setLooping(true);
-			rainMusic.play();
+			//rainMusic.setLooping(true);
+			//rainMusic.play();
+			dropSound.play();
 
 			// create the camera and the SpriteBatch
 			//camera = new OrthographicCamera();
@@ -133,7 +134,7 @@ if (Gdx.input.isTouched())
 			//dropImage.dispose();
 			//bucketImage.dispose();
 			dropSound.dispose();
-			rainMusic.dispose();
+			//rainMusic.dispose();
 			//batch.dispose();
 		}
 	}
