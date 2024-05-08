@@ -56,8 +56,7 @@ namespace SharpGDX.Desktop
 
 		public void glAttachShader(int program, int shader)
 	{
-		throw new NotImplementedException();
-		//GL.glAttachShader(program, shader);
+		GL.glAttachShader(program, shader);
 		}
 
 		public void glBindAttribLocation(int program, int index, String name)
@@ -218,8 +217,7 @@ namespace SharpGDX.Desktop
 
 		public int glCreateProgram()
 	{
-		throw new NotImplementedException();
-		//return GL.glCreateProgram();
+		return GL.glCreateProgram();
 		}
 
 		public int glCreateShader(int type)
@@ -481,15 +479,22 @@ namespace SharpGDX.Desktop
 		}
 
 		public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
-	{
-		throw new NotImplementedException();
-		//return GL.glGetActiveAttrib(program, index, 256, size, type);
+		{
+			// TODO: Refactor this
+			var stringBuilder = new StringBuilder();
+			var length = new int[] { 0 };
+		GL.glGetActiveAttrib(program, index,  256, length, size.array(), type.array(), stringBuilder);
+
+		return stringBuilder.ToString();
 		}
 
 		public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
-	{
-		throw new NotImplementedException();
-		//return GL.glGetActiveUniform(program, index, 256, size, type);
+		{
+			var stringBuilder = new StringBuilder();
+			var length = new int[] { 0 };
+			GL.glGetActiveUniform(program, index, 256, length, size.array(), type.array(), stringBuilder);
+
+			return stringBuilder.ToString();
 		}
 
 		public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders)
@@ -500,8 +505,7 @@ namespace SharpGDX.Desktop
 
 		public int glGetAttribLocation(int program, String name)
 	{
-		throw new NotImplementedException();
-		//return GL.glGetAttribLocation(program, name);
+		return GL.glGetAttribLocation(program, name);
 		}
 
 		public void glGetBooleanv(int pname, Buffer @params)
@@ -555,10 +559,12 @@ namespace SharpGDX.Desktop
 		//return new String(bytes);
 	}
 
-	public void glGetProgramiv(int program, int pname, IntBuffer @params)
-	{
-		throw new NotImplementedException();
-		//GL.glGetProgramiv(program, pname, @params);
+		public void glGetProgramiv(int program, int pname, IntBuffer @params)
+		{
+			// TODO: I'm not sure why passing @params.array() won't work in this case, but this is a workaround. -RP
+			var buffer = new int[@params.limit()];
+			GL.glGetProgramiv(program, pname, buffer);
+			@params.put(buffer);
 		}
 
 		public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer @params)
@@ -578,7 +584,7 @@ namespace SharpGDX.Desktop
 			var intBufferHandle = GCHandle.Alloc(intBuffer.array(), GCHandleType.Pinned);
 			var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
 			var stringBuilder = new StringBuilder();
-
+			
 			GL.glGetShaderInfoLog(shader, buffer.remaining(), intBuffer.array(), stringBuilder);
 
 			var s = stringBuilder.ToString();
@@ -599,10 +605,11 @@ namespace SharpGDX.Desktop
 
 	public void glGetShaderiv(int shader, int pname, IntBuffer @params)
 	{
-		var arrayHandle = GCHandle.Alloc(@params.array(), GCHandleType.Pinned);
-		GL.glGetShaderiv(shader, pname, arrayHandle.AddrOfPinnedObject());
-		arrayHandle.Free();
-		}
+		// TODO: I'm not sure why passing @params.array() won't work in this case, but this is a workaround. -RP
+		var intBuffer = new int[@params.limit()];
+		GL.glGetShaderiv(shader, pname, intBuffer);
+		@params.put(intBuffer);
+	}
 
 	public String glGetString(int name)
 	{
@@ -623,8 +630,7 @@ namespace SharpGDX.Desktop
 
 		public int glGetUniformLocation(int program, String name)
 	{
-		throw new NotImplementedException();
-		//return GL.glGetUniformLocation(program, name);
+		return GL.glGetUniformLocation(program, name);
 		}
 
 		public void glGetUniformfv(int program, int location, FloatBuffer @params)
@@ -712,8 +718,7 @@ namespace SharpGDX.Desktop
 
 		public void glLinkProgram(int program)
 	{
-		throw new NotImplementedException();
-		//GL.glLinkProgram(program);
+		GL.glLinkProgram(program);
 		}
 
 		public void glPixelStorei(int pname, int param)
@@ -774,8 +779,8 @@ namespace SharpGDX.Desktop
 		{
 			// TODO: Verify
 			var length = @string.Length;
-			GL.glShaderSource(shader, 1, new string[] { @string }, ref length);
-			//GL.glShaderSource(shader, 1, new string[] { @string }, new int[@string.Length]);
+			//GL.glShaderSource(shader, 1, new string[] { @string }, ref length);
+			GL.glShaderSource(shader, 1, new []{ @string }, null);//, new string[] { @string }, new int[@string.Length]);
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)

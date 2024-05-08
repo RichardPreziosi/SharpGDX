@@ -176,6 +176,7 @@ public class ShaderProgram : Disposable {
 		IntBuffer intbuf = BufferUtils.newIntBuffer(1);
 
 		int shader = gl.glCreateShader(type);
+
 		if (shader == 0) return -1;
 
 		gl.glShaderSource(shader, source);
