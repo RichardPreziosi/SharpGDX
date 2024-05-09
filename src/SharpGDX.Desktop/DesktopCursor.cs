@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SharpGDX.GLFW3;
 using SharpGDX.Shims;
 using static SharpGDX.Cursor;
 
@@ -19,7 +20,7 @@ namespace SharpGDX.Desktop
 
 	readonly Lwjgl3Window window;
 	Pixmap pixmapCopy;
-	GLFW.GLFWImage glfwImage;
+	GLFWImage? glfwImage;
 	internal readonly long glfwCursor;
 
 internal 	Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot)
@@ -58,11 +59,14 @@ internal 	Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHo
 		this.pixmapCopy.setBlending(Pixmap.Blending.None);
 		this.pixmapCopy.drawPixmap(pixmap, 0, 0);
 
-		glfwImage = new GLFW.GLFWImage();
-		glfwImage.width(pixmapCopy.getWidth());
-		glfwImage.height(pixmapCopy.getHeight());
-		glfwImage.pixels(pixmapCopy.getPixels());
-		glfwCursor = GLFW.glfwCreateCursor(glfwImage, xHotspot, yHotspot);
+		glfwImage = new GLFWImage()
+		{
+			Width = (pixmapCopy.getWidth()),
+			Height = (pixmapCopy.getHeight()),
+			Pixels = (pixmapCopy.getPixels().array())
+		};
+
+		glfwCursor = GLFW.glfwCreateCursor(glfwImage.Value, xHotspot, yHotspot);
 		cursors.add(this);
 	}
 
@@ -76,8 +80,7 @@ internal 	Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHo
 		pixmapCopy.dispose();
 		pixmapCopy = null;
 
-		// TODO: set to null instead
-		glfwImage.free();
+		glfwImage = null;
 		GLFW.glfwDestroyCursor(glfwCursor);
 	}
 

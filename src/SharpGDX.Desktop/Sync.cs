@@ -1,4 +1,4 @@
-﻿using static SharpGDX.Desktop.GLFW;
+﻿using SharpGDX.GLFW3;
 
 namespace SharpGDX.Desktop;
 
@@ -83,7 +83,7 @@ internal class Sync
 	 */
 	private long getTime()
 	{
-		return (long)(glfwGetTime() * NANOS_IN_SECOND);
+		return (long)(GLFW.glfwGetTime() * NANOS_IN_SECOND);
 	}
 
 	/**

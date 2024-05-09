@@ -1,5 +1,6 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
+using SharpGDX.GLFW3;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -210,7 +211,7 @@ namespace SharpGDX.Desktop
 	public static DisplayMode getDisplayMode()
 	{
 		Lwjgl3Application.initializeGlfw();
-		GLFW.GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.Width, videoMode.Height,
 			videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
 	}
@@ -219,7 +220,7 @@ namespace SharpGDX.Desktop
 	public static DisplayMode getDisplayMode(Monitor monitor)
 	{
 		Lwjgl3Application.initializeGlfw();
-		GLFW.GLFWVidMode videoMode = GLFW.glfwGetVideoMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
+		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
 		return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, videoMode.Width, videoMode.Height,
 			videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
 	}
@@ -228,8 +229,8 @@ namespace SharpGDX.Desktop
 	public static DisplayMode[] getDisplayModes()
 	{
 		Lwjgl3Application.initializeGlfw();
-		Buffer videoModes = GLFW.glfwGetVideoModes(GLFW.glfwGetPrimaryMonitor());
-		DisplayMode[] result = new DisplayMode[videoModes.limit()];
+		var videoModes = GLFW.glfwGetVideoModes(GLFW.glfwGetPrimaryMonitor(), out var count);
+		DisplayMode[] result = new DisplayMode[count];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
@@ -244,8 +245,8 @@ namespace SharpGDX.Desktop
 	public static DisplayMode[] getDisplayModes(Monitor monitor)
 	{
 		Lwjgl3Application.initializeGlfw();
-		Buffer videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
-		DisplayMode[] result = new DisplayMode[videoModes.limit()];
+		var videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, out var count);
+		DisplayMode[] result = new DisplayMode[count];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
@@ -282,9 +283,7 @@ namespace SharpGDX.Desktop
 			// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
 			IntBuffer tmp = IntBuffer.allocate(1);
 		IntBuffer tmp2 = IntBuffer.allocate(1);
-		GLFW.glfwGetMonitorPos(glfwMonitor, tmp, tmp2);
-		int virtualX = tmp.get(0);
-		int virtualY = tmp2.get(0);
+		GLFW.glfwGetMonitorPos(glfwMonitor, out var virtualX, out var virtualY);
 		String name = GLFW.glfwGetMonitorName(glfwMonitor);
 		return new Lwjgl3Graphics.Lwjgl3Monitor(glfwMonitor, virtualX, virtualY, name);
 	}
@@ -292,16 +291,13 @@ namespace SharpGDX.Desktop
 	internal static GridPoint2 calculateCenteredWindowPosition(Lwjgl3Graphics.Lwjgl3Monitor monitor, int newWidth, int newHeight)
 	{
 		// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
-			IntBuffer tmp = IntBuffer.allocate(1);
-		IntBuffer tmp2 = IntBuffer.allocate(1);
-		IntBuffer tmp3 = IntBuffer.allocate(1);
-		IntBuffer tmp4 = IntBuffer.allocate(1);
+			
 
 		DisplayMode displayMode = getDisplayMode(monitor);
 
-		GLFW.glfwGetMonitorWorkarea(monitor.monitorHandle, tmp, tmp2, tmp3, tmp4);
-		int workareaWidth = tmp3.get(0);
-		int workareaHeight = tmp4.get(0);
+		GLFW.glfwGetMonitorWorkarea(monitor.monitorHandle, out var xpos, out var ypos, out var width, out var height);
+		int workareaWidth = width;
+		int workareaHeight = height;
 
 		int minX, minY, maxX, maxY;
 
@@ -314,7 +310,7 @@ namespace SharpGDX.Desktop
 		}
 		else
 		{
-			minX = tmp.get(0);
+			minX = xpos;
 			maxX = workareaWidth;
 		}
 		// The same is true for height
@@ -325,7 +321,7 @@ namespace SharpGDX.Desktop
 		}
 		else
 		{
-			minY = tmp2.get(0);
+			minY = ypos;
 			maxY = workareaHeight;
 		}
 

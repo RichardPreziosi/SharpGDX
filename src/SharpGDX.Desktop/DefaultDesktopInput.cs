@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpGDX.Utils;
 using static SharpGDX.Input;
+using SharpGDX.GLFW3;
 
 namespace SharpGDX.Desktop
 {
@@ -24,7 +25,7 @@ namespace SharpGDX.Desktop
 	readonly bool[] justPressedButtons = new bool[5];
 	char lastCharacter;
 
-	private GLFW.GLFWKeyCallback keyCallback;
+	private GLFWKeyCallback keyCallback;
 
 
 private void charCallback(long window, uint codepoint)
@@ -36,7 +37,7 @@ private void charCallback(long window, uint codepoint)
 }
 	
 
-private void scrollCallback(long window, double scrollX, double scrollY)
+private void scrollCallback(long window, int scrollX, int scrollY)
 {
 	this.window.getGraphics().requestRendering();
 	eventQueue.scrolled(-(float)scrollX, -(float)scrollY, TimeUtils.nanoTime());
@@ -44,7 +45,7 @@ private void scrollCallback(long window, double scrollX, double scrollY)
 private int logicalMouseY;
 private int logicalMouseX;
 
-private GLFW.GLFWCursorPosCallback cursorPosCallback;
+private GLFWCursorPosCallback cursorPosCallback;
 
 private void mouseButtonCallback(long window, int button, int action, int mods)
 {
@@ -141,7 +142,7 @@ public void resetPollingStates()
 	GLFW.glfwSetCursorPosCallback
 		(
 			window.getWindowHandle(),
-			cursorPosCallback = (long windowHandle, double x, double y) =>
+			cursorPosCallback = (long windowHandle, int x, int y) =>
 	{
 		deltaX = (int)x - logicalMouseX;
 		deltaY = (int)y - logicalMouseY;

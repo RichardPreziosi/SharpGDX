@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SharpGDX.GLFW3\SharpGDX.GLFW3.csproj" />
     <ProjectReference Include="..\SharpGDX.OpenAL\SharpGDX.OpenAL.csproj" />
     <ProjectReference Include="..\SharpGDX.OpenGL\SharpGDX.OpenGL.csproj" />
     <ProjectReference Include="..\SharpGDX\SharpGDX.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="glfw3.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

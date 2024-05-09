@@ -1,4 +1,4 @@
-﻿using SharpGDX.Desktop;
+﻿using SharpGDX.GLFW3;
 using Monitor = SharpGDX.Graphics.Monitor;
 using SharpGDX.Mathematics;
 using SharpGDX.Shims;
@@ -157,12 +157,8 @@ public Lwjgl3Window getWindow()
 
 void updateFramebufferInfo()
 {
-	GLFW.glfwGetFramebufferSize(window.getWindowHandle(), tmpBuffer, tmpBuffer2);
-	this.backBufferWidth = tmpBuffer.get(0);
-	this.backBufferHeight = tmpBuffer2.get(0);
-	GLFW.glfwGetWindowSize(window.getWindowHandle(), tmpBuffer, tmpBuffer2);
-	this.logicalWidth = tmpBuffer.get(0);
-	this.logicalHeight = tmpBuffer2.get(0);
+	GLFW.glfwGetFramebufferSize(window.getWindowHandle(), out backBufferWidth, out backBufferHeight);
+	GLFW.glfwGetWindowSize(window.getWindowHandle(), out logicalWidth, out logicalHeight);
 	Lwjgl3ApplicationConfiguration config = window.getConfig();
 	bufferFormat = new BufferFormat(config.r, config.g, config.b, config.a, config.depth, config.stencil, config.samples,
 		false);
@@ -333,8 +329,7 @@ public override float getPpiY()
 public override float getPpcX()
 {
 	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
-	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, tmpBuffer, tmpBuffer2);
-	int sizeX = tmpBuffer.get(0);
+	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, out var sizeX, out var _);
 	DisplayMode mode = getDisplayMode();
 	return mode.width / (float)sizeX * 10;
 }
@@ -342,8 +337,7 @@ public override float getPpcX()
 public override float getPpcY()
 {
 	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
-	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, tmpBuffer, tmpBuffer2);
-	int sizeY = tmpBuffer2.get(0);
+	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, out var _, out var sizeY);
 	DisplayMode mode = getDisplayMode();
 	return mode.height / (float)sizeY * 10;
 }
@@ -363,12 +357,8 @@ public override Monitor getMonitor()
 	Monitor[] monitors = getMonitors();
 	Monitor result = monitors[0];
 
-	GLFW.glfwGetWindowPos(window.getWindowHandle(), tmpBuffer, tmpBuffer2);
-	int windowX = tmpBuffer.get(0);
-	int windowY = tmpBuffer2.get(0);
-	GLFW.glfwGetWindowSize(window.getWindowHandle(), tmpBuffer, tmpBuffer2);
-	int windowWidth = tmpBuffer.get(0);
-	int windowHeight = tmpBuffer2.get(0);
+	GLFW.glfwGetWindowPos(window.getWindowHandle(), out var windowX, out var windowY);
+	GLFW.glfwGetWindowSize(window.getWindowHandle(), out var windowWidth, out var windowHeight);
 	int overlap;
 	int bestOverlap = 0;
 

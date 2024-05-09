@@ -153,9 +153,14 @@ namespace SharpGDX.Shims
 	}
 
 		protected override float[] protectedArray()
-	{
-		throw new UnsupportedOperationException();
-	}
+		{
+			// TODO: This is all kinds of wrong, just trying to get somewhere
+			var bytes = ((DirectReadWriteByteBuffer)byteBuffer).byteArray.toArray();
+			float[] result = new float[bytes.Length / sizeof(int)];
+			System.Buffer.BlockCopy(bytes, 0, result, 0, result.Length);
+			//throw new UnsupportedOperationException();
+			return result;
+		}
 
 		protected override int protectedArrayOffset()
 	{

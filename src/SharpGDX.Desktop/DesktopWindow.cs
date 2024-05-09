@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SharpGDX.GLFW3;
 using SharpGDX;
 using SharpGDX.Desktop;
 using SharpGDX.Shims;
@@ -28,9 +29,9 @@ namespace SharpGDX.Desktop
 	bool focused = false;
 	private bool _requestRendering = false;
 
-	private GLFW.GLFWWindowFocusCallback _focusCallback;
+	private GLFWWindowFocusCallback _focusCallback;
 
-	private GLFW.GLFWWindowIconifyCallback iconifyCallback;
+	private GLFWWindowIconifyCallback iconifyCallback;
 
 	private void maximizeCallback(long windowHandle,  bool maximized) {
 			postRunnable(() => {
@@ -42,7 +43,7 @@ namespace SharpGDX.Desktop
 		}
 
 
-		private GLFW.GLFWWindowCloseCallback closeCallback;
+		private GLFWWindowCloseCallback closeCallback;
 	
 
 	private void dropCallback (long windowHandle, int count, long names) {
@@ -59,7 +60,7 @@ namespace SharpGDX.Desktop
 			});
 		}
 
-		private GLFW.GLFWWindowRefreshCallback refreshCallback;
+		private GLFWWindowRefreshCallback refreshCallback;
 
 	internal Lwjgl3Window (ApplicationListener listener, Lwjgl3ApplicationConfiguration config, Lwjgl3ApplicationBase application) {
 		this.listener = listener;
@@ -192,15 +193,15 @@ namespace SharpGDX.Desktop
 	/** @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
 	 *         relative to the first monitor in the virtual surface. **/
 	public int getPositionX () {
-		GLFW.glfwGetWindowPos(windowHandle, tmpBuffer, tmpBuffer2);
-		return tmpBuffer.get(0);
+		GLFW.glfwGetWindowPos(windowHandle, out var x, out var y);
+		return x;
 	}
 
 	/** @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
 	 *         relative to the first monitor in the virtual surface. **/
 	public int getPositionY () {
-		GLFW.glfwGetWindowPos(windowHandle, tmpBuffer, tmpBuffer2);
-		return tmpBuffer2.get(0);
+		GLFW.glfwGetWindowPos(windowHandle, out var x, out var y);
+		return y;
 	}
 
 	/** Sets the visibility of the window. Invisible windows will still call their {@link ApplicationListener} */
@@ -379,7 +380,7 @@ namespace SharpGDX.Desktop
 	}
 
 	internal bool shouldClose () {
-		return GLFW.glfwWindowShouldClose(windowHandle);
+		return GLFW.glfwWindowShouldClose(windowHandle) == GLFW.GLFW_TRUE;
 	}
 
 	internal Lwjgl3ApplicationConfiguration getConfig () {

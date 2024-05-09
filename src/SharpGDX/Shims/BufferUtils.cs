@@ -21,18 +21,32 @@ namespace SharpGDX.Shims
 		 * buffer. After the copying process the position of the buffer is set to 0 and its limit is set to numFloats * 4 if it is a
 		 * ByteBuffer and numFloats if it is a FloatBuffer. In case the Buffer is neither a ByteBuffer nor a FloatBuffer the limit is
 		 * not set. This is an expert method, use at your own risk.
-		 * 
+		 *
 		 * @param src the source array
 		 * @param dst the destination buffer, has to be a direct Buffer
 		 * @param numFloats the number of floats to copy
 		 * @param offset the offset in src to start copying from */
 		public static void copy(float[] src, Buffer dst, int numFloats, int offset)
 		{
-			if (dst is ByteBuffer)
-			dst.limit(numFloats << 2);
-		else if (dst is FloatBuffer) dst.limit(numFloats);
+			if (dst is ByteBuffer b)
+			{
+				dst.limit(numFloats << 2);
+				dst.position(0);
 
-			copyJni(src, dst, numFloats, offset);
+				// TODO: This is all kinds of wrong, just trying to get somewhere
+				byte[] result = new byte[numFloats << 2];
+				System.Buffer.BlockCopy(src, offset, result, 0, result.Length);
+				b.put(result);
+			}
+			else if (dst is FloatBuffer)
+			{
+				dst.limit(numFloats);
+			}
+
+			// TODO: copyJni(src, dst, numFloats, offset);
+
+
+
 			dst.position(0);
 		}
 
@@ -40,7 +54,7 @@ namespace SharpGDX.Shims
 		 * instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same,
 		 * the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error
 		 * checking is performed</b>.
-		 * 
+		 *
 		 * @param src the source array.
 		 * @param srcOffset the offset into the source array.
 		 * @param dst the destination Buffer, its position is used as an offset.

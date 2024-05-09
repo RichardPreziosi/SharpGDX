@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using SharpGDX.GLFW3;
 using File = SharpGDX.Shims.File;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
@@ -24,9 +25,9 @@ namespace SharpGDX.Desktop
 	private readonly Array<Runnable> runnables = new Array<Runnable>();
 	private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
 	private readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
-	private static GLFW.GLFWErrorCallback errorCallback;
+	private static GLFWErrorCallback errorCallback;
 	private static GLVersion glVersion;
-	private static Action glDebugCallback;
+	private static Action? glDebugCallback;
 	private readonly Sync sync;
 
 	internal static void initializeGlfw () {
@@ -47,7 +48,7 @@ namespace SharpGDX.Desktop
 			GLFW.glfwSetErrorCallback(errorCallback);
 			if (SharedLibraryLoader.isMac) GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
 			GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
-			if (!GLFW.glfwInit()) {
+			if (GLFW.glfwInit() != GLFW.GLFW_TRUE) {
 				throw new GdxRuntimeException("Unable to initialize GLFW");
 			}
 		}

@@ -12,7 +12,7 @@ namespace Drop
 	public class Drop : ApplicationAdapter
 	{
 		private Texture dropImage;
-		//private Texture bucketImage;
+		private Texture bucketImage;
 		private Sound dropSound;
 		private Music rainMusic;
 		private SpriteBatch batch;
@@ -25,7 +25,7 @@ namespace Drop
 		{
 			// load the images for the droplet and the bucket, 64x64 pixels each
 			dropImage = new Texture(Gdx.files.@internal("droplet.png"));
-			//bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
+			bucketImage = new Texture(Gdx.files.@internal("bucket.png"));
 
 			// load the drop sound effect and the rain background "music"
 			dropSound = Gdx.audio.newSound(Gdx.files.@internal("drop.wav"));
@@ -63,7 +63,7 @@ namespace Drop
 			lastDropTime = TimeUtils.nanoTime();
 		}
 
-		public void render()
+		public override void render()
 		{
 			// clear the screen with a dark blue color. The
 			// arguments to clear are the red, green
@@ -80,12 +80,12 @@ namespace Drop
 
 			// begin a new batch and draw the bucket and
 			// all drops
-			//batch.begin();
-			//batch.draw(bucketImage, bucket.x, bucket.y);
-			//for (Rectangle raindrop: raindrops) {
-			//batch.draw(dropImage, raindrop.x, raindrop.y);
-			//}
-			//batch.end();
+			batch.begin();
+			batch.draw(bucketImage, bucket.x, bucket.y);
+			foreach (Rectangle raindrop in raindrops) {
+			batch.draw(dropImage, raindrop.x, raindrop.y);
+			}
+			batch.end();
 
 			// process user input
 			if (Gdx.input.isTouched())
@@ -125,14 +125,14 @@ namespace Drop
 			}
 		}
 
-		public void dispose()
+		public override void dispose()
 		{
 			// dispose of all the native resources
-			//dropImage.dispose();
-			//bucketImage.dispose();
+			dropImage.dispose();
+			bucketImage.dispose();
 			dropSound.dispose();
 			rainMusic.dispose();
-			//batch.dispose();
+			batch.dispose();
 		}
 	}
 }

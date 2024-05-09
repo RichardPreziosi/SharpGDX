@@ -25,6 +25,8 @@ Please see the `CONVERSIONS` file for the current state of each file.
 
 I think that I would eventually like to get rid of everything in the `Shims` namespace. It is just a lot less code changes to leave it for now, and I would like to think carefully about changing the API.
 
+I would like to eventually remove and/or reduce the usage of the buffer classes (IntBuffer, FloatBuffer, ByteBuffer, etc.). While these classes are first-class citizens in Java and the JNI knows how to convert them, they are shims in SharpGDX and there are quite a lot of hoops that I've had to jump through to get their data passed to externs.
+
 ## Special Notes
 
 I have had to shim quite a bit of functionality in an effort to keep the API the same. Some of these shims may or may not go away in phase 2 as I solidify the purpose of this project.
@@ -39,17 +41,8 @@ The collection types work (Array\<T\>, CharArray, FloatArray, etc.), however I w
 
 The `Poolable` interface is no longer nested inside of `Pool` since `Pool` has been changed to `Pool<T>`.
 
-## Conversion Chart
+## Conversion Notes
 
-- IllegalArgumentException => ArgumentException
-- IndexOutOfBoundsException => IndexOutOfRangeException
-- RuntimeException => SystemException
-- Throwable => Exception
-- NoSuchElementException => InvalidOperationException
-- IllegalStateException => InvalidOperationException
-- NumberFormatException => FormatException
-- ArrayIndexOutOfBoundsException => IndexOutOfRangeException
-- NullPointerException => NullReferenceException
-- InterruptedException => ThreadInterruptedException
-- Long.numberOfLeadingZeros() => BitOperations.LeadingZeroCount((ulong)mask)
-- CharSequence => string
+- SharpGDX.Headless is ported from gdx-backend-headless
+- SharpGDX.Desktop is ported from gdx-backend-lwjgl3
+    - I have copied most of the bindings from the Tao Framework (precursor to OpenTK), which while deprecated, has the most comprehensive coverage while also containing the least bells and whistles of any more 'modern' framework.
