@@ -1,4 +1,4 @@
-﻿using SharpGDX.GLFW3;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using Monitor = SharpGDX.Graphics.Monitor;
 using SharpGDX.Mathematics;
 using SharpGDX.Shims;
@@ -48,7 +48,7 @@ namespace SharpGDX.Desktop
 
 	private volatile bool posted;
 
-	private void resizeCallback(long windowHandle,  int width,  int height)
+	private unsafe void resizeCallback(Window* windowHandle,  int width,  int height)
 	{
 		// TODO: Implement, this might really only be a Java(lwjgl) thing.
 		// TODO: This was used to ensure that glfwInit was called on the first thread of the JVM process.
@@ -69,7 +69,7 @@ namespace SharpGDX.Desktop
 	}
 }
 
-private void renderWindow(long windowHandle,  int width,  int height)
+private unsafe void renderWindow(Window* windowHandle,  int width,  int height)
 {
 	updateFramebufferInfo();
 	if (!window.isListenerInitialized())
@@ -80,10 +80,10 @@ private void renderWindow(long windowHandle,  int width,  int height)
 	gl20.glViewport(0, 0, backBufferWidth, backBufferHeight);
 	window.getListener().resize(getWidth(), getHeight());
 	window.getListener().render();
-	GLFW.glfwSwapBuffers(windowHandle);
+	GLFW.SwapBuffers(windowHandle);
 }
 
-public Lwjgl3Graphics (Lwjgl3Window window)
+		public unsafe Lwjgl3Graphics (Lwjgl3Window window)
 {
 	this.window = window;
 	if (window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32)
@@ -114,7 +114,7 @@ public Lwjgl3Graphics (Lwjgl3Window window)
 	}
 	updateFramebufferInfo();
 	initiateGL();
-	GLFW.glfwSetFramebufferSizeCallback(window.getWindowHandle(), resizeCallback);
+	GLFW.SetFramebufferSizeCallback(window.getWindowPtr(), resizeCallback);
 }
 
 private void initiateGL()
@@ -155,10 +155,10 @@ public Lwjgl3Window getWindow()
 	return window;
 }
 
-void updateFramebufferInfo()
+		private unsafe void updateFramebufferInfo()
 {
-	GLFW.glfwGetFramebufferSize(window.getWindowHandle(), out backBufferWidth, out backBufferHeight);
-	GLFW.glfwGetWindowSize(window.getWindowHandle(), out logicalWidth, out logicalHeight);
+	GLFW.GetFramebufferSize(window.getWindowPtr(), out backBufferWidth, out backBufferHeight);
+	GLFW.GetWindowSize(window.getWindowPtr(), out logicalWidth, out logicalHeight);
 	Lwjgl3ApplicationConfiguration config = window.getConfig();
 	bufferFormat = new BufferFormat(config.r, config.g, config.b, config.a, config.depth, config.stencil, config.samples,
 		false);
@@ -326,18 +326,18 @@ public override float getPpiY()
 	return getPpcY() * 2.54f;
 }
 
-public override float getPpcX()
+public override unsafe float getPpcX()
 {
 	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
-	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, out var sizeX, out var _);
+	GLFW.GetMonitorPhysicalSize(monitor.monitorHandle, out var sizeX, out var _);
 	DisplayMode mode = getDisplayMode();
 	return mode.width / (float)sizeX * 10;
 }
 
-public override float getPpcY()
+public override unsafe float getPpcY()
 {
 	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
-	GLFW.glfwGetMonitorPhysicalSize(monitor.monitorHandle, out var _, out var sizeY);
+	GLFW.GetMonitorPhysicalSize(monitor.monitorHandle, out var _, out var sizeY);
 	DisplayMode mode = getDisplayMode();
 	return mode.height / (float)sizeY * 10;
 }
@@ -347,18 +347,18 @@ public override bool supportsDisplayModeChange()
 	return true;
 }
 
-public override Monitor getPrimaryMonitor()
+public override unsafe Monitor getPrimaryMonitor()
 {
-	return Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(GLFW.glfwGetPrimaryMonitor());
+	return Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(GLFW.GetPrimaryMonitor());
 }
 
-public override Monitor getMonitor()
+public override unsafe Monitor getMonitor()
 {
 	Monitor[] monitors = getMonitors();
 	Monitor result = monitors[0];
 
-	GLFW.glfwGetWindowPos(window.getWindowHandle(), out var windowX, out var windowY);
-	GLFW.glfwGetWindowSize(window.getWindowHandle(), out var windowWidth, out var windowHeight);
+	GLFW.GetWindowPos(window.getWindowPtr(), out var windowX, out var windowY);
+	GLFW.GetWindowSize(window.getWindowPtr(), out var windowWidth, out var windowHeight);
 	int overlap;
 	int bestOverlap = 0;
 
@@ -429,7 +429,7 @@ public override int getSafeInsetRight()
 	return 0;
 }
 
-public override bool setFullscreenMode(DisplayMode displayMode)
+public override unsafe bool setFullscreenMode(DisplayMode displayMode)
 {
 	window.getInput().resetPollingStates();
 	Lwjgl3DisplayMode newMode = (Lwjgl3DisplayMode)displayMode;
@@ -439,12 +439,12 @@ public override bool setFullscreenMode(DisplayMode displayMode)
 		if (currentMode.getMonitor() == newMode.getMonitor() && currentMode.refreshRate == newMode.refreshRate)
 		{
 			// same monitor and refresh rate
-			GLFW.glfwSetWindowSize(window.getWindowHandle(), newMode.width, newMode.height);
+			GLFW.SetWindowSize(window.getWindowPtr(), newMode.width, newMode.height);
 		}
 		else
 		{
 			// different monitor and/or refresh rate
-			GLFW.glfwSetWindowMonitor(window.getWindowHandle(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height,
+			GLFW.SetWindowMonitor(window.getWindowPtr(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height,
 				newMode.refreshRate);
 		}
 	}
@@ -454,7 +454,7 @@ public override bool setFullscreenMode(DisplayMode displayMode)
 		storeCurrentWindowPositionAndDisplayMode();
 
 		// switch from windowed to fullscreen
-		GLFW.glfwSetWindowMonitor(window.getWindowHandle(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height,
+		GLFW.SetWindowMonitor(window.getWindowPtr(), newMode.getMonitor(), 0, 0, newMode.width, newMode.height,
 			newMode.refreshRate);
 	}
 	updateFramebufferInfo();
@@ -473,7 +473,7 @@ private void storeCurrentWindowPositionAndDisplayMode()
 	displayModeBeforeFullscreen = getDisplayMode();
 }
 
-public override bool setWindowedMode(int width, int height)
+public override unsafe bool setWindowedMode(int width, int height)
 {
 	window.getInput().resetPollingStates();
 	if (!isFullscreen())
@@ -485,7 +485,7 @@ public override bool setWindowedMode(int width, int height)
 			centerWindow = true; // recenter the window since its size changed
 			newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition((Lwjgl3Monitor)getMonitor(), width, height);
 		}
-		GLFW.glfwSetWindowSize(window.getWindowHandle(), width, height);
+		GLFW.SetWindowSize(window.getWindowPtr(), width, height);
 		if (centerWindow)
 		{
 			window.setPosition(newPos.x, newPos.y); // on macOS the centering has to happen _after_ the new window size was set
@@ -502,12 +502,12 @@ public override bool setWindowedMode(int width, int height)
 		  // changed
 			GridPoint2 newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition((Lwjgl3Monitor)getMonitor(), width,
 				height);
-			GLFW.glfwSetWindowMonitor(window.getWindowHandle(), 0, newPos.x, newPos.y, width, height,
+			GLFW.SetWindowMonitor(window.getWindowPtr(), null, newPos.x, newPos.y, width, height,
 				displayModeBeforeFullscreen.refreshRate);
 		}
 		else
 		{ // restore previous position
-			GLFW.glfwSetWindowMonitor(window.getWindowHandle(), 0, windowPosXBeforeFullscreen, windowPosYBeforeFullscreen, width,
+			GLFW.SetWindowMonitor(window.getWindowPtr(), null, windowPosXBeforeFullscreen, windowPosYBeforeFullscreen, width,
 				height, displayModeBeforeFullscreen.refreshRate);
 		}
 	}
@@ -515,29 +515,29 @@ public override bool setWindowedMode(int width, int height)
 	return true;
 }
 
-public override void setTitle(String title)
+public override unsafe void setTitle(String title)
 {
 	if (title == null)
 	{
 		title = "";
 	}
-	GLFW.glfwSetWindowTitle(window.getWindowHandle(), title);
+	GLFW.SetWindowTitle(window.getWindowPtr(), title);
 }
-public override void setUndecorated(bool undecorated)
+public override unsafe void setUndecorated(bool undecorated)
 {
 	getWindow().getConfig().setDecorated(!undecorated);
-	GLFW.glfwSetWindowAttrib(window.getWindowHandle(), GLFW.GLFW_DECORATED, undecorated ? GLFW.GLFW_FALSE : GLFW.GLFW_TRUE);
+	GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Decorated, undecorated ? false : true);
 }
-public override void setResizable(bool resizable)
+public override unsafe void setResizable(bool resizable)
 {
 	getWindow().getConfig().setResizable(resizable);
-	GLFW.glfwSetWindowAttrib(window.getWindowHandle(), GLFW.GLFW_RESIZABLE, resizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+	GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Resizable, resizable ? true : false);
 }
 
 public override void setVSync(bool vsync)
 {
 	getWindow().getConfig().vSyncEnabled = vsync;
-	GLFW.glfwSwapInterval(vsync ? 1 : 0);
+	GLFW.SwapInterval(vsync ? 1 : 0);
 }
 
 /** Sets the target framerate for the application, when using continuous rendering. Must be positive. The cpu sleeps as needed.
@@ -555,7 +555,7 @@ public override BufferFormat getBufferFormat()
 }
 public override bool supportsExtension(String extension)
 {
-	return GLFW.glfwExtensionSupported(extension);
+	return GLFW.ExtensionSupported(extension);
 }
 
 public override void setContinuousRendering(bool isContinuous)
@@ -573,9 +573,9 @@ public override void requestRendering()
 	window.requestRendering();
 }
 
-public override bool isFullscreen()
+public override unsafe bool isFullscreen()
 {
-	return GLFW.glfwGetWindowMonitor(window.getWindowHandle()) != 0;
+	return GLFW.GetWindowMonitor(window.getWindowPtr()) != null;
 }
 
 public override Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
@@ -583,14 +583,14 @@ public override Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
 	return new Lwjgl3Cursor(getWindow(), pixmap, xHotspot, yHotspot);
 }
 
-public override void setCursor(Cursor cursor)
+public override unsafe void setCursor(Cursor cursor)
 {
-	GLFW.glfwSetCursor(getWindow().getWindowHandle(), ((Lwjgl3Cursor)cursor).glfwCursor);
+	GLFW.SetCursor(getWindow().getWindowPtr(), ((Lwjgl3Cursor)cursor).glfwCursor);
 }
 
-public override void setSystemCursor(SystemCursor systemCursor)
+public override unsafe void setSystemCursor(SystemCursor systemCursor)
 {
-	Lwjgl3Cursor.setSystemCursor(getWindow().getWindowHandle(), systemCursor);
+	Lwjgl3Cursor.setSystemCursor(getWindow().getWindowPtr(), systemCursor);
 }
 
 public void dispose()
@@ -599,35 +599,35 @@ public void dispose()
 	//this.resizeCallback.free();
 }
 
-public  class Lwjgl3DisplayMode : DisplayMode
+internal class Lwjgl3DisplayMode : DisplayMode
 {
-	readonly long monitorHandle;
+	readonly unsafe OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitorHandle;
 
-internal 	Lwjgl3DisplayMode (long monitor, int width, int height, int refreshRate, int bitsPerPixel) 
-	: base(width, height, refreshRate, bitsPerPixel)
+	internal unsafe Lwjgl3DisplayMode(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int width, int height, int refreshRate, int bitsPerPixel)
+		: base(width, height, refreshRate, bitsPerPixel)
 	{
-		
+
 		this.monitorHandle = monitor;
 	}
 
-		public long getMonitor()
-{
-	return monitorHandle;
-}
+	public unsafe OpenTK.Windowing.GraphicsLibraryFramework.Monitor* getMonitor()
+	{
+		return monitorHandle;
 	}
+}
 
-	public  class Lwjgl3Monitor : Monitor
+public class Lwjgl3Monitor : Monitor
 {
-	internal readonly long monitorHandle;
+			internal unsafe readonly OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitorHandle;
 
-internal 	Lwjgl3Monitor (long monitor, int virtualX, int virtualY, String name) 
+			internal unsafe Lwjgl3Monitor (OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int virtualX, int virtualY, String name) 
 	: base(virtualX, virtualY, name)
 	{
 		
 		this.monitorHandle = monitor;
 	}
 
-		public long getMonitorHandle()
+			public unsafe OpenTK.Windowing.GraphicsLibraryFramework.Monitor* getMonitorHandle()
 {
 	return monitorHandle;
 }

@@ -8,7 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpGDX.Utils;
 using static SharpGDX.Input;
-using SharpGDX.GLFW3;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
 namespace SharpGDX.Desktop
 {
@@ -25,10 +26,10 @@ namespace SharpGDX.Desktop
 	readonly bool[] justPressedButtons = new bool[5];
 	char lastCharacter;
 
-	private GLFWKeyCallback keyCallback;
+	private KeyCallback keyCallback;
 
 
-private void charCallback(long window, uint codepoint)
+private unsafe void charCallback(Window* window, uint codepoint)
 {
 	if ((codepoint & 0xff00) == 0xf700) return;
 	lastCharacter = (char)codepoint;
@@ -37,7 +38,7 @@ private void charCallback(long window, uint codepoint)
 }
 	
 
-private void scrollCallback(long window, int scrollX, int scrollY)
+private unsafe void scrollCallback(Window* window, double scrollX, double scrollY)
 {
 	this.window.getGraphics().requestRendering();
 	eventQueue.scrolled(-(float)scrollX, -(float)scrollY, TimeUtils.nanoTime());
@@ -45,15 +46,17 @@ private void scrollCallback(long window, int scrollX, int scrollY)
 private int logicalMouseY;
 private int logicalMouseX;
 
-private GLFWCursorPosCallback cursorPosCallback;
+private CursorPosCallback cursorPosCallback;
 
-private void mouseButtonCallback(long window, int button, int action, int mods)
+private unsafe void mouseButtonCallback(Window* window, MouseButton button, InputAction action, KeyModifiers mods)
 {
-	int gdxButton = toGdxButton(button);
-	if (button != -1 && gdxButton == -1) return;
+	
+	int gdxButton = toGdxButton((int)button);
+	// TODO: This isn't possible???
+			//if (button != -1 && gdxButton == -1) return;
 
-	long time = TimeUtils.nanoTime();
-	if (action == GLFW.GLFW_PRESS)
+			long time = TimeUtils.nanoTime();
+	if (action == InputAction.Press)
 	{
 		mousePressed++;
 		_justTouched = true;
@@ -80,10 +83,10 @@ private int toGdxButton(int button)
 }
 	
 
-public DefaultLwjgl3Input (Lwjgl3Window window)
+public unsafe DefaultLwjgl3Input (Lwjgl3Window window)
 {
 	this.window = window;
-	windowHandleChanged(window.getWindowHandle());
+	windowHandleChanged(window.getWindowPtr());
 }
 
 public void resetPollingStates()
@@ -101,33 +104,32 @@ public void resetPollingStates()
 	eventQueue.drain(null);
 }
 
-	public void windowHandleChanged(long windowHandle)
+	public unsafe void windowHandleChanged(Window* windowHandle)
 {
 	resetPollingStates();
-	GLFW.glfwSetKeyCallback(window.getWindowHandle(), keyCallback= (long window, int key, int scancode, int action, int mods) =>
+	GLFW.SetKeyCallback(window.getWindowPtr(), keyCallback= (Window* window, OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scancode, InputAction action, KeyModifiers mods) =>
 	{
+		var intKey = getGdxKeyCode((int)key);
 		switch (action)
 		{
-			case GLFW.GLFW_PRESS:
-				key = getGdxKeyCode(key);
-				eventQueue.keyDown(key, TimeUtils.nanoTime());
+			case InputAction.Press:
+				eventQueue.keyDown((int)intKey, TimeUtils.nanoTime());
 				pressedKeyCount++;
 				keyJustPressed = true;
-				pressedKeys[key] = true;
-				justPressedKeys[key] = true;
+				pressedKeys[(int)intKey] = true;
+				justPressedKeys[(int)intKey] = true;
 				this.window.getGraphics().requestRendering();
 				lastCharacter = (char)0;
-				char character = characterForKeyCode(key);
+				char character = characterForKeyCode((int)intKey);
 				if (character != 0) charCallback(window, character);
 				break;
-			case GLFW.GLFW_RELEASE:
-				key = getGdxKeyCode(key);
+			case InputAction.Release:
 				pressedKeyCount--;
-				pressedKeys[key] = false;
+				pressedKeys[(int)intKey] = false;
 				this.window.getGraphics().requestRendering();
-				eventQueue.keyUp(key, TimeUtils.nanoTime());
+				eventQueue.keyUp((int)intKey, TimeUtils.nanoTime());
 				break;
-			case GLFW.GLFW_REPEAT:
+			case InputAction.Repeat:
 				if (lastCharacter != 0)
 				{
 					this.window.getGraphics().requestRendering();
@@ -136,13 +138,13 @@ public void resetPollingStates()
 				break;
 		}
 	});
-	GLFW.glfwSetCharCallback(window.getWindowHandle(), charCallback);
-	GLFW.glfwSetScrollCallback(window.getWindowHandle(), scrollCallback);
+	GLFW.SetCharCallback(window.getWindowPtr(), charCallback);
+	GLFW.SetScrollCallback(window.getWindowPtr(), scrollCallback);
 
-	GLFW.glfwSetCursorPosCallback
+	GLFW.SetCursorPosCallback
 		(
-			window.getWindowHandle(),
-			cursorPosCallback = (long windowHandle, int x, int y) =>
+			window.getWindowPtr(),
+			cursorPosCallback = (Window* windowHandle, double x, double y) =>
 	{
 		deltaX = (int)x - logicalMouseX;
 		deltaY = (int)y - logicalMouseY;
@@ -172,7 +174,7 @@ public void resetPollingStates()
 	}
 			);
 
-	GLFW.glfwSetMouseButtonCallback(window.getWindowHandle(), mouseButtonCallback);
+	GLFW.SetMouseButtonCallback(window.getWindowPtr(), mouseButtonCallback);
 }
 
 	public void update()
@@ -248,13 +250,13 @@ public override int getDeltaY(int pointer)
 	return pointer == 0 ? deltaY : 0;
 }
 
-public override bool isTouched()
+public override unsafe bool isTouched()
 {
-	return GLFW.glfwGetMouseButton(window.getWindowHandle(), GLFW.GLFW_MOUSE_BUTTON_1) == GLFW.GLFW_PRESS
-		|| GLFW.glfwGetMouseButton(window.getWindowHandle(), GLFW.GLFW_MOUSE_BUTTON_2) == GLFW.GLFW_PRESS
-		|| GLFW.glfwGetMouseButton(window.getWindowHandle(), GLFW.GLFW_MOUSE_BUTTON_3) == GLFW.GLFW_PRESS
-		|| GLFW.glfwGetMouseButton(window.getWindowHandle(), GLFW.GLFW_MOUSE_BUTTON_4) == GLFW.GLFW_PRESS
-		|| GLFW.glfwGetMouseButton(window.getWindowHandle(), GLFW.GLFW_MOUSE_BUTTON_5) == GLFW.GLFW_PRESS;
+	return GLFW.GetMouseButton(window.getWindowPtr(), MouseButton.Button1) == InputAction.Press
+		|| GLFW.GetMouseButton(window.getWindowPtr(), MouseButton.Button2) == InputAction.Press
+		|| GLFW.GetMouseButton(window.getWindowPtr(), MouseButton.Button3) == InputAction.Press
+		|| GLFW.GetMouseButton(window.getWindowPtr(), MouseButton.Button4) == InputAction.Press
+		|| GLFW.GetMouseButton(window.getWindowPtr(), MouseButton.Button5) == InputAction.Press;
 }
 
 public override bool justTouched()
@@ -277,9 +279,9 @@ public override float getPressure(int pointer)
 	return isTouched(pointer) ? 1 : 0;
 }
 
-public override bool isButtonPressed(int button)
+public override unsafe bool isButtonPressed(int button)
 {
-	return GLFW.glfwGetMouseButton(window.getWindowHandle(), button) == GLFW.GLFW_PRESS;
+	return GLFW.GetMouseButton(window.getWindowPtr(), (MouseButton)button) == InputAction.Press;
 }
 
 public override bool isButtonJustPressed(int button)
@@ -318,18 +320,18 @@ public override InputProcessor getInputProcessor()
 	return inputProcessor;
 }
 
-public override void setCursorCatched(bool catched)
+public override unsafe void setCursorCatched(bool catched)
 {
-	GLFW.glfwSetInputMode(window.getWindowHandle(), GLFW.GLFW_CURSOR,
-		catched ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
+	GLFW.SetInputMode(window.getWindowPtr(), CursorStateAttribute.Cursor,
+		catched ? CursorModeValue.CursorDisabled : CursorModeValue.CursorNormal);
 }
 
-public override bool isCursorCatched()
+public override unsafe bool isCursorCatched()
 {
-	return GLFW.glfwGetInputMode(window.getWindowHandle(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED;
+	return GLFW.GetInputMode(window.getWindowPtr(), CursorStateAttribute.Cursor) == CursorModeValue.CursorDisabled;
 }
 
-public override void setCursorPosition(int x, int y)
+public override unsafe void setCursorPosition(int x, int y)
 {
 	if (window.getConfig().hdpiMode == HdpiMode.Pixels)
 	{
@@ -338,8 +340,8 @@ public override void setCursorPosition(int x, int y)
 		x = (int)(x * xScale);
 		y = (int)(y * yScale);
 	}
-	GLFW.glfwSetCursorPos(window.getWindowHandle(), x, y);
-	cursorPosCallback(window.getWindowHandle(), x, y);
+	GLFW.SetCursorPos(window.getWindowPtr(), x, y);
+	cursorPosCallback(window.getWindowPtr(), x, y);
 }
 
 protected char characterForKeyCode(int key)
@@ -347,14 +349,14 @@ protected char characterForKeyCode(int key)
 	// Map certain key codes to character codes.
 	switch (key)
 	{
-		case Keys.BACKSPACE:
+		case Input.Keys.BACKSPACE:
 			return (char)8;
-		case Keys.TAB:
+		case Input.Keys.TAB:
 			return '\t';
-		case Keys.FORWARD_DEL:
+		case Input.Keys.FORWARD_DEL:
 			return (char)127;
-		case Keys.NUMPAD_ENTER:
-		case Keys.ENTER:
+		case Input.Keys.NUMPAD_ENTER:
+		case Input.Keys.ENTER:
 			return '\n';
 	}
 	return (char)0;
@@ -362,246 +364,246 @@ protected char characterForKeyCode(int key)
 
 public int getGdxKeyCode(int lwjglKeyCode)
 {
-	switch (lwjglKeyCode)
+	switch ((OpenTK.Windowing.GraphicsLibraryFramework.Keys)lwjglKeyCode)
 	{
-		case GLFW.GLFW_KEY_SPACE:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space:
 			return Input.Keys.SPACE;
-		case GLFW.GLFW_KEY_APOSTROPHE:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Apostrophe:
 			return Input.Keys.APOSTROPHE;
-		case GLFW.GLFW_KEY_COMMA:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Comma:
 			return Input.Keys.COMMA;
-		case GLFW.GLFW_KEY_MINUS:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Minus:
 			return Input.Keys.MINUS;
-		case GLFW.GLFW_KEY_PERIOD:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Period:
 			return Input.Keys.PERIOD;
-		case GLFW.GLFW_KEY_SLASH:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Slash:
 			return Input.Keys.SLASH;
-		case GLFW.GLFW_KEY_0:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D0:
 			return Input.Keys.NUM_0;
-		case GLFW.GLFW_KEY_1:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D1:
 			return Input.Keys.NUM_1;
-		case GLFW.GLFW_KEY_2:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D2:
 			return Input.Keys.NUM_2;
-		case GLFW.GLFW_KEY_3:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D3:
 			return Input.Keys.NUM_3;
-		case GLFW.GLFW_KEY_4:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D4:
 			return Input.Keys.NUM_4;
-		case GLFW.GLFW_KEY_5:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D5:
 			return Input.Keys.NUM_5;
-		case GLFW.GLFW_KEY_6:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D6:
 			return Input.Keys.NUM_6;
-		case GLFW.GLFW_KEY_7:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D7:
 			return Input.Keys.NUM_7;
-		case GLFW.GLFW_KEY_8:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D8:
 			return Input.Keys.NUM_8;
-		case GLFW.GLFW_KEY_9:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D9:
 			return Input.Keys.NUM_9;
-		case GLFW.GLFW_KEY_SEMICOLON:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Semicolon:
 			return Input.Keys.SEMICOLON;
-		case GLFW.GLFW_KEY_EQUAL:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Equal:
 			return Input.Keys.EQUALS;
-		case GLFW.GLFW_KEY_A:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.A:
 			return Input.Keys.A;
-		case GLFW.GLFW_KEY_B:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.B:
 			return Input.Keys.B;
-		case GLFW.GLFW_KEY_C:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.C:
 			return Input.Keys.C;
-		case GLFW.GLFW_KEY_D:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D:
 			return Input.Keys.D;
-		case GLFW.GLFW_KEY_E:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.E:
 			return Input.Keys.E;
-		case GLFW.GLFW_KEY_F:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F:
 			return Input.Keys.F;
-		case GLFW.GLFW_KEY_G:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.G:
 			return Input.Keys.G;
-		case GLFW.GLFW_KEY_H:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.H:
 			return Input.Keys.H;
-		case GLFW.GLFW_KEY_I:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.I:
 			return Input.Keys.I;
-		case GLFW.GLFW_KEY_J:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.J:
 			return Input.Keys.J;
-		case GLFW.GLFW_KEY_K:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.K:
 			return Input.Keys.K;
-		case GLFW.GLFW_KEY_L:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.L:
 			return Input.Keys.L;
-		case GLFW.GLFW_KEY_M:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.M:
 			return Input.Keys.M;
-		case GLFW.GLFW_KEY_N:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.N:
 			return Input.Keys.N;
-		case GLFW.GLFW_KEY_O:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.O:
 			return Input.Keys.O;
-		case GLFW.GLFW_KEY_P:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.P:
 			return Input.Keys.P;
-		case GLFW.GLFW_KEY_Q:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Q:
 			return Input.Keys.Q;
-		case GLFW.GLFW_KEY_R:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.R:
 			return Input.Keys.R;
-		case GLFW.GLFW_KEY_S:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.S:
 			return Input.Keys.S;
-		case GLFW.GLFW_KEY_T:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.T:
 			return Input.Keys.T;
-		case GLFW.GLFW_KEY_U:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.U:
 			return Input.Keys.U;
-		case GLFW.GLFW_KEY_V:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.V:
 			return Input.Keys.V;
-		case GLFW.GLFW_KEY_W:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.W:
 			return Input.Keys.W;
-		case GLFW.GLFW_KEY_X:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.X:
 			return Input.Keys.X;
-		case GLFW.GLFW_KEY_Y:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Y:
 			return Input.Keys.Y;
-		case GLFW.GLFW_KEY_Z:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Z:
 			return Input.Keys.Z;
-		case GLFW.GLFW_KEY_LEFT_BRACKET:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftBracket:
 			return Input.Keys.LEFT_BRACKET;
-		case GLFW.GLFW_KEY_BACKSLASH:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Backslash:
 			return Input.Keys.BACKSLASH;
-		case GLFW.GLFW_KEY_RIGHT_BRACKET:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightBracket:
 			return Input.Keys.RIGHT_BRACKET;
-		case GLFW.GLFW_KEY_GRAVE_ACCENT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.GraveAccent:
 			return Input.Keys.GRAVE;
-		case GLFW.GLFW_KEY_WORLD_1:
-		case GLFW.GLFW_KEY_WORLD_2:
-			return Input.Keys.UNKNOWN;
-		case GLFW.GLFW_KEY_ESCAPE:
+		//case OpenTK.Windowing.GraphicsLibraryFramework.Keys.WORLD_1:
+		//case OpenTK.Windowing.GraphicsLibraryFramework.Keys.WORLD_2:
+		//	return Input.Keys.UNKNOWN;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape:
 			return Input.Keys.ESCAPE;
-		case GLFW.GLFW_KEY_ENTER:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Enter:
 			return Input.Keys.ENTER;
-		case GLFW.GLFW_KEY_TAB:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Tab:
 			return Input.Keys.TAB;
-		case GLFW.GLFW_KEY_BACKSPACE:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Backspace:
 			return Input.Keys.BACKSPACE;
-		case GLFW.GLFW_KEY_INSERT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Insert:
 			return Input.Keys.INSERT;
-		case GLFW.GLFW_KEY_DELETE:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Delete:
 			return Input.Keys.FORWARD_DEL;
-		case GLFW.GLFW_KEY_RIGHT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Right:
 			return Input.Keys.RIGHT;
-		case GLFW.GLFW_KEY_LEFT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Left:
 			return Input.Keys.LEFT;
-		case GLFW.GLFW_KEY_DOWN:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Down:
 			return Input.Keys.DOWN;
-		case GLFW.GLFW_KEY_UP:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Up:
 			return Input.Keys.UP;
-		case GLFW.GLFW_KEY_PAGE_UP:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageUp:
 			return Input.Keys.PAGE_UP;
-		case GLFW.GLFW_KEY_PAGE_DOWN:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageDown:
 			return Input.Keys.PAGE_DOWN;
-		case GLFW.GLFW_KEY_HOME:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Home:
 			return Input.Keys.HOME;
-		case GLFW.GLFW_KEY_END:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.End:
 			return Input.Keys.END;
-		case GLFW.GLFW_KEY_CAPS_LOCK:
-			return Keys.CAPS_LOCK;
-		case GLFW.GLFW_KEY_SCROLL_LOCK:
-			return Keys.SCROLL_LOCK;
-		case GLFW.GLFW_KEY_PRINT_SCREEN:
-			return Keys.PRINT_SCREEN;
-		case GLFW.GLFW_KEY_PAUSE:
-			return Keys.PAUSE;
-		case GLFW.GLFW_KEY_F1:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.CapsLock:
+			return Input.Keys.CAPS_LOCK;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.ScrollLock:
+			return Input.Keys.SCROLL_LOCK;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PrintScreen:
+			return Input.Keys.PRINT_SCREEN;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Pause:
+			return Input.Keys.PAUSE;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F1:
 			return Input.Keys.F1;
-		case GLFW.GLFW_KEY_F2:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F2:
 			return Input.Keys.F2;
-		case GLFW.GLFW_KEY_F3:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F3:
 			return Input.Keys.F3;
-		case GLFW.GLFW_KEY_F4:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F4:
 			return Input.Keys.F4;
-		case GLFW.GLFW_KEY_F5:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F5:
 			return Input.Keys.F5;
-		case GLFW.GLFW_KEY_F6:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F6:
 			return Input.Keys.F6;
-		case GLFW.GLFW_KEY_F7:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F7:
 			return Input.Keys.F7;
-		case GLFW.GLFW_KEY_F8:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F8:
 			return Input.Keys.F8;
-		case GLFW.GLFW_KEY_F9:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F9:
 			return Input.Keys.F9;
-		case GLFW.GLFW_KEY_F10:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F10:
 			return Input.Keys.F10;
-		case GLFW.GLFW_KEY_F11:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F11:
 			return Input.Keys.F11;
-		case GLFW.GLFW_KEY_F12:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F12:
 			return Input.Keys.F12;
-		case GLFW.GLFW_KEY_F13:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F13:
 			return Input.Keys.F13;
-		case GLFW.GLFW_KEY_F14:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F14:
 			return Input.Keys.F14;
-		case GLFW.GLFW_KEY_F15:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F15:
 			return Input.Keys.F15;
-		case GLFW.GLFW_KEY_F16:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F16:
 			return Input.Keys.F16;
-		case GLFW.GLFW_KEY_F17:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F17:
 			return Input.Keys.F17;
-		case GLFW.GLFW_KEY_F18:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F18:
 			return Input.Keys.F18;
-		case GLFW.GLFW_KEY_F19:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F19:
 			return Input.Keys.F19;
-		case GLFW.GLFW_KEY_F20:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F20:
 			return Input.Keys.F20;
-		case GLFW.GLFW_KEY_F21:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F21:
 			return Input.Keys.F21;
-		case GLFW.GLFW_KEY_F22:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F22:
 			return Input.Keys.F22;
-		case GLFW.GLFW_KEY_F23:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F23:
 			return Input.Keys.F23;
-		case GLFW.GLFW_KEY_F24:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F24:
 			return Input.Keys.F24;
-		case GLFW.GLFW_KEY_F25:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F25:
 			return Input.Keys.UNKNOWN;
-		case GLFW.GLFW_KEY_NUM_LOCK:
-			return Keys.NUM_LOCK;
-		case GLFW.GLFW_KEY_KP_0:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.NumLock:
+			return Input.Keys.NUM_LOCK;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad0:
 			return Input.Keys.NUMPAD_0;
-		case GLFW.GLFW_KEY_KP_1:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad1:
 			return Input.Keys.NUMPAD_1;
-		case GLFW.GLFW_KEY_KP_2:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad2:
 			return Input.Keys.NUMPAD_2;
-		case GLFW.GLFW_KEY_KP_3:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad3:
 			return Input.Keys.NUMPAD_3;
-		case GLFW.GLFW_KEY_KP_4:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad4:
 			return Input.Keys.NUMPAD_4;
-		case GLFW.GLFW_KEY_KP_5:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad5:
 			return Input.Keys.NUMPAD_5;
-		case GLFW.GLFW_KEY_KP_6:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad6:
 			return Input.Keys.NUMPAD_6;
-		case GLFW.GLFW_KEY_KP_7:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad7:
 			return Input.Keys.NUMPAD_7;
-		case GLFW.GLFW_KEY_KP_8:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad8:
 			return Input.Keys.NUMPAD_8;
-		case GLFW.GLFW_KEY_KP_9:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad9:
 			return Input.Keys.NUMPAD_9;
-		case GLFW.GLFW_KEY_KP_DECIMAL:
-			return Keys.NUMPAD_DOT;
-		case GLFW.GLFW_KEY_KP_DIVIDE:
-			return Keys.NUMPAD_DIVIDE;
-		case GLFW.GLFW_KEY_KP_MULTIPLY:
-			return Keys.NUMPAD_MULTIPLY;
-		case GLFW.GLFW_KEY_KP_SUBTRACT:
-			return Keys.NUMPAD_SUBTRACT;
-		case GLFW.GLFW_KEY_KP_ADD:
-			return Keys.NUMPAD_ADD;
-		case GLFW.GLFW_KEY_KP_ENTER:
-			return Keys.NUMPAD_ENTER;
-		case GLFW.GLFW_KEY_KP_EQUAL:
-			return Keys.NUMPAD_EQUALS;
-		case GLFW.GLFW_KEY_LEFT_SHIFT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadDecimal:
+			return Input.Keys.NUMPAD_DOT;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadDivide:
+			return Input.Keys.NUMPAD_DIVIDE;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadMultiply:
+			return Input.Keys.NUMPAD_MULTIPLY;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadSubtract:
+			return Input.Keys.NUMPAD_SUBTRACT;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadAdd:
+			return Input.Keys.NUMPAD_ADD;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadEnter:
+			return Input.Keys.NUMPAD_ENTER;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadEqual:
+			return Input.Keys.NUMPAD_EQUALS;
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift:
 			return Input.Keys.SHIFT_LEFT;
-		case GLFW.GLFW_KEY_LEFT_CONTROL:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftControl:
 			return Input.Keys.CONTROL_LEFT;
-		case GLFW.GLFW_KEY_LEFT_ALT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftAlt:
 			return Input.Keys.ALT_LEFT;
-		case GLFW.GLFW_KEY_LEFT_SUPER:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftSuper:
 			return Input.Keys.SYM;
-		case GLFW.GLFW_KEY_RIGHT_SHIFT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightShift:
 			return Input.Keys.SHIFT_RIGHT;
-		case GLFW.GLFW_KEY_RIGHT_CONTROL:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightControl:
 			return Input.Keys.CONTROL_RIGHT;
-		case GLFW.GLFW_KEY_RIGHT_ALT:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightAlt:
 			return Input.Keys.ALT_RIGHT;
-		case GLFW.GLFW_KEY_RIGHT_SUPER:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightSuper:
 			return Input.Keys.SYM;
-		case GLFW.GLFW_KEY_MENU:
+		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Menu:
 			return Input.Keys.MENU;
 		default:
 			return Input.Keys.UNKNOWN;

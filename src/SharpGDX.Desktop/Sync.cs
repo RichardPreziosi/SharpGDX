@@ -1,4 +1,4 @@
-﻿using SharpGDX.GLFW3;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace SharpGDX.Desktop;
 
@@ -83,7 +83,7 @@ internal class Sync
 	 */
 	private long getTime()
 	{
-		return (long)(GLFW.glfwGetTime() * NANOS_IN_SECOND);
+		return (long)(GLFW.GetTime() * NANOS_IN_SECOND);
 	}
 
 	/**

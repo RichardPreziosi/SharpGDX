@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
-using SharpGDX.GLFW3;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -208,29 +208,29 @@ namespace SharpGDX.Desktop
 	}
 
 	/** @return the currently active {@link DisplayMode} of the primary monitor */
-	public static DisplayMode getDisplayMode()
+	public unsafe static DisplayMode getDisplayMode()
 	{
 		Lwjgl3Application.initializeGlfw();
-		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-		return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.Width, videoMode.Height,
-			videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
+		var videoMode = GLFW.GetVideoMode(GLFW.GetPrimaryMonitor());
+		return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.GetPrimaryMonitor(), videoMode->Width, videoMode->Height,
+			videoMode->RefreshRate, videoMode->RedBits + videoMode->GreenBits + videoMode->BlueBits);
 	}
 
 	/** @return the currently active {@link DisplayMode} of the given monitor */
-	public static DisplayMode getDisplayMode(Monitor monitor)
+	public static unsafe DisplayMode getDisplayMode(Monitor monitor)
 	{
 		Lwjgl3Application.initializeGlfw();
-		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
-		return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, videoMode.Width, videoMode.Height,
-			videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
+		var videoMode = GLFW.GetVideoMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
+		return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, videoMode->Width, videoMode->Height,
+			videoMode->RefreshRate, videoMode->RedBits + videoMode->GreenBits + videoMode->BlueBits);
 	}
 
 	/** @return the available {@link DisplayMode}s of the primary monitor */
-	public static DisplayMode[] getDisplayModes()
+	public static unsafe DisplayMode[] getDisplayModes()
 	{
 		Lwjgl3Application.initializeGlfw();
-		var videoModes = GLFW.glfwGetVideoModes(GLFW.glfwGetPrimaryMonitor(), out var count);
-		DisplayMode[] result = new DisplayMode[count];
+		var videoModes = GLFW.GetVideoModes(GLFW.GetPrimaryMonitor());
+		DisplayMode[] result = new DisplayMode[videoModes.Length];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
@@ -242,11 +242,11 @@ namespace SharpGDX.Desktop
 	}
 
 	/** @return the available {@link DisplayMode}s of the given {@link Monitor} */
-	public static DisplayMode[] getDisplayModes(Monitor monitor)
+	public static unsafe DisplayMode[] getDisplayModes(Monitor monitor)
 	{
 		Lwjgl3Application.initializeGlfw();
-		var videoModes = GLFW.glfwGetVideoModes(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, out var count);
-		DisplayMode[] result = new DisplayMode[count];
+		var videoModes = GLFW.GetVideoModes(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
+		DisplayMode[] result = new DisplayMode[videoModes.Length];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
@@ -258,10 +258,10 @@ namespace SharpGDX.Desktop
 	}
 
 	/** @return the primary {@link Monitor} */
-	public static Monitor getPrimaryMonitor()
+	public static unsafe Monitor getPrimaryMonitor()
 	{
 		Lwjgl3Application.initializeGlfw();
-		return toLwjgl3Monitor(GLFW.glfwGetPrimaryMonitor());
+		return toLwjgl3Monitor(GLFW.GetPrimaryMonitor());
 	}
 
 	/** @return the connected {@link Monitor}s */
@@ -278,24 +278,24 @@ namespace SharpGDX.Desktop
 			//return monitors;
 		}
 
-	internal static Lwjgl3Graphics.Lwjgl3Monitor toLwjgl3Monitor(long glfwMonitor)
+	internal unsafe static Lwjgl3Graphics.Lwjgl3Monitor toLwjgl3Monitor(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* glfwMonitor)
 	{
 			// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
 			IntBuffer tmp = IntBuffer.allocate(1);
 		IntBuffer tmp2 = IntBuffer.allocate(1);
-		GLFW.glfwGetMonitorPos(glfwMonitor, out var virtualX, out var virtualY);
-		String name = GLFW.glfwGetMonitorName(glfwMonitor);
+		GLFW.GetMonitorPos(glfwMonitor, out var virtualX, out var virtualY);
+		String name = GLFW.GetMonitorName(glfwMonitor);
 		return new Lwjgl3Graphics.Lwjgl3Monitor(glfwMonitor, virtualX, virtualY, name);
 	}
 
-	internal static GridPoint2 calculateCenteredWindowPosition(Lwjgl3Graphics.Lwjgl3Monitor monitor, int newWidth, int newHeight)
+	internal unsafe static GridPoint2 calculateCenteredWindowPosition(Lwjgl3Graphics.Lwjgl3Monitor monitor, int newWidth, int newHeight)
 	{
 		// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
 			
 
 		DisplayMode displayMode = getDisplayMode(monitor);
 
-		GLFW.glfwGetMonitorWorkarea(monitor.monitorHandle, out var xpos, out var ypos, out var width, out var height);
+		GLFW.GetMonitorWorkarea(monitor.monitorHandle, out var xpos, out var ypos, out var width, out var height);
 		int workareaWidth = width;
 		int workareaHeight = height;
 

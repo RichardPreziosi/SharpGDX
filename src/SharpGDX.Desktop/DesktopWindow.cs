@@ -4,7 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using SharpGDX.GLFW3;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 using SharpGDX;
 using SharpGDX.Desktop;
 using SharpGDX.Shims;
@@ -13,7 +14,7 @@ using SharpGDX.Utils;
 namespace SharpGDX.Desktop
 {
 	public class Lwjgl3Window : Disposable {
-	private long windowHandle;
+	private unsafe Window* windowHandle;
 	readonly ApplicationListener listener;
 	readonly Lwjgl3ApplicationBase application;
 	private bool listenerInitialized = false;
@@ -29,11 +30,11 @@ namespace SharpGDX.Desktop
 	bool focused = false;
 	private bool _requestRendering = false;
 
-	private GLFWWindowFocusCallback _focusCallback;
+	private WindowFocusCallback _focusCallback;
 
-	private GLFWWindowIconifyCallback iconifyCallback;
+	private WindowIconifyCallback iconifyCallback;
 
-	private void maximizeCallback(long windowHandle,  bool maximized) {
+	private unsafe void maximizeCallback(Window* windowHandle,  bool maximized) {
 			postRunnable(() => {
 				if (windowListener != null) {
 						windowListener.maximized(maximized);
@@ -43,14 +44,14 @@ namespace SharpGDX.Desktop
 		}
 
 
-		private GLFWWindowCloseCallback closeCallback;
+		private WindowCloseCallback closeCallback;
 	
 
-	private void dropCallback (long windowHandle, int count, long names) {
+	private unsafe void dropCallback (Window* windowHandle, int count, byte** names) {
 			String[] files = new String[count];
 			for (int i = 0; i < count; i++) {
 				// TODO: Do these need to be freed?
-				files[i] = Marshal.PtrToStringUTF8(Marshal.ReadIntPtr(names, i * IntPtr.Size));
+				files[i] = Marshal.PtrToStringUTF8((IntPtr)names[i]);
 			}
 			postRunnable(() => {
 				
@@ -60,7 +61,7 @@ namespace SharpGDX.Desktop
 			});
 		}
 
-		private GLFWWindowRefreshCallback refreshCallback;
+		private WindowRefreshCallback refreshCallback;
 
 	internal Lwjgl3Window (ApplicationListener listener, Lwjgl3ApplicationConfiguration config, Lwjgl3ApplicationBase application) {
 		this.listener = listener;
@@ -73,12 +74,12 @@ namespace SharpGDX.Desktop
 		this.tmpBuffer2 = IntBuffer.allocate(1);
 	}
 
-	internal void create (long windowHandle) {
+	internal unsafe void create (Window* windowHandle) {
 		this.windowHandle = windowHandle;
 		this.input = application.createInput(this);
 		this.graphics = new Lwjgl3Graphics(this);
 
-		GLFW.glfwSetWindowFocusCallback
+		GLFW.SetWindowFocusCallback
 		(
 			windowHandle,
 			_focusCallback = (_, focused) => postRunnable(() =>
@@ -100,7 +101,7 @@ namespace SharpGDX.Desktop
 			})
 		);
 
-		GLFW.glfwSetWindowIconifyCallback
+		GLFW.SetWindowIconifyCallback
 		(
 			windowHandle,
 			iconifyCallback = (_, iconified) => postRunnable(() =>
@@ -123,9 +124,9 @@ namespace SharpGDX.Desktop
 			})
 		);
 
-		GLFW.glfwSetWindowMaximizeCallback(windowHandle, maximizeCallback);
+		GLFW.SetWindowMaximizeCallback(windowHandle, maximizeCallback);
 
-		GLFW.glfwSetWindowCloseCallback
+		GLFW.SetWindowCloseCallback
 		(
 			windowHandle,
 			closeCallback = (_) => postRunnable(() =>
@@ -135,16 +136,16 @@ namespace SharpGDX.Desktop
 				{
 					if (!windowListener.closeRequested())
 					{
-						GLFW.glfwSetWindowShouldClose(windowHandle, false);
+						GLFW.SetWindowShouldClose(windowHandle, false);
 					}
 				}
 
 			})
 		);
 
-		GLFW.glfwSetDropCallback(windowHandle, dropCallback);
+		GLFW.SetDropCallback(windowHandle, dropCallback);
 
-		GLFW.glfwSetWindowRefreshCallback
+		GLFW.SetWindowRefreshCallback
 		(
 			windowHandle,
 			refreshCallback = (_) => postRunnable(() =>
@@ -186,42 +187,42 @@ namespace SharpGDX.Desktop
 
 	/** Sets the position of the window in logical coordinates. All monitors span a virtual surface together. The coordinates are
 	 * relative to the first monitor in the virtual surface. **/
-	public void setPosition (int x, int y) {
-		GLFW.glfwSetWindowPos(windowHandle, x, y);
+	public unsafe void setPosition (int x, int y) {
+		GLFW.SetWindowPos(windowHandle, x, y);
 	}
 
 	/** @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
 	 *         relative to the first monitor in the virtual surface. **/
-	public int getPositionX () {
-		GLFW.glfwGetWindowPos(windowHandle, out var x, out var y);
+	public unsafe int getPositionX () {
+		GLFW.GetWindowPos(windowHandle, out var x, out var y);
 		return x;
 	}
 
 	/** @return the window position in logical coordinates. All monitors span a virtual surface together. The coordinates are
 	 *         relative to the first monitor in the virtual surface. **/
-	public int getPositionY () {
-		GLFW.glfwGetWindowPos(windowHandle, out var x, out var y);
+	public unsafe int getPositionY () {
+		GLFW.GetWindowPos(windowHandle, out var x, out var y);
 		return y;
 	}
 
 	/** Sets the visibility of the window. Invisible windows will still call their {@link ApplicationListener} */
-	public void setVisible (bool visible) {
+	public unsafe void setVisible (bool visible) {
 		if (visible) {
-			GLFW.glfwShowWindow(windowHandle);
+			GLFW.ShowWindow(windowHandle);
 		} else {
-			GLFW.glfwHideWindow(windowHandle);
+			GLFW.HideWindow(windowHandle);
 		}
 	}
 
 	/** Closes this window and pauses and disposes the associated {@link ApplicationListener}. */
-	public void closeWindow () {
-		GLFW.glfwSetWindowShouldClose(windowHandle, true);
+	public unsafe void closeWindow () {
+		GLFW.SetWindowShouldClose(windowHandle, true);
 	}
 
 	/** Minimizes (iconifies) the window. Iconified windows do not call their {@link ApplicationListener} until the window is
 	 * restored. */
-	public void iconifyWindow () {
-		GLFW.glfwIconifyWindow(windowHandle);
+	public unsafe void iconifyWindow () {
+		GLFW.IconifyWindow(windowHandle);
 	}
 
 	/** Whether the window is iconfieid */
@@ -230,18 +231,18 @@ namespace SharpGDX.Desktop
 	}
 
 	/** De-minimizes (de-iconifies) and de-maximizes the window. */
-	public void restoreWindow () {
-		GLFW.glfwRestoreWindow(windowHandle);
+	public unsafe void restoreWindow () {
+		GLFW.RestoreWindow(windowHandle);
 	}
 
 	/** Maximizes the window. */
-	public void maximizeWindow () {
-		GLFW.glfwMaximizeWindow(windowHandle);
+	public unsafe void maximizeWindow () {
+		GLFW.MaximizeWindow(windowHandle);
 	}
 
 	/** Brings the window to front and sets input focus. The window should already be visible and not iconified. */
-	public void focusWindow () {
-		GLFW.glfwFocusWindow(windowHandle);
+	public unsafe void focusWindow () {
+		GLFW.FocusWindow(windowHandle);
 	}
 
 	public bool isFocused () {
@@ -253,11 +254,11 @@ namespace SharpGDX.Desktop
 	 *           32x32 and 48x48. Pixmap format {@link com.badlogic.gdx.graphics.Pixmap.Format#RGBA8888 RGBA8888} is preferred so
 	 *           the images will not have to be copied and converted. The chosen image is copied, and the provided Pixmaps are not
 	 *           disposed. */
-	public void setIcon (Pixmap[] image) {
+	public unsafe void setIcon (Pixmap[] image) {
 		setIcon(windowHandle, image);
 	}
 
-	static void setIcon (long windowHandle, String[] imagePaths, Files.FileType imageFileType) {
+	private static unsafe void setIcon (Window* windowHandle, String[] imagePaths, Files.FileType imageFileType) {
 		if (SharedLibraryLoader.isMac) return;
 
 		Pixmap[] pixmaps = new Pixmap[imagePaths.Length];
@@ -272,7 +273,7 @@ namespace SharpGDX.Desktop
 		}
 	}
 
-	static void setIcon (long windowHandle, Pixmap[] images) {
+	private static unsafe void setIcon (Window* windowHandle, Pixmap[] images) {
 		//if (SharedLibraryLoader.isMac) return;
 
 		//GLFWImage.Buffer buffer = GLFWImage.malloc(images.Length);
@@ -308,20 +309,20 @@ namespace SharpGDX.Desktop
 
 	}
 
-	public void setTitle (string title) {
-		GLFW.glfwSetWindowTitle(windowHandle, title);
+	public unsafe void setTitle (string title) {
+		GLFW.SetWindowTitle(windowHandle, title);
 	}
 
 	/** Sets minimum and maximum size limits for the window. If the window is full screen or not resizable, these limits are
 	 * ignored. Use -1 to indicate an unrestricted dimension. */
-	public void setSizeLimits (int minWidth, int minHeight, int maxWidth, int maxHeight) {
+	public unsafe void setSizeLimits (int minWidth, int minHeight, int maxWidth, int maxHeight) {
 		setSizeLimits(windowHandle, minWidth, minHeight, maxWidth, maxHeight);
 	}
 
-	internal static void setSizeLimits (long windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight) {
-		GLFW.glfwSetWindowSizeLimits(windowHandle, minWidth > -1 ? minWidth : GLFW.GLFW_DONT_CARE,
-			minHeight > -1 ? minHeight : GLFW.GLFW_DONT_CARE, maxWidth > -1 ? maxWidth : GLFW.GLFW_DONT_CARE,
-			maxHeight > -1 ? maxHeight : GLFW.GLFW_DONT_CARE);
+	internal static unsafe void setSizeLimits (Window* windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight) {
+		GLFW.SetWindowSizeLimits(windowHandle, minWidth > -1 ? minWidth : GLFW.DontCare,
+			minHeight > -1 ? minHeight : GLFW.DontCare, maxWidth > -1 ? maxWidth : GLFW.DontCare,
+			maxHeight > -1 ? maxHeight : GLFW.DontCare);
 	}
 
 	internal Lwjgl3Graphics getGraphics () {
@@ -332,16 +333,24 @@ namespace SharpGDX.Desktop
 		return input;
 	}
 
-	public long getWindowHandle () {
+
+
+	public unsafe long getWindowHandle () {
+		// TODO: This should be an IntPtr and should be marshaled.
+		return (long)windowHandle;
+	}
+
+	internal unsafe Window* getWindowPtr()
+	{
 		return windowHandle;
 	}
 
-	void windowHandleChanged (long windowHandle) {
+	private unsafe void windowHandleChanged (Window* windowHandle) {
 		this.windowHandle = windowHandle;
 		input.windowHandleChanged(windowHandle);
 	}
 
-	internal bool update () {
+	internal unsafe bool update () {
 		if (!listenerInitialized) {
 			initializeListener();
 		}
@@ -365,7 +374,7 @@ namespace SharpGDX.Desktop
 		if (shouldRender) {
 			graphics.update();
 			listener.render();
-			GLFW.glfwSwapBuffers(windowHandle);
+			GLFW.SwapBuffers(windowHandle);
 		}
 
 		if (!iconified) input.prepareNext();
@@ -379,8 +388,8 @@ namespace SharpGDX.Desktop
 		}
 	}
 
-	internal bool shouldClose () {
-		return GLFW.glfwWindowShouldClose(windowHandle) == GLFW.GLFW_TRUE;
+	internal unsafe bool shouldClose () {
+		return GLFW.WindowShouldClose(windowHandle);
 	}
 
 	internal Lwjgl3ApplicationConfiguration getConfig () {
@@ -399,7 +408,7 @@ namespace SharpGDX.Desktop
 		}
 	}
 
-	internal void makeCurrent () {
+	internal unsafe void makeCurrent () {
 		Gdx.graphics = graphics;
 		Gdx.gl32 = graphics.getGL32();
 		Gdx.gl31 = Gdx.gl32 != null ? Gdx.gl32 : graphics.getGL31();
@@ -408,34 +417,35 @@ namespace SharpGDX.Desktop
 		Gdx.gl = Gdx.gl20;
 		Gdx.input = input;
 
-		GLFW.glfwMakeContextCurrent(windowHandle);
+		GLFW.MakeContextCurrent(windowHandle);
 	}
 
-	public void dispose () {
+	public unsafe void dispose () {
 		listener.pause();
 		listener.dispose();
 		Lwjgl3Cursor.dispose(this);
 		graphics.dispose();
 		input.dispose();
 
-		GLFW.glfwSetWindowFocusCallback(windowHandle, null);
-		GLFW.glfwSetWindowIconifyCallback(windowHandle, null);
-		GLFW.glfwSetWindowMaximizeCallback(windowHandle, null);
-		GLFW.glfwSetWindowCloseCallback(windowHandle, null);
-		GLFW.glfwSetDropCallback(windowHandle, null);
-		GLFW.glfwSetWindowRefreshCallback(windowHandle, null);
-
-		GLFW.glfwDestroyWindow(windowHandle);
+		GLFW.SetWindowFocusCallback(windowHandle, null);
+		GLFW.SetWindowIconifyCallback(windowHandle, null);
+		GLFW.SetWindowMaximizeCallback(windowHandle, null);
+		GLFW.SetWindowCloseCallback(windowHandle, null);
+		GLFW.SetDropCallback(windowHandle, null);
+		GLFW.SetWindowRefreshCallback(windowHandle, null);
+			
+		GLFW.DestroyWindow(windowHandle);
 		}
 
-	public override int GetHashCode () {
+	public override unsafe int GetHashCode () {
 		 int prime = 31;
 		int result = 1;
-		result = prime * result + (int)(windowHandle ^ (windowHandle >>> 32));
+		// TODO: Not sure that this cast works
+		result = prime * result + (int)((long)windowHandle ^ ((long)windowHandle >>> 32));
 		return result;
 	}
 
-	public override bool Equals (Object? obj) {
+	public override unsafe bool Equals (Object? obj) {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (GetType() != obj.GetType()) return false;
@@ -444,8 +454,8 @@ namespace SharpGDX.Desktop
 		return true;
 	}
 
-	public void flash () {
-		GLFW.glfwRequestWindowAttention(windowHandle);
+	public unsafe void flash () {
+		GLFW.RequestWindowAttention(windowHandle);
 	}
 }
 }

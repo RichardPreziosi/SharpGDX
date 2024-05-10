@@ -1,16 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SharpGDX.GLFW3\SharpGDX.GLFW3.csproj" />
-    <ProjectReference Include="..\SharpGDX.OpenAL\SharpGDX.OpenAL.csproj" />
-    <ProjectReference Include="..\SharpGDX.OpenGL\SharpGDX.OpenGL.csproj" />
-    <ProjectReference Include="..\SharpGDX\SharpGDX.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="OpenTK.Windowing.GraphicsLibraryFramework" Version="4.8.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SharpGDX.OpenAL\SharpGDX.OpenAL.csproj" />
+		<ProjectReference Include="..\SharpGDX.OpenGL\SharpGDX.OpenGL.csproj" />
+		<ProjectReference Include="..\SharpGDX\SharpGDX.csproj" />
+	</ItemGroup>
 
 </Project>

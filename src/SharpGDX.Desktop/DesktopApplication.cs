@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
+using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 using System.Runtime.InteropServices;
-using SharpGDX.GLFW3;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using File = SharpGDX.Shims.File;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
@@ -26,7 +28,7 @@ namespace SharpGDX.Desktop
 	private readonly Array<Runnable> runnables = new Array<Runnable>();
 	private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
 	private readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
-	private static GLFWErrorCallback errorCallback;
+	private static ErrorCallback errorCallback;
 	private static GLVersion glVersion;
 	private static DebugProc? glDebugCallback;
 	private readonly Sync sync;
@@ -39,17 +41,23 @@ namespace SharpGDX.Desktop
 					throw new NotImplementedException();
 				}
 			Lwjgl3NativesLoader.load();
-			errorCallback = (int code, string description) =>
+			errorCallback = (ErrorCode code, string description) =>
 			{
 				// TODO: ??? GLFWErrorCallback.createPrint(Lwjgl3ApplicationConfiguration.errorStream);
 
 				Console.WriteLine(description);
 			};
 
-			GLFW.glfwSetErrorCallback(errorCallback);
-			if (SharedLibraryLoader.isMac) GLFW.glfwInitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
-			GLFW.glfwInitHint(GLFW.GLFW_JOYSTICK_HAT_BUTTONS, GLFW.GLFW_FALSE);
-			if (GLFW.glfwInit() != GLFW.GLFW_TRUE) {
+			GLFW.SetErrorCallback(errorCallback);
+			
+			if (SharedLibraryLoader.isMac)
+			{
+				// TODO: GLFW.InitHint(GLFW.GLFW_ANGLE_PLATFORM_TYPE, GLFW.GLFW_ANGLE_PLATFORM_TYPE_METAL);
+				throw new NotImplementedException();
+			}
+
+			GLFW.InitHint(InitHintBool.JoystickHatButtons, false);
+			if (!GLFW.Init()) {
 				throw new GdxRuntimeException("Unable to initialize GLFW");
 			}
 		}
@@ -102,7 +110,7 @@ namespace SharpGDX.Desktop
 		
 	}
 
-	public Lwjgl3Application (ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
+	public unsafe Lwjgl3Application (ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
 		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) loadANGLE();
 		initializeGlfw();
 		setApplicationLogger(new Lwjgl3ApplicationLogger());
@@ -130,7 +138,7 @@ namespace SharpGDX.Desktop
 
 		this.sync = new Sync();
 
-		Lwjgl3Window window = createWindow(config, listener, 0);
+		Lwjgl3Window window = createWindow(config, listener, null);
 		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) postLoadANGLE();
 		windows.add(window);
 		try {
@@ -166,7 +174,7 @@ namespace SharpGDX.Desktop
 					closedWindows.add(window);
 				}
 			}
-			GLFW.glfwPollEvents();
+			GLFW.PollEvents();
 
 			bool shouldRequestRendering;
 			lock (runnables) {
@@ -239,7 +247,7 @@ namespace SharpGDX.Desktop
 			// TODO: 	glDebugCallback.free();
 				glDebugCallback = null;
 		}
-		GLFW.glfwTerminate();
+		GLFW.Terminate();
 	}
 
 	public ApplicationListener getApplicationListener () {
@@ -376,17 +384,17 @@ namespace SharpGDX.Desktop
 	 *
 	 * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation is postponed
 	 * with {@link Application#postRunnable(Runnable)} until after all existing windows are updated. */
-	public Lwjgl3Window newWindow (ApplicationListener listener, Lwjgl3WindowConfiguration config) {
+	public unsafe Lwjgl3Window newWindow (ApplicationListener listener, Lwjgl3WindowConfiguration config) {
 		Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
 		appConfig.setWindowConfiguration(config);
 		if (appConfig.title == null) appConfig.title = listener.GetType().Name;
-		return createWindow(appConfig, listener, windows.get(0).getWindowHandle());
+		return createWindow(appConfig, listener, windows.get(0).getWindowPtr());
 	}
 
-	private Lwjgl3Window createWindow (Lwjgl3ApplicationConfiguration config, ApplicationListener listener,
-		long sharedContext) {
+	private unsafe Lwjgl3Window createWindow (Lwjgl3ApplicationConfiguration config, ApplicationListener listener,
+		Window* sharedContext) {
 		Lwjgl3Window window = new Lwjgl3Window(listener, config, this);
-		if (sharedContext == 0) {
+		if (sharedContext == null) {
 			// the main window is created immediately
 			createWindow(window, config, sharedContext);
 		} else {
@@ -399,8 +407,8 @@ namespace SharpGDX.Desktop
 		return window;
 	}
 
-	void createWindow (Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, long sharedContext) {
-		long windowHandle = createGlfwWindow(config, sharedContext);
+	private unsafe void createWindow (Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, Window* sharedContext) {
+		Window* windowHandle = createGlfwWindow(config, sharedContext);
 		window.create(windowHandle);
 		window.setVisible(config.initialVisible);
 
@@ -409,65 +417,65 @@ namespace SharpGDX.Desktop
 			//GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
 			//	config.initialBackgroundColor.a);
 			//GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			GLFW.glfwSwapBuffers(windowHandle);
+			GLFW.SwapBuffers(windowHandle);
 		}
 	}
 
-	static long createGlfwWindow (Lwjgl3ApplicationConfiguration config, long sharedContextWindow) {
-		GLFW.glfwDefaultWindowHints();
-		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, config.windowResizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, config.windowMaximized ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_AUTO_ICONIFY, config.autoIconify ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-
-		GLFW.glfwWindowHint(GLFW.GLFW_RED_BITS, config.r);
-		GLFW.glfwWindowHint(GLFW.GLFW_GREEN_BITS, config.g);
-		GLFW.glfwWindowHint(GLFW.GLFW_BLUE_BITS, config.b);
-		GLFW.glfwWindowHint(GLFW.GLFW_ALPHA_BITS, config.a);
-		GLFW.glfwWindowHint(GLFW.GLFW_STENCIL_BITS, config.stencil);
-		GLFW.glfwWindowHint(GLFW.GLFW_DEPTH_BITS, config.depth);
-		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, config.samples);
+	private unsafe static Window* createGlfwWindow (Lwjgl3ApplicationConfiguration config, Window* sharedContextWindow) {
+		GLFW.DefaultWindowHints();
+		GLFW.WindowHint(WindowHintBool.Visible, false);
+		GLFW.WindowHint(WindowHintBool.Resizable, config.windowResizable ? true : false);
+		GLFW.WindowHint(WindowHintBool.Maximized, config.windowMaximized ? true : false);
+		GLFW.WindowHint(WindowHintBool.AutoIconify, config.autoIconify ? true : false);
+			
+		GLFW.WindowHint(WindowHintInt.RedBits, config.r);
+		GLFW.WindowHint(WindowHintInt.GreenBits, config.g);
+		GLFW.WindowHint(WindowHintInt.BlueBits, config.b);
+		GLFW.WindowHint(WindowHintInt.AlphaBits, config.a);
+		GLFW.WindowHint(WindowHintInt.StencilBits, config.stencil);
+		GLFW.WindowHint(WindowHintInt.DepthBits, config.depth);
+		GLFW.WindowHint(WindowHintInt.Samples, config.samples);
 
 		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL30
 			|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL31
 			|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32) {
-			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, config.gles30ContextMajorVersion);
-			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, config.gles30ContextMinorVersion);
+			GLFW.WindowHint(WindowHintInt.ContextVersionMajor, config.gles30ContextMajorVersion);
+			GLFW.WindowHint(WindowHintInt.ContextVersionMinor, config.gles30ContextMinorVersion);
 			if (SharedLibraryLoader.isMac) {
 				// hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
 				// WGL_ARB_create_context extension is not available
 				// see: http://www.glfw.org/docs/latest/compat.html
-				GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
-				GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
+				GLFW.WindowHint(WindowHintBool.OpenGLForwardCompat, true);
+				GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core);
 			}
 		} else {
 			if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
-				GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_CREATION_API, GLFW.GLFW_EGL_CONTEXT_API);
-				GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_OPENGL_ES_API);
-				GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 2);
-				GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 0);
+				GLFW.WindowHint(WindowHintContextApi.ContextCreationApi, ContextApi.EglContextApi);
+				GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlEsApi);
+				GLFW.WindowHint(WindowHintInt.ContextVersionMajor, 2);
+				GLFW.WindowHint(WindowHintInt.ContextVersionMinor, 0);
 			}
 		}
 
 		if (config.transparentFramebuffer) {
-			GLFW.glfwWindowHint(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE);
+			GLFW.WindowHint(WindowHintBool.TransparentFramebuffer, true);
 		}
 
 		if (config.debug) {
-			GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
+			GLFW.WindowHint(WindowHintBool.OpenGLDebugContext, true);
 		}
 
-		long windowHandle = 0;
+		Window* windowHandle;
 
 		if (config.fullscreenMode != null) {
-			GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, config.fullscreenMode.refreshRate);
-			windowHandle = GLFW.glfwCreateWindow(config.fullscreenMode.width, config.fullscreenMode.height, config.title,
+			GLFW.WindowHint(WindowHintInt.RefreshRate, config.fullscreenMode.refreshRate);
+			windowHandle = GLFW.CreateWindow(config.fullscreenMode.width, config.fullscreenMode.height, config.title,
 				config.fullscreenMode.getMonitor(), sharedContextWindow);
 		} else {
-			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, config.windowDecorated ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-			windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);
+			GLFW.WindowHint(WindowHintBool.Decorated, config.windowDecorated ? true : false);
+			windowHandle = GLFW.CreateWindow(config.windowWidth, config.windowHeight, config.title, null, sharedContextWindow);
 		}
-		if (windowHandle == 0) {
+		if (windowHandle == null) {
 			throw new GdxRuntimeException("Couldn't create window");
 		}
 		Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth,
@@ -479,28 +487,28 @@ namespace SharpGDX.Desktop
 				if (config.windowMaxWidth > -1) windowWidth = Math.Min(windowWidth, config.windowMaxWidth);
 				if (config.windowMaxHeight > -1) windowHeight = Math.Min(windowHeight, config.windowMaxHeight);
 
-				long monitorHandle = GLFW.glfwGetPrimaryMonitor();
+				Monitor* monitorHandle = GLFW.GetPrimaryMonitor();
 				if (config.windowMaximized && config.maximizedMonitor != null) {
 					monitorHandle = config.maximizedMonitor.monitorHandle;
 				}
 
 				GridPoint2 newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition(
 					Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(monitorHandle), windowWidth, windowHeight);
-				GLFW.glfwSetWindowPos(windowHandle, newPos.x, newPos.y);
+				GLFW.SetWindowPos(windowHandle, newPos.x, newPos.y);
 			} else {
-				GLFW.glfwSetWindowPos(windowHandle, config.windowX, config.windowY);
+				GLFW.SetWindowPos(windowHandle, config.windowX, config.windowY);
 			}
 
 			if (config.windowMaximized) {
-				GLFW.glfwMaximizeWindow(windowHandle);
+				GLFW.MaximizeWindow(windowHandle);
 			}
 		}
 		if (config.windowIconPaths != null) {
 			//Lwjgl3Window.setIcon(windowHandle, config.windowIconPaths, config.windowIconFileType);
 			throw new NotImplementedException();
 		}
-		GLFW.glfwMakeContextCurrent(windowHandle);
-		GLFW.glfwSwapInterval(config.vSyncEnabled ? 1 : 0);
+		GLFW.MakeContextCurrent(windowHandle);
+		GLFW.SwapInterval(config.vSyncEnabled ? 1 : 0);
 		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
 			try {
 				//Class gles = Class.forName("org.lwjgl.opengles.GLES");
@@ -570,8 +578,8 @@ namespace SharpGDX.Desktop
 
 	private static bool supportsFBO () {
 		// FBO is in core since OpenGL 3.0, see https://www.opengl.org/wiki/Framebuffer_Object
-		return glVersion.IsVersionEqualToOrHigher(3, 0) || GLFW.glfwExtensionSupported("GL_EXT_framebuffer_object")
-			|| GLFW.glfwExtensionSupported("GL_ARB_framebuffer_object");
+		return glVersion.IsVersionEqualToOrHigher(3, 0) || GLFW.ExtensionSupported("GL_EXT_framebuffer_object")
+			|| GLFW.ExtensionSupported("GL_ARB_framebuffer_object");
 	}
 
 		public enum GLDebugMessageSeverity

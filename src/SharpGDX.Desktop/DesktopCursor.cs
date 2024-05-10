@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using SharpGDX.GLFW3;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using SharpGDX.Shims;
 using static SharpGDX.Cursor;
 
@@ -13,168 +13,193 @@ namespace SharpGDX.Desktop
 {
 	public class Lwjgl3Cursor : Cursor
 	{
-	static readonly Array<Lwjgl3Cursor> cursors = new Array<Lwjgl3Cursor>();
-	static readonly Map<SystemCursor, long> systemCursors = new Map<SystemCursor, long>();
+		static readonly Array<Lwjgl3Cursor> cursors = new Array<Lwjgl3Cursor>();
+		static readonly Map<SystemCursor, IntPtr> systemCursors = new Map<SystemCursor, IntPtr>();
 
-	private static int inputModeBeforeNoneCursor = -1;
+		private static int inputModeBeforeNoneCursor = -1;
 
-	readonly Lwjgl3Window window;
-	Pixmap pixmapCopy;
-	GLFWImage? glfwImage;
-	internal readonly long glfwCursor;
+		readonly Lwjgl3Window window;
+		Pixmap pixmapCopy;
+		Image? glfwImage;
+		internal unsafe readonly OpenTK.Windowing.GraphicsLibraryFramework.Cursor* glfwCursor;
 
-internal 	Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot)
-	{
-		this.window = window;
-		if (pixmap.getFormat() != Pixmap.Format.RGBA8888)
+		internal unsafe Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot)
 		{
-			throw new GdxRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
+			this.window = window;
+			if (pixmap.getFormat() != Pixmap.Format.RGBA8888)
+			{
+				throw new GdxRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
+			}
+
+			if ((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0)
+			{
+				throw new GdxRuntimeException(
+					"Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
+			}
+
+			if ((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0)
+			{
+				throw new GdxRuntimeException(
+					"Cursor image pixmap height of " + pixmap.getHeight() +
+					" is not a power-of-two greater than zero.");
+			}
+
+			if (xHotspot < 0 || xHotspot >= pixmap.getWidth())
+			{
+				throw new GdxRuntimeException(
+					"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " +
+					pixmap.getWidth() + ").");
+			}
+
+			if (yHotspot < 0 || yHotspot >= pixmap.getHeight())
+			{
+				throw new GdxRuntimeException(
+					"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " +
+					pixmap.getHeight() + ").");
+			}
+
+			this.pixmapCopy = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
+			this.pixmapCopy.setBlending(Pixmap.Blending.None);
+			this.pixmapCopy.drawPixmap(pixmap, 0, 0);
+
+			// TODO: Verify
+			var imageDataHandle = GCHandle.Alloc(pixmapCopy.getPixels().array(), GCHandleType.Pinned);
+
+			glfwImage = new Image()
+			{
+				Width = (pixmapCopy.getWidth()),
+				Height = (pixmapCopy.getHeight()),
+				Pixels = (byte*)imageDataHandle.AddrOfPinnedObject()
+			};
+
+			imageDataHandle.Free();
+
+			glfwCursor = GLFW.CreateCursor(glfwImage.Value, xHotspot, yHotspot);
+			cursors.add(this);
 		}
 
-		if ((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0)
+		public unsafe void dispose()
 		{
-			throw new GdxRuntimeException(
-				"Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
+			if (pixmapCopy == null)
+			{
+				throw new GdxRuntimeException("Cursor already disposed");
+			}
+
+			cursors.removeValue(this, true);
+			pixmapCopy.dispose();
+			pixmapCopy = null;
+
+			glfwImage = null;
+			GLFW.DestroyCursor(glfwCursor);
 		}
 
-		if ((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0)
+		internal static void dispose(Lwjgl3Window window)
 		{
-			throw new GdxRuntimeException(
-				"Cursor image pixmap height of " + pixmap.getHeight() + " is not a power-of-two greater than zero.");
+			for (int i = cursors.size - 1; i >= 0; i--)
+			{
+				Lwjgl3Cursor cursor = cursors.get(i);
+				if (cursor.window.Equals(window))
+				{
+					cursors.removeIndex(i).dispose();
+				}
+			}
 		}
 
-		if (xHotspot < 0 || xHotspot >= pixmap.getWidth())
+		internal static unsafe void disposeSystemCursors()
 		{
-			throw new GdxRuntimeException(
-				"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + pixmap.getWidth() + ").");
+			foreach (long systemCursor in systemCursors.values())
+			{
+				// TODO: Verify cast. -RP
+				GLFW.DestroyCursor((OpenTK.Windowing.GraphicsLibraryFramework.Cursor*)systemCursor);
+			}
+
+			systemCursors.clear();
 		}
 
-		if (yHotspot < 0 || yHotspot >= pixmap.getHeight())
+		internal static unsafe void setSystemCursor(Window* windowHandle, SystemCursor systemCursor)
 		{
-			throw new GdxRuntimeException(
-				"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + pixmap.getHeight() + ").");
-		}
-
-		this.pixmapCopy = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
-		this.pixmapCopy.setBlending(Pixmap.Blending.None);
-		this.pixmapCopy.drawPixmap(pixmap, 0, 0);
-
-		glfwImage = new GLFWImage()
-		{
-			Width = (pixmapCopy.getWidth()),
-			Height = (pixmapCopy.getHeight()),
-			Pixels = (pixmapCopy.getPixels().array())
-		};
-
-		glfwCursor = GLFW.glfwCreateCursor(glfwImage.Value, xHotspot, yHotspot);
-		cursors.add(this);
-	}
-
-	public void dispose()
-	{
-		if (pixmapCopy == null)
-		{
-			throw new GdxRuntimeException("Cursor already disposed");
-		}
-		cursors.removeValue(this, true);
-		pixmapCopy.dispose();
-		pixmapCopy = null;
-
-		glfwImage = null;
-		GLFW.glfwDestroyCursor(glfwCursor);
-	}
-
-	internal static void dispose(Lwjgl3Window window)
-	{
-		for (int i = cursors.size - 1; i >= 0; i--)
-		{
-			Lwjgl3Cursor cursor = cursors.get(i);
-			if (cursor.window.Equals(window))
+			if (systemCursor == SystemCursor.None)
 			{
-				cursors.removeIndex(i).dispose();
-			}
-		}
-	}
-
-	internal static void disposeSystemCursors()
-	{
-		foreach (long systemCursor in systemCursors.values())
-		{
-			GLFW.glfwDestroyCursor(systemCursor);
-		}
-		systemCursors.clear();
-	}
-
-	internal static void setSystemCursor(long windowHandle, SystemCursor systemCursor)
-	{
-		if (systemCursor == SystemCursor.None)
-		{
-			if (inputModeBeforeNoneCursor == -1) inputModeBeforeNoneCursor = GLFW.glfwGetInputMode(windowHandle, GLFW.GLFW_CURSOR);
-			GLFW.glfwSetInputMode(windowHandle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
-			return;
-		}
-		else if (inputModeBeforeNoneCursor != -1)
-		{
-			GLFW.glfwSetInputMode(windowHandle, GLFW.GLFW_CURSOR, inputModeBeforeNoneCursor);
-			inputModeBeforeNoneCursor = -1;
-		}
-		long glfwCursor = systemCursors.get(systemCursor);
-		if (glfwCursor == null)
-		{
-			long handle = 0;
-			if (systemCursor == SystemCursor.Arrow)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.Crosshair)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_CROSSHAIR_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.Hand)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_HAND_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.HorizontalResize)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_HRESIZE_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.VerticalResize)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.Ibeam)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.NWSEResize)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_NWSE_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.NESWResize)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_NESW_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.AllResize)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_ALL_CURSOR);
-			}
-			else if (systemCursor == SystemCursor.NotAllowed)
-			{
-				handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_NOT_ALLOWED_CURSOR);
-			}
-			else
-			{
-				throw new GdxRuntimeException("Unknown system cursor " + systemCursor);
-			}
-
-			if (handle == 0)
-			{
+				if (inputModeBeforeNoneCursor == -1)
+					inputModeBeforeNoneCursor = (int)GLFW.GetInputMode(windowHandle, CursorStateAttribute.Cursor);
+				GLFW.SetInputMode(windowHandle, CursorStateAttribute.Cursor, CursorModeValue.CursorHidden);
 				return;
 			}
-			glfwCursor = handle;
-			systemCursors.put(systemCursor, glfwCursor);
+			else if (inputModeBeforeNoneCursor != -1)
+			{
+				GLFW.SetInputMode(windowHandle, CursorStateAttribute.Cursor,
+					(CursorModeValue)inputModeBeforeNoneCursor);
+				inputModeBeforeNoneCursor = -1;
+			}
+
+			// TODO: Verify cast. -RP
+			OpenTK.Windowing.GraphicsLibraryFramework.Cursor* glfwCursor =
+				(OpenTK.Windowing.GraphicsLibraryFramework.Cursor*)systemCursors.get(systemCursor);
+
+			if (glfwCursor == null)
+			{
+				OpenTK.Windowing.GraphicsLibraryFramework.Cursor* handle;
+				if (systemCursor == SystemCursor.Arrow)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.Arrow);
+				}
+				else if (systemCursor == SystemCursor.Crosshair)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.Crosshair);
+				}
+				else if (systemCursor == SystemCursor.Hand)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.Hand);
+				}
+				else if (systemCursor == SystemCursor.HorizontalResize)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.HResize);
+				}
+				else if (systemCursor == SystemCursor.VerticalResize)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.VResize);
+				}
+				else if (systemCursor == SystemCursor.Ibeam)
+				{
+					handle = GLFW.CreateStandardCursor(CursorShape.IBeam);
+				}
+				else if (systemCursor == SystemCursor.NWSEResize)
+				{
+					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_NWSE_CURSOR);
+					throw new NotImplementedException();
+				}
+				else if (systemCursor == SystemCursor.NESWResize)
+				{
+					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_NESW_CURSOR);
+					throw new NotImplementedException();
+				}
+				else if (systemCursor == SystemCursor.AllResize)
+				{
+					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_ALL_CURSOR);
+					throw new NotImplementedException();
+				}
+				else if (systemCursor == SystemCursor.NotAllowed)
+				{
+					// TODO: handle = GLFW.CreateStandardCursor(GLFW.GLFW_NOT_ALLOWED_CURSOR);
+					throw new NotImplementedException();
+				}
+				else
+				{
+					throw new GdxRuntimeException("Unknown system cursor " + systemCursor);
+				}
+
+				if (handle == null)
+				{
+					return;
+				}
+
+				glfwCursor = handle;
+
+				// TODO: Verify cast. -RP
+				systemCursors.put(systemCursor, (IntPtr)glfwCursor);
+			}
+
+			GLFW.SetCursor(windowHandle, glfwCursor);
 		}
-		GLFW.glfwSetCursor(windowHandle, glfwCursor);
 	}
-}
 }
