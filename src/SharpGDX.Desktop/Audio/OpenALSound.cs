@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
-using static SharpGDX.OpenAL.AL;
+using OpenTK.Audio.OpenAL;
 
 namespace SharpGDX.Desktop.Audio
 {
@@ -38,9 +38,9 @@ namespace SharpGDX.Desktop.Audio
 		{
 			// TODO: I don't like this. -RP
 			var bufferIds =new int[1];
-			alGenBuffers(1, bufferIds);
+			AL.GenBuffers(1, bufferIds);
 			bufferID = bufferIds[0];
-			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm.array(), pcm.remaining(), sampleRate);
+			AL.BufferData(bufferID, channels > 1 ? ALFormat.Stereo16 : ALFormat.Mono16, pcm.array(), sampleRate);
 		}
 	}
 		
@@ -64,10 +64,10 @@ namespace SharpGDX.Desktop.Audio
 		// In case it still didn't work
 		if (sourceID == -1) return -1;
 		long soundId = audio.getSoundId(sourceID);
-		alSourcei(sourceID, AL_BUFFER, bufferID);
-		alSourcei(sourceID, AL_LOOPING, AL_FALSE);
-		alSourcef(sourceID, AL_GAIN, volume);
-		alSourcePlay(sourceID);
+		AL.Source(sourceID, ALSourcei.Buffer, bufferID);
+		AL.Source(sourceID, ALSourceb.Looping, false);
+		AL.Source(sourceID, ALSourcef.Gain, volume);
+		AL.SourcePlay(sourceID);
 		return soundId;
 	}
 
@@ -82,10 +82,10 @@ namespace SharpGDX.Desktop.Audio
 		int sourceID = audio.obtainSource(false);
 		if (sourceID == -1) return -1;
 		long soundId = audio.getSoundId(sourceID);
-		alSourcei(sourceID, AL_BUFFER, bufferID);
-		alSourcei(sourceID, AL_LOOPING, AL_TRUE);
-		alSourcef(sourceID, AL_GAIN, volume);
-		alSourcePlay(sourceID);
+		AL.Source(sourceID, ALSourcei.Buffer, bufferID);
+		AL.Source(sourceID, ALSourceb.Looping, true);
+		AL.Source(sourceID, ALSourcef.Gain, volume);
+		AL.SourcePlay(sourceID);
 		return soundId;
 	}
 
@@ -100,7 +100,7 @@ namespace SharpGDX.Desktop.Audio
 		if (audio.noDevice) return;
 		if (bufferID == -1) return;
 		audio.freeBuffer(bufferID);
-		alDeleteBuffers(1, new[] { bufferID });
+		AL.DeleteBuffers(1, new[] { bufferID });
 
 	bufferID = -1;
 		audio.forget(this);

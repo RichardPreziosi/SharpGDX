@@ -8,11 +8,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="OpenTK.Audio.OpenAL" Version="4.8.2" />
 		<PackageReference Include="OpenTK.Windowing.GraphicsLibraryFramework" Version="4.8.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SharpGDX.OpenAL\SharpGDX.OpenAL.csproj" />
 		<ProjectReference Include="..\SharpGDX.OpenGL\SharpGDX.OpenGL.csproj" />
 		<ProjectReference Include="..\SharpGDX\SharpGDX.csproj" />
 	</ItemGroup>
