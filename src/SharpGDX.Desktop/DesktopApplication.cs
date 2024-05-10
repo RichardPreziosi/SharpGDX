@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.InteropServices;
 using SharpGDX.GLFW3;
 using File = SharpGDX.Shims.File;
 using SharpGDX.Shims;
@@ -27,7 +28,7 @@ namespace SharpGDX.Desktop
 	private readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
 	private static GLFWErrorCallback errorCallback;
 	private static GLVersion glVersion;
-	private static Action? glDebugCallback;
+	private static DebugProc? glDebugCallback;
 	private readonly Sync sync;
 
 	internal static void initializeGlfw () {
@@ -529,17 +530,23 @@ namespace SharpGDX.Desktop
 			//throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
 			//	+ GL11.glGetString(GL11.GL_VERSION) + ", FBO extension: false\n" + glVersion.getDebugVersionString());
 		}
-
+		
 		if (config.debug)
 		{
-			throw new NotImplementedException();
-			//glDebugCallback = GLUtil.setupDebugMessageCallback(config.debugStream);
-			//setGLDebugMessageControl(GLDebugMessageSeverity.NOTIFICATION, false);
+			GL.DebugMessageCallback(glDebugCallback = GLDebugCallback, IntPtr.Zero);
+			setGLDebugMessageControl(GLDebugMessageSeverity.NOTIFICATION, false);
 		}
 
 		return windowHandle;
 	}
 
+	private static void GLDebugCallback(int source, int type, int id, int severity, int length, IntPtr message, IntPtr userparam)
+	{
+		var s = Marshal.PtrToStringUTF8(message);
+
+		Console.WriteLine(s);
+	}
+		
 	private static void initiateGL (bool useGLES20) {
 		if (!useGLES20) {
 				String versionString = GL.glGetString(GL11.GL_VERSION);
@@ -567,54 +574,68 @@ namespace SharpGDX.Desktop
 			|| GLFW.glfwExtensionSupported("GL_ARB_framebuffer_object");
 	}
 
-	//public enum GLDebugMessageSeverity {
-	//	HIGH(GL43.GL_DEBUG_SEVERITY_HIGH, KHRDebug.GL_DEBUG_SEVERITY_HIGH, ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
-	//		AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD), MEDIUM(GL43.GL_DEBUG_SEVERITY_MEDIUM, KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
-	//			ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB, AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD), LOW(
-	//				GL43.GL_DEBUG_SEVERITY_LOW, KHRDebug.GL_DEBUG_SEVERITY_LOW, ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
-	//				AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD), NOTIFICATION(GL43.GL_DEBUG_SEVERITY_NOTIFICATION,
-	//					KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION, -1, -1);
+		public enum GLDebugMessageSeverity
+		{
+			HIGH = GL.GL_DEBUG_SEVERITY_HIGH,
+			MEDIUM = GL.GL_DEBUG_SEVERITY_MEDIUM,
+			LOW = GL.GL_DEBUG_SEVERITY_LOW,
+			NOTIFICATION = GL.GL_DEBUG_SEVERITY_NOTIFICATION
 
-	//	final int gl43, khr, arb, amd;
 
-	//	GLDebugMessageSeverity (int gl43, int khr, int arb, int amd) {
-	//		this.gl43 = gl43;
-	//		this.khr = khr;
-	//		this.arb = arb;
-	//		this.amd = amd;
-	//	}
-	//}
+			//HIGH(GL.GL_DEBUG_SEVERITY_HIGH, KHRDebug.GL_DEBUG_SEVERITY_HIGH, ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
+			//	AMDDebugOutput.GL_DEBUG_SEVERITY_HIGH_AMD), MEDIUM(GL.GL_DEBUG_SEVERITY_MEDIUM, KHRDebug.GL_DEBUG_SEVERITY_MEDIUM,
+			//		ARBDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_ARB, AMDDebugOutput.GL_DEBUG_SEVERITY_MEDIUM_AMD), LOW(
+			//			GL43.GL_DEBUG_SEVERITY_LOW, KHRDebug.GL_DEBUG_SEVERITY_LOW, ARBDebugOutput.GL_DEBUG_SEVERITY_LOW_ARB,
+			//			AMDDebugOutput.GL_DEBUG_SEVERITY_LOW_AMD), NOTIFICATION(GL.GL_DEBUG_SEVERITY_NOTIFICATION,
+			//				KHRDebug.GL_DEBUG_SEVERITY_NOTIFICATION, -1, -1);
 
-	///** Enables or disables GL debug messages for the specified severity level. Returns false if the severity level could not be
-	// * set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
-	// *
-	// * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(bool, PrintStream)} */
-	//public static bool setGLDebugMessageControl (Lwjgl3Application.GLDebugMessageSeverity severity, bool enabled) {
-	//	GLCapabilities caps = GL.getCapabilities();
-	//	final int GL_DONT_CARE = 0x1100; // not defined anywhere yet
+		//final int gl43, khr, arb, amd;
 
-	//	if (caps.OpenGL43) {
-	//		GL43.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.gl43, (IntBuffer)null, enabled);
-	//		return true;
-	//	}
+		//GLDebugMessageSeverity(int gl43, int khr, int arb, int amd)
+		//{
+		//	this.gl43 = gl43;
+		//	this.khr = khr;
+		//	this.arb = arb;
+		//	this.amd = amd;
+		//}
+	}
 
-	//	if (caps.GL_KHR_debug) {
-	//		KHRDebug.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.khr, (IntBuffer)null, enabled);
-	//		return true;
-	//	}
+	/** Enables or disables GL debug messages for the specified severity level. Returns false if the severity level could not be
+	 * set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
+	 *
+	 * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(bool, PrintStream)} */
+	public static bool setGLDebugMessageControl(GLDebugMessageSeverity severity, bool enabled)
+		{
+			// TODO: GLCapabilities caps = GL.getCapabilities();
+			int GL_DONT_CARE = 0x1100; // not defined anywhere yet
 
-	//	if (caps.GL_ARB_debug_output && severity.arb != -1) {
-	//		ARBDebugOutput.glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, severity.arb, (IntBuffer)null, enabled);
-	//		return true;
-	//	}
+			//if (caps.OpenGL43)
+			//{
+				// TODO: GL.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.gl43, (IntBuffer)null, enabled);
+				GL.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, (int)severity, 0, (int[]?)null, enabled);
+				return true;
+		//	}
 
-	//	if (caps.GL_AMD_debug_output && severity.amd != -1) {
-	//		AMDDebugOutput.glDebugMessageEnableAMD(GL_DONT_CARE, severity.amd, (IntBuffer)null, enabled);
-	//		return true;
-	//	}
+			//if (caps.GL_KHR_debug)
+			//{
+			//	KHRDebug.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.khr, (IntBuffer)null, enabled);
+			//	return true;
+			//}
 
-	//	return false;
-	//}
+			//if (caps.GL_ARB_debug_output && severity.arb != -1)
+			//{
+			//	ARBDebugOutput.glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, severity.arb, (IntBuffer)null, enabled);
+			//	return true;
+			//}
 
-}
+			//if (caps.GL_AMD_debug_output && severity.amd != -1)
+			//{
+			//	AMDDebugOutput.glDebugMessageEnableAMD(GL_DONT_CARE, severity.amd, (IntBuffer)null, enabled);
+			//	return true;
+			//}
+
+			return false;
+		}
+
+	}
 }

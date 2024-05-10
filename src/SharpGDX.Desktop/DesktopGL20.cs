@@ -297,11 +297,13 @@ namespace SharpGDX.Desktop
 		}
 
 		public void glDepthRangef(float zNear, float zFar)
-		{	GL.glDepthRange(zNear, zFar);
+		{
+			GL.glDepthRange(zNear, zFar);
 		}
 
 		public void glDetachShader(int program, int shader)
-		{	GL.glDetachShader(program, shader);
+		{	
+			GL.glDetachShader(program, shader);
 		}
 
 		public void glDisable(int cap)
@@ -317,11 +319,6 @@ namespace SharpGDX.Desktop
 		public void glDrawArrays(int mode, int first, int count)
 		{
 			GL.glDrawArrays(mode, first, count);
-		}
-
-		private void GetError()
-		{
-			var s = glGetError();
 		}
 
 		public void glDrawElements(int mode, int count, int type, Buffer indices)
@@ -498,7 +495,9 @@ namespace SharpGDX.Desktop
 
 		public int glGetAttribLocation(int program, String name)
 		{
-			return GL.glGetAttribLocation(program, name);
+			var results= GL.glGetAttribLocation(program, name);
+
+			return results;
 		}
 
 		public void glGetBooleanv(int pname, Buffer @params)
@@ -515,7 +514,9 @@ namespace SharpGDX.Desktop
 
 		public int glGetError()
 		{
-			return GL.glGetError();
+			var results= GL.glGetError();
+			
+			return results;
 		}
 
 		public void glGetFloatv(int pname, FloatBuffer @params)
@@ -606,7 +607,9 @@ namespace SharpGDX.Desktop
 
 		public String glGetString(int name)
 		{
-			return GL.glGetString(name);
+			var results = GL.glGetString(name);
+
+			return results;
 		}
 
 		public void glGetTexParameterfv(int target, int pname, FloatBuffer @params)
@@ -623,7 +626,9 @@ namespace SharpGDX.Desktop
 
 		public int glGetUniformLocation(int program, String name)
 		{
-			return GL.glGetUniformLocation(program, name);
+			var results= GL.glGetUniformLocation(program, name);
+
+			return results;
 		}
 
 		public void glGetUniformfv(int program, int location, FloatBuffer @params)
@@ -1163,11 +1168,15 @@ namespace SharpGDX.Desktop
 				else
 					throw new GdxRuntimeException("Can't use " + buffer.GetType().Name + " with type " + type
 						+ " with this method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type. Blame LWJGL");
+
+
 			}
 			else if (buffer is FloatBuffer)
 			{
 				if (type == GL20.GL_FLOAT)
+				{
 					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((FloatBuffer)buffer).array());
+				}
 				else
 					throw new GdxRuntimeException(
 						"Can't use " + buffer.GetType().Name + " with type " + type + " with this method.");

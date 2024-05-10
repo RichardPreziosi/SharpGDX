@@ -9,6 +9,10 @@ internal static class Delegates
 	[SuppressUnmanagedCodeSecurity]
 	internal delegate void Accum(int op, float value);
 
+	internal unsafe delegate void glDebugMessageControlDelegate(uint source, uint type, uint severity, int count, int* ids, bool enabled);
+
+	internal delegate void DebugMessageCallback(DebugProc callback, IntPtr userParam);
+
 	[SuppressUnmanagedCodeSecurity]
 	internal delegate void ActiveStencilFaceEXT(int face);
 

@@ -50,7 +50,7 @@ namespace SharpGDX.Desktop
 	internal HdpiMode hdpiMode = HdpiMode.Logical;
 
 	internal bool debug = false;
-	PrintStream debugStream = new PrintStream();
+	internal PrintStream debugStream = new PrintStream();
 
 	internal static Lwjgl3ApplicationConfiguration copy(Lwjgl3ApplicationConfiguration config)
 	{

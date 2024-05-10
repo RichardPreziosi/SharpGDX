@@ -4,6 +4,8 @@ namespace SharpGDX.OpenGL;
 
 internal static class Functions
 {
+	internal static glDebugMessageControlDelegate glDebugMessageControl;
+	internal static DebugMessageCallback glDebugMessageCallback;
 	internal static Accum glAccum;
 	internal static ActiveStencilFaceEXT glActiveStencilFaceEXT;
 	internal static ActiveTexture glActiveTexture;

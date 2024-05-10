@@ -462,6 +462,7 @@ public static class GLFW
 	public static void glfwSetWindowIcon(long window, GLFWImage buffer)
 	{
 		// TODO: 
+		throw new NotImplementedException();
 	}
 
 	[DllImport(Library)]

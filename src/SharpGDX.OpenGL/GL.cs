@@ -7,7 +7,13 @@ public static class GL
 {
 	private static IGetProcAddress? _getProcAddress;
 
-	static GL()
+    public const int GL_DONT_CARE = 0x1100;
+    public const int GL_DEBUG_SEVERITY_HIGH = 0x9146;
+    public const int GL_DEBUG_SEVERITY_MEDIUM = 0x9147;
+    public const int GL_DEBUG_SEVERITY_LOW = 0x9148;
+    public const int GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B;
+
+    static GL()
 	{
 		foreach (var f in typeof(Functions).GetFields(BindingFlags.Static | BindingFlags.NonPublic))
 		{
@@ -15,6 +21,22 @@ public static class GL
 		}
 
 		// TODO: rebuildExtensionList = true;
+	}
+
+	public static void DebugMessageCallback(DebugProc callback, IntPtr userParam)
+	{
+		Functions.glDebugMessageCallback(callback, userParam);
+	}
+
+	public static void glDebugMessageControl(int source, int type, int severity, int count, int[] ids, bool enabled)
+	{
+		unsafe
+		{
+			fixed (int* v_ptr = ids)
+			{
+				Functions.glDebugMessageControl((uint)source, (uint)type, (uint)severity, count,(int*)v_ptr, enabled);
+			}
+		}
 	}
 
 [System.CLSCompliant(false)]
