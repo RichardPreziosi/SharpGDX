@@ -44,5 +44,7 @@ The `Poolable` interface is no longer nested inside of `Pool` since `Pool` has b
 ## Conversion Notes
 
 - SharpGDX.Headless is ported from gdx-backend-headless
-- SharpGDX.Desktop is ported from gdx-backend-lwjgl3
-    - I have copied most of the bindings from the Tao Framework (precursor to OpenTK), which while deprecated, has the most comprehensive coverage while also containing the least bells and whistles of any more 'modern' framework.
+- SharpGDX.Desktop is ported from gdx-backend-lwjgl3 that uses:
+    - OpenTK.Windowing.GraphicsLibraryFramework (GLFW)
+    - OpenTK.Audio.OpenAL (OpenAL)
+    - OpenTK.Graphics.OpenGL (OpenGL)
