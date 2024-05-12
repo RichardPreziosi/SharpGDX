@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Unicode;
 using System.Threading.Tasks;
-using SharpGDX.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -50,22 +50,22 @@ namespace SharpGDX.Desktop
 
 		public void glActiveTexture(int texture)
 		{
-			GL.glActiveTexture(texture);
+			GL.ActiveTexture((TextureUnit)texture);
 		}
 
 		public void glAttachShader(int program, int shader)
 		{
-			GL.glAttachShader(program, shader);
+			GL.AttachShader(program, shader);
 		}
 
 		public void glBindAttribLocation(int program, int index, String name)
 		{
-			GL.glBindAttribLocation(program, index, name);
+			GL.BindAttribLocation(program, index, name);
 		}
 
 		public void glBindBuffer(int target, int buffer)
 		{
-			GL.glBindBuffer(target, buffer);
+			GL.BindBuffer((BufferTarget)target, buffer);
 		}
 
 		public void glBindFramebuffer(int target, int framebuffer)
@@ -82,32 +82,32 @@ namespace SharpGDX.Desktop
 
 		public void glBindTexture(int target, int texture)
 		{
-			GL.glBindTexture(target, texture);
+			GL.BindTexture((TextureTarget)target, texture);
 		}
 
 		public void glBlendColor(float red, float green, float blue, float alpha)
 		{
-			GL.glBlendColor(red, green, blue, alpha);
+			GL.BlendColor(red, green, blue, alpha);
 		}
 
 		public void glBlendEquation(int mode)
 		{
-			GL.glBlendEquation(mode);
+			GL.BlendEquation((BlendEquationMode)mode);
 		}
 
 		public void glBlendEquationSeparate(int modeRGB, int modeAlpha)
 		{
-			GL.glBlendEquationSeparate(modeRGB, modeAlpha);
+			GL.BlendEquationSeparate((BlendEquationMode)modeRGB, (BlendEquationMode)modeAlpha);
 		}
 
 		public void glBlendFunc(int sfactor, int dfactor)
 		{
-			GL.glBlendFunc(sfactor, dfactor);
+			GL.BlendFunc((BlendingFactor)sfactor, (BlendingFactor)dfactor);
 		}
 
 		public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
 		{
-			GL.glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
+			GL.BlendFuncSeparate((BlendingFactorSrc)srcRGB, (BlendingFactorDest)dstRGB, (BlendingFactorSrc)srcAlpha, (BlendingFactorDest)dstAlpha);
 		}
 
 		public void glBufferData(int target, int size, Buffer data, int usage)
@@ -152,32 +152,32 @@ namespace SharpGDX.Desktop
 
 		public void glClear(int mask)
 		{
-			GL.glClear(mask);
+			GL.Clear((ClearBufferMask)mask);
 		}
 
 		public void glClearColor(float red, float green, float blue, float alpha)
 		{
-			GL.glClearColor(red, green, blue, alpha);
+			GL.ClearColor(red, green, blue, alpha);
 		}
 
 		public void glClearDepthf(float depth)
 		{
-			GL.glClearDepth(depth);
+			GL.ClearDepth(depth);
 		}
 
 		public void glClearStencil(int s)
 		{
-			GL.glClearStencil(s);
+			GL.ClearStencil(s);
 		}
 
 		public void glColorMask(bool red, bool green, bool blue, bool alpha)
 		{
-			GL.glColorMask(red, green, blue, alpha);
+			GL.ColorMask(red, green, blue, alpha);
 		}
 
 		public void glCompileShader(int shader)
 		{
-			GL.glCompileShader(shader);
+			GL.CompileShader(shader);
 		}
 
 		public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
@@ -205,28 +205,28 @@ namespace SharpGDX.Desktop
 		public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height,
 			int border)
 		{
-			GL.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border);
+			GL.CopyTexImage2D((TextureTarget)target, level, (InternalFormat)internalformat, x, y, width, height, border);
 		}
 
 		public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width,
 			int height)
 		{
-			GL.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+			GL.CopyTexSubImage2D((TextureTarget)target, level, xoffset, yoffset, x, y, width, height);
 		}
 
 		public int glCreateProgram()
 		{
-			return GL.glCreateProgram();
+			return GL.CreateProgram();
 		}
 
 		public int glCreateShader(int type)
 		{
-			return GL.glCreateShader(type);
+			return GL.CreateShader((ShaderType)type);
 		}
 
 		public void glCullFace(int mode)
 		{
-			GL.glCullFace(mode);
+			GL.CullFace((CullFaceMode)mode);
 		}
 
 		public void glDeleteBuffers(int n, IntBuffer buffers)
@@ -237,7 +237,7 @@ namespace SharpGDX.Desktop
 
 		public void glDeleteBuffer(int buffer)
 		{
-			GL.glDeleteBuffers(1, new []{buffer});
+			GL.DeleteBuffer(buffer);
 		}
 
 		public void glDeleteFramebuffers(int n, IntBuffer framebuffers)
@@ -254,7 +254,7 @@ namespace SharpGDX.Desktop
 
 		public void glDeleteProgram(int program)
 		{
-			GL.glDeleteProgram(program);
+			GL.DeleteProgram(program);
 		}
 
 		public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers)
@@ -271,7 +271,7 @@ namespace SharpGDX.Desktop
 
 		public void glDeleteShader(int shader)
 		{
-			GL.glDeleteShader(shader);
+			GL.DeleteShader(shader);
 		}
 
 		public void glDeleteTextures(int n, IntBuffer textures)
@@ -288,37 +288,37 @@ namespace SharpGDX.Desktop
 
 		public void glDepthFunc(int func)
 		{
-			GL.glDepthFunc(func);
+			GL.DepthFunc((DepthFunction)func);
 		}
 
 		public void glDepthMask(bool flag)
 		{
-			GL.glDepthMask(flag);
+			GL.DepthMask(flag);
 		}
 
 		public void glDepthRangef(float zNear, float zFar)
 		{
-			GL.glDepthRange(zNear, zFar);
+			GL.DepthRange(zNear, zFar);
 		}
 
 		public void glDetachShader(int program, int shader)
 		{	
-			GL.glDetachShader(program, shader);
+			GL.DetachShader(program, shader);
 		}
 
 		public void glDisable(int cap)
 		{
-			GL.glDisable(cap);
+			GL.Disable((EnableCap)cap);
 		}
 
 		public void glDisableVertexAttribArray(int index)
 		{
-			GL.glDisableVertexAttribArray(index);
+			GL.DisableVertexAttribArray(index);
 		}
 
 		public void glDrawArrays(int mode, int first, int count)
 		{
-			GL.glDrawArrays(mode, first, count);
+			GL.DrawArrays((PrimitiveType)mode, first, count);
 		}
 
 		public void glDrawElements(int mode, int count, int type, Buffer indices)
@@ -336,7 +336,7 @@ namespace SharpGDX.Desktop
 				bufferHandle = GCHandle.Alloc(sb.array(), GCHandleType.Pinned);
 
 				// TODO: GL.glDrawElements(mode, sb.remaining(), GL11.GL_UNSIGNED_SHORT, bufferHandle.AddrOfPinnedObject());
-				GL.glDrawElements(mode, count, type, sb.array());
+				GL.DrawElements((PrimitiveType)mode, count, (DrawElementsType)type, sb.array());
 				sb.limit(oldLimit);
 			}
 			else if (indices is ByteBuffer && type == GL20.GL_UNSIGNED_SHORT)
@@ -347,7 +347,7 @@ namespace SharpGDX.Desktop
 				sb.limit(position + count);
 
 				bufferHandle = GCHandle.Alloc(sb.array(), GCHandleType.Pinned);
-				GL.glDrawElements(mode, sb.remaining(), GL11.GL_UNSIGNED_SHORT, bufferHandle.AddrOfPinnedObject());
+				GL.DrawElements((PrimitiveType)mode, sb.remaining(), DrawElementsType.UnsignedShort, bufferHandle.AddrOfPinnedObject());
 				sb.limit(oldLimit);
 			}
 			else if (indices is ByteBuffer && type == GL20.GL_UNSIGNED_BYTE)
@@ -358,7 +358,7 @@ namespace SharpGDX.Desktop
 				bb.limit(position + count);
 
 				bufferHandle = GCHandle.Alloc(bb.array(), GCHandleType.Pinned);
-				GL.glDrawElements(mode, bb.remaining(), GL11.GL_UNSIGNED_BYTE, bufferHandle.AddrOfPinnedObject());
+				GL.DrawElements((PrimitiveType)mode, bb.remaining(), DrawElementsType.UnsignedByte, bufferHandle.AddrOfPinnedObject());
 				bb.limit(oldLimit);
 			}
 			else
@@ -370,22 +370,22 @@ namespace SharpGDX.Desktop
 
 		public void glEnable(int cap)
 		{
-			GL.glEnable(cap);
+			GL.Enable((EnableCap)cap);
 		}
 
 		public void glEnableVertexAttribArray(int index)
 		{
-			GL.glEnableVertexAttribArray(index);
+			GL.EnableVertexAttribArray(index);
 		}
 
 		public void glFinish()
 		{
-			GL.glFinish();
+			GL.Finish();
 		}
 
 		public void glFlush()
 		{
-				GL.glFlush();
+				GL.Flush();
 		}
 
 		public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
@@ -402,7 +402,7 @@ namespace SharpGDX.Desktop
 
 		public void glFrontFace(int mode)
 		{
-			GL.glFrontFace(mode);
+			GL.FrontFace((FrontFaceDirection)mode);
 		}
 
 		public void glGenBuffers(int n, IntBuffer buffers)
@@ -443,23 +443,12 @@ namespace SharpGDX.Desktop
 
 		public void glGenTextures(int n, IntBuffer textures)
 		{
-			var xHandle = GCHandle.Alloc(textures.array(), GCHandleType.Pinned);
-
-			GL.glGenTextures(textures.remaining(), xHandle.AddrOfPinnedObject());
-
-			xHandle.Free();
+			GL.GenTextures(textures.remaining(), textures.array());
 		}
 
 		public int glGenTexture()
 		{
-			var textures = IntBuffer.allocate(1);
-			var xHandle = GCHandle.Alloc(textures.array(), GCHandleType.Pinned);
-
-			GL.glGenTextures(textures.remaining(), xHandle.AddrOfPinnedObject());
-
-			xHandle.Free();
-
-			return textures.get(0);
+			return GL.GenTexture();
 		}
 
 		public void glGenerateMipmap(int target)
@@ -470,21 +459,16 @@ namespace SharpGDX.Desktop
 
 		public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
 		{
-			// TODO: Refactor this
-			var stringBuilder = new StringBuilder();
-			var length = new int[] { 0 };
-			GL.glGetActiveAttrib(program, index, 256, length, size.array(), type.array(), stringBuilder);
+			var s =GL.GetActiveAttrib(program, index, out int l, out var a);
 
-			return stringBuilder.ToString();
+			return s;
 		}
 
 		public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
 		{
-			var stringBuilder = new StringBuilder();
-			var length = new int[] { 0 };
-			GL.glGetActiveUniform(program, index, 256, length, size.array(), type.array(), stringBuilder);
+			var s =GL.GetActiveUniform(program, index, out int l, out ActiveUniformType a);
 
-			return stringBuilder.ToString();
+			return s;
 		}
 
 		public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders)
@@ -495,7 +479,7 @@ namespace SharpGDX.Desktop
 
 		public int glGetAttribLocation(int program, String name)
 		{
-			var results= GL.glGetAttribLocation(program, name);
+			var results= GL.GetAttribLocation(program, name);
 
 			return results;
 		}
@@ -514,9 +498,9 @@ namespace SharpGDX.Desktop
 
 		public int glGetError()
 		{
-			var results= GL.glGetError();
+			var results= GL.GetError();
 			
-			return results;
+			return (int)results;
 		}
 
 		public void glGetFloatv(int pname, FloatBuffer @params)
@@ -557,7 +541,7 @@ namespace SharpGDX.Desktop
 		{
 			// TODO: I'm not sure why passing @params.array() won't work in this case, but this is a workaround. -RP
 			var buffer = new int[@params.limit()];
-			GL.glGetProgramiv(program, pname, buffer);
+			GL.GetProgram(program, (GetProgramParameterName)pname, buffer);
 			@params.put(buffer);
 		}
 
@@ -569,27 +553,9 @@ namespace SharpGDX.Desktop
 
 		public String glGetShaderInfoLog(int shader)
 		{
-			ByteBuffer buffer = ByteBuffer.allocateDirect(1024 * 10);
-			buffer.order(ByteOrder.nativeOrder());
-			ByteBuffer tmp = ByteBuffer.allocateDirect(4);
-			tmp.order(ByteOrder.nativeOrder());
-			IntBuffer intBuffer = tmp.asIntBuffer();
+			GL.GetShaderInfoLog(shader, out string logInfo);
 
-			var intBufferHandle = GCHandle.Alloc(intBuffer.array(), GCHandleType.Pinned);
-			var bufferHandle = GCHandle.Alloc(buffer.array(), GCHandleType.Pinned);
-			var stringBuilder = new StringBuilder();
-
-			GL.glGetShaderInfoLog(shader, buffer.remaining(), intBuffer.array(), stringBuilder);
-
-			var s = stringBuilder.ToString();
-
-			intBufferHandle.Free();
-			bufferHandle.Free();
-
-			int numBytes = intBuffer.get(0);
-			byte[] bytes = new byte[numBytes];
-			buffer.get(bytes);
-			return System.Text.Encoding.UTF8.GetString(bytes);
+			return logInfo;
 		}
 
 		public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
@@ -601,13 +567,13 @@ namespace SharpGDX.Desktop
 		{
 			// TODO: I'm not sure why passing @params.array() won't work in this case, but this is a workaround. -RP
 			var intBuffer = new int[@params.limit()];
-			GL.glGetShaderiv(shader, pname, intBuffer);
+			GL.GetShader(shader, (ShaderParameter)pname, intBuffer);
 			@params.put(intBuffer);
 		}
 
 		public String glGetString(int name)
 		{
-			var results = GL.glGetString(name);
+			var results = GL.GetString((StringName)name);
 
 			return results;
 		}
@@ -626,7 +592,7 @@ namespace SharpGDX.Desktop
 
 		public int glGetUniformLocation(int program, String name)
 		{
-			var results= GL.glGetUniformLocation(program, name);
+			var results= GL.GetUniformLocation(program, name);
 
 			return results;
 		}
@@ -716,17 +682,17 @@ namespace SharpGDX.Desktop
 
 		public void glLinkProgram(int program)
 		{
-			GL.glLinkProgram(program);
+			GL.LinkProgram(program);
 		}
 
 		public void glPixelStorei(int pname, int param)
 		{
-			GL.glPixelStorei(pname, param);
+			GL.PixelStore((PixelStoreParameter)pname, param);
 		}
 
 		public void glPolygonOffset(float factor, float units)
 		{
-			GL.glPolygonOffset(factor, units);
+			GL.PolygonOffset(factor, units);
 		}
 
 		public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
@@ -778,8 +744,7 @@ namespace SharpGDX.Desktop
 			// TODO: Verify
 			var length = @string.Length;
 			//GL.glShaderSource(shader, 1, new string[] { @string }, ref length);
-			GL.glShaderSource(shader, 1, new[] { @string },
-				null); //, new string[] { @string }, new int[@string.Length]);
+			GL.ShaderSource(shader,  @string); //, new string[] { @string }, new int[@string.Length]);
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)
@@ -826,37 +791,37 @@ namespace SharpGDX.Desktop
 
 			if (pixels == null)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((ByteBuffer?)null)?.array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
 			else if (pixels is ByteBuffer)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((ByteBuffer)pixels).array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
 			else if (pixels is ShortBuffer)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((ShortBuffer)pixels).array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
 			else if (pixels is IntBuffer)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((IntBuffer)pixels).array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
 			else if (pixels is FloatBuffer)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((FloatBuffer)pixels).array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
 			else if (pixels is DoubleBuffer)
 			{
-				GL.glTexImage2D(target, level, internalformat, width, height, border, format, type,
+				GL.TexImage2D((TextureTarget)target, level, (PixelInternalFormat)internalformat, width, height, border, (PixelFormat)format, (PixelType)type,
 					(pixelHandle = GCHandle.Alloc(((DoubleBuffer)pixels).array(), GCHandleType.Pinned))
 					.AddrOfPinnedObject());
 			}
@@ -883,7 +848,7 @@ namespace SharpGDX.Desktop
 
 		public void glTexParameteri(int target, int pname, int param)
 		{
-			GL.glTexParameteri(target, pname, param);
+			GL.TexParameter((TextureTarget)target, (TextureParameterName)pname, param);
 		}
 
 		public void glTexParameteriv(int target, int pname, IntBuffer @params)
@@ -932,7 +897,7 @@ namespace SharpGDX.Desktop
 
 		public void glUniform1i(int location, int x)
 		{
-			GL.glUniform1i(location, x);
+			GL.Uniform1(location, x);
 		}
 
 		public void glUniform1iv(int location, int count, IntBuffer v)
@@ -1082,18 +1047,18 @@ namespace SharpGDX.Desktop
 		public void glUniformMatrix4fv(int location, int count, bool transpose, FloatBuffer value)
 		{
 			// TODO: Verify
-			GL.glUniformMatrix4fv(location, count, transpose, value.array());
+			GL.UniformMatrix4(location, count, transpose, value.array());
 		}
 
 		public void glUniformMatrix4fv(int location, int count, bool transpose, float[] value, int offset)
 		{
 			// TODO: Verify
-			GL.glUniformMatrix4fv(location, count, transpose, toFloatBuffer(value, offset, count << 4).array());
+			GL.UniformMatrix4(location, count, transpose, toFloatBuffer(value, offset, count << 4).array());
 		}
 
 		public void glUseProgram(int program)
 		{
-			GL.glUseProgram(program);
+			GL.UseProgram(program);
 		}
 
 		public void glValidateProgram(int program)
@@ -1156,15 +1121,15 @@ namespace SharpGDX.Desktop
 			if (buffer is ByteBuffer)
 			{
 				if (type == GL20.GL_BYTE)
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
 				else if (type == GL20.GL_UNSIGNED_BYTE)
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
 				else if (type == GL20.GL_SHORT)
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
 				else if (type == GL20.GL_UNSIGNED_SHORT)
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
 				else if (type == GL20.GL_FLOAT)
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer().array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer().array());
 				else
 					throw new GdxRuntimeException("Can't use " + buffer.GetType().Name + " with type " + type
 						+ " with this method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type. Blame LWJGL");
@@ -1175,7 +1140,7 @@ namespace SharpGDX.Desktop
 			{
 				if (type == GL20.GL_FLOAT)
 				{
-					GL.glVertexAttribPointer(indx, size, type, normalized, stride, ((FloatBuffer)buffer).array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((FloatBuffer)buffer).array());
 				}
 				else
 					throw new GdxRuntimeException(
@@ -1188,17 +1153,17 @@ namespace SharpGDX.Desktop
 
 		public void glViewport(int x, int y, int width, int height)
 		{
-			GL.glViewport(x, y, width, height);
+			GL.Viewport(x, y, width, height);
 		}
 
 		public void glDrawElements(int mode, int count, int type, int indices)
 		{
-			GL.glDrawElements(mode, count, type, indices);
+			GL.DrawElements((PrimitiveType)mode, count, (DrawElementsType)type, indices);
 		}
 
 		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, int ptr)
 		{
-			GL.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+			GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ptr);
 		}
 	}
 }

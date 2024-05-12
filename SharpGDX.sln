@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGDX.Headless", "src\Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGDX.Desktop", "src\SharpGDX.Desktop\SharpGDX.Desktop.csproj", "{2A00B4EA-7EDB-4FFE-8E74-518CB346FB03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGDX.OpenGL", "src\SharpGDX.OpenGL\SharpGDX.OpenGL.csproj", "{11A20005-5B81-404B-A2AC-4E49D848300A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +37,6 @@ Global
 		{2A00B4EA-7EDB-4FFE-8E74-518CB346FB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A00B4EA-7EDB-4FFE-8E74-518CB346FB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A00B4EA-7EDB-4FFE-8E74-518CB346FB03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11A20005-5B81-404B-A2AC-4E49D848300A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11A20005-5B81-404B-A2AC-4E49D848300A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11A20005-5B81-404B-A2AC-4E49D848300A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11A20005-5B81-404B-A2AC-4E49D848300A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,7 +46,6 @@ Global
 		{34079955-7800-4089-8040-C97030EFF65E} = {9BD87BE5-63D4-4D3B-A005-8D3E306DAD48}
 		{66D272C0-CDC7-42C3-81C0-CDAE23B12EF4} = {9BD87BE5-63D4-4D3B-A005-8D3E306DAD48}
 		{2A00B4EA-7EDB-4FFE-8E74-518CB346FB03} = {9BD87BE5-63D4-4D3B-A005-8D3E306DAD48}
-		{11A20005-5B81-404B-A2AC-4E49D848300A} = {9BD87BE5-63D4-4D3B-A005-8D3E306DAD48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D174B017-72AB-4868-9B29-791612D66627}

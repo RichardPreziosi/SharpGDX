@@ -9,7 +9,7 @@ using SharpGDX.Utils;
 using SharpGDX.Desktop.Audio;
 using SharpGDX.Desktop.Audio.Mock;
 using SharpGDX.Mathematics;
-using SharpGDX.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace SharpGDX.Desktop
 {
@@ -41,7 +41,7 @@ namespace SharpGDX.Desktop
 					throw new NotImplementedException();
 				}
 			Lwjgl3NativesLoader.load();
-			errorCallback = (ErrorCode code, string description) =>
+			errorCallback = (OpenTK.Windowing.GraphicsLibraryFramework.ErrorCode code, string description) =>
 			{
 				// TODO: ??? GLFWErrorCallback.createPrint(Lwjgl3ApplicationConfiguration.errorStream);
 
@@ -521,6 +521,8 @@ namespace SharpGDX.Desktop
 			}
 		} else {
 			// TODO: Not really necessary. GL.createCapabilities();
+			// TODO: Should this just be a new binding context?
+			GL.LoadBindings(new GLFWBindingsContext());
 		}
 
 		initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20);
@@ -548,18 +550,19 @@ namespace SharpGDX.Desktop
 		return windowHandle;
 	}
 
-	private static void GLDebugCallback(int source, int type, int id, int severity, int length, IntPtr message, IntPtr userparam)
+	private static void GLDebugCallback(DebugSource source, DebugType type, int id, DebugSeverity severity, int length, IntPtr message, IntPtr userparam)
 	{
 		var s = Marshal.PtrToStringUTF8(message);
 
 		Console.WriteLine(s);
-	}
-		
+		}
+
+
 	private static void initiateGL (bool useGLES20) {
 		if (!useGLES20) {
-				String versionString = GL.glGetString(GL11.GL_VERSION);
-				String vendorString = GL.glGetString(GL11.GL_VENDOR);
-				String rendererString = GL.glGetString(GL11.GL_RENDERER);
+				String versionString = GL.GetString(StringName.Version);
+				String vendorString = GL.GetString(StringName.Vendor);
+				String rendererString = GL.GetString(StringName.Renderer);
 				glVersion = new GLVersion(Application.ApplicationType.Desktop, versionString, vendorString, rendererString);
 			} else {
 			try {
@@ -584,10 +587,10 @@ namespace SharpGDX.Desktop
 
 		public enum GLDebugMessageSeverity
 		{
-			HIGH = GL.GL_DEBUG_SEVERITY_HIGH,
-			MEDIUM = GL.GL_DEBUG_SEVERITY_MEDIUM,
-			LOW = GL.GL_DEBUG_SEVERITY_LOW,
-			NOTIFICATION = GL.GL_DEBUG_SEVERITY_NOTIFICATION
+			HIGH = DebugSeverityControl.DebugSeverityHigh,
+			MEDIUM = DebugSeverityControl.DebugSeverityMedium,
+			LOW = DebugSeverityControl.DebugSeverityLow,
+			NOTIFICATION = DebugSeverityControl.DebugSeverityNotification
 
 
 			//HIGH(GL.GL_DEBUG_SEVERITY_HIGH, KHRDebug.GL_DEBUG_SEVERITY_HIGH, ARBDebugOutput.GL_DEBUG_SEVERITY_HIGH_ARB,
@@ -620,7 +623,7 @@ namespace SharpGDX.Desktop
 			//if (caps.OpenGL43)
 			//{
 				// TODO: GL.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, severity.gl43, (IntBuffer)null, enabled);
-				GL.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, (int)severity, 0, (int[]?)null, enabled);
+				GL.DebugMessageControl(DebugSourceControl.DontCare, DebugTypeControl.DontCare, (DebugSeverityControl)severity, 0, (int[]?)null, enabled);
 				return true;
 		//	}
 

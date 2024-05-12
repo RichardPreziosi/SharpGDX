@@ -48,3 +48,7 @@ The `Poolable` interface is no longer nested inside of `Pool` since `Pool` has b
     - OpenTK.Windowing.GraphicsLibraryFramework (GLFW)
     - OpenTK.Audio.OpenAL (OpenAL)
     - OpenTK.Graphics.OpenGL (OpenGL)
+
+## Major To Dos
+
+- Audio needs to be in it's own thread (moving the window will pause audio).
