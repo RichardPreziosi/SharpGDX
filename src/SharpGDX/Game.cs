@@ -20,25 +20,25 @@ namespace SharpGDX
 	protected Screen screen;
 
 	
-	public void dispose()
+	public virtual void dispose()
 	{
 		if (screen != null) screen.hide();
 	}
 
-	
-	public void pause()
+
+		public virtual void pause()
 	{
 		if (screen != null) screen.pause();
 	}
 
-	
-	public void resume()
+
+		public virtual void resume()
 	{
 		if (screen != null) screen.resume();
 	}
 
-	
-	public void render()
+
+		public virtual void render()
 	{
 		if (screen != null) screen.render(Gdx.graphics.getDeltaTime());
 	}
@@ -46,15 +46,15 @@ namespace SharpGDX
 
 	public abstract void create();
 
-	public void resize(int width, int height)
+		public virtual void resize(int width, int height)
 	{
 		if (screen != null) screen.resize(width, height);
 	}
 
-	/** Sets the current screen. {@link Screen#hide()} is called on any old screen, and {@link Screen#show()} is called on the new
-	 * screen, if any.
-	 * @param screen may be {@code null} */
-	public void setScreen(Screen screen)
+		/** Sets the current screen. {@link Screen#hide()} is called on any old screen, and {@link Screen#show()} is called on the new
+		 * screen, if any.
+		 * @param screen may be {@code null} */
+		public void setScreen(Screen screen)
 	{
 		if (this.screen != null) this.screen.hide();
 		this.screen = screen;

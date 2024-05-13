@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using SharpGDX.Utils;
 
-namespace SharpGDX.Desktop
+namespace SharpGDX.Desktop;
+
+public interface Lwjgl3Input : Input, Disposable
 {
-	public interface Lwjgl3Input : Input, Disposable {
+	public void prepareNext();
 
-		// TODO: Really don't want to expose this, marked internal.
-		internal unsafe void windowHandleChanged(Window* windowHandle);
+	public void resetPollingStates();
 
-		void update();
+	public void update();
 
-		void prepareNext();
-
-		void resetPollingStates();
-	}
+	// TODO: Really don't want to expose this, marked internal for now. -RP
+	internal unsafe void windowHandleChanged(Window* windowHandle);
 }

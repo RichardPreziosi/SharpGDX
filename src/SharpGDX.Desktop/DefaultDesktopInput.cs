@@ -47,6 +47,7 @@ private int logicalMouseY;
 private int logicalMouseX;
 
 private CursorPosCallback cursorPosCallback;
+private MouseButtonCallback _mouseButtonCallback;
 
 private unsafe void mouseButtonCallback(Window* window, MouseButton button, InputAction action, KeyModifiers mods)
 {
@@ -174,7 +175,8 @@ public void resetPollingStates()
 	}
 			);
 
-	GLFW.SetMouseButtonCallback(window.getWindowPtr(), mouseButtonCallback);
+	// TODO: Clear this in the dispose method.
+	GLFW.SetMouseButtonCallback(window.getWindowPtr(), _mouseButtonCallback= mouseButtonCallback);
 }
 
 	public void update()

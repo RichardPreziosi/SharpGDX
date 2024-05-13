@@ -413,10 +413,8 @@ namespace SharpGDX.Desktop
 		window.setVisible(config.initialVisible);
 
 		for (int i = 0; i < 2; i++) {
-			// TODO:
-			//GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
-			//	config.initialBackgroundColor.a);
-			//GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			GL.ClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b, config.initialBackgroundColor.a);
+			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GLFW.SwapBuffers(windowHandle);
 		}
 	}
@@ -424,9 +422,9 @@ namespace SharpGDX.Desktop
 	private unsafe static Window* createGlfwWindow (Lwjgl3ApplicationConfiguration config, Window* sharedContextWindow) {
 		GLFW.DefaultWindowHints();
 		GLFW.WindowHint(WindowHintBool.Visible, false);
-		GLFW.WindowHint(WindowHintBool.Resizable, config.windowResizable ? true : false);
-		GLFW.WindowHint(WindowHintBool.Maximized, config.windowMaximized ? true : false);
-		GLFW.WindowHint(WindowHintBool.AutoIconify, config.autoIconify ? true : false);
+		GLFW.WindowHint(WindowHintBool.Resizable, config.windowResizable);
+		GLFW.WindowHint(WindowHintBool.Maximized, config.windowMaximized);
+		GLFW.WindowHint(WindowHintBool.AutoIconify, config.autoIconify);
 			
 		GLFW.WindowHint(WindowHintInt.RedBits, config.r);
 		GLFW.WindowHint(WindowHintInt.GreenBits, config.g);
@@ -520,7 +518,6 @@ namespace SharpGDX.Desktop
 				throw new GdxRuntimeException("Couldn't initialize GLES", e);
 			}
 		} else {
-			// TODO: Not really necessary. GL.createCapabilities();
 			// TODO: Should this just be a new binding context?
 			GL.LoadBindings(new GLFWBindingsContext());
 		}
@@ -543,6 +540,8 @@ namespace SharpGDX.Desktop
 		
 		if (config.debug)
 		{
+			// TODO: Remove
+			GL.Enable(EnableCap.DebugOutputSynchronous);
 			GL.DebugMessageCallback(glDebugCallback = GLDebugCallback, IntPtr.Zero);
 			setGLDebugMessageControl(GLDebugMessageSeverity.NOTIFICATION, false);
 		}
@@ -552,9 +551,7 @@ namespace SharpGDX.Desktop
 
 	private static void GLDebugCallback(DebugSource source, DebugType type, int id, DebugSeverity severity, int length, IntPtr message, IntPtr userparam)
 	{
-		var s = Marshal.PtrToStringUTF8(message);
-
-		Console.WriteLine(s);
+		Console.WriteLine(Marshal.PtrToStringUTF8(message));
 		}
 
 

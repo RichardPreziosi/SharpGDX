@@ -48,6 +48,8 @@ namespace SharpGDX.Desktop
 
 	private volatile bool posted;
 
+	private GLFWCallbacks.FramebufferSizeCallback _framebufferSizeCallback;
+
 	private unsafe void resizeCallback(Window* windowHandle,  int width,  int height)
 	{
 		// TODO: Implement, this might really only be a Java(lwjgl) thing.
@@ -114,7 +116,9 @@ private unsafe void renderWindow(Window* windowHandle,  int width,  int height)
 	}
 	updateFramebufferInfo();
 	initiateGL();
-	GLFW.SetFramebufferSizeCallback(window.getWindowPtr(), resizeCallback);
+
+	// TODO: Clear this in the dispose method
+	GLFW.SetFramebufferSizeCallback(window.getWindowPtr(), _framebufferSizeCallback = resizeCallback);
 }
 
 private void initiateGL()

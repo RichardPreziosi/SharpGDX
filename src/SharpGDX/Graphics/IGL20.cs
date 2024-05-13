@@ -397,8 +397,31 @@ namespace SharpGDX
 
 		public void glStencilOp(int fail, int zfail, int zpass);
 
-		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type,
-			Buffer pixels);
+		public void glTexImage2D
+		(
+			int target,
+			int level,
+			int internalFormat,
+			int width,
+			int height,
+			int border,
+			int format,
+			int type,
+			Buffer pixels
+		);
+
+		public void glTexImage2D<T>
+		(
+			int target,
+			int level,
+			int internalFormat,
+			int width,
+			int height,
+			int border,
+			int format,
+			int type,
+			T[] pixels
+		) where T: struct;
 
 		public void glTexParameterf(int target, int pname, float param);
 

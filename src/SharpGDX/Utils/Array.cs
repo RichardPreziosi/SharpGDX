@@ -469,7 +469,7 @@ namespace SharpGDX.Utils
 	protected T[] resize(int newSize)
 	{
 		T[] items = this.items;
-		T[] newItems = (T[])ArrayReflection.newInstance(items.GetType().GetGenericTypeDefinition(), newSize);
+		T[] newItems = (T[])ArrayReflection.newInstance(items.GetType().GetElementType(), newSize);
 		Array.Copy(items, 0, newItems, 0, Math.Min(size, newItems.Length));
 		this.items = newItems;
 		return newItems;

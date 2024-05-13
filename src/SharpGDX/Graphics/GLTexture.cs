@@ -252,8 +252,12 @@ public abstract class GLTexture : Disposable {
 		if (data.useMipMaps()) {
 			MipMapGenerator.generateMipMap(target, pixmap, pixmap.getWidth(), pixmap.getHeight());
 		} else {
+			// TODO: Testing -RP
+			var array = pixmap.getPixels().array();
 			Gdx.gl.glTexImage2D(target, miplevel, pixmap.getGLInternalFormat(), pixmap.getWidth(), pixmap.getHeight(), 0,
-				pixmap.getGLFormat(), pixmap.getGLType(), pixmap.getPixels());
+				pixmap.getGLFormat(), pixmap.getGLType(), array);
+
+			pixmap.getPixels().put(array);
 		}
 		if (disposePixmap) pixmap.dispose();
 	}

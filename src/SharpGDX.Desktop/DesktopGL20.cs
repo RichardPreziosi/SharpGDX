@@ -112,19 +112,21 @@ namespace SharpGDX.Desktop
 
 		public void glBufferData(int target, int size, Buffer data, int usage)
 		{
-			throw new NotImplementedException();
-			// //if (data == null)
-			//	GL.glBufferData(target, size, usage);
-			//else if (data is ByteBuffer)
-			//	GL.glBufferData(target, (ByteBuffer)data, usage);
-			//else if (data is IntBuffer)
-			//	GL.glBufferData(target, (IntBuffer)data, usage);
-			//else if (data is FloatBuffer)
-			//	GL.glBufferData(target, (FloatBuffer)data, usage);
-			//else if (data is DoubleBuffer)
-			//	GL.glBufferData(target, (DoubleBuffer)data, usage);
-			//else if (data is ShortBuffer) //
-			//	GL.glBufferData(target, (ShortBuffer)data, usage);
+			if (data == null)
+			{
+				// TODO: Not sure that this will work.
+				GL.BufferData((BufferTarget)target, size, IntPtr.Zero, (BufferUsageHint)usage);
+			}
+			else if (data is ByteBuffer)
+				GL.BufferData((BufferTarget)target, size, ((ByteBuffer)data).array(), (BufferUsageHint)usage);
+			else if (data is IntBuffer)
+				GL.BufferData((BufferTarget)target, size, ((IntBuffer)data).array(), (BufferUsageHint)usage);
+			else if (data is FloatBuffer)
+				GL.BufferData((BufferTarget)target, size, ((FloatBuffer)data).array(), (BufferUsageHint)usage);
+			else if (data is DoubleBuffer)
+				GL.BufferData((BufferTarget)target, size, ((DoubleBuffer)data).array(), (BufferUsageHint)usage);
+			else if (data is ShortBuffer) //
+				GL.BufferData((BufferTarget)target, size, ((ShortBuffer)data).array(), (BufferUsageHint)usage);
 		}
 
 		public void glBufferSubData(int target, int offset, int size, Buffer data)
@@ -231,8 +233,8 @@ namespace SharpGDX.Desktop
 
 		public void glDeleteBuffers(int n, IntBuffer buffers)
 		{
-			// TODO: GL.glDeleteBuffers(buffers);
-			throw new NotImplementedException();
+			// TODO: If it should be writing something back into the buffers array, it needs to be updated.
+			GL.DeleteBuffers(n, buffers.array());
 		}
 
 		public void glDeleteBuffer(int buffer)
@@ -276,8 +278,8 @@ namespace SharpGDX.Desktop
 
 		public void glDeleteTextures(int n, IntBuffer textures)
 		{
-			throw new NotImplementedException();
-			//	GL.glDeleteTextures(textures);
+			// TODO: If it should be writing something back into the buffers array, it needs to be updated.
+			GL.DeleteTextures(n, textures.array());
 		}
 
 		public void glDeleteTexture(int texture)
@@ -363,7 +365,7 @@ namespace SharpGDX.Desktop
 			}
 			else
 				throw new GdxRuntimeException("Can't use " + indices.GetType().Name
-				                                           + " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
+														   + " with this method. Use ShortBuffer or ByteBuffer instead. Blame LWJGL");
 
 			bufferHandle.Free();
 		}
@@ -413,8 +415,7 @@ namespace SharpGDX.Desktop
 
 		public int glGenBuffer()
 		{
-			throw new NotImplementedException();
-			//return GL.glGenBuffers();
+			return GL.GenBuffer();
 		}
 
 		public void glGenFramebuffers(int n, IntBuffer framebuffers)
@@ -443,6 +444,7 @@ namespace SharpGDX.Desktop
 
 		public void glGenTextures(int n, IntBuffer textures)
 		{
+			// TODO: If it should be writing something back into the buffers array, it needs to be updated.
 			GL.GenTextures(textures.remaining(), textures.array());
 		}
 
@@ -459,7 +461,7 @@ namespace SharpGDX.Desktop
 
 		public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
 		{
-			var s =GL.GetActiveAttrib(program, index, out int l, out var a);
+			var s =GL.GetActiveAttrib(program, index,out int l, out var a);
 
 			return s;
 		}
@@ -505,8 +507,7 @@ namespace SharpGDX.Desktop
 
 		public void glGetFloatv(int pname, FloatBuffer @params)
 		{
-			throw new NotImplementedException();
-			//GL.glGetFloatv(pname, @params);
+			@params.put(0, GL.GetFloat((GetPName)pname));
 		}
 
 		public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer @params)
@@ -783,6 +784,32 @@ namespace SharpGDX.Desktop
 			//	GL.glStencilOpSeparate(face, fail, zfail, zpass);
 		}
 
+		public void glTexImage2D<T>
+		(
+			int target,
+			int level,
+			int internalFormat,
+			int width, int height,
+			int border,
+			int format,
+			int type,
+			T[] pixels
+		)
+			where T : struct
+		{
+			GL.TexImage2D
+			(
+				(TextureTarget)target,
+				level,
+				(PixelInternalFormat)internalFormat,
+				width,
+				height,
+				border,
+				(PixelFormat)format,
+				(PixelType)type, pixels
+			);
+		}
+
 		public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border,
 			int format, int type,
 			Buffer pixels)
@@ -836,8 +863,10 @@ namespace SharpGDX.Desktop
 
 		public void glTexParameterf(int target, int pname, float param)
 		{
-			throw new NotImplementedException();
-			//GL.glTexParameterf(target, pname, param);
+			var t = (TextureTarget)target;
+			var p = (TextureParameterName)pname;
+			var s = GL.GetFloat(GetPName.MaxTextureMaxAnisotropy);
+			GL.TexParameter((TextureTarget)target, (TextureParameterName)pname, param);
 		}
 
 		public void glTexParameterfv(int target, int pname, FloatBuffer @params)
@@ -1046,7 +1075,7 @@ namespace SharpGDX.Desktop
 
 		public void glUniformMatrix4fv(int location, int count, bool transpose, FloatBuffer value)
 		{
-			// TODO: Verify
+			// TODO: If it should be writing something back into the buffers array, it needs to be updated.
 			GL.UniformMatrix4(location, count, transpose, value.array());
 		}
 

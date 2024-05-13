@@ -33,17 +33,8 @@ namespace SharpGDX.Desktop
 	private WindowFocusCallback _focusCallback;
 
 	private WindowIconifyCallback iconifyCallback;
-
-	private unsafe void maximizeCallback(Window* windowHandle,  bool maximized) {
-			postRunnable(() => {
-				if (windowListener != null) {
-						windowListener.maximized(maximized);
-					}
-				
-			});
-		}
-
-
+	private WindowMaximizeCallback _maximizeCallback;
+		
 		private WindowCloseCallback closeCallback;
 	
 
@@ -124,7 +115,14 @@ namespace SharpGDX.Desktop
 			})
 		);
 
-		GLFW.SetWindowMaximizeCallback(windowHandle, maximizeCallback);
+		GLFW.SetWindowMaximizeCallback(windowHandle, _maximizeCallback = (window, maximized) => postRunnable(() =>
+		{
+			if (windowListener != null)
+			{
+				windowListener.maximized(maximized);
+			}
+
+		}));
 
 		GLFW.SetWindowCloseCallback
 		(
