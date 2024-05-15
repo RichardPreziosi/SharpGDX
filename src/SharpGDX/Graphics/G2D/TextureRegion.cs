@@ -198,7 +198,7 @@ public class TextureRegion {
 		}
 	}
 
-	public void flip (bool x, bool y) {
+	public virtual void flip (bool x, bool y) {
 		if (x) {
 			float temp = u;
 			u = u2;

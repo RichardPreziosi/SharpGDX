@@ -25,7 +25,7 @@ public class Sprite : TextureRegion {
 	readonly float[] vertices = new float[SPRITE_SIZE];
 	private readonly Color color = new Color(1, 1, 1, 1);
 	private float x, y;
-	float width, height;
+	protected float width, height;
 	private float originX, originY;
 	private float rotation;
 	private float scaleX = 1, scaleY = 1;
@@ -118,7 +118,7 @@ public class Sprite : TextureRegion {
 
 	/** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale
 	 * are changed, it is slightly more efficient to set the bounds after those operations. */
-	public void setBounds (float x, float y, float width, float height) {
+	public virtual void setBounds (float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -149,7 +149,7 @@ public class Sprite : TextureRegion {
 	/** Sets the size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale are changed,
 	 * it is slightly more efficient to set the size after those operations. If both position and size are to be changed, it is
 	 * better to use {@link #setBounds(float, float, float, float)}. */
-	public void setSize (float width, float height) {
+	public virtual void setSize (float width, float height) {
 		this.width = width;
 		this.height = height;
 
@@ -178,7 +178,7 @@ public class Sprite : TextureRegion {
 	/** Sets the position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more efficient
 	 * to set the position after those operations. If both position and size are to be changed, it is better to use
 	 * {@link #setBounds(float, float, float, float)}. */
-	public void setPosition (float x, float y) {
+	public virtual void setPosition (float x, float y) {
 		this.x = x;
 		this.y = y;
 
@@ -212,7 +212,7 @@ public class Sprite : TextureRegion {
 	/** Sets the x position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more
 	 * efficient to set the position after those operations. If both position and size are to be changed, it is better to use
 	 * {@link #setBounds(float, float, float, float)}. */
-	public void setX (float x) {
+	public virtual void setX (float x) {
 		this.x = x;
 
 		if (dirty) return;
@@ -232,7 +232,7 @@ public class Sprite : TextureRegion {
 	/** Sets the y position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more
 	 * efficient to set the position after those operations. If both position and size are to be changed, it is better to use
 	 * {@link #setBounds(float, float, float, float)}. */
-	public void setY (float y) {
+	public virtual void setY (float y) {
 		this.y = y;
 
 		if (dirty) return;
@@ -371,14 +371,14 @@ public class Sprite : TextureRegion {
 	}
 
 	/** Sets the origin in relation to the sprite's position for scaling and rotation. */
-	public void setOrigin (float originX, float originY) {
+	public virtual void setOrigin (float originX, float originY) {
 		this.originX = originX;
 		this.originY = originY;
 		dirty = true;
 	}
 
 	/** Place origin in the center of the sprite */
-	public void setOriginCenter () {
+	public virtual void setOriginCenter () {
 		this.originX = width / 2;
 		this.originY = height / 2;
 		dirty = true;
@@ -405,7 +405,7 @@ public class Sprite : TextureRegion {
 
 	/** Rotates this sprite 90 degrees in-place by rotating the texture coordinates. This rotation is unaffected by
 	 * {@link #setRotation(float)} and {@link #rotate(float)}. */
-	public void rotate90 (bool clockwise) {
+	public virtual void rotate90 (bool clockwise) {
 		float[] vertices = this.vertices;
 
 		if (clockwise) {
@@ -577,33 +577,33 @@ public class Sprite : TextureRegion {
 		setAlpha(oldAlpha);
 	}
 
-	public float getX () {
+		public virtual float getX () {
 		return x;
 	}
 
-	public float getY () {
+		public virtual float getY () {
 		return y;
 	}
 
 	/** @return the width of the sprite, not accounting for scale. */
-	public float getWidth () {
+	public virtual float getWidth () {
 		return width;
 	}
 
 	/** @return the height of the sprite, not accounting for scale. */
-	public float getHeight () {
+	public virtual float getHeight () {
 		return height;
 	}
 
-	/** The origin influences {@link #setPosition(float, float)}, {@link #setRotation(float)} and the expansion direction of
-	 * scaling {@link #setScale(float, float)} */
-	public float getOriginX () {
+		/** The origin influences {@link #setPosition(float, float)}, {@link #setRotation(float)} and the expansion direction of
+		 * scaling {@link #setScale(float, float)} */
+		public virtual float getOriginX () {
 		return originX;
 	}
 
-	/** The origin influences {@link #setPosition(float, float)}, {@link #setRotation(float)} and the expansion direction of
-	 * scaling {@link #setScale(float, float)} */
-	public float getOriginY () {
+		/** The origin influences {@link #setPosition(float, float)}, {@link #setRotation(float)} and the expansion direction of
+		 * scaling {@link #setScale(float, float)} */
+		public virtual float getOriginY () {
 		return originY;
 	}
 
@@ -682,7 +682,7 @@ public class Sprite : TextureRegion {
 	/** boolean parameters x,y are not setting a state, but performing a flip
 	 * @param x perform horizontal flip
 	 * @param y perform vertical flip */
-	public void flip (bool x, bool y) {
+	public virtual void flip (bool x, bool y) {
 		base.flip(x, y);
 		float[] vertices = this.vertices;
 		if (x) {

@@ -1,34 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using SharpGDX.Utils;
 
-namespace SharpGDX.Desktop
+namespace SharpGDX.Desktop;
+
+/// <summary>
+///     Clipboard implementation for desktop that uses the system clipboard via GLFW.
+/// </summary>
+public class Lwjgl3Clipboard : Clipboard
 {
-	/** Clipboard implementation for desktop that uses the system clipboard via GLFW.
- * @author mzechner */
-	public class Lwjgl3Clipboard : Clipboard
+	public unsafe string getContents()
 	{
+		return GLFW.GetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowPtr());
+	}
+
 	public bool hasContents()
 	{
-		// TODO: Should this be string.IsNullOrEmpty or string.IsNullOrWhitespace?
-			//String contents = getContents();
-			//return contents != null && !contents.isEmpty();
-			throw new NotImplementedException();
-		}
-
-	public String getContents()
-	{
-		//return GLFW.glfwGetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle());
-		throw new NotImplementedException();
+		return !string.IsNullOrEmpty(getContents());
 	}
 
-	public void setContents(String content)
+	public unsafe void setContents(string content)
 	{
-		//GLFW.glfwSetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle(), content);
-		throw new NotImplementedException();
-	}
+		GLFW.SetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowPtr(), content);
 	}
 }

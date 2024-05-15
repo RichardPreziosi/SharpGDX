@@ -404,8 +404,8 @@ namespace SharpGDX.Utils
 	public class ObjectSetIterator : IEnumerable<T>, IEnumerator<T> {
 		public bool _hasNext;
 
-	readonly ObjectSet<T> set;
-	int nextIndex, currentIndex;
+	protected readonly ObjectSet<T> set;
+	protected int nextIndex, currentIndex;
 	internal bool valid = true;
 
 	public ObjectSetIterator(ObjectSet<T> set)

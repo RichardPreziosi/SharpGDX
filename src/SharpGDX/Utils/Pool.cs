@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Utils
 {
+	public abstract class Pool
+	{
+
+	}
 	/** A pool of objects that can be reused to avoid allocation.
  * @see Pools
  * @author Nathan Sweet */
-	abstract public class Pool<T>
+	abstract public class Pool<T>:Pool
 	{
 		/** The maximum number of objects that will be pooled. */
 		public readonly int max;

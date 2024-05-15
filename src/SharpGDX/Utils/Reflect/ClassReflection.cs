@@ -1,4 +1,6 @@
-﻿using SharpGDX.Shims;
+﻿using System.Reflection;
+using SharpGDX.Shims;
+using System.Security;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -24,10 +26,12 @@ public sealed class ClassReflection {
 			return c.Name;
 		}
 
-		//	/** Determines if the supplied Object is assignment-compatible with the object represented by supplied Class. */
-		//	static public boolean isInstance (Class c, Object obj) {
-		//		return c.isInstance(obj);
-		//	}
+		/** Determines if the supplied Object is assignment-compatible with the object represented by supplied Class. */
+		static public bool isInstance(Type c, Object obj)
+		{
+			// TODO: Verify
+			return c.IsInstanceOfType(obj);
+		}
 
 		//	/** Determines if the class or interface represented by first Class parameter is either the same as, or is a superclass or
 		//	 * superinterface of, the class or interface represented by the second Class parameter. */
@@ -103,30 +107,42 @@ public sealed class ClassReflection {
 		//		return result;
 		//	}
 
-		//	/** Returns a {@link Constructor} that represents the public constructor for the supplied class which takes the supplied
-		//	 * parameter types. */
-		//	static public Constructor getConstructor (Class c, Class... parameterTypes) throws ReflectionException {
-		//		try {
-		//			return new Constructor(c.getConstructor(parameterTypes));
-		//		} catch (SecurityException e) {
-		//			throw new ReflectionException("Security violation occurred while getting constructor for class: '" + c.getName() + "'.",
-		//				e);
-		//		} catch (NoSuchMethodException e) {
-		//			throw new ReflectionException("Constructor not found for class: " + c.getName(), e);
-		//		}
-		//	}
+		/** Returns a {@link Constructor} that represents the public constructor for the supplied class which takes the supplied
+		 * parameter types. */
+		static public Constructor getConstructor(Type c, Type[] parameterTypes) // TODO: throws ReflectionException
+		{
+				try {
+					// TODO: I think this should maybe search private/internal?
+				return new Constructor(c.GetConstructor(parameterTypes));
+			} 
+				// TODO: Will it actually throw this? -RP
+				catch (SecurityException e) {
+					throw new ReflectionException("Security violation occurred while getting constructor for class: '" + c.Name + "'.",
+						e);
+	}
+				// TODO: Will it actually throw this? -RP
+			// TODO:catch (NoSuchMethodException e) {
+			catch(Exception e){
+					throw new ReflectionException("Constructor not found for class: " + c.Name, e);
+}
+			}
 
-		//	/** Returns a {@link Constructor} that represents the constructor for the supplied class which takes the supplied parameter
-		//	 * types. */
-		//	static public Constructor getDeclaredConstructor (Class c, Class... parameterTypes) throws ReflectionException {
-		//		try {
-		//			return new Constructor(c.getDeclaredConstructor(parameterTypes));
-		//		} catch (SecurityException e) {
-		//			throw new ReflectionException("Security violation while getting constructor for class: " + c.getName(), e);
-		//		} catch (NoSuchMethodException e) {
-		//			throw new ReflectionException("Constructor not found for class: " + c.getName(), e);
-		//		}
-		//	}
+		/** Returns a {@link Constructor} that represents the constructor for the supplied class which takes the supplied parameter
+		 * types. */
+		static public Constructor getDeclaredConstructor(Type c, Type[]parameterTypes) // TODO: throws ReflectionException
+		{
+				try {
+					// TODO: I think this should only search public/protected?
+				return new Constructor(c.GetConstructor(parameterTypes));
+			} catch (SecurityException e) {
+					throw new ReflectionException("Security violation while getting constructor for class: " + c.Name, e);
+	}
+			// TODO:catch (NoSuchMethodException e) {
+			catch (Exception e)
+			{
+				throw new ReflectionException("Constructor not found for class: " + c.Name, e);
+}
+			}
 
 		//	/** Returns the elements of this enum class or null if this Class object does not represent an enum type. */
 		//	static public Object[] getEnumConstants (Class c) {

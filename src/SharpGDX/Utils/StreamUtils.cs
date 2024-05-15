@@ -105,7 +105,7 @@ namespace SharpGDX.Utils
 		{
 			//InputStreamReader reader =
 			//	charset == null ? new InputStreamReader(input) : new InputStreamReader(input, charset);
-			//StringWriter writer = new StringWriter(Math.max(0, estimatedSize));
+			//StringWriter writer = new StringWriter(Math.Max(0, estimatedSize));
 			//char[] buffer = new char[DEFAULT_BUFFER_SIZE];
 			//int charsRead;
 			//while ((charsRead = reader.read(buffer)) != -1)
@@ -147,7 +147,7 @@ namespace SharpGDX.Utils
 				//lock (this)
 				//{
 				//	if (count == buf.length) return buf;
-				//	return super.toByteArray();
+				//	return base.toByteArray();
 				//}
 
 				throw new NotImplementedException();

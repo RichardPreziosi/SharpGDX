@@ -11,47 +11,47 @@ namespace SharpGDX
  * @author mzechner */
 	public class InputAdapter : InputProcessor
 	{
-	public bool keyDown(int keycode)
+	public virtual bool keyDown(int keycode)
 	{
 		return false;
 	}
 
-	public bool keyUp(int keycode)
+	public virtual bool keyUp(int keycode)
 	{
 		return false;
 	}
 
-	public bool keyTyped(char character)
+	public virtual bool keyTyped(char character)
 	{
 		return false;
 	}
 
-	public bool touchDown(int screenX, int screenY, int pointer, int button)
+	public virtual bool touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
 
-	public bool touchUp(int screenX, int screenY, int pointer, int button)
+	public virtual bool touchUp(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
 
-	public bool touchCancelled(int screenX, int screenY, int pointer, int button)
+	public virtual bool touchCancelled(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
 
-	public bool touchDragged(int screenX, int screenY, int pointer)
+	public virtual bool touchDragged(int screenX, int screenY, int pointer)
 	{
 		return false;
 	}
 
-	public bool mouseMoved(int screenX, int screenY)
+	public virtual bool mouseMoved(int screenX, int screenY)
 	{
 		return false;
 	}
 
-	public bool scrolled(float amountX, float amountY)
+	public virtual bool scrolled(float amountX, float amountY)
 	{
 		return false;
 	}

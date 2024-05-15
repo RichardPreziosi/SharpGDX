@@ -88,7 +88,7 @@ SharpGDX\Graphics
 - DONE	-	GL31
 - DONE	-	GL32
 - DONE	-	GLTexture
--	-	Mesh
+- DONE	-	Mesh
 - DONE	-	OrthographicCamera
 - DONE	-	PerspectiveCamera
 - DONE	-	Pixmap
@@ -105,7 +105,7 @@ SharpGDX\Graphics
 SharpGDX\Graphics\G2D
 ---------------------
 - DONE	-	Animation
--	-	Batch
+- DONE	-	Batch
 -	-	BitmapFont
 -	-	BitmapFontCache
 -	-	CpuSpriteBatch
@@ -124,11 +124,11 @@ SharpGDX\Graphics\G2D
 -	-	PolygonSprite
 -	-	PolygonSpriteBatch
 -	-	RepeatablePolygonSprite
--	-	Sprite
--	-	SpriteBatch
+- DONE	-	Sprite
+- DONE	-	SpriteBatch
 -	-	SpriteCache
 -	-	TextureAtlas
--	-	TextureRegion
+- DONE	-	TextureRegion
 
 SharpGDX\Graphics\GLUtils
 -------------------------
@@ -147,26 +147,26 @@ SharpGDX\Graphics\GLUtils
 - DONE	-	GLVersion
 - DONE	-	HdpiMode
 - DONE	-	HdpiUtils
--	-	ImmediateModeRenderer
--	-	ImmediateModeRenderer20
--	-	IndexArray
--	-	IndexBufferObject
--	-	IndexBufferObjectSubData
--	-	IndexData
--	-	InstanceBufferObject
--	-	InstanceBufferObjectSubData
--	-	InstanceData
+- DONE	-	ImmediateModeRenderer
+- DONE	-	ImmediateModeRenderer20
+- DONE	-	IndexArray
+- DONE	-	IndexBufferObject
+- DONE	-	IndexBufferObjectSubData
+- DONE	-	IndexData
+- DONE	-	InstanceBufferObject
+- DONE	-	InstanceBufferObjectSubData
+- DONE	-	InstanceData
 - DONE	-	KTXTextureData
--	-	MipMapGenerator
+- DONE	-	MipMapGenerator
 -	-	MipMapTextureData
 - DONE	-	PixmapTextureData
 - DONE	-	ShaderProgram
--	-	ShapeRenderer
--	-	VertexArray
--	-	VertexBufferObject
--	-	VertexBufferObjectSubData
--	-	VertexBufferObjectWithVAO
--	-	VertexData
+- DONE	-	ShapeRenderer
+- DONE	-	VertexArray
+- DONE	-	VertexBufferObject
+- DONE	-	VertexBufferObjectSubData
+- DONE	-	VertexBufferObjectWithVAO
+- DONE	-	VertexData
 
 SharpGDX\Graphics\Profiling
 ---------------------------
@@ -471,7 +471,7 @@ SharpGDX\Utils
 - DONE	-	QuickSelect
 -	-	ReflectionPool
 - DONE	-	Scaling
--	-	ScreenUtils
+- DONE	-	ScreenUtils
 - DONE	-	Select
 - DONE	-	SerializationException
 - DONE	-	ShortArray
@@ -533,12 +533,12 @@ SharpGDX\Utils\Reflect
 
 SharpGDX\Utils\Viewport
 -----------------------
--	-	ExtendViewport
--	-	FillViewport
--	-	FitViewport
--	-	ScalingViewport
--	-	ScreenViewport
--	-	StretchViewport
+- DONE	-	ExtendViewport
+- DONE	-	FillViewport
+- DONE	-	FitViewport
+- DONE	-	ScalingViewport
+- DONE	-	ScreenViewport
+- DONE	-	StretchViewport
 - DONE	-	Viewport
 
 =============================================================
@@ -579,7 +579,7 @@ SharpGDX.Desktop
 - DONE	-	DesktopApplicationBase
 - DONE	-	DesktopApplicationConfiguration
 - DONE	-	DesktopApplicationLogger
-- 	-	DesktopClipboard
+- DONE	-	DesktopClipboard
 - 	-	DesktopCursor
 - DONE	-	DesktopFileHandle
 - DONE	-	DesktopFiles
@@ -589,9 +589,9 @@ SharpGDX.Desktop
 - 	-	DesktopGL32
 - DONE	-	DesktopGraphics
 - DONE	-	DesktopInput
-- 	-	DesktopNativesLoader
+- DONE 	-	DesktopNativesLoader
 - 	-	DesktopNet
-- 	-	DesktopPreferences
+- DONE 	-	DesktopPreferences
 - DONE	-	DesktopWindow
 - DONE	-	DesktopWindowAdapter
 - DONE	-	DesktopWindowConfiguration
