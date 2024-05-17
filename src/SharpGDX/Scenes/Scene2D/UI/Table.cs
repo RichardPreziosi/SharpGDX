@@ -196,7 +196,7 @@ public class Table : WidgetGroup {
 	/** Adds a new cell to the table with the specified actor. */
 	public  Cell<T> add<T> ( T? actor)
 	where T: Actor{
-		Cell<T> cell = obtainCell();
+		var cell = obtainCell();
 		cell.actor = actor;
 
 		// The row was ended for layout, not by the user, so revert it.
@@ -211,7 +211,7 @@ public class Table : WidgetGroup {
 			// Set cell column and row.
 			Cell lastCell = cells.peek();
 			if (!lastCell.endRow) {
-				cell.column = lastCell.column + lastCell.colspan;
+				cell.column = lastCell.column + lastCell.colspan ?? 0;
 				cell.row = lastCell.row;
 			} else {
 				cell.column = 0;
@@ -220,16 +220,18 @@ public class Table : WidgetGroup {
 			// Set the index of the cell above.
 			if (cell.row > 0) {
 				Object[] cells = this.cells.items;
-				outer:
+				
 				for (int i = cellCount - 1; i >= 0; i--) {
 					Cell other = (Cell)cells[i];
-					for (int column = other.column, nn = column + other.colspan; column < nn; column++) {
+					for (int column = other.column, nn = column + other.colspan ?? 0; column < nn; column++) {
 						if (column == cell.column) {
 							cell.cellAboveIndex = i;
-							break outer;
+							goto outer;
 						}
 					}
+					
 				}
+				outer:{}
 			}
 		} else {
 			cell.column = 0;

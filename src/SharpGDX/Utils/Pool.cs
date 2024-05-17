@@ -11,6 +11,7 @@ namespace SharpGDX.Utils
 	{
 
 	}
+	
 	/** A pool of objects that can be reused to avoid allocation.
  * @see Pools
  * @author Nathan Sweet */

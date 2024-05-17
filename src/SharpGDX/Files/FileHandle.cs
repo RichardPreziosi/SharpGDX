@@ -636,17 +636,22 @@ public bool exists()
 	{
 		case FileType.Internal:
 			if (file().exists()) return true;
-			// Fall through.
-			break;
+			return getResource();
 
 		case FileType.Classpath:
 		{
-			//return getResource("/" + _file.getPath().Replace('\\', '/')) != null;
-			throw new NotImplementedException();
+			return getResource();
 		}
 			
 		}
+
 		return file().exists();
+
+		bool getResource()
+		{
+			//return getResource("/" + _file.getPath().Replace('\\', '/')) != null;
+			throw new NotImplementedException();
+			}
 	}
 
 	/** Deletes this file or empty directory and returns success. Will not delete a directory that has children.

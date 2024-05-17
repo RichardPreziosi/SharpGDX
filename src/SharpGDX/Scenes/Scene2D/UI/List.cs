@@ -15,7 +15,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
 public class List<T> : Widget , Cullable {
 	ListStyle style;
 	readonly Array<T> items = new ();
-	ArraySelection<T> selection = new (items);
+	ArraySelection<T> selection ;
 	private Rectangle cullingArea;
 	private float prefWidth, prefHeight;
 	float itemHeight;
@@ -149,7 +149,9 @@ public class List<T> : Widget , Cullable {
 		}
 	}
 
-public List (ListStyle style) {
+public List (ListStyle style)
+{
+	selection = new(items);
 		selection.setActor(this);
 		selection.setRequired(true);
 

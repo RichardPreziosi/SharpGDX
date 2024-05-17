@@ -26,7 +26,7 @@ public class Group : Actor , Cullable {
 	bool transform = true;
 	private Rectangle? cullingArea;
 
-	public void act (float delta) {
+	public virtual void act (float delta) {
 		base.act(delta);
 		Actor[] actors = children.begin();
 		for (int i = 0, n = children.size; i < n; i++)

@@ -13,12 +13,12 @@ public class CheckBox : TextButton {
 	private CheckBoxStyle style;
 
 	public CheckBox ( String? text, Skin skin) 
-	: this(text, skin.get(typeof(CheckBoxStyle))){
+	: this(text, skin.get< CheckBoxStyle>(typeof(CheckBoxStyle))){
 		
 	}
 
 	public CheckBox ( String? text, Skin skin, String styleName) 
-	: this(text, skin.get(styleName, typeof(CheckBoxStyle)))
+	: this(text, skin.get< CheckBoxStyle>(styleName, typeof(CheckBoxStyle)))
 	{
 		
 	}
@@ -63,11 +63,11 @@ public class CheckBox : TextButton {
 
 	protected Drawable? getImageDrawable () {
 		if (isDisabled()) {
-			if (isChecked && style.checkboxOnDisabled != null) return style.checkboxOnDisabled;
+			if (_isChecked && style.checkboxOnDisabled != null) return style.checkboxOnDisabled;
 			return style.checkboxOffDisabled;
 		}
-		boolean over = isOver() && !isDisabled();
-		if (isChecked && style.checkboxOn != null)
+		bool over = isOver() && !isDisabled();
+		if (_isChecked && style.checkboxOn != null)
 			return over && style.checkboxOnOver != null ? style.checkboxOnOver : style.checkboxOn;
 		if (over && style.checkboxOver != null) return style.checkboxOver;
 		return style.checkboxOff;
@@ -83,7 +83,7 @@ public class CheckBox : TextButton {
 
 	/** The style for a select box, see {@link CheckBox}.
 	 * @author Nathan Sweet */
-	static public class CheckBoxStyle : TextButtonStyle {
+	public class CheckBoxStyle : TextButtonStyle {
 		public Drawable checkboxOn, checkboxOff;
 		public Drawable? checkboxOnOver, checkboxOver, checkboxOnDisabled, checkboxOffDisabled;
 

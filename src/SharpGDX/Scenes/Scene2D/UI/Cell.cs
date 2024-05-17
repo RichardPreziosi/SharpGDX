@@ -12,7 +12,43 @@ using SharpGDX.Scenes.Scene2D.Utils;
 namespace SharpGDX.Scenes.Scene2D.UI
 {
 	// TODO: Had to shim this to get things to work. -RP
-	public abstract class Cell{}
+	public abstract class Cell
+	{
+		internal Cell()
+		{
+
+		}
+
+		internal int cellAboveIndex;
+		internal int? colspan;
+		internal int column, row;
+		internal Actor? actor;
+		internal bool endRow;
+		protected Value minWidth, minHeight;
+		protected Value prefWidth, prefHeight;
+		protected Value maxWidth, maxHeight;
+		protected Value spaceTop, spaceLeft, spaceBottom, spaceRight;
+protected		Value padTop, padLeft, padBottom, padRight;
+
+/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
+public Cell Space(float space)
+{
+	if (space < 0) throw new IllegalArgumentException("space cannot be < 0: " + space);
+	Space(Fixed.valueOf(space));
+	return this;
+}
+
+		/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. */
+		public Cell Space(Value space)
+		{
+			if (space == null) throw new IllegalArgumentException("space cannot be null.");
+			spaceTop = space;
+			spaceLeft = space;
+			spaceBottom = space;
+			spaceRight = space;
+			return this;
+		}
+	}
 
 	/** A cell for a {@link Table}.
  * @author Nathan Sweet */
@@ -26,25 +62,21 @@ public class Cell<T> : Cell,Poolable
 	static private Files files;
 	static private Cell<T> defaults;
 
-	Value minWidth, minHeight;
-	Value prefWidth, prefHeight;
-	Value maxWidth, maxHeight;
-	Value spaceTop, spaceLeft, spaceBottom, spaceRight;
-	Value padTop, padLeft, padBottom, padRight;
+	
 	float? fillX, fillY;
 	int? align;
 	int? expandX, expandY;
-	int? colspan;
+	
 	Boolean? uniformX, uniformY;
 
-	internal Actor? actor;
+	
 	float actorX, actorY;
 	float actorWidth, actorHeight;
 
 	private Table table;
-	bool endRow;
-	internal int column, row;
-	internal int cellAboveIndex;
+	
+	
+	
 	float computedPadTop, computedPadLeft, computedPadBottom, computedPadRight;
 
 	public Cell () {
@@ -310,7 +342,7 @@ public class Cell<T> : Cell,Poolable
 	}
 
 	/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. */
-	public Cell<T> Space (Value space) {
+	public new Cell<T> Space (Value space) {
 		if (space == null) throw new IllegalArgumentException("space cannot be null.");
 		spaceTop = space;
 		spaceLeft = space;

@@ -20,7 +20,8 @@ namespace SharpGDX.Scenes.Scene2D.UI
  * @author Nathan Sweet */
 public class Button : Table , Disableable {
 	private ButtonStyle style;
-	bool _isChecked, _isDisabled;
+	internal bool _isChecked;
+		bool _isDisabled;
 	internal ButtonGroup<Button> buttonGroup;
 	private ClickListener clickListener;
 	private bool programmaticChangeEvents = true;

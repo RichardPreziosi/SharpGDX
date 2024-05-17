@@ -253,13 +253,13 @@ public class TextureAtlas : Disposable {
 			});
 			pageFields.put("format", new Field<Page>() {
 				 parse = (Page page) => {
-					page.format = Pixmap.Format.valueOf(entry[1]);
+					page.format = Enum.Parse<Pixmap.Format>(entry[1]);
 				}
 			});
 			pageFields.put("filter", new Field<Page>() {
 				 parse = (Page page) =>{
-					page.minFilter = Texture.TextureFilter.valueOf(entry[1]);
-					page.magFilter = Texture.TextureFilter.valueOf(entry[2]);
+					page.minFilter = Enum.Parse < Texture.TextureFilter>(entry[1]);
+					page.magFilter = Enum.Parse < Texture.TextureFilter>(entry[2]);
 					page.useMipMaps = Texture.TextureFilterUtils.isMipMap(page.minFilter);
 				}
 			});
@@ -335,7 +335,7 @@ public class TextureAtlas : Disposable {
 						page.textureFile = imagesDir.child(line);
 						while (true) {
 							if (readEntry(entry, line = reader.readLine()) == 0) break;
-							Field field = pageFields.get(entry[0]);
+							var field = pageFields.get(entry[0]);
 							if (field != null) field.parse(page); // Silently ignore unknown page fields.
 						}
 						pages.add(page);
@@ -347,7 +347,7 @@ public class TextureAtlas : Disposable {
 						while (true) {
 							int count = readEntry(entry, line = reader.readLine());
 							if (count == 0) break;
-							Field field = regionFields.get(entry[0]);
+							Field<Region> field = regionFields.get<string>(entry[0]);
 							if (field != null)
 								field.parse(region);
 							else {
@@ -371,8 +371,8 @@ public class TextureAtlas : Disposable {
 							region.originalHeight = region.height;
 						}
 						if (names != null && names.size > 0) {
-							region.names = names.toArray(typeof(String));
-							region.values = values.toArray(typeof(int[]));
+							region.names = names.toArray<string>(typeof(String));
+							region.values = values.toArray<int[]>(typeof(int[]));
 							names.clear();
 							values.clear();
 						}
@@ -386,16 +386,20 @@ public class TextureAtlas : Disposable {
 			}
 
 			if (hasIndexes[0]) {
-				regions.sort(new Comparator<Region>() {
-					public int compare (Region region1, Region region2) {
+				regions.sort(new RegionComparer() );
+			}
+		}
+
+		private class RegionComparer : IComparer<Region>
+			{
+					public int Compare(Region region1, Region region2)
+					{
 						int i1 = region1.index;
 						if (i1 == -1) i1 = int.MaxValue;
 						int i2 = region2.index;
 						if (i2 == -1) i2 = int.MaxValue;
 						return i1 - i2;
 					}
-				});
-			}
 		}
 
 		public Array<Page> getPages () {

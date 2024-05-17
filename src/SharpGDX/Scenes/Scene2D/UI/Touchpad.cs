@@ -26,14 +26,14 @@ public class Touchpad : Widget {
 
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
 	public Touchpad (float deadzoneRadius, Skin skin) 
-	: this(deadzoneRadius, skin.get(typeof(TouchpadStyle)))
+	: this(deadzoneRadius, skin.get<TouchpadStyle>(typeof(TouchpadStyle)))
 	{
 		
 	}
 
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
 	public Touchpad (float deadzoneRadius, Skin skin, String styleName) 
-	: this(deadzoneRadius, skin.get(styleName, typeof(TouchpadStyle)))
+	: this(deadzoneRadius, skin.get<TouchpadStyle>(styleName, typeof(TouchpadStyle)))
 	{
 		
 	}
@@ -48,23 +48,36 @@ public class Touchpad : Widget {
 		setStyle(style);
 		setSize(getPrefWidth(), getPrefHeight());
 
-		addListener(new InputListener() {
-			public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
-				if (touched) return false;
-				touched = true;
-				calculatePositionAndValue(x, y, false);
-				return true;
-			}
+		addListener(new TouchpadListener(this) );
+	}
 
-			public void touchDragged (InputEvent @event, float x, float y, int pointer) {
-				calculatePositionAndValue(x, y, false);
-			}
+	private class TouchpadListener : InputListener
+	{
+		private readonly Touchpad _touchpad;
 
-			public void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
-				touched = false;
-				calculatePositionAndValue(x, y, resetOnTouchUp);
-			}
-		});
+		public TouchpadListener(Touchpad touchpad)
+		{
+			_touchpad = touchpad;
+		}
+
+		public bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
+		{
+			if (_touchpad.touched) return false;
+			_touchpad.touched = true;
+			_touchpad.calculatePositionAndValue(x, y, false);
+			return true;
+		}
+
+		public void touchDragged(InputEvent @event, float x, float y, int pointer)
+		{
+			_touchpad.calculatePositionAndValue(x, y, false);
+		}
+
+		public void touchUp(InputEvent @event, float x, float y, int pointer, int button)
+		{
+			_touchpad.touched = false;
+			_touchpad.calculatePositionAndValue(x, y, _touchpad.resetOnTouchUp);
+		}
 	}
 
 	void calculatePositionAndValue (float x, float y, bool isTouchUp) {
@@ -89,7 +102,7 @@ public class Touchpad : Widget {
 			}
 		}
 		if (oldPercentX != knobPercent.x || oldPercentY != knobPercent.y) {
-			ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
+			ChangeListener.ChangeEvent changeEvent = Pools.obtain<ChangeListener.ChangeEvent>(typeof(ChangeListener.ChangeEvent));
 			if (fire(changeEvent)) {
 				knobPercent.set(oldPercentX, oldPercentY);
 				knobPosition.set(oldPositionX, oldPositionY);
@@ -141,10 +154,10 @@ public class Touchpad : Widget {
 		float w = getWidth();
 		float h = getHeight();
 
-		final Drawable bg = style.background;
+		 Drawable bg = style.background;
 		if (bg != null) bg.draw(batch, x, y, w, h);
 
-		final Drawable knob = style.knob;
+		 Drawable knob = style.knob;
 		if (knob != null) {
 			x += knobPosition.x - knob.getMinWidth() / 2f;
 			y += knobPosition.y - knob.getMinHeight() / 2f;

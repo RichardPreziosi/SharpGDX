@@ -13,7 +13,7 @@ namespace SharpGDX.Scenes.Scene2D
 	/** The actor this action targets, or null if a target has not been set. */
 	protected Actor target;
 
-	private Pool<Action>? pool;
+	private Pool? pool;
 
 	/** Updates the action based on time. Typically this is called each frame by {@link Actor#act(float)}.
 	 * @param delta Time in seconds since the last frame.
@@ -36,7 +36,7 @@ namespace SharpGDX.Scenes.Scene2D
 	 * This method is not typically a good place for an action subclass to query the actor's state because the action may not be
 	 * executed for some time, eg it may be {@link DelayAction delayed}. The actor's state is best queried in the first call to
 	 * {@link #act(float)}. For a {@link TemporalAction}, use TemporalAction#begin(). */
-	public void setActor(Actor actor)
+	public virtual void setActor(Actor actor)
 	{
 		this.actor = actor;
 		if (target == null) setTarget(actor);
@@ -44,7 +44,7 @@ namespace SharpGDX.Scenes.Scene2D
 		{
 			if (pool != null)
 			{
-				pool.free(this);
+				((Pool<Action>?)pool).free(this);
 				pool = null;
 			}
 		}
@@ -85,13 +85,14 @@ namespace SharpGDX.Scenes.Scene2D
 
 	public Pool<Action>? getPool()
 	{
-		return pool;
+		return (Pool<Action>?)pool;
 	}
 
 	/** Sets the pool that the action will be returned to when removed from the actor.
 	 * @param pool May be null.
 	 * @see #setActor(Actor) */
-	public void setPool(Pool<Action>? pool)
+	public void setPool<T>(Pool<T>? pool)
+	where T: Action
 	{
 		this.pool = pool;
 	}

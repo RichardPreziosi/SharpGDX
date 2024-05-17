@@ -1,9 +1,11 @@
 using SharpGDX.Shims;
+using static  SharpGDX.Scenes.Scene2D.Actions.Actions;
 using SharpGDX;
 using SharpGDX.Scenes.Scene2D.UI;
 using SharpGDX.Mathematics;
 using SharpGDX.Utils;
 using Timer = SharpGDX.Utils.Timer;
+using Task =SharpGDX.Utils.Timer.Task;
 
 namespace SharpGDX.Scenes.Scene2D.UI;
 
@@ -34,33 +36,63 @@ public class TooltipManager {
 
 	readonly Array<Tooltip> shown = new ();
 
-	float time = initialTime;
-	readonly Timer.Task resetTask = new Timer.Task() {
-		public void run () {
-			time = initialTime;
-		}
-	};
+	float time ;
+	private readonly Task resetTask;
 
-	Tooltip showTooltip;
-	readonly Timer.Task showTask = new Timer.Task() {
-		public void run () {
-			if (showTooltip == null || showTooltip.targetActor == null) return;
+	private class ResetTask : Task
+		{
+			private readonly TooltipManager _tooltipManager;
 
-			Stage stage = showTooltip.targetActor.getStage();
-			if (stage == null) return;
-			stage.addActor(showTooltip.container);
-			showTooltip.container.toFront();
-			shown.add(showTooltip);
+			public ResetTask(TooltipManager tooltipManager)
+			{
+				_tooltipManager = tooltipManager;
+			}
 
-			showTooltip.container.clearActions();
-			showAction(showTooltip);
-
-			if (!showTooltip.instant) {
-				time = subsequentTime;
-				resetTask.cancel();
+			public override void run()
+			{
+				_tooltipManager.time = _tooltipManager.initialTime;
 			}
 		}
-	};
+
+	Tooltip showTooltip;
+
+	public TooltipManager()
+	{
+		time = initialTime;
+		resetTask = new ResetTask(this);
+		showTask = new ShowTask(this);
+	}
+
+	private readonly Task showTask;
+
+	private class ShowTask : Task
+	{
+		private readonly TooltipManager _tooltipManager;
+
+		public ShowTask(TooltipManager tooltipManager)
+		{
+			_tooltipManager = tooltipManager;
+		}
+		public override void run()
+		{
+			if (_tooltipManager.showTooltip == null || _tooltipManager.showTooltip.targetActor == null) return;
+
+			Stage stage = _tooltipManager.showTooltip.targetActor.getStage();
+			if (stage == null) return;
+			stage.addActor(_tooltipManager.showTooltip.container);
+			_tooltipManager.showTooltip.container.toFront();
+			_tooltipManager.shown.add(_tooltipManager.showTooltip);
+
+			_tooltipManager.showTooltip.container.clearActions();
+			_tooltipManager.showAction(_tooltipManager.showTooltip);
+
+			if (!_tooltipManager.showTooltip.instant)
+			{
+				_tooltipManager.time = _tooltipManager.subsequentTime;
+				_tooltipManager.resetTask.cancel();
+			}
+		}
+	}
 
 	public void touchDown (Tooltip tooltip) {
 		showTask.cancel();
@@ -100,14 +132,14 @@ public class TooltipManager {
 		tooltip.container.setTransform(true);
 		tooltip.container.getColor().a = 0.2f;
 		tooltip.container.setScale(0.05f);
-		tooltip.container.addAction(parallel(fadeIn(actionTime, fade), scaleTo(1, 1, actionTime, Interpolation.fade)));
+		tooltip.container.addAction(parallel(fadeIn(actionTime, Interpolation.fade), scaleTo(1, 1, actionTime, Interpolation.fade)));
 	}
 
 	/** Called when tooltip is hidden. Default implementation sets actions to animate hiding and to remove the actor from the stage
 	 * when the actions are complete. A subclass must at least remove the actor. */
 	protected void hideAction (Tooltip tooltip) {
 		tooltip.container
-			.addAction(sequence(parallel(alpha(0.2f, 0.2f, fade), scaleTo(0.05f, 0.05f, 0.2f, Interpolation.fade)), removeActor()));
+			.addAction(sequence(parallel(alpha(0.2f, 0.2f, Interpolation.fade), scaleTo(0.05f, 0.05f, 0.2f, Interpolation.fade)), removeActor()));
 	}
 
 	public void hideAll () {

@@ -78,7 +78,7 @@ where T: Button{
 	 * from within this method.
 	 * @return True if the new state should be allowed. */
 	internal protected bool canCheck (T button, bool newState) {
-		if (button.isChecked == newState) return false;
+		if (button._isChecked == newState) return false;
 
 		if (!newState) {
 			// Keep button checked to enforce minCheckCount.
@@ -93,7 +93,7 @@ where T: Button{
 					minCheckCount = 0;
 					lastChecked.setChecked(false); // May have listeners that change button states.
 					minCheckCount = old;
-					if (button.isChecked == newState) return false;
+					if (button._isChecked == newState) return false;
 					if (checkedButtons.size < maxCheckCount) break;
 					if (tries++ > 10) return false; // Unable to uncheck another button.
 				}

@@ -282,7 +282,8 @@ public class TextArea : TextField {
 					lineStart = i + 1;
 				} else {
 					lastSpace = (continueCursor(i, 0) ? lastSpace : i);
-					layout.setText(font, text.SubSequence(lineStart, i + 1));
+					// TODO: Verify, was originally layout.setText(font, text.SubSequence(lineStart, i + 1));. -RP
+					layout.setText(font, text.Substring(lineStart, i + 1));
 					if (layout.width > maxWidthLine) {
 						if (lineStart >= lastSpace) {
 							lastSpace = i - 1;

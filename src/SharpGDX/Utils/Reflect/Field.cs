@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using SharpGDX.Shims;
 
 namespace SharpGDX.Utils.Reflect
 {
@@ -19,12 +20,12 @@ public sealed class Field {
 
 	/** Returns a Class object that identifies the declared type for the field. */
 	public Type getType () {
-		return field.getType();
+		return field.GetType();
 	}
 
 	/** Returns the Class object representing the class or interface that declares the field. */
 	public Type getDeclaringClass () {
-		return field.getDeclaringClass();
+		return field.DeclaringType;
 	}
 
 	public bool isAccessible () {
@@ -102,7 +103,7 @@ public sealed class Field {
 	}
 
 	/** Returns true if the field includes an annotation of the provided class type. */
-	public bool isAnnotationPresent (Class<? extends java.lang.annotation.Annotation> annotationType) {
+	public bool isAnnotationPresent (Type annotationType) {
 		return field.isAnnotationPresent(annotationType);
 	}
 
@@ -119,7 +120,7 @@ public sealed class Field {
 
 	/** Returns an {@link Annotation} object reflecting the annotation provided, or null of this field doesn't have such an
 	 * annotation. This is a convenience function if the caller knows already which annotation type he's looking for. */
-	public Annotation getDeclaredAnnotation (Class<? extends java.lang.annotation.Annotation> annotationType) {
+	public Annotation getDeclaredAnnotation (Type annotationType) {
 		Attribute[] annotations = field.getDeclaredAnnotations();
 		if (annotations == null) {
 			return null;

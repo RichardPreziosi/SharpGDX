@@ -35,7 +35,7 @@ public class ImageTextButton : Button {
 		
 		this.style = style;
 
-		defaults().space(3);
+		defaults().Space(3);
 
 		image = newImage();
 

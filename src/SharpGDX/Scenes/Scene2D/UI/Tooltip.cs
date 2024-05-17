@@ -4,16 +4,36 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Scenes.Scene2D.UI;
 
+public abstract class Tooltip : InputListener
+{
+	internal readonly Container<Actor> container;
+	internal Actor targetActor;
+	internal bool always;
+	internal bool instant;
+	public void hide()
+	{
+		manager.hide(this);
+	}
+
+	protected readonly TooltipManager manager;
+
+	internal Tooltip(TooltipManager manager)
+	{
+		this.manager = manager;
+	}
+}
+
 /** A listener that shows a tooltip actor when the mouse is over another actor.
  * @author Nathan Sweet */
-public class Tooltip<T> : InputListener 
+public class Tooltip<T> : Tooltip
 where T: Actor{
 	static Vector2 tmp = new Vector2();
-
-	private readonly TooltipManager manager;
-	protected readonly Container<T> container;
-	bool instant, always, touchIndependent;
-	Actor targetActor;
+	internal new readonly Container<T> container;
+	
+	
+	
+		private bool touchIndependent;
+	
 
 	/** @param contents May be null. */
 	public Tooltip ( T? contents) 
@@ -23,16 +43,26 @@ where T: Actor{
 	}
 
 	/** @param contents May be null. */
-	public Tooltip (T? contents, TooltipManager manager) {
-		this.manager = manager;
-
-		container = new Container<T>(contents) {
-			public void act (float delta) {
-				base.act(delta);
-				if (targetActor != null && targetActor.getStage() == null) remove();
-			}
-		};
+	public Tooltip (T? contents, TooltipManager manager)
+	:base(manager){
+		container = new TooltipContainer(this, contents) ;
 		container.setTouchable(Touchable.disabled);
+	}
+
+	private class TooltipContainer:Container<T>
+	{
+		private readonly Tooltip<T> _tooltip;
+
+		public TooltipContainer(Tooltip<T> tooltip,T? contents)
+		:base(contents)
+		{
+			_tooltip = tooltip;
+		}
+		public override void act(float delta)
+		{
+			base.act(delta);
+			if (_tooltip.targetActor != null && _tooltip.targetActor.getStage() == null) remove();
+		}
 	}
 
 	public TooltipManager getManager () {
@@ -77,7 +107,7 @@ where T: Actor{
 
 	public bool mouseMoved (InputEvent @event, float x, float y) {
 		if (container.hasParent()) return false;
-		setContainerPosition(event.getListenerActor(), x, y);
+		setContainerPosition(@event.getListenerActor(), x, y);
 		return true;
 	}
 

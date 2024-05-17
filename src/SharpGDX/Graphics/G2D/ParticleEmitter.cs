@@ -168,11 +168,13 @@ namespace SharpGDX
 				if (!active[index]) {
 					activateParticle(index);
 					active[index++] = true;
-					continue outer;
+					// TODO: Verify was continue outer;
+					goto endOfOuter;
 				}
 			}
 			break;
 		}
+		endOfOuter:
 		this.activeCount += count;
 	}
 
@@ -208,7 +210,7 @@ namespace SharpGDX
 					if (emissionDelta >= emissionTime) {
 						int emitCount = (int)(emissionDelta / emissionTime);
 						emitCount = Math.Min(emitCount, maxParticleCount - this.activeCount);
-						emissionDelta -= (int)(emitCount * emissionTime);
+						emissionDelta = (int)(emissionDelta - emitCount * emissionTime);
 							// TODO: Verify, was originally emissionDelta %= emissionTime;
 							emissionDelta = (int)(emissionDelta % emissionTime);
 						addParticles(emitCount);
@@ -312,8 +314,9 @@ namespace SharpGDX
 			if (emissionDelta >= emissionTime) {
 				int emitCount = (int)(emissionDelta / emissionTime);
 				emitCount = Math.Min(emitCount, maxParticleCount - activeCount);
-				emissionDelta -= emitCount * emissionTime;
-				emissionDelta %= emissionTime;
+				emissionDelta = (int)(emissionDelta - emitCount * emissionTime);
+					// TODO: Verify, was originally emissionDelta %= emissionTime;
+					emissionDelta = (int)(emissionDelta % emissionTime);
 				addParticles(emitCount);
 			}
 		}
@@ -1163,12 +1166,12 @@ namespace SharpGDX
 				line = reader.readLine();
 			}
 			if (line.StartsWith("spriteMode")) {
-				spriteMode = SpriteMode.valueOf(readString(line));
+				spriteMode = Enum.Parse<SpriteMode>(readString(line));
 				line = reader.readLine();
 			}
 
 			Array<String> imagePaths = new Array<String>();
-			while ((line = reader.readLine()) != null && !line.isEmpty()) {
+			while ((line = reader.readLine()) != null && !string.IsNullOrEmpty(line)) {
 				imagePaths.add(line);
 			}
 			setImagePaths(imagePaths);
@@ -1425,11 +1428,18 @@ namespace SharpGDX
 			this.highMin = value.highMin;
 			this.highMax = value.highMax;
 			if (scaling.Length != value.scaling.Length)
-				scaling = Arrays.copyOf(value.scaling, value.scaling.Length);
+			{
+				scaling = new float[value.scaling.Length];
+				Array.Copy(value.scaling, scaling, value.scaling.Length);
+			}
 			else
 				Array.Copy(value.scaling, 0, scaling, 0, scaling.Length);
+
 			if (timeline.Length != value.timeline.Length)
-				timeline = Arrays.copyOf(value.timeline, value.timeline.Length);
+			{
+				timeline = new float[value.timeline.Length];
+				Array.Copy(value.timeline, timeline, value.timeline.Length);
+			}
 			else
 				Array.Copy(value.timeline, 0, timeline, 0, timeline.Length);
 			this.relative = value.relative;
@@ -1720,10 +1730,10 @@ namespace SharpGDX
 			{
 			base.load(reader);
 			if (!active) return;
-			shape = SpawnShape.valueOf(readString(reader, "shape"));
+			shape = Enum.Parse<SpawnShape>(readString(reader, "shape"));
 			if (shape == SpawnShape.ellipse) {
 				edges = readBoolean(reader, "edges");
-				side = SpawnEllipseSide.valueOf(readString(reader, "side"));
+				side = Enum.Parse<SpawnEllipseSide>(readString(reader, "side"));
 			}
 		}
 

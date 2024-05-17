@@ -22,17 +22,19 @@ namespace SharpGDX.Utils.Reflect
 		public T getAnnotation<T>(Type annotationType)
 			where T : Attribute
 		{
-			if (annotation.annotationType().equals(annotationType))
-			{
-				return (T)annotation;
-			}
-			return null;
+			throw new NotImplementedException();
+			// TODO: if (annotation.annotationType().equals(annotationType))
+			//{
+			//	return (T)annotation;
+			//}
+			//return null;
 		}
 
 		public Type getAnnotationType<T>()
 			where T : Attribute
 		{
-			return annotation.annotationType();
+			throw new NotImplementedException();
+			// TODO: return annotation.annotationType();
 		}
 	}
 }

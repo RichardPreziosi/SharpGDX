@@ -933,10 +933,9 @@ public class TextField : Widget , Disableable {
 					break;
 				}
 
-				selection:
+				
 				{
 					int temp = _textField.cursor;
-					keys:
 					{
 						switch (keycode)
 						{
@@ -944,30 +943,36 @@ public class TextField : Widget , Disableable {
 								_textField.moveCursor(false, jump);
 								repeat = true;
 								handled = true;
-								goto endOfKeys;
+								goto keys;
 							case Input.Keys.RIGHT:
 								_textField.moveCursor(true, jump);
 								repeat = true;
 								handled = true;
-								goto endOfKeys;
+								goto keys;
 							case Input.Keys.HOME:
 								goHome(jump);
 								handled = true;
-								goto endOfKeys;
+								goto keys;
 							case Input.Keys.END:
 								goEnd(jump);
 								handled = true;
-								goto endOfKeys;
+								goto keys;
 						}
 
-						break selection;
+						goto selection;
+
+						keys:{}
 					}
-					endOfKeys:
+					
 					if (!_textField.hasSelection) {
 						_textField.selectionStart = temp;
 						_textField.hasSelection = true;
 					}
+
+					selection:{}
 				}
+
+				
 			} else {
 				// Cursor movement or other keys (kills selection).
 				switch (keycode) {
@@ -1037,6 +1042,7 @@ public class TextField : Widget , Disableable {
 				break;
 			default:
 				if (character < 32) return false;
+				break;
 			}
 
 			if (!_textField.hasKeyboardFocus()) return false;
@@ -1072,7 +1078,7 @@ public class TextField : Widget , Disableable {
 						if (!enter && _textField.filter != null && !_textField.filter.acceptChar(_textField, character)) return true;
 						if (!_textField.withinMaxLength(_textField.text.Length - (_textField.hasSelection ? Math.Abs(_textField.cursor - _textField.selectionStart) : 0))) return true;
 						if (_textField.hasSelection) _textField.cursor = _textField.delete(false);
-						String insertion = enter ? "\n" : String.valueOf(character);
+						String insertion = enter ? "\n" :(character).ToString();
 						_textField.text = _textField.insert(_textField.cursor++, insertion, _textField.text);
 					}
 					String tempUndoText = _textField.undoText;

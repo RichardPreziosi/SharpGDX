@@ -17,7 +17,7 @@ public class Window : Table {
 	static private readonly int MOVE = 1 << 5;
 
 	private WindowStyle style;
-	bool _isMovable = true, _isModal, _isResizable;
+	protected bool _isMovable = true, _isModal, _isResizable;
 	int resizeBorder = 8;
 	bool _keepWithinStage = true;
 	Label titleLabel;

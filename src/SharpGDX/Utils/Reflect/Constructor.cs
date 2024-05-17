@@ -20,38 +20,43 @@ public sealed class Constructor {
 
 	/** Returns an array of Class objects that represent the formal parameter types, in declaration order, of the constructor. */
 	public Type[] getParameterTypes () {
-		return constructor.getParameterTypes();
-	}
-
-	/** Returns the Class object representing the class or interface that declares the constructor. */
-	public Type getDeclaringClass () {
-		return constructor.getDeclaringClass();
-	}
-
-	public bool isAccessible () {
-		return constructor.isAccessible();
-	}
-
-	public void setAccessible (bool accessible) {
-		constructor.setAccessible(accessible);
-	}
-
-	/** Uses the constructor to create and initialize a new instance of the constructor's declaring class, with the supplied
-	 * initialization parameters. */
-	public Object newInstance (Object[] args) // TODO:  throws ReflectionException 
-	{
-		try {
-			return constructor.newInstance(args);
-		} catch (IllegalArgumentException e) {
-			throw new ReflectionException("Illegal argument(s) supplied to constructor for class: " + getDeclaringClass().Name,
-				e);
-		} catch (InstantiationException e) {
-			throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
-		} catch (IllegalAccessException e) {
-			throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
-		} catch (InvocationTargetException e) {
-			throw new ReflectionException("Exception occurred in constructor for class: " + getDeclaringClass().Name, e);
+		throw new NotImplementedException();
+		// TODO: return constructor.getParameterTypes();
 		}
+
+		/** Returns the Class object representing the class or interface that declares the constructor. */
+		public Type getDeclaringClass () {
+			throw new NotImplementedException();
+			// TODO: return constructor.getDeclaringClass();
+		}
+
+		public bool isAccessible () {
+			throw new NotImplementedException();
+			// TODO: return constructor.isAccessible();
+		}
+
+		public void setAccessible (bool accessible) {
+			throw new NotImplementedException();
+			// TODO: constructor.setAccessible(accessible);
+		}
+
+		/** Uses the constructor to create and initialize a new instance of the constructor's declaring class, with the supplied
+		 * initialization parameters. */
+		public Object newInstance (Object[] args) // TODO:  throws ReflectionException 
+	{
+		throw new NotImplementedException();
+		// TODO: try {
+		//	return constructor.newInstance(args);
+		//} catch (IllegalArgumentException e) {
+		//	throw new ReflectionException("Illegal argument(s) supplied to constructor for class: " + getDeclaringClass().Name,
+		//		e);
+		//} catch (InstantiationException e) {
+		//	throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
+		//} catch (IllegalAccessException e) {
+		//	throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
+		//} catch (InvocationTargetException e) {
+		//	throw new ReflectionException("Exception occurred in constructor for class: " + getDeclaringClass().Name, e);
+		//}
 	}
 
 }
