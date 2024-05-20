@@ -13,7 +13,7 @@ namespace SharpGDX.Utils.Reflect
 
 		private Attribute annotation;
 
-		Annotation(Attribute annotation)
+		internal Annotation(Attribute annotation)
 		{
 			this.annotation = annotation;
 		}

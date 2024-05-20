@@ -56,24 +56,25 @@ public class Timer {
 	/** Schedules a task to occur once after the specified delay and then a number of additional times at the specified interval.
 	 * @param repeatCount If negative, the task will repeat forever. */
 	public Task scheduleTask (Task task, float delaySeconds, float intervalSeconds, int repeatCount) {
-		lock (threadLock) {
-			lock (this) {
-				lock (task) {
-					if (task.timer != null) throw new IllegalArgumentException("The same task may not be scheduled twice.");
-					task.timer = this;
-					long timeMillis = TimeUtils.nanoTime() / 1000000;
-					long executeTimeMillis = timeMillis + (long)(delaySeconds * 1000);
-					if (_thread.pauseTimeMillis > 0) executeTimeMillis -= timeMillis - _thread.pauseTimeMillis;
-					task.executeTimeMillis = executeTimeMillis;
-					task.intervalMillis = (long)(intervalSeconds * 1000);
-					task.repeatCount = repeatCount;
-					tasks.add(task);
-				}
-			}
-			threadLock.notifyAll();
+		throw new NotImplementedException();
+			//lock (threadLock) {
+			//	lock (this) {
+			//		lock (task) {
+			//			if (task.timer != null) throw new IllegalArgumentException("The same task may not be scheduled twice.");
+			//			task.timer = this;
+			//			long timeMillis = TimeUtils.nanoTime() / 1000000;
+			//			long executeTimeMillis = timeMillis + (long)(delaySeconds * 1000);
+			//			if (_thread.pauseTimeMillis > 0) executeTimeMillis -= timeMillis - _thread.pauseTimeMillis;
+			//			task.executeTimeMillis = executeTimeMillis;
+			//			task.intervalMillis = (long)(intervalSeconds * 1000);
+			//			task.repeatCount = repeatCount;
+			//			tasks.add(task);
+			//		}
+			//	}
+			//	threadLock.notifyAll();
+			//}
+			//return task;
 		}
-		return task;
-	}
 
 	/** Stops the timer, tasks will not be executed and time that passes will not be applied to the task delays. */
 	public void stop () {
@@ -84,13 +85,14 @@ public class Timer {
 
 	/** Starts the timer if it was stopped. */
 	public void start () {
-		lock (threadLock) {
-			TimerThread thread = thread();
-			Array<Timer> instances = thread.instances;
-			if (instances.contains(this, true)) return;
-			instances.add(this);
-			threadLock.notifyAll();
-		}
+		throw new NotImplementedException();
+		//	lock (threadLock) {
+		//	TimerThread thread = thread();
+		//	Array<Timer> instances = thread.instances;
+		//	if (instances.contains(this, true)) return;
+		//	instances.add(this);
+		//	threadLock.notifyAll();
+		//}
 	}
 
 	/** Cancels all tasks. */
@@ -118,38 +120,39 @@ public class Timer {
 	}
 
 	long update (long timeMillis, long waitMillis) {
-		lock (this)
-		{
-			for (int i = 0, n = tasks.size; i < n; i++)
-			{
-				Task task = tasks.get(i);
-				lock (task) {
-					if (task.executeTimeMillis > timeMillis)
-					{
-						waitMillis = Math.Min(waitMillis, task.executeTimeMillis - timeMillis);
-						continue;
-					}
+		throw new NotImplementedException();
+		//	lock (this)
+		//{
+		//	for (int i = 0, n = tasks.size; i < n; i++)
+		//	{
+		//		Task task = tasks.get(i);
+		//		lock (task) {
+		//			if (task.executeTimeMillis > timeMillis)
+		//			{
+		//				waitMillis = Math.Min(waitMillis, task.executeTimeMillis - timeMillis);
+		//				continue;
+		//			}
 
-					if (task.repeatCount == 0)
-					{
-						task.timer = null;
-						tasks.removeIndex(i);
-						i--;
-						n--;
-					}
-					else
-					{
-						task.executeTimeMillis = timeMillis + task.intervalMillis;
-						waitMillis = Math.Min(waitMillis, task.intervalMillis);
-						if (task.repeatCount > 0) task.repeatCount--;
-					}
+		//			if (task.repeatCount == 0)
+		//			{
+		//				task.timer = null;
+		//				tasks.removeIndex(i);
+		//				i--;
+		//				n--;
+		//			}
+		//			else
+		//			{
+		//				task.executeTimeMillis = timeMillis + task.intervalMillis;
+		//				waitMillis = Math.Min(waitMillis, task.intervalMillis);
+		//				if (task.repeatCount > 0) task.repeatCount--;
+		//			}
 
-					task.app.postRunnable(task);
-				}
-			}
+		//			task.app.postRunnable(task);
+		//		}
+		//	}
 
-			return waitMillis;
-		}
+		//	return waitMillis;
+		//}
 	}
 
 	/** Adds the specified delay to all tasks. */
@@ -192,7 +195,8 @@ public class Timer {
 
 	/** Runnable that can be scheduled on a {@link Timer}.
 	 * @author Nathan Sweet */
-	abstract public class Task : Runnable {
+	abstract public class Task // TODO: : Runnable 
+	{
 		internal readonly Application app;
 		internal long executeTimeMillis, intervalMillis;
 		internal int repeatCount;
@@ -251,7 +255,8 @@ public class Timer {
 
 	/** Manages a single thread for updating timers. Uses libgdx application events to pause, resume, and dispose the thread.
 	 * @author Nathan Sweet */
-	 class TimerThread : Runnable, LifecycleListener {
+	 class TimerThread : // TODO:  Runnable,
+		LifecycleListener {
 		internal readonly Files files;
 		readonly Application app;
 		internal readonly Array<Timer> instances = new(1);
@@ -259,69 +264,74 @@ public class Timer {
 		internal long pauseTimeMillis;
 
 		public TimerThread () {
-			files = Gdx.files;
-			app = Gdx.app;
-			app.addLifecycleListener(this);
-			resume();
+			throw new NotImplementedException();
+				//files = Gdx.files;
+				//app = Gdx.app;
+				//app.addLifecycleListener(this);
+				//resume();
 
-			Thread thread = new Thread(this, "Timer");
-			thread.IsBackground =(true);
-			thread.Start();
-		}
+				//Thread thread = new Thread(this, "Timer");
+				//thread.IsBackground =(true);
+				//thread.Start();
+			}
 
 		public void run () {
-			while (true) {
-				lock (threadLock) {
-					if (_thread != this || files != Gdx.files) break;
+			throw new NotImplementedException();
+				//while (true) {
+				//	lock (threadLock) {
+				//		if (_thread != this || files != Gdx.files) break;
 
-					long waitMillis = 5000;
-					if (pauseTimeMillis == 0) {
-						long timeMillis = TimeUtils.nanoTime() / 1000000;
-						for (int i = 0, n = instances.size; i < n; i++) {
-							try {
-								waitMillis = instances.get(i).update(timeMillis, waitMillis);
-							} catch (Exception ex) {
-								throw new GdxRuntimeException("Task failed: " + instances.get(i).GetType().Name, ex);
-							}
-						}
-					}
+				//		long waitMillis = 5000;
+				//		if (pauseTimeMillis == 0) {
+				//			long timeMillis = TimeUtils.nanoTime() / 1000000;
+				//			for (int i = 0, n = instances.size; i < n; i++) {
+				//				try {
+				//					waitMillis = instances.get(i).update(timeMillis, waitMillis);
+				//				} catch (Exception ex) {
+				//					throw new GdxRuntimeException("Task failed: " + instances.get(i).GetType().Name, ex);
+				//				}
+				//			}
+				//		}
 
-					if (_thread != this || files != Gdx.files) break;
+				//		if (_thread != this || files != Gdx.files) break;
 
-					try {
-						if (waitMillis > 0) threadLock.wait(waitMillis);
-					} catch (ThreadInterruptedException ignored) {
-					}
-				}
+				//		try {
+				//			if (waitMillis > 0) threadLock.wait(waitMillis);
+				//		} catch (ThreadInterruptedException ignored) {
+				//		}
+				//	}
+				//}
+				//dispose();
 			}
-			dispose();
-		}
 
 		public void resume () {
-			lock (threadLock) {
-				long delayMillis = TimeUtils.nanoTime() / 1000000 - pauseTimeMillis;
-				for (int i = 0, n = instances.size; i < n; i++)
-					instances.get(i).delay(delayMillis);
-				pauseTimeMillis = 0;
-				threadLock.notifyAll();
+			throw new NotImplementedException();
+				//lock (threadLock) {
+				//	long delayMillis = TimeUtils.nanoTime() / 1000000 - pauseTimeMillis;
+				//	for (int i = 0, n = instances.size; i < n; i++)
+				//		instances.get(i).delay(delayMillis);
+				//	pauseTimeMillis = 0;
+				//	threadLock.notifyAll();
+				//}
 			}
-		}
 
 		public void pause () {
-			lock (threadLock) {
-				pauseTimeMillis = TimeUtils.nanoTime() / 1000000;
-				threadLock.notifyAll();
+			throw new NotImplementedException();
+				//lock (threadLock) {
+				//	pauseTimeMillis = TimeUtils.nanoTime() / 1000000;
+				//	threadLock.notifyAll();
+				//}
 			}
-		}
 
 		public void dispose () { // OK to call multiple times.
-			lock (threadLock) {
-				if (_thread == this) _thread = null;
-				instances.clear();
-				threadLock.notifyAll();
+			throw new NotImplementedException();
+				//lock (threadLock) {
+				//	if (_thread == this) _thread = null;
+				//	instances.clear();
+				//	threadLock.notifyAll();
+				//}
+				//app.removeLifecycleListener(this);
 			}
-			app.removeLifecycleListener(this);
-		}
 	}
 }
 }

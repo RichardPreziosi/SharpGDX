@@ -78,7 +78,7 @@ public class ArraySelection<T> : Selection<T> {
 			return;
 		}
 		bool changed = false;
-		for (Iterator<T> iter = items().iterator(); iter.hasNext();) {
+		for (var iter = items().iterator(); iter.MoveNext();) {
 			T selected = iter.next();
 			if (!array.contains(selected, false)) {
 				iter.remove();

@@ -102,7 +102,7 @@ public class BitmapFontCache {
 			int colorsIndex = 0, nextColorGlyphIndex = 0, glyphIndex = 0;
 			float lastColorFloatBits = 0;
 			for (int ii = 0, nn = layout.runs.size; ii < nn; ii++) {
-				GlyphRun run = layout.runs.get(ii);
+				GlyphLayout.GlyphRun run = layout.runs.get(ii);
 				Object[] glyphs = run.glyphs.items;
 				for (int iii = 0, nnn = run.glyphs.size; iii < nnn; iii++) {
 					if (glyphIndex++ == nextColorGlyphIndex) {
@@ -363,7 +363,7 @@ public class BitmapFontCache {
 		int colorsIndex = 0, nextColorGlyphIndex = 0, glyphIndex = 0;
 		float lastColorFloatBits = 0;
 		for (int i = 0; i < runCount; i++) {
-			GlyphRun run = layout.runs.get(i);
+			GlyphLayout.GlyphRun run = layout.runs.get(i);
 			Object[] glyphs = run.glyphs.items;
 			float[] xAdvances = run.xAdvances.items;
 			float gx = x + run.x, gy = y + run.y;

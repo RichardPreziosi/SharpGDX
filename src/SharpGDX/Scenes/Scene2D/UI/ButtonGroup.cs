@@ -29,13 +29,14 @@ where T: Button{
 	}
 
 	public void add (T button) {
-		if (button == null) throw new IllegalArgumentException("button cannot be null.");
-		button.buttonGroup = null;
-		bool shouldCheck = button.isChecked() || buttons.size < minCheckCount;
-		button.setChecked(false);
-		button.buttonGroup = this;
-		buttons.add(button);
-		button.setChecked(shouldCheck);
+		throw new NotImplementedException();
+		//if (button == null) throw new IllegalArgumentException("button cannot be null.");
+		//button.buttonGroup = null;
+		//bool shouldCheck = button.isChecked() || buttons.size < minCheckCount;
+		//button.setChecked(false);
+		//button.buttonGroup = this;
+		//buttons.add(button);
+		//button.setChecked(shouldCheck);
 	}
 
 	public void add (T[] buttons) {
@@ -64,14 +65,15 @@ where T: Button{
 
 	/** Sets the first {@link TextButton} with the specified text to checked. */
 	public void setChecked (String text) {
-		if (text == null) throw new IllegalArgumentException("text cannot be null.");
-		for (int i = 0, n = buttons.size; i < n; i++) {
-			T button = buttons.get(i);
-			if (button is TextButton && text.contentEquals(((TextButton)button).getText())) {
-				button.setChecked(true);
-				return;
-			}
-		}
+		throw new NotImplementedException();
+		//if (text == null) throw new IllegalArgumentException("text cannot be null.");
+		//for (int i = 0, n = buttons.size; i < n; i++) {
+		//	T button = buttons.get(i);
+		//	if (button is TextButton && text.contentEquals(((TextButton)button).getText())) {
+		//		button.setChecked(true);
+		//		return;
+		//	}
+		//}
 	}
 
 	/** Called when a button is checked or unchecked. If overridden, generally changing button checked states should not be done

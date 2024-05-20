@@ -24,8 +24,8 @@ abstract public class DelegateAction : Action {
 	abstract protected bool @delegate (float delta);
 
 	public override bool act (float delta) {
-		Pool pool = getPool();
-		setPool(null); // Ensure this action can't be returned to the pool inside the delegate action.
+		var pool = getPool();
+		setPool((Pool<Action>?)null); // Ensure this action can't be returned to the pool inside the delegate action.
 		try {
 			return @delegate(delta);
 		} finally {

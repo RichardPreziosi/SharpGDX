@@ -49,9 +49,9 @@ namespace SharpGDX.Utils
 		 * hash. */
 		protected int mask;
 
-		[NonSerialized] private Entries entries1, entries2;
-		[NonSerialized] private Values values1, values2;
-		[NonSerialized] private Keys keys1, keys2;
+		[NonSerialized] protected Entries entries1, entries2;
+		[NonSerialized] protected Values values1, values2;
+		[NonSerialized] protected Keys keys1, keys2;
 
 		/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 		public ObjectMap()

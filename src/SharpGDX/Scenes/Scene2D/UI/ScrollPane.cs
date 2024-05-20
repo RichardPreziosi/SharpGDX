@@ -43,7 +43,7 @@ public class ScrollPane : WidgetGroup {
 	private bool overscrollX = true, overscrollY = true;
 	private float overscrollDistance = 50, overscrollSpeedMin = 30, overscrollSpeedMax = 200;
 	private bool forceScrollX, forceScrollY;
-	bool disableX, disableY;
+	internal bool disableX, disableY;
 	private bool _clamp = true;
 	private bool scrollbarsOnTop;
 	private bool variableSizeKnobs = true;

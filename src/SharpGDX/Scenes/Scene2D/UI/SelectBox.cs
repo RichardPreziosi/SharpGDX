@@ -1,4 +1,5 @@
 using SharpGDX.Shims;
+using static SharpGDX.Scenes.Scene2D.Actions.Actions;
 using SharpGDX;
 using SharpGDX.Scenes.Scene2D;
 using SharpGDX.Scenes.Scene2D.UI;
@@ -22,7 +23,7 @@ public class SelectBox<T> : Widget , Disableable {
 
 	SelectBoxStyle style;
 	readonly Array<T> items = new ();
-	SelectBoxScrollPane<T> scrollPane;
+	SelectBoxScrollPane scrollPane;
 	private float prefWidth, prefHeight;
 	private ClickListener clickListener;
 	bool disabled;
@@ -71,21 +72,32 @@ private class SelectBoxSelection : ArraySelection<T>
 
 		scrollPane = newScrollPane();
 
-		addListener(clickListener = new ClickListener() {
-			public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
-				if (pointer == 0 && button != 0) return false;
-				if (isDisabled()) return false;
-				if (scrollPane.hasParent())
-					hideScrollPane();
-				else
-					showScrollPane();
-				return true;
-			}
-		});
+		addListener(clickListener = new SelectBoxSelectionClickListener(this) );
+	}
+
+	private class SelectBoxSelectionClickListener : ClickListener
+	{
+		private readonly SelectBox<T> _selectBox;
+
+		public SelectBoxSelectionClickListener(SelectBox<T> selectBox)
+		{
+			_selectBox = selectBox;
+		}
+
+		public override bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
+		{
+			if (pointer == 0 && button != 0) return false;
+			if (_selectBox.isDisabled()) return false;
+			if (_selectBox.scrollPane.hasParent())
+				_selectBox.hideScrollPane();
+			else
+				_selectBox.showScrollPane();
+			return true;
+		}
 	}
 
 	/** Allows a subclass to customize the scroll pane shown when the select box is open. */
-	protected SelectBoxScrollPane<T> newScrollPane () {
+	protected SelectBoxScrollPane newScrollPane () {
 		return new SelectBoxScrollPane(this);
 	}
 
@@ -196,7 +208,7 @@ private class SelectBoxSelection : ArraySelection<T>
 			if (bg != null) prefWidth = Math.Max(prefWidth + bg.getLeftWidth() + bg.getRightWidth(), bg.getMinWidth());
 
 			List<T>.ListStyle listStyle = style.listStyle;
-			ScrollPaneStyle scrollStyle = style.scrollStyle;
+			ScrollPane.ScrollPaneStyle scrollStyle = style.scrollStyle;
 			float scrollWidth = maxItemWidth + listStyle.selection.getLeftWidth() + listStyle.selection.getRightWidth();
 			bg = scrollStyle.background;
 			if (bg != null) scrollWidth = Math.Max(scrollWidth + bg.getLeftWidth() + bg.getRightWidth(), bg.getMinWidth());
@@ -389,11 +401,11 @@ private class SelectBoxSelection : ArraySelection<T>
 
 	/** The scroll pane shown when a select box is open.
 	 * @author Nathan Sweet */
-	public class SelectBoxScrollPane<T> : ScrollPane {
+	public class SelectBoxScrollPane : ScrollPane {
 		readonly SelectBox<T> selectBox;
-		int maxListCount;
+		internal int maxListCount;
 		private readonly Vector2 stagePosition = new Vector2();
-		readonly List<T> list;
+		internal readonly List<T> list;
 		private InputListener hideListener;
 		private Actor previousScrollFocus;
 
@@ -412,65 +424,115 @@ private class SelectBoxSelection : ArraySelection<T>
 			list.setTypeToSelect(true);
 			setActor(list);
 
-			list.addListener(new ClickListener() {
-				public void clicked (InputEvent @event, float x, float y) {
-					T selected = list.getSelected();
-					// Force clicking the already selected item to trigger a change event.
-					if (selected != null) selectBox.selection.items().clear(51);
-					selectBox.selection.choose(selected);
-					hide();
-				}
+			list.addListener(new SelectBoxScrollPaneClickListener(this) );
 
-				public bool mouseMoved (InputEvent @event, float x, float y) {
-					int index = list.getItemIndexAt(y);
-					if (index != -1) list.setSelectedIndex(index);
-					return true;
-				}
-			});
+			addListener(new ExitListener(this) );
+		
+			hideListener = new HideListener(this) ;
+		}
 
-			addListener(new InputListener() {
-				public void exit (InputEvent @event, float x, float y, int pointer, Actor? toActor) {
-					if (toActor == null || !isAscendantOf(toActor)) {
-						T selected = selectBox.getSelected();
-						if (selected != null) list.selection.set(selected);
-					}
-				}
-			});
+		private class SelectBoxScrollPaneClickListener: ClickListener
+		{
+			private readonly SelectBoxScrollPane _selectBoxScrollPane;
 
-			hideListener = new InputListener() {
-				public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
-					Actor target = event.getTarget();
-					if (isAscendantOf(target)) return false;
-					list.selection.set(selectBox.getSelected());
-					hide();
-					return false;
-				}
+			public SelectBoxScrollPaneClickListener(SelectBoxScrollPane selectBoxScrollPane)
+			{
+				_selectBoxScrollPane = selectBoxScrollPane;
+			}
+		public override void clicked(InputEvent @event, float x, float y)
+			{
+				T selected = _selectBoxScrollPane.list.getSelected();
+				// Force clicking the already selected item to trigger a change event.
+				if (selected != null) _selectBoxScrollPane.selectBox.selection.items().clear(51);
+				_selectBoxScrollPane.selectBox.selection.choose(selected);
+				_selectBoxScrollPane.hide();
+			}
 
-				public bool keyDown (InputEvent @event, int keycode) {
-					switch (keycode) {
+		public override bool mouseMoved(InputEvent @event, float x, float y)
+			{
+				int index = _selectBoxScrollPane.list.getItemIndexAt(y);
+				if (index != -1) _selectBoxScrollPane.list.setSelectedIndex(index);
+				return true;
+			}
+		}
+
+	private class HideListener : InputListener
+		{
+			private readonly SelectBoxScrollPane _selectBoxScrollPane;
+
+			public HideListener(SelectBoxScrollPane selectBoxScrollPane)
+			{
+				_selectBoxScrollPane = selectBoxScrollPane;
+			}
+	public override bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
+			{
+				Actor target = @event.getTarget();
+				if (_selectBoxScrollPane.isAscendantOf(target)) return false;
+				_selectBoxScrollPane.list.selection.set(_selectBoxScrollPane.selectBox.getSelected());
+				_selectBoxScrollPane.hide();
+				return false;
+			}
+
+		public override bool keyDown(InputEvent @event, int keycode)
+			{
+				switch (keycode)
+				{
 					case Input.Keys.NUMPAD_ENTER:
 					case Input.Keys.ENTER:
-						selectBox.selection.choose(list.getSelected());
-						// Fall thru.
-					case Input.Keys.ESCAPE:
-						hide();
+						_selectBoxScrollPane.selectBox.selection.choose(_selectBoxScrollPane.list.getSelected());
+						// TODO: This is ugly, need to condense code, C# can't fall thru.
+				// Fall thru.
+						_selectBoxScrollPane.hide();
 						@event.stop();
 						return true;
-					}
-					return false;
+			case Input.Keys.ESCAPE:
+						_selectBoxScrollPane.hide();
+						@event.stop();
+						return true;
 				}
-			};
+				return false;
+			}
 		}
 
-		/** Allows a subclass to customize the select box list. The default implementation returns a list that delegates
-		 * {@link List#toString(Object)} to {@link SelectBox#toString(Object)}. */
-		protected List<T> newList () {
-			return new List<T>(selectBox.style.listStyle) {
-				public String toString (T obj) {
-					return selectBox.toString(obj);
+		private class ExitListener : InputListener
+		{
+			private readonly SelectBoxScrollPane _selectBoxScrollPane;
+	
+			public ExitListener(SelectBoxScrollPane selectBoxScrollPane)
+			{
+				_selectBoxScrollPane = selectBoxScrollPane;
+			}
+
+		public override void exit(InputEvent @event, float x, float y, int pointer, Actor? toActor)
+			{
+				if (toActor == null || !_selectBoxScrollPane.isAscendantOf(toActor))
+				{
+					T selected = _selectBoxScrollPane.selectBox.getSelected();
+					if (selected != null) _selectBoxScrollPane.list.selection.set(selected);
 				}
-			};
+			}
 		}
+
+/** Allows a subclass to customize the select box list. The default implementation returns a list that delegates
+ * {@link List#toString(Object)} to {@link SelectBox#toString(Object)}. */
+protected List<T> newList () {
+			return new SelectBoxList(selectBox.style.listStyle, this) ;
+		}
+
+		private class SelectBoxList : List<T>
+		{
+			private readonly SelectBoxScrollPane _selectBoxScrollPane;
+
+			public SelectBoxList(ListStyle listStyle, SelectBoxScrollPane selectBoxScrollPane) : base(listStyle)
+			{
+				_selectBoxScrollPane = selectBoxScrollPane;
+			}
+
+				public new String toString(T obj)
+				{
+					return _selectBoxScrollPane.selectBox.toString(obj);
+				}
+	}
 
 		public void show (Stage stage) {
 			if (list.isTouchable()) return;
@@ -579,14 +641,14 @@ private class SelectBoxSelection : ArraySelection<T>
 		public Color fontColor = new Color(1, 1, 1, 1);
 		public Color? overFontColor, disabledFontColor;
 		public Drawable? background;
-		public ScrollPaneStyle scrollStyle;
+		public ScrollPane.ScrollPaneStyle scrollStyle;
 		public List<T>.ListStyle listStyle;
 		public Drawable? backgroundOver, backgroundOpen, backgroundDisabled;
 
 		public SelectBoxStyle () {
 		}
 
-		public SelectBoxStyle (BitmapFont font, Color fontColor, Drawable? background, ScrollPaneStyle scrollStyle,
+		public SelectBoxStyle (BitmapFont font, Color fontColor, Drawable? background, ScrollPane.ScrollPaneStyle scrollStyle,
 			List<T>.ListStyle listStyle) {
 			this.font = font;
 			this.fontColor.set(fontColor);
@@ -603,7 +665,7 @@ private class SelectBoxSelection : ArraySelection<T>
 			if (style.disabledFontColor != null) disabledFontColor = new Color(style.disabledFontColor);
 
 			background = style.background;
-			scrollStyle = new ScrollPaneStyle(style.scrollStyle);
+			scrollStyle = new ScrollPane.ScrollPaneStyle(style.scrollStyle);
 			listStyle = new List<T>.ListStyle(style.listStyle);
 
 			backgroundOver = style.backgroundOver;

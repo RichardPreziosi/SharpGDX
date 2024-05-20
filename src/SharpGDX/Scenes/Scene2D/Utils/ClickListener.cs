@@ -33,7 +33,7 @@ public class ClickListener : InputListener {
 		this.button = button;
 	}
 
-	public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
+	public virtual bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
 		if (pressed) return false;
 		if (pointer == 0 && this.button != -1 && button != this.button) return false;
 		pressed = true;

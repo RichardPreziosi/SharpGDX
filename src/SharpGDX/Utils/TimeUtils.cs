@@ -14,6 +14,11 @@ public static class TimeUtils
 		return nano;
 	}
 
+	public static long currentTimeMillis()
+	{
+		return (long)(DateTime.UtcNow - DateTime.UnixEpoch).TotalMilliseconds;
+	}
+
 	public static long millis()
 	{
 		return Stopwatch.GetTimestamp() / TimeSpan.TicksPerMillisecond;

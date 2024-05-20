@@ -144,7 +144,7 @@ public class ImageTextButton : Button {
 	}
 
 	public void setLabel (Label label) {
-		getLabelCell().setActor(label);
+		getLabelCell().SetActor(label);
 		this.label = label;
 	}
 

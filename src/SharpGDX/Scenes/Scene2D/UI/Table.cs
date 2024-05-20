@@ -35,7 +35,8 @@ public class Table : WidgetGroup {
 	{
 		protected override Cell newObject()
 		{
-			return new Cell();
+			throw new NotImplementedException();
+				// TODO: return new Cell();
 		}
 	}
 	static private float[] columnWeightedWidth, rowWeightedHeight;
@@ -83,7 +84,7 @@ public class Table : WidgetGroup {
 		setTouchable(Touchable.childrenOnly);
 	}
 
-	private Cell obtainCell () {
+		private Cell obtainCell () {
 		Cell cell = cellPool.obtain();
 		cell.setTable(this);
 		return cell;
@@ -196,6 +197,7 @@ public class Table : WidgetGroup {
 	/** Adds a new cell to the table with the specified actor. */
 	public  Cell<T> add<T> ( T? actor)
 	where T: Actor{
+		// TODO: No way this works for 'T' as obtainCell is not generic. -RP
 		var cell = obtainCell();
 		cell.actor = actor;
 
@@ -239,13 +241,13 @@ public class Table : WidgetGroup {
 		}
 		cells.add(cell);
 
-		cell.set(cellDefaults);
-		if (cell.column < _columnDefaults.size) cell.merge(_columnDefaults.get(cell.column));
-		cell.merge(rowDefaults);
+		cell.Set(cellDefaults);
+		if (cell.column < _columnDefaults.size) cell.Merge(_columnDefaults.get(cell.column));
+		cell.Merge(rowDefaults);
 
 		if (actor != null) addActor(actor);
 
-		return cell;
+		return (Cell<T>)cell;
 	}
 
 	public Table add (Actor[] actors) {
@@ -366,7 +368,7 @@ public class Table : WidgetGroup {
 		implicitEndRow = false;
 		if (rowDefaults != null) cellPool.free(rowDefaults);
 		rowDefaults = obtainCell();
-		rowDefaults.clear();
+		rowDefaults.Clear();
 		return rowDefaults;
 	}
 
@@ -376,7 +378,7 @@ public class Table : WidgetGroup {
 		for (int i = this.cells.size - 1; i >= 0; i--) {
 			Cell cell = (Cell)cells[i];
 			if (cell.endRow) break;
-			rowColumns += cell.colspan;
+			rowColumns += cell.colspan ?? 0;
 		}
 		columns = Math.Max(columns, rowColumns);
 		rows++;
@@ -389,7 +391,7 @@ public class Table : WidgetGroup {
 		Cell cell = _columnDefaults.size > column ? _columnDefaults.get(column) : null;
 		if (cell == null) {
 			cell = obtainCell();
-			cell.clear();
+			cell.Clear();
 			if (column >= _columnDefaults.size) {
 				for (int i = _columnDefaults.size; i < column; i++)
 					_columnDefaults.add(null);
@@ -404,10 +406,10 @@ public class Table : WidgetGroup {
 	public  Cell<T>? getCell<T> (T actor) 
 	where T: Actor{
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
-		Object[] cells = this.cells.items;
+		var cells = this.cells.items;
 		for (int i = 0, n = this.cells.size; i < n; i++) {
 			Cell c = (Cell)cells[i];
-			if (c.actor == actor) return c;
+			if (c.actor == actor) return (Cell<T>?)c;
 		}
 		return null;
 	}
@@ -792,12 +794,12 @@ public class Table : WidgetGroup {
 		float spaceRightLast = 0;
 		for (int i = 0; i < cellCount; i++) {
 			Cell c = (Cell)cells[i];
-			int column = c.column, row = c.row, colspan = c.colspan;
+			int column = c.column, row = c.row, colspan = c.colspan ?? 0;
 			Actor a = c.actor;
 
 			// Collect rows that expand and colspan=1 columns that expand.
-			if (c.expandY != 0 && expandHeight[row] == 0) expandHeight[row] = c.expandY;
-			if (colspan == 1 && c.expandX != 0 && expandWidth[column] == 0) expandWidth[column] = c.expandX;
+			if (c.expandY != 0 && expandHeight[row] == 0) expandHeight[row] = c.expandY ?? 0;
+			if (colspan == 1 && c.expandX != 0 && expandWidth[column] == 0) expandWidth[column] = c.expandX ?? 0;
 
 			// Compute combined padding/spacing for cells.
 			// Spacing between actors isn't additive, the larger is used. Also, no spacing around edges.
@@ -844,23 +846,24 @@ public class Table : WidgetGroup {
 			int column = c.column;
 
 			// Colspan with expand will expand all spanned columns if none of the spanned columns have expand.
-			int expandX = c.expandX;
-			outer:
+			int expandX = c.expandX ?? 0;
 			if (expandX != 0) {
-				int nn = column + c.colspan;
+				int nn = column + c.colspan ?? 0;
 				for (int ii = column; ii < nn; ii++)
-					if (expandWidth[ii] != 0) break outer;
+					if (expandWidth[ii] != 0)
+						goto outer;
 				for (int ii = column; ii < nn; ii++)
 					expandWidth[ii] = expandX;
 			}
+			outer:
 
 			// Collect uniform sizes.
-			if (c.uniformX == Boolean.TRUE && c.colspan == 1) {
+			if (c.uniformX == true && c.colspan == 1) {
 				float hpadding = c.computedPadLeft + c.computedPadRight;
 				uniformMinWidth = Math.Max(uniformMinWidth, columnMinWidth[column] - hpadding);
 				uniformPrefWidth = Math.Max(uniformPrefWidth, columnPrefWidth[column] - hpadding);
 			}
-			if (c.uniformY == Boolean.TRUE) {
+			if (c.uniformY == true) {
 				float vpadding = c.computedPadTop + c.computedPadBottom;
 				uniformMinHeight = Math.Max(uniformMinHeight, rowMinHeight[c.row] - vpadding);
 				uniformPrefHeight = Math.Max(uniformPrefHeight, rowPrefHeight[c.row] - vpadding);
@@ -871,12 +874,12 @@ public class Table : WidgetGroup {
 		if (uniformPrefWidth > 0 || uniformPrefHeight > 0) {
 			for (int i = 0; i < cellCount; i++) {
 				Cell c = (Cell)cells[i];
-				if (uniformPrefWidth > 0 && c.uniformX == Boolean.TRUE && c.colspan == 1) {
+				if (uniformPrefWidth > 0 && c.uniformX == true && c.colspan == 1) {
 					float hpadding = c.computedPadLeft + c.computedPadRight;
 					columnMinWidth[c.column] = uniformMinWidth + hpadding;
 					columnPrefWidth[c.column] = uniformPrefWidth + hpadding;
 				}
-				if (uniformPrefHeight > 0 && c.uniformY == Boolean.TRUE) {
+				if (uniformPrefHeight > 0 && c.uniformY == true) {
 					float vpadding = c.computedPadTop + c.computedPadBottom;
 					rowMinHeight[c.row] = uniformMinHeight + vpadding;
 					rowPrefHeight[c.row] = uniformPrefHeight + vpadding;
@@ -887,7 +890,7 @@ public class Table : WidgetGroup {
 		// Distribute any additional min and pref width added by colspanned cells to the columns spanned.
 		for (int i = 0; i < cellCount; i++) {
 			Cell c = (Cell)cells[i];
-			int colspan = c.colspan;
+			int colspan = c.colspan ?? 0;
 			if (colspan == 1) continue;
 			int column = c.column;
 
@@ -993,7 +996,7 @@ public class Table : WidgetGroup {
 			Actor a = c.actor;
 
 			float spannedWeightedWidth = 0;
-			int colspan = c.colspan;
+			int colspan = c.colspan ?? 0;
 			for (int ii = column, nn = ii + colspan; ii < nn; ii++)
 				spannedWeightedWidth += columnWeightedWidth[ii];
 			float weightedHeight = rowWeightedHeight[row];
@@ -1060,7 +1063,7 @@ public class Table : WidgetGroup {
 		// Distribute any additional width added by colspanned cells to the columns spanned.
 		for (int i = 0; i < cellCount; i++) {
 			Cell c = (Cell)cells[i];
-			int colspan = c.colspan;
+			int colspan = c.colspan ?? 0;
 			if (colspan == 1) continue;
 
 			float extraWidth = 0;
@@ -1102,13 +1105,13 @@ public class Table : WidgetGroup {
 			Cell c = (Cell)cells[i];
 
 			float spannedCellWidth = 0;
-			for (int column = c.column, nn = column + c.colspan; column < nn; column++)
+			for (int column = c.column, nn = column + c.colspan ?? 0; column < nn; column++)
 				spannedCellWidth += columnWidth[column];
 			spannedCellWidth -= c.computedPadLeft + c.computedPadRight;
 
 			currentX += c.computedPadLeft;
 
-			float fillX = c.fillX, fillY = c.fillY;
+			float fillX = c.fillX ?? 0, fillY = c.fillY ?? 0;
 			if (fillX > 0) {
 				c.actorWidth = Math.Max(spannedCellWidth * fillX, c.minWidth.get(c.actor));
 				float maxWidth = c.maxWidth.get(c.actor);
@@ -1120,7 +1123,7 @@ public class Table : WidgetGroup {
 				if (maxHeight > 0) c.actorHeight = Math.Min(c.actorHeight, maxHeight);
 			}
 
-			align = c.align;
+			align = c.align ?? 0;
 			if ((align & Align.left) != 0)
 				c.actorX = currentX;
 			else if ((align & Align.right) != 0)
@@ -1182,7 +1185,7 @@ public class Table : WidgetGroup {
 
 			// Cell bounds.
 			float spannedCellWidth = 0;
-			for (int column = c.column, nn = column + c.colspan; column < nn; column++)
+			for (int column = c.column, nn = column + c.colspan ?? 0; column < nn; column++)
 				spannedCellWidth += columnWidth[column];
 			spannedCellWidth -= c.computedPadLeft + c.computedPadRight;
 			currentX += c.computedPadLeft;

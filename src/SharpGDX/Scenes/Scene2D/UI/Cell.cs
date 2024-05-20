@@ -19,16 +19,101 @@ namespace SharpGDX.Scenes.Scene2D.UI
 
 		}
 
+		/** Sets the actor in this cell and adds the actor to the cell's table. If null, removes any current actor. */
+		// TODO: This was originally SetActor<A> where A : Actor. Why? -RP
+		public Cell<T> SetActor<T>(T? newActor)
+		where T: Actor
+		{
+			if (actor != newActor)
+			{
+				if (actor != null && actor.getParent() == table) actor.remove();
+				actor = newActor;
+				if (newActor != null) table.addActor(newActor);
+			}
+			return (Cell<T>)this;
+		}
+
+		protected Table table;
+
+		public void setTable(Table table)
+		{
+			this.table = table;
+		}
+
+		internal void Merge(Cell? cell)
+		{
+			if (cell == null) return;
+			if (cell.minWidth != null) minWidth = cell.minWidth;
+			if (cell.minHeight != null) minHeight = cell.minHeight;
+			if (cell.prefWidth != null) prefWidth = cell.prefWidth;
+			if (cell.prefHeight != null) prefHeight = cell.prefHeight;
+			if (cell.maxWidth != null) maxWidth = cell.maxWidth;
+			if (cell.maxHeight != null) maxHeight = cell.maxHeight;
+			if (cell.spaceTop != null) spaceTop = cell.spaceTop;
+			if (cell.spaceLeft != null) spaceLeft = cell.spaceLeft;
+			if (cell.spaceBottom != null) spaceBottom = cell.spaceBottom;
+			if (cell.spaceRight != null) spaceRight = cell.spaceRight;
+			if (cell.padTop != null) padTop = cell.padTop;
+			if (cell.padLeft != null) padLeft = cell.padLeft;
+			if (cell.padBottom != null) padBottom = cell.padBottom;
+			if (cell.padRight != null) padRight = cell.padRight;
+			if (cell.fillX != null) fillX = cell.fillX;
+			if (cell.fillY != null) fillY = cell.fillY;
+			if (cell.align != null) align = cell.align;
+			if (cell.expandX != null) expandX = cell.expandX;
+			if (cell.expandY != null) expandY = cell.expandY;
+			if (cell.colspan != null) colspan = cell.colspan;
+			if (cell.uniformX != null) uniformX = cell.uniformX;
+			if (cell.uniformY != null) uniformY = cell.uniformY;
+		}
+
+		internal void Set(Cell cell)
+		{
+			minWidth = cell.minWidth;
+			minHeight = cell.minHeight;
+			prefWidth = cell.prefWidth;
+			prefHeight = cell.prefHeight;
+			maxWidth = cell.maxWidth;
+			maxHeight = cell.maxHeight;
+			spaceTop = cell.spaceTop;
+			spaceLeft = cell.spaceLeft;
+			spaceBottom = cell.spaceBottom;
+			spaceRight = cell.spaceRight;
+			padTop = cell.padTop;
+			padLeft = cell.padLeft;
+			padBottom = cell.padBottom;
+			padRight = cell.padRight;
+			fillX = cell.fillX;
+			fillY = cell.fillY;
+			align = cell.align;
+			expandX = cell.expandX;
+			expandY = cell.expandY;
+			colspan = cell.colspan;
+			uniformX = cell.uniformX;
+			uniformY = cell.uniformY;
+		}
+
+		internal float actorX, actorY;
+		internal float computedPadTop, computedPadLeft, computedPadBottom, computedPadRight;
+		internal int? expandX, expandY;
+		internal Boolean? uniformX, uniformY;
+		internal float actorWidth, actorHeight;
+		internal float? fillX, fillY;
+		internal int? align;
+
+		public abstract void reset();
+		internal abstract void Clear();
+
 		internal int cellAboveIndex;
 		internal int? colspan;
 		internal int column, row;
 		internal Actor? actor;
 		internal bool endRow;
-		protected Value minWidth, minHeight;
-		protected Value prefWidth, prefHeight;
-		protected Value maxWidth, maxHeight;
-		protected Value spaceTop, spaceLeft, spaceBottom, spaceRight;
-protected		Value padTop, padLeft, padBottom, padRight;
+		internal Value minWidth, minHeight;
+		internal Value prefWidth, prefHeight;
+		internal Value maxWidth, maxHeight;
+		internal Value spaceTop, spaceLeft, spaceBottom, spaceRight;
+		internal Value padTop, padLeft, padBottom, padRight;
 
 /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
 public Cell Space(float space)
@@ -62,48 +147,19 @@ public class Cell<T> : Cell,Poolable
 	static private Files files;
 	static private Cell<T> defaults;
 
-	
-	float? fillX, fillY;
-	int? align;
-	int? expandX, expandY;
-	
-	Boolean? uniformX, uniformY;
-
-	
-	float actorX, actorY;
-	float actorWidth, actorHeight;
-
-	private Table table;
-	
-	
-	
-	float computedPadTop, computedPadLeft, computedPadBottom, computedPadRight;
-
 	public Cell () {
 		cellAboveIndex = -1;
 		Cell<T> defaults = Defaults();
 		if (defaults != null) Set(defaults);
 	}
 
-	public void setTable (Table table) {
-		this.table = table;
-	}
+	
 
-	/** Sets the actor in this cell and adds the actor to the cell's table. If null, removes any current actor. */
-	// TODO: This was originally SetActor<A> where A : Actor. Why? -RP
-	public Cell<T> SetActor (T? newActor)
-	{
-		if (actor != newActor) {
-			if (actor != null && actor.getParent() == table) actor.remove();
-			actor = newActor;
-			if (newActor != null) table.addActor(newActor);
-		}
-		return (Cell<T>)this;
-	}
+	
 
 	/** Removes the current actor for the cell, if any. */
 	public Cell<T> ClearActor () {
-		SetActor(null);
+		SetActor<T>(null);
 		return this;
 	}
 
@@ -937,7 +993,7 @@ public class Cell<T> : Cell,Poolable
 	}
 
 	/** Sets all constraint fields to null. */
-	void Clear () {
+	internal override void Clear () {
 		minWidth = null;
 		minHeight = null;
 		prefWidth = null;
@@ -963,65 +1019,14 @@ public class Cell<T> : Cell,Poolable
 	}
 
 	/** Reset state so the cell can be reused, setting all constraints to their {@link #defaults() default} values. */
-	public void reset () {
+	public override void reset () {
 		actor = null;
 		table = null;
 		endRow = false;
 		cellAboveIndex = -1;
 		Set(Defaults());
 	}
-
-	void Set (Cell<T> cell) {
-		minWidth = cell.minWidth;
-		minHeight = cell.minHeight;
-		prefWidth = cell.prefWidth;
-		prefHeight = cell.prefHeight;
-		maxWidth = cell.maxWidth;
-		maxHeight = cell.maxHeight;
-		spaceTop = cell.spaceTop;
-		spaceLeft = cell.spaceLeft;
-		spaceBottom = cell.spaceBottom;
-		spaceRight = cell.spaceRight;
-		padTop = cell.padTop;
-		padLeft = cell.padLeft;
-		padBottom = cell.padBottom;
-		padRight = cell.padRight;
-		fillX = cell.fillX;
-		fillY = cell.fillY;
-		align = cell.align;
-		expandX = cell.expandX;
-		expandY = cell.expandY;
-		colspan = cell.colspan;
-		uniformX = cell.uniformX;
-		uniformY = cell.uniformY;
-	}
-
-	void Merge (Cell<T>? cell) {
-		if (cell == null) return;
-		if (cell.minWidth != null) minWidth = cell.minWidth;
-		if (cell.minHeight != null) minHeight = cell.minHeight;
-		if (cell.prefWidth != null) prefWidth = cell.prefWidth;
-		if (cell.prefHeight != null) prefHeight = cell.prefHeight;
-		if (cell.maxWidth != null) maxWidth = cell.maxWidth;
-		if (cell.maxHeight != null) maxHeight = cell.maxHeight;
-		if (cell.spaceTop != null) spaceTop = cell.spaceTop;
-		if (cell.spaceLeft != null) spaceLeft = cell.spaceLeft;
-		if (cell.spaceBottom != null) spaceBottom = cell.spaceBottom;
-		if (cell.spaceRight != null) spaceRight = cell.spaceRight;
-		if (cell.padTop != null) padTop = cell.padTop;
-		if (cell.padLeft != null) padLeft = cell.padLeft;
-		if (cell.padBottom != null) padBottom = cell.padBottom;
-		if (cell.padRight != null) padRight = cell.padRight;
-		if (cell.fillX != null) fillX = cell.fillX;
-		if (cell.fillY != null) fillY = cell.fillY;
-		if (cell.align != null) align = cell.align;
-		if (cell.expandX != null) expandX = cell.expandX;
-		if (cell.expandY != null) expandY = cell.expandY;
-		if (cell.colspan != null) colspan = cell.colspan;
-		if (cell.uniformX != null) uniformX = cell.uniformX;
-		if (cell.uniformY != null) uniformY = cell.uniformY;
-	}
-
+		
 	public override String ToString () {
 		return actor != null ? actor.ToString() : base.ToString();
 	}

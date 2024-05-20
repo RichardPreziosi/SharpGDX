@@ -227,22 +227,23 @@ public class Dialog : Window {
 	 * @param action If null, the dialog is removed immediately. Otherwise, the dialog is removed when the action completes. The
 	 *           dialog will not respond to touch down events during the action. */
 	public void hide (Action? action) {
-		Stage stage = getStage();
-		if (stage != null) {
-			removeListener(focusListener);
-			if (previousKeyboardFocus != null && previousKeyboardFocus.getStage() == null) previousKeyboardFocus = null;
-			Actor actor = stage.getKeyboardFocus();
-			if (actor == null || actor.isDescendantOf(this)) stage.setKeyboardFocus(previousKeyboardFocus);
+		throw new NotImplementedException();
+		//Stage stage = getStage();
+		//if (stage != null) {
+		//	removeListener(focusListener);
+		//	if (previousKeyboardFocus != null && previousKeyboardFocus.getStage() == null) previousKeyboardFocus = null;
+		//	Actor actor = stage.getKeyboardFocus();
+		//	if (actor == null || actor.isDescendantOf(this)) stage.setKeyboardFocus(previousKeyboardFocus);
 
-			if (previousScrollFocus != null && previousScrollFocus.getStage() == null) previousScrollFocus = null;
-			actor = stage.getScrollFocus();
-			if (actor == null || actor.isDescendantOf(this)) stage.setScrollFocus(previousScrollFocus);
-		}
-		if (action != null) {
-			addCaptureListener(ignoreTouchDown);
-			addAction(sequence(action, removeListener(ignoreTouchDown, true), removeActor()));
-		} else
-			remove();
+		//	if (previousScrollFocus != null && previousScrollFocus.getStage() == null) previousScrollFocus = null;
+		//	actor = stage.getScrollFocus();
+		//	if (actor == null || actor.isDescendantOf(this)) stage.setScrollFocus(previousScrollFocus);
+		//}
+		//if (action != null) {
+		//	addCaptureListener(ignoreTouchDown);
+		//	addAction(sequence(action, removeListener(ignoreTouchDown, true), removeActor()));
+		//} else
+		//	remove();
 	}
 
 	/** Hides the dialog. Called automatically when a button is clicked. The default implementation fades out the dialog over 400

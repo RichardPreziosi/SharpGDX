@@ -4,6 +4,7 @@ using SharpGDX.Scenes.Scene2D.UI;
 using SharpGDX.Scenes.Scene2D.Utils;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
+using System.Security.Claims;
 
 namespace SharpGDX.Scenes.Scene2D.UI
 {
@@ -17,22 +18,21 @@ namespace SharpGDX.Scenes.Scene2D.UI
 public class Skin : Disposable {
 	ObjectMap<Type, ObjectMap<String, Object>> resources = new ();
 	TextureAtlas atlas;
-	float scale = 1;
+	float _scale = 1;
 
-	private readonly ObjectMap<String, Type> jsonClassTags = new (defaultTagClasses.length);
-	{
-		foreach (Type c in defaultTagClasses)
-			jsonClassTags.put(c.getSimpleName(), c);
-	}
+	private readonly ObjectMap<String, Type> jsonClassTags = new (defaultTagClasses.Length);
 
 	/** Creates an empty skin. */
 	public Skin () {
-	}
+			// TODO: this could be put inline honestly. (Had to add a lot of calls to :this() for this. -RP
+			//foreach (Type c in defaultTagClasses)
+			//jsonClassTags.put(c.getSimpleName(), c);
+		}
 
 	/** Creates a skin containing the resources in the specified skin JSON file. If a file in the same directory with a ".atlas"
 	 * extension exists, it is loaded as a {@link TextureAtlas} and the texture regions added to the skin. The atlas is
 	 * automatically disposed when the skin is disposed. */
-	public Skin (FileHandle skinFile) {
+	public Skin (FileHandle skinFile):this() {
 		FileHandle atlasFile = skinFile.sibling(skinFile.nameWithoutExtension() + ".atlas");
 		if (atlasFile.exists()) {
 			atlas = new TextureAtlas(atlasFile);
@@ -44,7 +44,8 @@ public class Skin : Disposable {
 
 	/** Creates a skin containing the resources in the specified skin JSON file and the texture regions from the specified atlas.
 	 * The atlas is automatically disposed when the skin is disposed. */
-	public Skin (FileHandle skinFile, TextureAtlas atlas) {
+	public Skin (FileHandle skinFile, TextureAtlas atlas) : this()
+	{
 		this.atlas = atlas;
 		addRegions(atlas);
 		load(skinFile);
@@ -52,18 +53,20 @@ public class Skin : Disposable {
 
 	/** Creates a skin containing the texture regions from the specified atlas. The atlas is automatically disposed when the skin
 	 * is disposed. */
-	public Skin (TextureAtlas atlas) {
+	public Skin (TextureAtlas atlas) : this()
+	{
 		this.atlas = atlas;
 		addRegions(atlas);
 	}
 
 	/** Adds all resources in the specified skin JSON file. */
 	public void load (FileHandle skinFile) {
-		try {
-			getJsonLoader(skinFile).fromJson(typeof(Skin), skinFile);
-		} catch (SerializationException ex) {
-			throw new SerializationException("Error reading file: " + skinFile, ex);
-		}
+		throw new NotImplementedException();
+		//	try {
+		//	getJsonLoader(skinFile).fromJson(typeof(Skin), skinFile);
+		//} catch (SerializationException ex) {
+		//	throw new SerializationException("Error reading file: " + skinFile, ex);
+		//}
 	}
 
 	/** Adds all named texture regions from the atlas. The atlas will not be automatically disposed when the skin is disposed. */
@@ -103,25 +106,26 @@ public class Skin : Disposable {
 	/** Returns a resource named "default" for the specified type.
 	 * @throws GdxRuntimeException if the resource was not found. */
 	public  T get<T>(Type type) {
-		return get("default", type);
+		return get<T>("default", type);
 	}
 
 	/** Returns a named resource of the specified type.
 	 * @throws GdxRuntimeException if the resource was not found. */
 	public  T get<T>(String name, Type type) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
-		if (type == null) throw new IllegalArgumentException("type cannot be null.");
+		throw new NotImplementedException();
+		//	if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		//if (type == null) throw new IllegalArgumentException("type cannot be null.");
 
-		if (type == typeof(Drawable)) return (T)getDrawable(name);
-		if (type == typeof(TextureRegion)) return (T)getRegion(name);
-		if (type == typeof(NinePatch)) return (T)getPatch(name);
-		if (type == typeof(Sprite)) return (T)getSprite(name);
+		//if (type == typeof(Drawable)) return (T)getDrawable(name);
+		//if (type == typeof(TextureRegion)) return (T)getRegion(name);
+		//if (type == typeof(NinePatch)) return (T)getPatch(name);
+		//if (type == typeof(Sprite)) return (T)getSprite(name);
 
-		ObjectMap<String, Object> typeResources = resources.get(type);
-		if (typeResources == null) throw new GdxRuntimeException("No " + type.Name + " registered with name: " + name);
-		Object resource = typeResources.get(name);
-		if (resource == null) throw new GdxRuntimeException("No " + type.Name + " registered with name: " + name);
-		return (T)resource;
+		//ObjectMap<String, Object> typeResources = resources.get(type);
+		//if (typeResources == null) throw new GdxRuntimeException("No " + type.Name + " registered with name: " + name);
+		//Object resource = typeResources.get(name);
+		//if (resource == null) throw new GdxRuntimeException("No " + type.Name + " registered with name: " + name);
+		//return (T)resource;
 	}
 
 	/** Returns a named resource of the specified type.
@@ -142,24 +146,25 @@ public class Skin : Disposable {
 
 	/** Returns the name to resource mapping for the specified type, or null if no resources of that type exist. */
 	public   ObjectMap<String, T>? getAll<T>(Type type) {
-		return (ObjectMap<String, T>)resources.get(type);
+		throw new NotImplementedException();
+			//return (ObjectMap<String, T>?)resources.get(type);
 	}
 
 	public Color getColor (String name) {
-		return get(name, typeof(Color));
+		return get<Color>(name, typeof(Color));
 	}
 
 	public BitmapFont getFont (String name) {
-		return get(name, typeof(BitmapFont));
+		return get< BitmapFont>(name, typeof(BitmapFont));
 	}
 
 	/** Returns a registered texture region. If no region is found but a texture exists with the name, a region is created from the
 	 * texture and stored in the skin. */
 	public TextureRegion getRegion (String name) {
-		TextureRegion region = optional(name, typeof(TextureRegion));
+		TextureRegion region = optional<TextureRegion>(name, typeof(TextureRegion));
 		if (region != null) return region;
 
-		Texture texture = optional(name, typeof(Texture));
+		Texture texture = optional< Texture>(name, typeof(Texture));
 		if (texture == null) throw new GdxRuntimeException("No TextureRegion or Texture registered with name: " + name);
 		region = new TextureRegion(texture);
 		add(name, region, typeof(TextureRegion));
@@ -170,12 +175,12 @@ public class Skin : Disposable {
 	public  Array<TextureRegion>? getRegions (String regionName) {
 		Array<TextureRegion> regions = null;
 		int i = 0;
-		TextureRegion region = optional(regionName + "_" + (i++), typeof(TextureRegion));
+		TextureRegion region = optional< TextureRegion>(regionName + "_" + (i++), typeof(TextureRegion));
 		if (region != null) {
 			regions = new Array<TextureRegion>();
 			while (region != null) {
 				regions.add(region);
-				region = optional(regionName + "_" + (i++), typeof(TextureRegion));
+				region = optional<TextureRegion>(regionName + "_" + (i++), typeof(TextureRegion));
 			}
 		}
 		return regions;
@@ -184,14 +189,14 @@ public class Skin : Disposable {
 	/** Returns a registered tiled drawable. If no tiled drawable is found but a region exists with the name, a tiled drawable is
 	 * created from the region and stored in the skin. */
 	public TiledDrawable getTiledDrawable (String name) {
-		TiledDrawable tiled = optional(name, typeof(TiledDrawable));
+		TiledDrawable tiled = optional< TiledDrawable>(name, typeof(TiledDrawable));
 		if (tiled != null) return tiled;
 
 		tiled = new TiledDrawable(getRegion(name));
 		tiled.setName(name);
-		if (scale != 1) {
+		if (_scale != 1) {
 			scale(tiled);
-			tiled.setScale(scale);
+			tiled.setScale(_scale);
 		}
 		add(name, tiled, typeof(TiledDrawable));
 		return tiled;
@@ -201,7 +206,7 @@ public class Skin : Disposable {
 	 * region and stored in the skin. If the region is an {@link AtlasRegion} then its split {@link AtlasRegion#values} are used,
 	 * otherwise the ninepatch will have the region as the center patch. */
 	public NinePatch getPatch (String name) {
-		NinePatch patch = optional(name, typeof(NinePatch));
+		NinePatch patch = optional< NinePatch>(name, typeof(NinePatch));
 		if (patch != null) return patch;
 
 		try {
@@ -215,8 +220,8 @@ public class Skin : Disposable {
 				}
 			}
 			if (patch == null) patch = new NinePatch(region);
-			if (scale != 1) patch.scale(scale, scale);
-			add(name, patch, NinePatch.class);
+			if (_scale != 1) patch.scale(_scale, _scale);
+			add(name, patch, typeof(NinePatch));
 			return patch;
 		} catch (GdxRuntimeException ex) {
 			throw new GdxRuntimeException("No NinePatch, TextureRegion, or Texture registered with name: " + name);
@@ -227,7 +232,7 @@ public class Skin : Disposable {
 	 * and stored in the skin. If the region is an {@link AtlasRegion} then an {@link AtlasSprite} is used if the region has been
 	 * whitespace stripped or packed rotated 90 degrees. */
 	public Sprite getSprite (String name) {
-		Sprite sprite = optional(name, Sprite.class);
+		Sprite sprite = optional< Sprite>(name, typeof(Sprite));
 		if (sprite != null) return sprite;
 
 		try {
@@ -238,7 +243,7 @@ public class Skin : Disposable {
 					sprite = new TextureAtlas.AtlasSprite(region);
 			}
 			if (sprite == null) sprite = new Sprite(textureRegion);
-			if (scale != 1) sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
+			if (_scale != 1) sprite.setSize(sprite.getWidth() * _scale, sprite.getHeight() * _scale);
 			add(name, sprite, typeof(Sprite));
 			return sprite;
 		} catch (GdxRuntimeException ex) {
@@ -249,7 +254,7 @@ public class Skin : Disposable {
 	/** Returns a registered drawable. If no drawable is found but a region, ninepatch, or sprite exists with the name, then the
 	 * appropriate drawable is created and stored in the skin. */
 	public Drawable getDrawable (String name) {
-		Drawable drawable = optional(name, Drawable.class);
+		Drawable drawable = optional< Drawable>(name, typeof(Drawable));
 		if (drawable != null) return drawable;
 
 		// Use texture or texture region. If it has splits, use ninepatch. If it has rotation or whitespace stripping, use sprite.
@@ -264,18 +269,18 @@ public class Skin : Disposable {
 			}
 			if (drawable == null) {
 				drawable = new TextureRegionDrawable(textureRegion);
-				if (scale != 1) scale(drawable);
+				if (_scale != 1) scale(drawable);
 			}
 		} catch (GdxRuntimeException ignored) {
 		}
 
 		// Check for explicit registration of ninepatch, sprite, or tiled drawable.
 		if (drawable == null) {
-			NinePatch patch = optional(name, typeof(NinePatch));
+			NinePatch patch = optional< NinePatch>(name, typeof(NinePatch));
 			if (patch != null)
 				drawable = new NinePatchDrawable(patch);
 			else {
-				Sprite sprite = optional(name, typeof(Sprite));
+				Sprite sprite = optional< Sprite>(name, typeof(Sprite));
 				if (sprite != null)
 					drawable = new SpriteDrawable(sprite);
 				else
@@ -286,7 +291,7 @@ public class Skin : Disposable {
 
 		if (drawable is BaseDrawable) ((BaseDrawable)drawable).setName(name);
 
-		add(name, drawable, Drawable.class);
+		add(name, drawable, typeof(Drawable));
 		return drawable;
 	}
 
@@ -338,7 +343,7 @@ public class Skin : Disposable {
 		else if (drawable is SpriteDrawable)
 			newDrawable = ((SpriteDrawable)drawable).tint(tint);
 		else
-			throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.getClass());
+			throw new GdxRuntimeException("Unable to copy, unknown drawable type: " + drawable.GetType());
 
 		if (newDrawable is BaseDrawable) {
 			BaseDrawable named = (BaseDrawable)newDrawable;
@@ -355,12 +360,12 @@ public class Skin : Disposable {
 	 * {@link Drawable#getBottomHeight()}, {@link Drawable#getTopHeight()}, {@link Drawable#getMinWidth()}, and
 	 * {@link Drawable#getMinHeight()}. */
 	public void scale (Drawable drawble) {
-		drawble.setLeftWidth(drawble.getLeftWidth() * scale);
-		drawble.setRightWidth(drawble.getRightWidth() * scale);
-		drawble.setBottomHeight(drawble.getBottomHeight() * scale);
-		drawble.setTopHeight(drawble.getTopHeight() * scale);
-		drawble.setMinWidth(drawble.getMinWidth() * scale);
-		drawble.setMinHeight(drawble.getMinHeight() * scale);
+		drawble.setLeftWidth(drawble.getLeftWidth() * _scale);
+		drawble.setRightWidth(drawble.getRightWidth() * _scale);
+		drawble.setBottomHeight(drawble.getBottomHeight() * _scale);
+		drawble.setTopHeight(drawble.getTopHeight() * _scale);
+		drawble.setMinWidth(drawble.getMinWidth() * _scale);
+		drawble.setMinHeight(drawble.getMinHeight() * _scale);
 	}
 
 	/** The scale used to size drawables created by this skin.
@@ -370,7 +375,7 @@ public class Skin : Disposable {
 	 * original size. For example, if the UI is scaled 2x, the atlas would have images that are twice the size, then the skin's
 	 * scale would be set to 0.5. */
 	public void setScale (float scale) {
-		this.scale = scale;
+		this._scale = scale;
 	}
 
 	/** Sets the style on the actor to disabled or enabled. This is done by appending "-disabled" to the style name when enabled is
@@ -378,27 +383,28 @@ public class Skin : Disposable {
 	 * reflection and the name of that style is found in the skin. If the actor doesn't have a "getStyle" method or the style was
 	 * not found in the skin, no exception is thrown and the actor is left unchanged. */
 	public void setEnabled (Actor actor, bool enabled) {
-		// Get current style.
-		Method method = findMethod(actor.GetType(), "getStyle");
-		if (method == null) return;
-		Object style;
-		try {
-			style = method.invoke(actor);
-		} catch (Exception ignored) {
-			return;
-		}
-		// Determine new style.
-		String name = find(style);
-		if (name == null) return;
-		name = name.replace("-disabled", "") + (enabled ? "" : "-disabled");
-		style = get(name, style.GetType());
-		// Set new style.
-		method = findMethod(actor.GetType(), "setStyle");
-		if (method == null) return;
-		try {
-			method.invoke(actor, style);
-		} catch (Exception ignored) {
-		}
+		throw new NotImplementedException();
+		//	// Get current style.
+		//	Method method = findMethod(actor.GetType(), "getStyle");
+		//if (method == null) return;
+		//Object style;
+		//try {
+		//	style = method.invoke(actor, null);
+		//} catch (Exception ignored) {
+		//	return;
+		//}
+		//// Determine new style.
+		//String name = find(style);
+		//if (name == null) return;
+		//name = name.Replace("-disabled", "") + (enabled ? "" : "-disabled");
+		//style = get(name, style.GetType());
+		//// Set new style.
+		//method = findMethod(actor.GetType(), "setStyle");
+		//if (method == null) return;
+		//try {
+		//	method.invoke(actor, style);
+		//} catch (Exception ignored) {
+		//}
 	}
 
 	/** Returns the {@link TextureAtlas} passed to this skin constructor, or null. */
@@ -418,173 +424,218 @@ public class Skin : Disposable {
 	protected Json getJsonLoader (FileHandle skinFile) {
 		Skin skin = this;
 
-		Json json = new Json() {
-			static private String parentFieldName = "parent";
-
-			public <T> T readValue (Class<T> type, Class elementType, JsonValue jsonData) {
-				// If the JSON is a string but the type is not, look up the actual value by name.
-				if (jsonData != null && jsonData.isString() && !ClassReflection.isAssignableFrom(CharSequence.class, type))
-					return get(jsonData.asString(), type);
-				return base.readValue(type, elementType, jsonData);
-			}
-
-			protected bool ignoreUnknownField (Type type, String fieldName) {
-				return fieldName.equals(parentFieldName);
-			}
-
-			public void readFields (Object obj, JsonValue jsonMap) {
-				if (jsonMap.has(parentFieldName)) {
-					String parentName = readValue(parentFieldName, typeof(String), jsonMap);
-					Type parentType = obj.GetType();
-					while (true) {
-						try {
-							copyFields(get(parentName, parentType), obj);
-							break;
-						} catch (GdxRuntimeException ex) { // Parent resource doesn't exist.
-							parentType = parentType.getSuperclass(); // Try resource for super class.
-							if (parentType == typeof(Object)) {
-								SerializationException se = new SerializationException(
-									"Unable to find parent resource with name: " + parentName);
-								se.addTrace(jsonMap.child.trace());
-								throw se;
-							}
-						}
-					}
-				}
-				base.readFields(obj, jsonMap);
-			}
-		};
+		Json json = new SkinJson() ;
 		json.setTypeName(null);
 		json.setUsePrototypes(false);
 
-		json.setSerializer(typeof(Skin), new ReadOnlySerializer<Skin>() {
-			public Skin read (Json json, JsonValue typeToValueMap, Type ignored) {
-				for (JsonValue valueMap = typeToValueMap.child; valueMap != null; valueMap = valueMap.next) {
-					try {
-						Class type = json.getClass(valueMap.name());
-						if (type == null) type = ClassReflection.forName(valueMap.name());
-						readNamedObjects(json, type, valueMap);
-					} catch (ReflectionException ex) {
-						throw new SerializationException(ex);
-					}
-				}
-				return skin;
-			}
+		json.setSerializer(typeof(Skin), new SkinReadOnlySerializer() );
 
-			private void readNamedObjects (Json json, Class type, JsonValue valueMap) {
-				Class addType = type == TintedDrawable.class ? Drawable.class : type;
-				for (JsonValue valueEntry = valueMap.child; valueEntry != null; valueEntry = valueEntry.next) {
-					Object object = json.readValue(type, valueEntry);
-					if (object == null) continue;
-					try {
-						add(valueEntry.name, object, addType);
-						if (addType != Drawable.class && ClassReflection.isAssignableFrom(Drawable.class, addType))
-							add(valueEntry.name, object, Drawable.class);
-					} catch (Exception ex) {
-						throw new SerializationException(
-							"Error reading " + ClassReflection.getSimpleName(type) + ": " + valueEntry.name, ex);
-					}
-				}
-			}
-		});
+		json.setSerializer(typeof(BitmapFont), new BitmapFontReadOnlySerializer() );
 
-		json.setSerializer(BitmapFont.class, new ReadOnlySerializer<BitmapFont>() {
-			public BitmapFont read (Json json, JsonValue jsonData, Class type) {
-				String path = json.readValue("file", String.class, jsonData);
-				float scaledSize = json.readValue("scaledSize", float.class, -1f, jsonData);
-				Boolean flip = json.readValue("flip", Boolean.class, false, jsonData);
-				Boolean markupEnabled = json.readValue("markupEnabled", Boolean.class, false, jsonData);
-				Boolean useIntegerPositions = json.readValue("useIntegerPositions", Boolean.class, true, jsonData);
+		json.setSerializer(typeof(Color), new ColorReadOnlySerializer() );
 
-				FileHandle fontFile = skinFile.parent().child(path);
-				if (!fontFile.exists()) fontFile = Gdx.files.internal(path);
-				if (!fontFile.exists()) throw new SerializationException("Font file not found: " + fontFile);
+		json.setSerializer(typeof(TintedDrawable), new TintedDrawableReadOnlySerializer() );
 
-				// Use a region with the same name as the font, else use a PNG file in the same directory as the FNT file.
-				String regionName = fontFile.nameWithoutExtension();
-				try {
-					BitmapFont font;
-					Array<TextureRegion> regions = skin.getRegions(regionName);
-					if (regions != null)
-						font = new BitmapFont(new BitmapFontData(fontFile, flip), regions, true);
-					else {
-						TextureRegion region = skin.optional(regionName, typeof(TextureRegion));
-						if (region != null)
-							font = new BitmapFont(fontFile, region, flip);
-						else {
-							FileHandle imageFile = fontFile.parent().child(regionName + ".png");
-							if (imageFile.exists())
-								font = new BitmapFont(fontFile, imageFile, flip);
-							else
-								font = new BitmapFont(fontFile, flip);
-						}
-					}
-					font.getData().markupEnabled = markupEnabled;
-					font.setUseIntegerPositions(useIntegerPositions);
-					// Scaled size is the desired cap height to scale the font to.
-					if (scaledSize != -1) font.getData().setScale(scaledSize / font.getCapHeight());
-					return font;
-				} catch (RuntimeException ex) {
-					throw new SerializationException("Error loading bitmap font: " + fontFile, ex);
-				}
-			}
-		});
-
-		json.setSerializer(Color.class, new ReadOnlySerializer<Color>() {
-			public Color read (Json json, JsonValue jsonData, Type type) {
-				if (jsonData.isString()) return get(jsonData.asString(), typeof(Color));
-				String hex = json.readValue("hex", String.class, (String)null, jsonData);
-				if (hex != null) return Color.valueOf(hex);
-				float r = json.readValue("r", float.class, 0f, jsonData);
-				float g = json.readValue("g", float.class, 0f, jsonData);
-				float b = json.readValue("b", float.class, 0f, jsonData);
-				float a = json.readValue("a", float.class, 1f, jsonData);
-				return new Color(r, g, b, a);
-			}
-		});
-
-		json.setSerializer(TintedDrawable.class, new ReadOnlySerializer() {
-			public Object read (Json json, JsonValue jsonData, Class type) {
-				String name = json.readValue("name", String.class, jsonData);
-				Color color = json.readValue("color", Color.class, jsonData);
-				if (color == null) throw new SerializationException("TintedDrawable missing color: " + jsonData);
-				Drawable drawable = newDrawable(name, color);
-				if (drawable is BaseDrawable) {
-					BaseDrawable named = (BaseDrawable)drawable;
-					named.setName(jsonData.name + " (" + name + ", " + color + ")");
-				}
-				return drawable;
-			}
-		});
-
-		foreach (ObjectMap.Entry<String, Class> entry in jsonClassTags)
+		foreach (var entry in jsonClassTags)
 			json.addClassTag(entry.key, entry.value);
 
 		return json;
 	}
 
-	/** Returns a map of {@link Json#addClassTag(String, Class) class tags} that will be used when loading skin JSON. The map can
-	 * be modified before calling {@link #load(FileHandle)}. By default the map is populated with the simple class names of libGDX
-	 * classes commonly used in skins. */
-	public ObjectMap<String, Type> getJsonClassTags () {
+	private class SkinJson : Json
+	{
+		static private String parentFieldName = "parent";
+
+		public T readValue<T>(Type type, Type elementType, JsonValue jsonData)
+		{
+			throw new NotImplementedException();
+				// If the JSON is a string but the type is not, look up the actual value by name.
+			//	if (jsonData != null && jsonData.isString() && !ClassReflection.isAssignableFrom(typeof(string), type))
+			//	return get(jsonData.asString(), type);
+			//return base.readValue(type, elementType, jsonData);
+		}
+
+		protected  bool ignoreUnknownField(Type type, String fieldName)
+		{
+			return fieldName.Equals(parentFieldName);
+		}
+
+		public  void readFields(Object obj, JsonValue jsonMap)
+		{
+			throw new NotImplementedException();
+			//	if (jsonMap.has(parentFieldName))
+			//{
+			//	String parentName = readValue(parentFieldName, typeof(String), jsonMap);
+			//	Type parentType = obj.GetType();
+			//	while (true)
+			//	{
+			//		try
+			//		{
+			//			copyFields(get(parentName, parentType), obj);
+			//			break;
+			//		}
+			//		catch (GdxRuntimeException ex)
+			//		{ // Parent resource doesn't exist.
+			//			parentType = parentType.getSuperclass(); // Try resource for super class.
+			//			if (parentType == typeof(Object))
+			//			{
+			//				SerializationException se = new SerializationException(
+			//					"Unable to find parent resource with name: " + parentName);
+			//				se.addTrace(jsonMap._child.trace());
+			//				throw se;
+			//			}
+			//		}
+			//	}
+			//}
+			//base.readFields(obj, jsonMap);
+		}
+	}
+
+	private class BitmapFontReadOnlySerializer : Json.ReadOnlySerializer<BitmapFont>
+{
+	public override BitmapFont read(Json json, JsonValue jsonData, Type type)
+	{
+		throw new NotImplementedException();
+//				String path = json.readValue("file", typeof(string), jsonData);
+//		float scaledSize = json.readValue("scaledSize", typeof(float), -1f, jsonData);
+//		Boolean flip = json.readValue("flip", typeof(bool), false, jsonData);
+//		Boolean markupEnabled = json.readValue("markupEnabled", typeof(bool), false, jsonData);
+//		Boolean useIntegerPositions = json.readValue("useIntegerPositions", typeof(bool), true, jsonData);
+
+//		FileHandle fontFile = skinFile.parent().child(path);
+//		if (!fontFile.exists()) fontFile = Gdx.files.@internal (path);
+//	if (!fontFile.exists()) throw new SerializationException("Font file not found: " + fontFile);
+
+//	// Use a region with the same name as the font, else use a PNG file in the same directory as the FNT file.
+//	String regionName = fontFile.nameWithoutExtension();
+//		try {
+//		BitmapFont font;
+//		Array<TextureRegion> regions = skin.getRegions(regionName);
+//		if (regions != null)
+//			font = new BitmapFont(new BitmapFont.BitmapFontData(fontFile, flip), regions, true);
+//		else {
+//			TextureRegion region = skin.optional(regionName, typeof(TextureRegion));
+//			if (region != null)
+//				font = new BitmapFont(fontFile, region, flip);
+//			else {
+//				FileHandle imageFile = fontFile.parent().child(regionName + ".png");
+//				if (imageFile.exists())
+//					font = new BitmapFont(fontFile, imageFile, flip);
+//				else
+//					font = new BitmapFont(fontFile, flip);
+//			}
+//		}
+//		font.getData().markupEnabled = markupEnabled;
+//		font.setUseIntegerPositions(useIntegerPositions);
+//// Scaled size is the desired cap height to scale the font to.
+//		if (scaledSize != -1) font.getData().setScale(scaledSize / font.getCapHeight());
+//		return font;
+//	} catch (RuntimeException ex) {
+//	throw new SerializationException("Error loading bitmap font: " + fontFile, ex);
+//}
+}
+}
+
+private class SkinReadOnlySerializer : Json.ReadOnlySerializer<Skin>
+{
+	public override Skin read(Json json, JsonValue typeToValueMap, Type ignored)
+	{
+		throw new NotImplementedException();
+		//for (JsonValue valueMap = typeToValueMap._child; valueMap != null; valueMap = valueMap._next)
+		//{
+		//	try
+		//	{
+		//		Type type = json.getClass(valueMap.name());
+		//		if (type == null) type = ClassReflection.forName(valueMap.name());
+		//		readNamedObjects(json, type, valueMap);
+		//	}
+		//	catch (ReflectionException ex)
+		//	{
+		//		throw new SerializationException(ex);
+		//	}
+		//}
+		//return skin;
+	}
+
+	private void readNamedObjects(Json json, Type type, JsonValue valueMap)
+	{
+		throw new NotImplementedException();
+		//		Type addType = type == typeof(TintedDrawable) ? typeof(Drawable) : type;
+		//for (JsonValue valueEntry = valueMap._child; valueEntry != null; valueEntry = valueEntry._next) {
+		//	Object obj = json.readValue(type, valueEntry);
+		//	if (obj == null) continue;
+		//	try {
+		//		add(valueEntry._name, obj, addType);
+		//		if (addType != typeof(Drawable) && ClassReflection.isAssignableFrom(typeof(Drawable), addType))
+		//		add(valueEntry._name, obj, typeof(Drawable));
+		//	} catch (Exception ex) {
+		//		throw new SerializationException(
+		//			"Error reading " + ClassReflection.getSimpleName(type) + ": " + valueEntry.name, ex);
+		//	}
+		//}
+	}
+}
+
+private class ColorReadOnlySerializer : Json.ReadOnlySerializer<Color>
+{
+	public override Color read(Json json, JsonValue jsonData, Type type)
+	{
+		throw new NotImplementedException();
+		//		if (jsonData.isString()) return get(jsonData.asString(), typeof(Color));
+		//String hex = json.readValue("hex", typeof(string), (String)null, jsonData);
+		//if (hex != null) return Color.valueOf(hex);
+		//float r = json.readValue("r", typeof(float), 0f, jsonData);
+		//float g = json.readValue("g", typeof(float), 0f, jsonData);
+		//float b = json.readValue("b", typeof(float), 0f, jsonData);
+		//float a = json.readValue("a", typeof(float), 1f, jsonData);
+		//return new Color(r, g, b, a);
+	}
+}
+
+private class TintedDrawableReadOnlySerializer : Json.ReadOnlySerializer<TintedDrawable>
+{
+	public override TintedDrawable read(Json json, JsonValue jsonData, Type type)
+	{
+		throw new NotImplementedException();
+		//		String name = json.readValue("name", typeof(string), jsonData);
+		//Color color = json.readValue("color", typeof(Color), jsonData);
+		//if (color == null) throw new SerializationException("TintedDrawable missing color: " + jsonData);
+		//Drawable drawable = newDrawable(name, color);
+		//if (drawable is BaseDrawable)
+		//{
+		//	BaseDrawable named = (BaseDrawable)drawable;
+		//	named.setName(jsonData.name + " (" + name + ", " + color + ")");
+		//}
+		//return drawable;
+	}
+}
+
+/** Returns a map of {@link Json#addClassTag(String, Class) class tags} that will be used when loading skin JSON. The map can
+ * be modified before calling {@link #load(FileHandle)}. By default the map is populated with the simple class names of libGDX
+ * classes commonly used in skins. */
+public ObjectMap<String, Type> getJsonClassTags () {
 		return jsonClassTags;
 	}
 
-	static private readonly Type[] defaultTagClasses = {BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class,
-		SpriteDrawable.class, TextureRegionDrawable.class, typeof(TiledDrawable), Button.ButtonStyle.class,
-		CheckBox.CheckBoxStyle.class, ImageButton.ImageButtonStyle.class, ImageTextButton.ImageTextButtonStyle.class,
-		Label.LabelStyle.class, List.ListStyle.class, ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class,
-		SelectBox.SelectBoxStyle.class, Slider.SliderStyle.class, SplitPane.SplitPaneStyle.class, TextButton.TextButtonStyle.class,
-		TextField.TextFieldStyle.class, TextTooltip.TextTooltipStyle.class, Touchpad.TouchpadStyle.class, Tree.TreeStyle.class,
-		Window.WindowStyle.class};
+	static private readonly Type[] defaultTagClasses = {typeof(BitmapFont), typeof(Color), typeof(TintedDrawable), typeof(NinePatchDrawable),
+		typeof(SpriteDrawable), typeof(TextureRegionDrawable), typeof(TiledDrawable), typeof(Button.ButtonStyle),
+		typeof(CheckBox.CheckBoxStyle), typeof(ImageButton.ImageButtonStyle), typeof(ImageTextButton.ImageTextButtonStyle),
+		typeof(Label.LabelStyle), 
+		// TODO: typeof(List.ListStyle), 
+		typeof(ProgressBar.ProgressBarStyle), typeof(ScrollPane.ScrollPaneStyle),
+		// TODO: typeof(SelectBox.SelectBoxStyle), 
+		typeof(Slider.SliderStyle), typeof(SplitPane.SplitPaneStyle), typeof(TextButton.TextButtonStyle),
+		typeof(TextField.TextFieldStyle), typeof(TextTooltip.TextTooltipStyle), typeof(Touchpad.TouchpadStyle), // TODO: Tree.TreeStyle.class,
+		typeof(Window.WindowStyle)};
 
 	static private Method? findMethod (Type type, String name) {
-		Method[] methods = ClassReflection.getMethods(type);
-		for (int i = 0, n = methods.length; i < n; i++) {
-			Method method = methods[i];
-			if (method.getName().equals(name)) return method;
-		}
-		return null;
+		throw new NotImplementedException();
+		//	Method[] methods = ClassReflection.getMethods(type);
+		//for (int i = 0, n = methods.Length; i < n; i++) {
+		//	Method method = methods[i];
+		//	if (method.getName().Equals(name)) return method;
+		//}
+		//return null;
 	}
 
 	/** @author Nathan Sweet */

@@ -191,15 +191,15 @@ public class OrderedSet<T> : ObjectSet<T> {
 
 		public void reset () {
 			nextIndex = 0;
-			hasNext = set.size > 0;
+			_hasNext = set.size > 0;
 		}
 
 		public T next () {
-			if (!hasNext) throw new NoSuchElementException();
+			if (!_hasNext) throw new NoSuchElementException();
 			if (!valid) throw new GdxRuntimeException("#iterator() cannot be used nested.");
 			T key = items.get(nextIndex);
 			nextIndex++;
-			hasNext = nextIndex < set.size;
+			_hasNext = nextIndex < set.size;
 			return key;
 		}
 
@@ -212,7 +212,7 @@ public class OrderedSet<T> : ObjectSet<T> {
 		public Array<T> toArray (Array<T> array) {
 			array.addAll(items, nextIndex, items.size - nextIndex);
 			nextIndex = items.size;
-			hasNext = false;
+		_hasNext = false;
 			return array;
 		}
 
