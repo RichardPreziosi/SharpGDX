@@ -19,7 +19,7 @@ namespace SharpGDX
  * @author mzechner
  * @author Nathan Sweet */
 public class Sprite : TextureRegion {
-	static readonly int VERTEX_SIZE = 2 + 1 + 2;
+	internal static readonly int VERTEX_SIZE = 2 + 1 + 2;
 	internal static readonly int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
 	readonly float[] vertices = new float[SPRITE_SIZE];

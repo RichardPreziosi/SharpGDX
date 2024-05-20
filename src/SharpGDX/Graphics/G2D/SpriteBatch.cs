@@ -21,12 +21,12 @@ public class SpriteBatch : Batch {
 
 		private Mesh mesh;
 
-	readonly float[] vertices;
-	int idx = 0;
-	Texture lastTexture = null;
+	protected readonly float[] vertices;
+	protected int idx = 0;
+	protected Texture lastTexture = null;
 	float invTexWidth = 0, invTexHeight = 0;
 
-	bool drawing = false;
+	protected bool drawing = false;
 
 	private readonly Matrix4 transformMatrix = new Matrix4();
 	private readonly Matrix4 projectionMatrix = new Matrix4();
@@ -43,7 +43,7 @@ public class SpriteBatch : Batch {
 	private bool ownsShader;
 
 	private readonly Color color = new Color(1, 1, 1, 1);
-	float colorPacked = Color.WHITE_FLOAT_BITS;
+	protected float colorPacked = Color.WHITE_FLOAT_BITS;
 
 	/** Number of render calls since the last {@link #begin()}. **/
 	public int renderCalls = 0;
@@ -199,7 +199,7 @@ public class SpriteBatch : Batch {
 		return colorPacked;
 	}
 
-	public void draw (Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public virtual void draw (Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, bool flipX, bool flipY) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
@@ -329,7 +329,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth,
+	public virtual void draw (Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth,
 		int srcHeight, bool flipX, bool flipY) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
@@ -387,7 +387,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {
+	public virtual void draw (Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		float[] vertices = this.vertices;
@@ -432,7 +432,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
+	public virtual void draw (Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		float[] vertices = this.vertices;
@@ -473,11 +473,11 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (Texture texture, float x, float y) {
+	public virtual void draw (Texture texture, float x, float y) {
 		draw(texture, x, y, texture.getWidth(), texture.getHeight());
 	}
 
-	public void draw (Texture texture, float x, float y, float width, float height) {
+	public virtual void draw (Texture texture, float x, float y, float width, float height) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		float[] vertices = this.vertices;
@@ -522,7 +522,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (Texture texture, float[] spriteVertices, int offset, int count) {
+	public virtual void draw (Texture texture, float[] spriteVertices, int offset, int count) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		int verticesLength = vertices.Length;
@@ -551,11 +551,11 @@ public class SpriteBatch : Batch {
 		}
 	}
 
-	public void draw (TextureRegion region, float x, float y) {
+	public virtual void draw (TextureRegion region, float x, float y) {
 		draw(region, x, y, region.getRegionWidth(), region.getRegionHeight());
 	}
 
-	public void draw (TextureRegion region, float x, float y, float width, float height) {
+	public virtual void draw (TextureRegion region, float x, float y, float width, float height) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		float[] vertices = this.vertices;
@@ -601,7 +601,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
+	public virtual void draw (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
 		float scaleX, float scaleY, float rotation) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
@@ -720,7 +720,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
+	public virtual void draw (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
 		float scaleX, float scaleY, float rotation, bool clockwise) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
@@ -855,7 +855,7 @@ public class SpriteBatch : Batch {
 		this.idx = idx + 20;
 	}
 
-	public void draw (TextureRegion region, float width, float height, Affine2 transform) {
+	public virtual void draw (TextureRegion region, float width, float height, Affine2 transform) {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
 
 		float[] vertices = this.vertices;
@@ -989,7 +989,7 @@ public class SpriteBatch : Batch {
 		return projectionMatrix;
 	}
 
-	public Matrix4 getTransformMatrix () {
+	public virtual Matrix4 getTransformMatrix () {
 		return transformMatrix;
 	}
 
@@ -999,7 +999,7 @@ public class SpriteBatch : Batch {
 		if (drawing) setupMatrices();
 	}
 
-	public void setTransformMatrix (Matrix4 transform) {
+	public virtual void setTransformMatrix (Matrix4 transform) {
 		if (drawing) flush();
 		transformMatrix.set(transform);
 		if (drawing) setupMatrices();

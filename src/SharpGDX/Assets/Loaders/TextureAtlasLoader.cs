@@ -1,63 +1,80 @@
-//using SharpGDX.Shims;
-//using SharpGDX.Utils;
-//using SharpGDX.Mathematics;
+using SharpGDX.Shims;
+using SharpGDX.Utils;
+using SharpGDX;
+using SharpGDX.Mathematics;
+using SharpGDX.Assets;
 
-//namespace SharpGDX.Assets.Loaders;
+namespace SharpGDX.Assets.Loaders;
 
-///** {@link AssetLoader} to load {@link TextureAtlas} instances. Passing a {@link TextureAtlasParameter} to
-// * {@link AssetManager#load(String, Class, AssetLoaderParameters)} allows to specify whether the atlas regions should be flipped
-// * on the y-axis or not.
-// * @author mzechner */
-//public class TextureAtlasLoader : SynchronousAssetLoader<TextureAtlas, TextureAtlasLoader.TextureAtlasParameter> {
-//	public TextureAtlasLoader (FileHandleResolver resolver) {
-//		super(resolver);
-//	}
+/** {@link AssetLoader} to load {@link TextureAtlas} instances. Passing a {@link TextureAtlasParameter} to
+ * {@link AssetManager#load(String, Class, AssetLoaderParameters)} allows to specify whether the atlas regions should be flipped
+ * on the y-axis or not.
+ * @author mzechner */
+public class TextureAtlasLoader : SynchronousAssetLoader<TextureAtlas, TextureAtlasLoader.TextureAtlasParameter>
+{
+	public TextureAtlasLoader(FileHandleResolver resolver)
+		: base(resolver)
+	{
 
-//	TextureAtlasData data;
+	}
 
-//	@Override
-//	public TextureAtlas load (AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
-//		for (Page page : data.getPages()) {
-//			Texture texture = assetManager.get(page.textureFile.path().replaceAll("\\\\", "/"), Texture.class);
-//			page.texture = texture;
-//		}
+	TextureAtlas.TextureAtlasData data;
 
-//		TextureAtlas atlas = new TextureAtlas(data);
-//		data = null;
-//		return atlas;
-//	}
+	public override TextureAtlas load(AssetManager assetManager, String fileName, FileHandle file,
+		TextureAtlasParameter parameter)
+	{
+		foreach (var page in data.getPages())
+		{
+			Texture texture = assetManager.get<Texture>(page.textureFile.path().Replace("\\\\", "/"), typeof(Texture));
+			page.texture = texture;
+		}
 
-//	@Override
-//	public Array<AssetDescriptor> getDependencies (String fileName, FileHandle atlasFile, TextureAtlasParameter parameter) {
-//		FileHandle imgDir = atlasFile.parent();
+		TextureAtlas atlas = new TextureAtlas(data);
+		data = null;
+		return atlas;
+	}
 
-//		if (parameter != null)
-//			data = new TextureAtlasData(atlasFile, imgDir, parameter.flip);
-//		else {
-//			data = new TextureAtlasData(atlasFile, imgDir, false);
-//		}
+	public override Array<AssetDescriptor<TextureAtlas>> getDependencies(String fileName, FileHandle atlasFile,
+		TextureAtlasParameter parameter)
+	{
+		FileHandle imgDir = atlasFile.parent();
 
-//		Array<AssetDescriptor> dependencies = new Array();
-//		for (Page page : data.getPages()) {
-//			TextureParameter params = new TextureParameter();
-//			params.format = page.format;
-//			params.genMipMaps = page.useMipMaps;
-//			params.minFilter = page.minFilter;
-//			params.magFilter = page.magFilter;
-//			dependencies.add(new AssetDescriptor(page.textureFile, Texture.class, params));
-//		}
-//		return dependencies;
-//	}
+		if (parameter != null)
+			data = new TextureAtlas.TextureAtlasData(atlasFile, imgDir, parameter.flip);
+		else
+		{
+			data = new TextureAtlas.TextureAtlasData(atlasFile, imgDir, false);
+		}
 
-//	static public class TextureAtlasParameter extends AssetLoaderParameters<TextureAtlas> {
-//		/** whether to flip the texture atlas vertically **/
-//		public boolean flip = false;
+		Array<AssetDescriptor> dependencies = new();
+		foreach (var page in data.getPages())
+		{
+			TextureLoader.TextureParameter @params = new TextureLoader.TextureParameter();
+			@params.format = page.format;
+			@params.genMipMaps = page.useMipMaps;
+			@params.minFilter = page.minFilter;
+			@params.magFilter = page.magFilter;
+			// TODO: Is AssetDescriptor<Texture> right? -RP
+			dependencies.add(new AssetDescriptor<Texture>(page.textureFile, typeof(Texture), @params));
+		}
 
-//		public TextureAtlasParameter () {
-//		}
+		throw new NotImplementedException();
+		// TODO: You can't return all of these as Array<AssetDescriptor<TextureAtlas>>, because they aren't. -RP
+		// return dependencies;
+	}
 
-//		public TextureAtlasParameter (boolean flip) {
-//			this.flip = flip;
-//		}
-//	}
-//}
+	public class TextureAtlasParameter : AssetLoaderParameters<TextureAtlas>
+	{
+		/** whether to flip the texture atlas vertically **/
+		public bool flip = false;
+
+		public TextureAtlasParameter()
+		{
+		}
+
+		public TextureAtlasParameter(bool flip)
+		{
+			this.flip = flip;
+		}
+	}
+}
