@@ -1,4 +1,5 @@
 ﻿using SharpGDX.Shims;
+using SharpGDX.Graphics.GLUtils;
 using Buffer = SharpGDX.Shims.Buffer;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
@@ -9,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Mathematics;
 using static SharpGDX.Files;
-using static SharpGDX.Graphics;
-using Monitor = SharpGDX.Graphics.Monitor;
+using static SharpGDX.IGraphics;
+using Monitor = SharpGDX.IGraphics.Monitor;
 
 namespace SharpGDX.Desktop
 {

@@ -8,7 +8,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** A InstanceData instance holds instance data for rendering with OpenGL. It is implemented as either a
  * {@link InstanceBufferObject} or a {@link InstanceBufferObjectSubData}. Both require Open GL 3.3+.

@@ -1,7 +1,7 @@
 ﻿using SharpGDX.Utils;
 using SharpGDX.Shims;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** Loads images from texture atlases created by TexturePacker.<br>
  * <br>

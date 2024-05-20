@@ -1,4 +1,7 @@
 ﻿using System;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Utils.Async;
 using System.Collections.Generic;

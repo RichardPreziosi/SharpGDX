@@ -8,7 +8,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** An IndexData instance holds index data. Can be either a plain short buffer or an OpenGL buffer object.
  * @author mzechner */

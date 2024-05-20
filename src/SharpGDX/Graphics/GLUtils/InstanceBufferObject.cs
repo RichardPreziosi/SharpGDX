@@ -8,7 +8,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** Modification of the {@link VertexBufferObject} class. Sets the glVertexAttribDivisor for every {@link VertexAttribute}
  * automatically.

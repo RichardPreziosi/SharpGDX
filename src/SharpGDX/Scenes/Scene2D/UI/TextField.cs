@@ -1,4 +1,7 @@
 using SharpGDX.Shims;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using Timer = SharpGDX.Utils.Timer;
 using Task = SharpGDX.Utils.Timer.Task;
 using SharpGDX.Scenes.Scene2D;

@@ -3,7 +3,7 @@ using File = SharpGDX.Shims.File;
 using SharpGDX.Shims;
 using SharpGDX.Mathematics.Collision;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** See <a href=
  * "https://web.archive.org/web/20200427191041/http://www.badlogicgames.com/wordpress/?p=12555">http://www.badlogicgames.com/wordpress/?p=12555</a>

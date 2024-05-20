@@ -8,7 +8,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	public class IndexArray : IndexData {
 	readonly ShortBuffer buffer;

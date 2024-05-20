@@ -1,4 +1,7 @@
 ﻿using System;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using SharpGDX.Scenes.Scene2D.UI;
 using System.Collections.Generic;
 using System.Linq;

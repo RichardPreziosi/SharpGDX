@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace SharpGDX;
+namespace SharpGDX.Graphics.GLUtils;
 
 public class GLVersion
 {

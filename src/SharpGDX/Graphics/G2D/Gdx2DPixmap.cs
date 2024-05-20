@@ -7,9 +7,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Pixmap;
+using static SharpGDX.Graphics.Pixmap;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** @author mzechner */
 	public class Gdx2DPixmap : Disposable

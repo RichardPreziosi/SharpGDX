@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** Renders points, lines, shape outlines and filled shapes.
  * <p>

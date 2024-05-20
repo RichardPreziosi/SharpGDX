@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** To deal with HDPI monitors properly, use the glViewport and glScissor functions of this class instead of directly calling
  * OpenGL yourself. The logical coordinate system provided by the operating system may not have the same resolution as the actual

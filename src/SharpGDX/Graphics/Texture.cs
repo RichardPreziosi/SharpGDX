@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+using System;
 using SharpGDX.Assets;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
@@ -8,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Assets.Loaders;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** A Texture wraps a standard OpenGL ES texture.
  * <p>

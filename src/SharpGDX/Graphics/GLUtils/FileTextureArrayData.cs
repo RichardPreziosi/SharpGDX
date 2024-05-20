@@ -7,7 +7,7 @@ using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** @author Tomski **/
 public class FileTextureArrayData : TextureArrayData {

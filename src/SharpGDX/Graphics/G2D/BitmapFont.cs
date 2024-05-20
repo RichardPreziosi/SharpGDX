@@ -3,7 +3,7 @@ using SharpGDX;
 using SharpGDX.Mathematics;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** Renders bitmap fonts. The font consists of 2 files: an image file or {@link TextureRegion} containing the glyphs and a file in
  * the AngleCode BMFont text format that describes where each glyph is on the image.

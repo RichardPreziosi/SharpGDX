@@ -7,7 +7,7 @@ using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** Open GLES wrapper for TextureArray
  * @author Tomski */

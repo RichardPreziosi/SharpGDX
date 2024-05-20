@@ -1,10 +1,13 @@
-﻿using System;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** Used by a {@link Texture} to load the pixel data. A TextureData can either return a {@link Pixmap} or upload the pixel data
  * itself. It signals it's type via {@link #getType()} to the Texture that's using it. The Texture will then either invoke

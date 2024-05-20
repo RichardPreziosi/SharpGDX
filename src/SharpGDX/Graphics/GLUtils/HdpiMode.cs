@@ -1,4 +1,4 @@
-﻿namespace SharpGDX;
+﻿namespace SharpGDX.Graphics.GLUtils;
 
 public enum HdpiMode
 {

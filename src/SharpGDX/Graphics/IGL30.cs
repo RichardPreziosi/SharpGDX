@@ -1,7 +1,7 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** OpenGL ES 3.0 */
 	public interface GL30 : GL20

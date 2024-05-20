@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 
 namespace SharpGDX
 {
-	public abstract class AbstractGraphics : Graphics
+	public abstract class AbstractGraphics : IGraphics
 	{
 		public abstract float getPpcY();
 
@@ -17,21 +16,21 @@ namespace SharpGDX
 	}
 
 		public abstract bool supportsDisplayModeChange();
-		public abstract Graphics.Monitor getPrimaryMonitor();
-		public abstract Graphics.Monitor getMonitor();
-		public abstract Graphics.Monitor[] getMonitors();
-		public abstract Graphics.DisplayMode[] getDisplayModes();
-		public abstract Graphics.DisplayMode[] getDisplayModes(Graphics.Monitor monitor);
-		public abstract Graphics.DisplayMode getDisplayMode();
-		public abstract Graphics.DisplayMode getDisplayMode(Graphics.Monitor monitor);
-		public abstract bool setFullscreenMode(Graphics.DisplayMode displayMode);
+		public abstract IGraphics.Monitor getPrimaryMonitor();
+		public abstract IGraphics.Monitor getMonitor();
+		public abstract IGraphics.Monitor[] getMonitors();
+		public abstract IGraphics.DisplayMode[] getDisplayModes();
+		public abstract IGraphics.DisplayMode[] getDisplayModes(IGraphics.Monitor monitor);
+		public abstract IGraphics.DisplayMode getDisplayMode();
+		public abstract IGraphics.DisplayMode getDisplayMode(IGraphics.Monitor monitor);
+		public abstract bool setFullscreenMode(IGraphics.DisplayMode displayMode);
 		public abstract bool setWindowedMode(int width, int height);
 		public abstract void setTitle(string title);
 		public abstract void setUndecorated(bool undecorated);
 		public abstract void setResizable(bool resizable);
 		public abstract void setVSync(bool vsync);
 		public abstract void setForegroundFPS(int fps);
-		public abstract Graphics.BufferFormat getBufferFormat();
+		public abstract IGraphics.BufferFormat getBufferFormat();
 		public abstract bool supportsExtension(string extension);
 		public abstract void setContinuousRendering(bool isContinuous);
 		public abstract bool isContinuousRendering();
@@ -69,7 +68,7 @@ namespace SharpGDX
 	public abstract long getFrameId();
 	public abstract float getDeltaTime();
 	public abstract int getFramesPerSecond();
-	public abstract Graphics.GraphicsType getType();
+	public abstract IGraphics.GraphicsType getType();
 	public abstract GLVersion getGLVersion();
 	public abstract float getPpiX();
 	public abstract float getPpiY();

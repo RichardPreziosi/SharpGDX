@@ -1,7 +1,7 @@
 ﻿using SharpGDX.Shims;
 using Buffer  = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	public interface GL31 : GL30
 	{

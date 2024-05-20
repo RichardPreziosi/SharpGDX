@@ -1,5 +1,6 @@
 ﻿using static SharpGDX.Files;
-using static SharpGDX.Graphics;
+using SharpGDX.Graphics;
+using static SharpGDX.IGraphics;
 
 namespace SharpGDX.Desktop
 {
@@ -88,7 +89,7 @@ namespace SharpGDX.Desktop
 		}
 
 		/** @param monitor what monitor the window should maximize to */
-		public void setMaximizedMonitor(Graphics.Monitor monitor)
+		public void setMaximizedMonitor(IGraphics.Monitor monitor)
 		{
 			this.maximizedMonitor = (Lwjgl3Graphics.Lwjgl3Monitor)monitor;
 		}

@@ -3,7 +3,7 @@ using Buffer = SharpGDX.Shims.Buffer;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** Writes Pixmaps to various formats.
  * @author mzechner

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** A simple helper class to log the frames per seconds achieved. Just invoke the {@link #log()} method in your rendering method.
  * The output will be logged once per second.

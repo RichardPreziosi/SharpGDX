@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** A color class, holding the r, g, b and alpha component as floats in the range [0,1]. All methods perform clamping on the
  * internal values after execution.

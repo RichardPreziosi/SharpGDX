@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpGDX.Graphics.GLUtils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** Draws batched quads using indices.
  * @see Batch

@@ -2,7 +2,7 @@
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	public class FileTextureData : TextureData {
 

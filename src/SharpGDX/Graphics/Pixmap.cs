@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpGDX.Graphics.G2D;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using SharpGDX.Shims;
 using SharpGDX;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/**
  * <p>

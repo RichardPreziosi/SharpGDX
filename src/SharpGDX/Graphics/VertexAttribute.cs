@@ -1,7 +1,8 @@
 ﻿using System.Numerics;
-using Usage= SharpGDX.VertexAttributes.Usage;
+using Usage= SharpGDX.Graphics.VertexAttributes.Usage;
+using SharpGDX.Graphics.GLUtils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** A single vertex attribute defined by its {@link Usage}, its number of components and its shader alias. The Usage is used for
  * uniquely identifying the vertex attribute from among its {@linkplain VertexAttributes} siblings. The number of components

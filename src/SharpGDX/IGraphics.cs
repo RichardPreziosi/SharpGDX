@@ -1,4 +1,7 @@
-﻿namespace SharpGDX
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+
+namespace SharpGDX
 {
 	/** This interface encapsulates communication with the graphics processor. Depending on the available hardware and the current
  * {@link Application} configuration, access to {@link GL20} and {@link GL30} are provided here.
@@ -14,7 +17,7 @@
  * {@link BitmapFont}, {@link Batch} and so on. All these classes are managed, meaning they don't need to be reloaded on a context
  * loss. Explore the com.badlogic.gdx.graphics package for more classes that might come in handy.
  * @author mzechner */
-	public interface Graphics
+	public interface IGraphics
 	{
 		/** Enumeration describing different types of {@link Graphics} implementations.
 		 *

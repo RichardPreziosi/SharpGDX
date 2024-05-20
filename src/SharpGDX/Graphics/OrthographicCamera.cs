@@ -7,7 +7,7 @@ using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** A camera with orthographic projection.
  * 

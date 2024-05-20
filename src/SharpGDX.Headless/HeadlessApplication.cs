@@ -165,7 +165,7 @@ namespace SharpGDX.Headless
 			return listener;
 		}
 
-		public Graphics getGraphics()
+		public IGraphics getGraphics()
 		{
 			return graphics;
 		}

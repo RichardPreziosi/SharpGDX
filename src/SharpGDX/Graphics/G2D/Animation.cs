@@ -2,7 +2,7 @@
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/**
  * <p>

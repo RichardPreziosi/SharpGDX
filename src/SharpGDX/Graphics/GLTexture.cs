@@ -1,9 +1,12 @@
-﻿using SharpGDX.Utils;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
 using SharpGDX.Shims;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 /** Class representing an OpenGL texture by its target and handle. Keeps track of its state like the TextureFilter and
  * TextureWrap. Also provides some (protected) static methods to create TextureData and upload image data.

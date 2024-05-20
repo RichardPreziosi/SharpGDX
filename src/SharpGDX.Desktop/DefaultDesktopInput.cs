@@ -1,4 +1,7 @@
-﻿using SharpGDX.Desktop;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+using SharpGDX.Desktop;
 using SharpGDX;
 using System;
 using System.Collections.Generic;

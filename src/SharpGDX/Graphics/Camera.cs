@@ -1,7 +1,7 @@
 ﻿using SharpGDX.Mathematics;
 using SharpGDX.Mathematics.Collision;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** Base class for {@link OrthographicCamera} and {@link PerspectiveCamera}.
  * @author mzechner */

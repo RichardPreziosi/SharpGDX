@@ -1,4 +1,8 @@
-﻿namespace SharpGDX.Utils.Viewports
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+
+namespace SharpGDX.Utils.Viewports
 {
 	/** A viewport where the world size is based on the size of the screen. By default 1 world unit == 1 screen pixel, but this ratio
  * can be {@link #setUnitsPerPixel(float) changed}.

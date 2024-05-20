@@ -1,4 +1,7 @@
 ﻿using SharpGDX;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Scenes.Scene2D.UI;
 using SharpGDX.Scenes.Scene2D.Utils;

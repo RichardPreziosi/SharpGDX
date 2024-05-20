@@ -104,7 +104,7 @@ namespace SharpGDX
 		public ApplicationListener getApplicationListener();
 
 		/** @return the {@link Graphics} instance */
-		public Graphics getGraphics();
+		public IGraphics getGraphics();
 
 		/** @return the {@link Audio} instance */
 		public Audio getAudio();

@@ -6,7 +6,7 @@ using SharpGDX.Shims;
 using SharpGDX.Mathematics;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** Stores {@link GlyphRun runs} of glyphs for a piece of text. The text may contain newlines and color markup tags.
  * <p>

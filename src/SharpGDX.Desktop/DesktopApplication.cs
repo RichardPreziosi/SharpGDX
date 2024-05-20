@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using SharpGDX.Graphics.GLUtils;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 using System.Runtime.InteropServices;
@@ -254,7 +255,7 @@ namespace SharpGDX.Desktop
 		return currentWindow.getListener();
 	}
 
-	public Graphics getGraphics () {
+	public IGraphics getGraphics () {
 		return currentWindow.getGraphics();
 	}
 

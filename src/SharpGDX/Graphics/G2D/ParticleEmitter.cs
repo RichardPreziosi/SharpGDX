@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	public class ParticleEmitter {
 	static private readonly int UPDATE_SCALE = 1 << 0;

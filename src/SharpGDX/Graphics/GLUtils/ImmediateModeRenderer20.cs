@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Mathematics;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	/** Immediate mode rendering class for GLES 2.0. The renderer will allow you to specify vertices on the fly and provides a default
  * shader for (unlit) rendering.

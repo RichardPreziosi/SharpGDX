@@ -1,4 +1,7 @@
 ﻿using SharpGDX.Mathematics;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using SharpGDX.Utils;
 
 namespace SharpGDX.Scenes.Scene2D.Utils

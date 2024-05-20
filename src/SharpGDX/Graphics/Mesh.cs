@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpGDX.Graphics.GLUtils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using SharpGDX.Mathematics;
 using SharpGDX.Mathematics.Collision;
 using Buffer = SharpGDX.Shims.Buffer;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/**
  * <p>

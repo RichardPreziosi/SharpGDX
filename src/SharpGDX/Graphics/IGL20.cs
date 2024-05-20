@@ -1,7 +1,7 @@
 ﻿using Buffer = SharpGDX.Shims.Buffer;
 using SharpGDX.Shims;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics
 {
 	/** Interface wrapping all the methods of OpenGL ES 2.0
  * @author mzechner */

@@ -2,7 +2,7 @@
 using SharpGDX.Mathematics;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.G2D
 {
 	/** Caches glyph geometry for a BitmapFont, providing a fast way to render static text. This saves needing to compute the glyph
  * geometry each frame.

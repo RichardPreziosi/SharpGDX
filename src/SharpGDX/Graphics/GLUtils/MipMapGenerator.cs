@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Graphics.GLUtils
 {
 	public class MipMapGenerator {
 

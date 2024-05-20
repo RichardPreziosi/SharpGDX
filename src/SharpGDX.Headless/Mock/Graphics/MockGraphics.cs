@@ -1,6 +1,8 @@
 ﻿using SharpGDX.Utils;
-using static SharpGDX.Cursor;
-using static SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using static SharpGDX.Graphics.Cursor;
+using SharpGDX.Graphics;
+using static SharpGDX.IGraphics;
 
 namespace SharpGDX.Headless.Mock.Graphics
 {
@@ -269,27 +271,27 @@ namespace SharpGDX.Headless.Mock.Graphics
 	{
 	}
 
-	public override SharpGDX.Graphics.Monitor getPrimaryMonitor()
+	public override SharpGDX.IGraphics.Monitor getPrimaryMonitor()
 	{
 		return null;
 	}
 
-	public override SharpGDX.Graphics.Monitor getMonitor()
+	public override SharpGDX.IGraphics.Monitor getMonitor()
 	{
 		return null;
 	}
 
-	public override SharpGDX.Graphics.Monitor[] getMonitors()
+	public override SharpGDX.IGraphics.Monitor[] getMonitors()
 	{
 		return null;
 	}
 
-	public override DisplayMode[] getDisplayModes(SharpGDX.Graphics.Monitor monitor)
+	public override DisplayMode[] getDisplayModes(SharpGDX.IGraphics.Monitor monitor)
 	{
 		return null;
 	}
 
-	public override DisplayMode getDisplayMode(SharpGDX.Graphics.Monitor monitor)
+	public override DisplayMode getDisplayMode(SharpGDX.IGraphics.Monitor monitor)
 	{
 		return null;
 	}

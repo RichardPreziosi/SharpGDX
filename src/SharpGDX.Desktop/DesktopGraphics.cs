@@ -1,5 +1,11 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-using Monitor = SharpGDX.Graphics.Monitor;
+﻿using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using Cursor = SharpGDX.Graphics.Cursor;
+using OpenTK.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using Monitor = SharpGDX.IGraphics.Monitor;
 using SharpGDX.Mathematics;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
@@ -10,8 +16,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Cursor;
-using static SharpGDX.Graphics;
+using SharpGDX.Graphics;
+using static SharpGDX.IGraphics;
 
 namespace SharpGDX.Desktop
 {
@@ -592,7 +598,7 @@ public override unsafe void setCursor(Cursor cursor)
 	GLFW.SetCursor(getWindow().getWindowPtr(), ((Lwjgl3Cursor)cursor).glfwCursor);
 }
 
-public override unsafe void setSystemCursor(SystemCursor systemCursor)
+public override unsafe void setSystemCursor(Cursor.SystemCursor systemCursor)
 {
 	Lwjgl3Cursor.setSystemCursor(getWindow().getWindowPtr(), systemCursor);
 }

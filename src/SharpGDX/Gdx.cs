@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpGDX.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace SharpGDX
 	public class Gdx
 	{
 		public static Application app;
-		public static Graphics graphics;
+		public static IGraphics graphics;
 		public static Audio audio;
 		public static Input input;
 		public static Files files;

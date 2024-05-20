@@ -1,4 +1,7 @@
 ﻿using System;
+using SharpGDX.Graphics;
+using SharpGDX.Graphics.GLUtils;
+using SharpGDX.Graphics.G2D;
 using SharpGDX.Scenes.Scene2D.UI;
 using Fixed = SharpGDX.Scenes.Scene2D.UI.Value.Fixed;
 using SharpGDX.Shims;
