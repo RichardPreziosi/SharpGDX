@@ -287,18 +287,18 @@ SharpGDX\Math\Collision
 
 SharpGDX\Net
 ------------
--	-	HttpParametersUtils
--	-	HttpRequestBuilder
--	-	HttpRequestHeader
--	-	HttpResponseHeader
--	-	HttpStatus
--	-	NetJavaImpl
--	-	NetJavaServerSocketImpl
--	-	NetJavaSocketImpl
-- 	-	ServerSocket
-- 	-	ServerSocketHints
-- 	-	Socket
-- 	-	SocketHints
+- DONE	-	HttpParametersUtils
+- DONE	-	HttpRequestBuilder
+- DONE	-	HttpRequestHeader
+- DONE	-	HttpResponseHeader
+- DONE	-	HttpStatus
+- DONE	-	NetJavaImpl
+- DONE	-	NetJavaServerSocketImpl
+- DONE	-	NetJavaSocketImpl
+- DONE	-	ServerSocket
+- DONE	-	ServerSocketHints
+- DONE	-	Socket
+- DONE	-	SocketHints
 
 SharpGDX\Scenes\Scene2D
 -----------------------
@@ -415,7 +415,7 @@ SharpGDX\Utils
 - DONE	-	Array
 -	-	ArrayMap
 -	-	AtomicQueue
--	-	Base64Coder
+- DONE	-	Base64Coder
 -	-	BaseJsonReader
 -	-	BinaryHeap
 -	-	Bits
