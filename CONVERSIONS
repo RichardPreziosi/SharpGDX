@@ -1,6 +1,8 @@
 Should all instance of float.MinValue be replaced with Float.Epsilon? I think C# float.MinValue and Java Float.MIN_VALUE are technically different.
 Not sure that string.Substring() in C# is equivalent to the one in Java, need to verify.
 Check that all switch 'Fall Throughs' are handled appropriately (I did not understand what it meant when originally starting).
+I don't like the way the FrameBuffer classes were converted, this should be revisited.
+Verify that FileHandle is completely ported.
 
 SharpGDX
 --------
@@ -39,13 +41,13 @@ SharpGDX\Assets\Loaders
 -----------------------
 - DONE	-	AssetLoader
 - DONE	-	AsynchronousAssetLoader
--	-	BitmapFontLoader
--	-	CubemapLoader
+- DONE	-	BitmapFontLoader
+- DONE	-	CubemapLoader
 - DONE	-	FIleHandleResolver
 -	-	I18NBundleLoader
 -	-	ModelLoader
 - DONE	-	MusicLoader
--	-	ParticleEffectLoader
+- DONE	-	ParticleEffectLoader
 - DONE	-	PixmapLoader
 - DONE	-	ShaperProgramLoader
 -	-	SkinLoader
@@ -73,7 +75,7 @@ SharpGDX\Audio
 
 SharpGDX\Files
 --------------
-- PROG	-	FileHandle
+- DONE	-	FileHandle
 -	-	FileHandleStream
 
 SharpGDX\Graphics
@@ -81,7 +83,7 @@ SharpGDX\Graphics
 - DONE	-	Camera
 - DONE	-	Color
 - DONE	-	Colors
--	-	Cubemap
+- DONE	-	Cubemap
 - DONE	-	CubemapData
 - DONE	-	Cursor
 - DONE	-	FPSLogger
@@ -128,7 +130,7 @@ SharpGDX\Graphics\G2D
 -	-	RepeatablePolygonSprite
 - DONE	-	Sprite
 - DONE	-	SpriteBatch
--	-	SpriteCache
+- DONE	-	SpriteCache
 - DONE	-	TextureAtlas
 - DONE	-	TextureRegion
 
@@ -137,15 +139,15 @@ SharpGDX\Graphics\GLUtils
 -	-	CustomTexture3DData
 - DONE	-	ETC1
 - DONE	-	ETC1TextureData
--	-	FacedCubemapData
+- DONE	-	FacedCubemapData
 - DONE	-	FileTextureArrayData
 - DONE	-	FileTextureData
--	-	FloatFrameBuffer
--	-	FloatTextureData
--	-	FrameBuffer
--	-	FrameBufferCubemap
--	-	GLFrameBuffer
--	-	GLOnlyTextureData
+- DONE	-	FloatFrameBuffer
+- DONE	-	FloatTextureData
+- DONE	-	FrameBuffer
+- DONE	-	FrameBufferCubemap
+- DONE	-	GLFrameBuffer
+- DONE	-	GLOnlyTextureData
 - DONE	-	GLVersion
 - DONE	-	HdpiMode
 - DONE	-	HdpiUtils
@@ -160,7 +162,7 @@ SharpGDX\Graphics\GLUtils
 - DONE	-	InstanceData
 - DONE	-	KTXTextureData
 - DONE	-	MipMapGenerator
--	-	MipMapTextureData
+- DONE	-	MipMapTextureData
 - DONE	-	PixmapTextureData
 - DONE	-	ShaderProgram
 - DONE	-	ShapeRenderer
@@ -188,56 +190,56 @@ SharpGDX\Input
 
 SharpGDX\Maps
 -------------
--	-	ImageResolver
--	-	Map
--	-	MapGroupLayer
--	-	MapLayer
--	-	MapLayers
--	-	MapObject
--	-	MapObjects
--	-	MapProperties
--	-	MapRenderer
+- DONE	-	ImageResolver
+- DONE	-	Map
+- DONE	-	MapGroupLayer
+- DONE	-	MapLayer
+- DONE	-	MapLayers
+- DONE	-	MapObject
+- DONE	-	MapObjects
+- DONE	-	MapProperties
+- DONE	-	MapRenderer
 
 SharpGDX\Maps\Objects
 ---------------------
--	-	CircleMapObject
--	-	EllipseMapObject
--	-	PolygonMapObject
--	-	PolylineMapObject
--	-	RectangleMapObject
--	-	TextureMapObject
+- DONE	-	CircleMapObject
+- DONE	-	EllipseMapObject
+- DONE	-	PolygonMapObject
+- DONE	-	PolylineMapObject
+- DONE	-	RectangleMapObject
+- DONE	-	TextureMapObject
 
 SharpGDX\Maps\Tiled
 -------------------
--	-	AtlasTmxMapLoader
--	-	BaseTmxMapLoader
--	-	TideMapLoader
--	-	TiledMap
--	-	TiledMapImageLayer
--	-	TiledMapRenderer
--	-	TiledMapTile
--	-	TiledMapTileLayer
--	-	TiledMapTileSet
--	-	TiledMapTileSets
--	-	TmxMapLoader
+- DONE	-	AtlasTmxMapLoader
+- DONE	-	BaseTmxMapLoader
+- DONE	-	TideMapLoader
+- DONE	-	TiledMap
+- DONE	-	TiledMapImageLayer
+- DONE	-	TiledMapRenderer
+- DONE	-	TiledMapTile
+- DONE	-	TiledMapTileLayer
+- DONE	-	TiledMapTileSet
+- DONE	-	TiledMapTileSets
+- DONE	-	TmxMapLoader
 
 SharpGDX\Maps\Tiled\Objects
 ---------------------------
--	-	TiledMapTileMapObject
+- DONE	-	TiledMapTileMapObject
 
 SharpGDX\Maps\Tiled\Renderers
 -----------------------------
--	-	BatchTiledMapRenderer
--	-	HexagonalTiledMapRenderer
--	-	IsometricStaggeredTiledMapRenderer
--	-	IsometricTiledMapRenderer
--	-	OrthoCachedTiledMapRenderer
--	-	OrthogonalTiledMapRenderer
+- DONE	-	BatchTiledMapRenderer
+- DONE	-	HexagonalTiledMapRenderer
+- DONE	-	IsometricStaggeredTiledMapRenderer
+- DONE	-	IsometricTiledMapRenderer
+- DONE	-	OrthoCachedTiledMapRenderer
+- DONE	-	OrthogonalTiledMapRenderer
 
 SharpGDX\Maps\Tiled\Tiles
 -------------------------
--	-	AnimatedTiledMapTile
--	-	StaticTiledMapTile
+- DONE	-	AnimatedTiledMapTile
+- DONE	-	StaticTiledMapTile
 
 SharpGDX\Math
 -------------
@@ -394,9 +396,9 @@ SharpGDX\Scenes\Scene2D\Utils
 - DONE	-	ClickListener
 - DONE	-	Cullable
 - DONE	-	Disableable
--	-	DragAndDrop
--	-	DragListener
--	-	DragScrollListener
+- DONE	-	DragAndDrop
+- DONE	-	DragListener
+- DONE	-	DragScrollListener
 - DONE	-	Drawable
 - DONE	-	FocusListener
 - DONE	-	Layout
