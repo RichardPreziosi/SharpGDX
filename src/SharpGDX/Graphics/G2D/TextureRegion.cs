@@ -18,7 +18,7 @@ public class TextureRegion {
 	internal  Texture texture;
 	internal  float u, v;
 	internal  float u2, v2;
-	protected int regionWidth, regionHeight;
+	internal int regionWidth, regionHeight;
 
 	/** Constructs a region that cannot be used until a texture and texture coordinates are set. */
 	public TextureRegion () {

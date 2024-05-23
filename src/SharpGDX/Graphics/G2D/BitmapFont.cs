@@ -27,7 +27,7 @@ public class BitmapFont : Disposable {
 	internal Array<TextureRegion> regions;
 	private readonly BitmapFontCache cache;
 	private bool flipped;
-	bool integer;
+	protected bool integer;
 	private bool _ownsTexture;
 
 	/** Creates a BitmapFont using the default 15pt Liberation Sans font included in the libgdx JAR file. This is convenient to
@@ -362,7 +362,7 @@ public class BitmapFont : Disposable {
 	 * <p>
 	 * Note this method is called by the BitmapFont constructors. If a subclass overrides this method, it will be called before the
 	 * subclass constructors. */
-	public BitmapFontCache newFontCache () {
+	public virtual BitmapFontCache newFontCache () {
 		return new BitmapFontCache(this, integer);
 	}
 

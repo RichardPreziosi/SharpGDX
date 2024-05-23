@@ -98,8 +98,8 @@ SharpGDX\Graphics
 - DONE	-	Pixmap
 - DONE	-	PixmapIO
 - DONE	-	Texture
--	-	Texture3D
--	-	Texture3DData
+- DONE	-	Texture3D
+- DONE	-	Texture3DData
 - DONE	-	TextureArray
 - DONE	-	TextureArrayData
 - DONE	-	TextureData
@@ -113,21 +113,21 @@ SharpGDX\Graphics\G2D
 - DONE	-	BitmapFont
 - DONE	-	BitmapFontCache
 - DONE	-	CpuSpriteBatch
--	-	DistanceFieldFont
+- DONE	-	DistanceFieldFont
 - DONE	-	Gdx2DPixmap
 - DONE	-	GlyphLayout
 - DONE	-	NinePatch
 - DONE	-	ParticleEffect
 - DONE	-	ParticleEffectPool
 - DONE	-	ParticleEmitter
--	-	PixmapPacker
--	-	PixmapPackerIO
--	-	PolygonBatch
--	-	PolygonRegion
--	-	PolygonRegionLoader
--	-	PolygonSprite
--	-	PolygonSpriteBatch
--	-	RepeatablePolygonSprite
+- DONE	-	PixmapPacker
+- DONE	-	PixmapPackerIO
+- DONE	-	PolygonBatch
+- DONE	-	PolygonRegion
+- DONE	-	PolygonRegionLoader
+- DONE	-	PolygonSprite
+- DONE	-	PolygonSpriteBatch
+- DONE	-	RepeatablePolygonSprite
 - DONE	-	Sprite
 - DONE	-	SpriteBatch
 - DONE	-	SpriteCache
@@ -136,7 +136,7 @@ SharpGDX\Graphics\G2D
 
 SharpGDX\Graphics\GLUtils
 -------------------------
--	-	CustomTexture3DData
+- DONE	-	CustomTexture3DData
 - DONE	-	ETC1
 - DONE	-	ETC1TextureData
 - DONE	-	FacedCubemapData
@@ -174,13 +174,13 @@ SharpGDX\Graphics\GLUtils
 
 SharpGDX\Graphics\Profiling
 ---------------------------
--	-	GL20Interceptor
--	-	GL30Interceptor
--	-	GL31Interceptor
--	-	GL32Interceptor
--	-	GLErrorListener
--	-	GLInterceptor
--	-	GLProfiler
+- DONE	-	GL20Interceptor
+- DONE	-	GL30Interceptor
+- DONE	-	GL31Interceptor
+- DONE	-	GL32Interceptor
+- DONE	-	GLErrorListener
+- DONE	-	GLInterceptor
+- DONE	-	GLProfiler
 
 SharpGDX\Input
 --------------
@@ -422,9 +422,9 @@ SharpGDX\Utils
 -	-	BinaryHeap
 -	-	Bits
 - DONE	-	BooleanArray
-- 	-	BufferUtils
-- 	-	ByteArray
-- 	-	CharArray
+-	-	BufferUtils
+-	-	ByteArray
+-	-	CharArray
 - DONE	-	Clipboard
 - DONE	-	Collections
 - DONE	-	ComparableTimSort
@@ -453,7 +453,7 @@ SharpGDX\Utils
 - DONE	-	LongArray
 - DONE	-	LongMap
 -	-	LongQueue
-- 	-	Null
+-	-	Null
 - DONE	-	NumberUtils
 -	-	ObjectFloatMap
 - DONE	-	ObjectIntMap
@@ -490,7 +490,7 @@ SharpGDX\Utils
 - DONE	-	Timer
 -	-	UBJsonReader
 -	-	UBJsonWriter
--	-	XmlReader
+- DONE	-	XmlReader
 - DONE	-	XmlWriter
 
 SharpGDX\Utils\Async
@@ -502,28 +502,28 @@ SharpGDX\Utils\Async
 
 SharpGDX\Utils\Compression
 --------------------------
--	-	CRC
--	-	ICodeProgress
--	-	Lzma
+- DONE	-	CRC
+- DONE	-	ICodeProgress
+- DONE	-	Lzma
 
 SharpGDX\Utils\Compression\LZ
 -----------------------------
--	-	BinTree
--	-	InWindow
--	-	OutWindow
+- DONE	-	BinTree
+- DONE	-	InWindow
+- DONE	-	OutWindow
 
 SharpGDX\Utils\Compression\LZMA
 -------------------------------
--	-	Base
--	-	Decoder
--	-	Encoder
+- DONE	-	Base
+- DONE	-	Decoder
+- DONE	-	Encoder
 
 SharpGDX\Utils\Compression\RangeCoder
 -------------------------------------
--	-	BitTreeDecoder
--	-	BitTreeEncoder
--	-	Decoder
--	-	Encoder
+- DONE	-	BitTreeDecoder
+- DONE	-	BitTreeEncoder
+- DONE	-	Decoder
+- DONE	-	Encoder
 
 SharpGDX\Utils\Reflect
 ----------------------
@@ -555,8 +555,8 @@ SharpGDX.Headless
 - DONE	-	HeadlessFileHandle
 - DONE	-	HeadlessFiles
 - DONE	-	HeadlessNativesLoader
-- PROG	-	HeadlessNet
-- PROG	-	HeadlessPreferences
+- 	-	HeadlessNet
+- DONE	-	HeadlessPreferences
 
 SharpGDX.Headless\Mock\Audio
 ----------------------------
@@ -587,14 +587,14 @@ SharpGDX.Desktop
 - DONE 	-	DesktopCursor
 - DONE	-	DesktopFileHandle
 - DONE	-	DesktopFiles
-- 	-	DesktopGL20
-- 	-	DesktopGL30
-- 	-	DesktopGL31
-- 	-	DesktopGL32
+-	-	DesktopGL20
+-	-	DesktopGL30
+-	-	DesktopGL31
+-	-	DesktopGL32
 - DONE	-	DesktopGraphics
 - DONE	-	DesktopInput
 - DONE 	-	DesktopNativesLoader
-- 	-	DesktopNet
+-	-	DesktopNet
 - DONE 	-	DesktopPreferences
 - DONE	-	DesktopWindow
 - DONE	-	DesktopWindowAdapter
@@ -604,11 +604,11 @@ SharpGDX.Desktop
 
 SharpGDX.Desktop\Audio
 ----------------------
-- 	-	DesktopAudioRecorder
+-	-	DesktopAudioRecorder
 - DONE	-	DesktopAudio
-- 	-	MP3
-- 	-	Ogg
-- 	-	OggInputStream
+-	-	MP3
+-	-	Ogg
+-	-	OggInputStream
 - DONE 	-	OpenALAudioDevice
 - DONE 	-	OpenALDesktopAudio	
 - DONE 	-	OpenALMusic

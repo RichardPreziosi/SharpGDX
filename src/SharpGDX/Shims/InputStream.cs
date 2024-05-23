@@ -25,6 +25,11 @@ namespace SharpGDX.Shims
 			return (int)_stream.Length;
 		}
 
+		public virtual int read()
+		{
+			throw new NotImplementedException();
+		}
+
 		public virtual int read(byte[] buffer)
 		{
 			// TODO: I don't like this. -RP

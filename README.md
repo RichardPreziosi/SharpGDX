@@ -6,11 +6,13 @@ C# Port of LibGDX
 
 This is a work in progress that will be broken up into several phases.
 
+At this point, I believe I've done what I am going to do of phase 1 without moving partially on to phase 2. There are still some files that need to be ported, but it would be easier to port them after some of the shimmed functionality is removed.
+
 1. Port of Java code
     1. Most things will be left named as is
     2. Lots of shimming of Java functionality
     3. Leave the surface (public) API as close to Java as possible
-1. Conform port to C# best practices
+2. Conform port to C# best practices
     1. Fix casing of fields and method names
     2. Change fields to properties where appropriate
     3. Unnest classes where appropriate
@@ -26,6 +28,8 @@ Please see the `CONVERSIONS` file for the current state of each file.
 I think that I would eventually like to get rid of everything in the `Shims` namespace. It is just a lot less code changes to leave it for now, and I would like to think carefully about changing the API.
 
 I would like to eventually remove and/or reduce the usage of the buffer classes (IntBuffer, FloatBuffer, ByteBuffer, etc.). While these classes are first-class citizens in Java and the JNI knows how to convert them, they are shims in SharpGDX and there are quite a lot of hoops that I've had to jump through to get their data passed to externs.
+
+It is debatable if MP3 support will be ported or not. My understanding was that required licensing and may not be worth it.
 
 ## Special Notes
 

@@ -219,7 +219,7 @@ public class BitmapFontCache {
 		color.set(r, g, b, a);
 	}
 
-	public void draw (Batch spriteBatch) {
+	public virtual void draw (Batch spriteBatch) {
 		Array<TextureRegion> regions = font.getRegions();
 		for (int j = 0, n = pageVertices.Length; j < n; j++) {
 			if (idx[j] > 0) { // ignore if this texture has no glyphs
@@ -229,7 +229,7 @@ public class BitmapFontCache {
 		}
 	}
 
-	public void draw (Batch spriteBatch, int start, int end) {
+	public virtual void draw (Batch spriteBatch, int start, int end) {
 		if (pageVertices.Length == 1) { // 1 page.
 			spriteBatch.draw(font.getRegion().getTexture(), pageVertices[0], start * 20, (end - start) * 20);
 			return;
