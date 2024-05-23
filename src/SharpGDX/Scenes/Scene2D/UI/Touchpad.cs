@@ -146,7 +146,7 @@ public class Touchpad : Widget {
 		knobPercent.set(0, 0);
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		Color c = getColor();
@@ -157,10 +157,10 @@ public class Touchpad : Widget {
 		float w = getWidth();
 		float h = getHeight();
 
-		 Drawable bg = style.background;
+		 IDrawable bg = style.background;
 		if (bg != null) bg.draw(batch, x, y, w, h);
 
-		 Drawable knob = style.knob;
+		 IDrawable knob = style.knob;
 		if (knob != null) {
 			x += knobPosition.x - knob.getMinWidth() / 2f;
 			y += knobPosition.y - knob.getMinHeight() / 2f;
@@ -222,13 +222,13 @@ public class Touchpad : Widget {
 	 * @author Josh Street */
 	public  class TouchpadStyle {
 		/** Stretched in both directions. */
-		public Drawable? background;
-		public Drawable? knob;
+		public IDrawable? background;
+		public IDrawable? knob;
 
 		public TouchpadStyle () {
 		}
 
-		public TouchpadStyle (Drawable? background, Drawable? knob) {
+		public TouchpadStyle (IDrawable? background, IDrawable? knob) {
 			this.background = background;
 			this.knob = knob;
 		}

@@ -449,14 +449,14 @@ public class Actions {
 		return afterAction;
 	}
 
-	static public AddListenerAction addListener (EventListener listener, bool capture) {
+	static public AddListenerAction addListener (IEventListener listener, bool capture) {
 		AddListenerAction addAction = action<AddListenerAction>(typeof(AddListenerAction));
 		addAction.setListener(listener);
 		addAction.setCapture(capture);
 		return addAction;
 	}
 
-	static public AddListenerAction addListener (EventListener listener, bool capture, Actor targetActor) {
+	static public AddListenerAction addListener (IEventListener listener, bool capture, Actor targetActor) {
 		AddListenerAction addAction = action<AddListenerAction>(typeof(AddListenerAction));
 		addAction.setTarget(targetActor);
 		addAction.setListener(listener);
@@ -464,14 +464,14 @@ public class Actions {
 		return addAction;
 	}
 
-	static public RemoveListenerAction removeListener (EventListener listener, bool capture) {
+	static public RemoveListenerAction removeListener (IEventListener listener, bool capture) {
 		RemoveListenerAction addAction = action<RemoveListenerAction>(typeof(RemoveListenerAction));
 		addAction.setListener(listener);
 		addAction.setCapture(capture);
 		return addAction;
 	}
 
-	static public RemoveListenerAction removeListener (EventListener listener, bool capture, Actor targetActor) {
+	static public RemoveListenerAction removeListener (IEventListener listener, bool capture, Actor targetActor) {
 		RemoveListenerAction addAction = action<RemoveListenerAction>(typeof(RemoveListenerAction));
 		addAction.setTarget(targetActor);
 		addAction.setListener(listener);

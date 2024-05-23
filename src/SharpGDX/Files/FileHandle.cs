@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using SharpGDX;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using static SharpGDX.Files;
+using static SharpGDX.IFiles;
 using File = SharpGDX.Shims.File;
 
-namespace SharpGDX
+namespace SharpGDX.Files
 {
 	/** Represents a file or directory on the filesystem, classpath, Android app storage, or Android assets directory. FileHandles are
  * created via a {@link Files} instance.

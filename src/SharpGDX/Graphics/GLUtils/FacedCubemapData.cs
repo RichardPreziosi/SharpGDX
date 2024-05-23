@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,14 @@ namespace SharpGDX.Graphics.GLUtils
 	/** A FacedCubemapData holds a cubemap data definition based on a {@link TextureData} per face.
  * 
  * @author Vincent Nousquet */
-public class FacedCubemapData : CubemapData {
+public class FacedCubemapData : ICubemapData {
 
-	protected readonly TextureData[] data = new TextureData[6];
+	protected readonly ITextureData[] data = new ITextureData[6];
 
 	/** Construct an empty Cubemap. Use the load(...) methods to set the texture of each side. Every side of the cubemap must be
 	 * set before it can be used. */
 	public FacedCubemapData () 
-	: this((TextureData)null, (TextureData)null, (TextureData)null, (TextureData)null, (TextureData)null, (TextureData)null)
+	: this((ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null)
 	{
 		
 	}
@@ -25,9 +26,9 @@ public class FacedCubemapData : CubemapData {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public FacedCubemapData (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
 		FileHandle positiveZ, FileHandle negativeZ) 
-	: this(TextureData.Factory.loadFromFile(positiveX, false), TextureData.Factory.loadFromFile(negativeX, false),
-		TextureData.Factory.loadFromFile(positiveY, false), TextureData.Factory.loadFromFile(negativeY, false),
-		TextureData.Factory.loadFromFile(positiveZ, false), TextureData.Factory.loadFromFile(negativeZ, false))
+	: this(ITextureData.Factory.loadFromFile(positiveX, false), ITextureData.Factory.loadFromFile(negativeX, false),
+		ITextureData.Factory.loadFromFile(positiveY, false), ITextureData.Factory.loadFromFile(negativeY, false),
+		ITextureData.Factory.loadFromFile(positiveZ, false), ITextureData.Factory.loadFromFile(negativeZ, false))
 	{
 		
 	}
@@ -35,9 +36,9 @@ public class FacedCubemapData : CubemapData {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public FacedCubemapData (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
 		FileHandle positiveZ, FileHandle negativeZ, bool useMipMaps) 
-	: this(TextureData.Factory.loadFromFile(positiveX, useMipMaps), TextureData.Factory.loadFromFile(negativeX, useMipMaps),
-		TextureData.Factory.loadFromFile(positiveY, useMipMaps), TextureData.Factory.loadFromFile(negativeY, useMipMaps),
-		TextureData.Factory.loadFromFile(positiveZ, useMipMaps), TextureData.Factory.loadFromFile(negativeZ, useMipMaps))
+	: this(ITextureData.Factory.loadFromFile(positiveX, useMipMaps), ITextureData.Factory.loadFromFile(negativeX, useMipMaps),
+		ITextureData.Factory.loadFromFile(positiveY, useMipMaps), ITextureData.Factory.loadFromFile(negativeY, useMipMaps),
+		ITextureData.Factory.loadFromFile(positiveZ, useMipMaps), ITextureData.Factory.loadFromFile(negativeZ, useMipMaps))
 	{
 		
 	}
@@ -76,8 +77,8 @@ public class FacedCubemapData : CubemapData {
 	}
 
 	/** Construct a Cubemap with the specified {@link TextureData}'s for the sides */
-	public FacedCubemapData (TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY,
-		TextureData positiveZ, TextureData negativeZ) {
+	public FacedCubemapData (ITextureData positiveX, ITextureData negativeX, ITextureData positiveY, ITextureData negativeY,
+		ITextureData positiveZ, ITextureData negativeZ) {
 		data[0] = positiveX;
 		data[1] = negativeX;
 		data[2] = positiveY;
@@ -87,7 +88,7 @@ public class FacedCubemapData : CubemapData {
 	}
 
 	public bool isManaged () {
-		foreach (TextureData data in this.data)
+		foreach (ITextureData data in this.data)
 			if (!data.isManaged()) return false;
 		return true;
 	}
@@ -98,7 +99,7 @@ public class FacedCubemapData : CubemapData {
 	 * @param side The {@link CubemapSide}
 	 * @param file The texture {@link FileHandle} */
 	public void load (Cubemap.CubemapSide side, FileHandle file) {
-		data[side.index] = TextureData.Factory.loadFromFile(file, false);
+		data[side.index] = ITextureData.Factory.loadFromFile(file, false);
 	}
 
 	/** Sets the specified side of this cubemap to the specified {@link Pixmap}, overwriting any previous data set to that side.
@@ -118,7 +119,7 @@ public class FacedCubemapData : CubemapData {
 	}
 
 	/** @return The {@link TextureData} for the specified side, can be null if the cubemap is incomplete. */
-	public TextureData getTextureData (Cubemap.CubemapSide side) {
+	public ITextureData getTextureData (Cubemap.CubemapSide side) {
 		return data[side.index];
 	}
 
@@ -156,7 +157,7 @@ public class FacedCubemapData : CubemapData {
 
 	public void consumeCubemapData () {
 		for (int i = 0; i < data.Length; i++) {
-			if (data[i].getType() == TextureData.TextureDataType.Custom) {
+			if (data[i].getType() == ITextureData.TextureDataType.Custom) {
 				data[i].consumeCustomData(GL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			} else {
 				Pixmap pixmap = data[i].consumePixmap();

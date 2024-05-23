@@ -15,7 +15,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * {@link #invalidate()} or {@link #invalidateHierarchy()} as needed.
  * @author mzechner
  * @author Nathan Sweet */
-public class Widget : Actor , Layout {
+public class Widget : Actor , ILayout {
 	private bool _needsLayout = true;
 	private bool fillParent;
 	private bool layoutEnabled = true;
@@ -84,7 +84,7 @@ public class Widget : Actor , Layout {
 		if (!layoutEnabled) return;
 		invalidate();
 		Group parent = getParent();
-		if (parent is Layout) ((Layout)parent).invalidateHierarchy();
+		if (parent is ILayout) ((ILayout)parent).invalidateHierarchy();
 	}
 
 	protected void sizeChanged () {
@@ -101,7 +101,7 @@ public class Widget : Actor , Layout {
 	}
 
 	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget is laid out. */
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 	}
 

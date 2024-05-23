@@ -39,8 +39,8 @@ namespace SharpGDX.Scenes.Scene2D
 public class Actor {
 	private Stage? stage;
 	internal Group? parent;
-	private readonly DelayedRemovalArray<EventListener> listeners = new (0);
-	private readonly DelayedRemovalArray<EventListener> captureListeners = new (0);
+	private readonly DelayedRemovalArray<IEventListener> listeners = new (0);
+	private readonly DelayedRemovalArray<IEventListener> captureListeners = new (0);
 	private readonly Array<Action> actions = new (0);
 
 	private  String? name;
@@ -63,7 +63,7 @@ public class Actor {
 	 * The default implementation does nothing.
 	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
 	 *           children. */
-	public virtual void draw (Batch batch, float parentAlpha) {
+	public virtual void draw (IBatch batch, float parentAlpha) {
 	}
 
 	/** Updates the actor based on time. Typically this is called each frame by {@link Stage#act(float)}.
@@ -157,7 +157,7 @@ public class Actor {
 	public bool notify (Event @event, bool capture) {
 		if (@event.getTarget() == null) throw new IllegalArgumentException("The event target cannot be null.");
 
-		DelayedRemovalArray<EventListener> listeners = capture ? captureListeners : this.listeners;
+		DelayedRemovalArray<IEventListener> listeners = capture ? captureListeners : this.listeners;
 		if (listeners.size == 0) return @event.isCancelled();
 
 		@event.setListenerActor(this);
@@ -203,7 +203,7 @@ public class Actor {
 	/** Add a listener to receive events that {@link #hit(float, float, boolean) hit} this actor. See {@link #fire(Event)}.
 	 * @see InputListener
 	 * @see ClickListener */
-	public bool addListener (EventListener listener) {
+	public bool addListener (IEventListener listener) {
 		if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		if (!listeners.contains(listener, true)) {
 			listeners.add(listener);
@@ -212,29 +212,29 @@ public class Actor {
 		return false;
 	}
 
-	public bool removeListener (EventListener listener) {
+	public bool removeListener (IEventListener listener) {
 		if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		return listeners.removeValue(listener, true);
 	}
 
-	public DelayedRemovalArray<EventListener> getListeners () {
+	public DelayedRemovalArray<IEventListener> getListeners () {
 		return listeners;
 	}
 
 	/** Adds a listener that is only notified during the capture phase.
 	 * @see #fire(Event) */
-	public bool addCaptureListener (EventListener listener) {
+	public bool addCaptureListener (IEventListener listener) {
 		if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		if (!captureListeners.contains(listener, true)) captureListeners.add(listener);
 		return true;
 	}
 
-	public bool removeCaptureListener (EventListener listener) {
+	public bool removeCaptureListener (IEventListener listener) {
 		if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		return captureListeners.removeValue(listener, true);
 	}
 
-	public DelayedRemovalArray<EventListener> getCaptureListeners () {
+	public DelayedRemovalArray<IEventListener> getCaptureListeners () {
 		return captureListeners;
 	}
 

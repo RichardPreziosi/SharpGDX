@@ -1,6 +1,6 @@
 using System.Collections;
 using SharpGDX.Utils.Reflect;
-using static SharpGDX.Graphics.G2D.Batch;
+using static SharpGDX.Graphics.G2D.IBatch;
 using SharpGDX.Shims;
 using SharpGDX.Assets;
 using SharpGDX.Assets.Loaders;
@@ -38,14 +38,14 @@ public class HexagonalTiledMapRenderer : BatchTiledMapRenderer {
 		init(map);
 	}
 
-	public HexagonalTiledMapRenderer (TiledMap map, Batch batch) 
+	public HexagonalTiledMapRenderer (TiledMap map, IBatch batch) 
 	: base(map, batch)
 	{
 		
 		init(map);
 	}
 
-	public HexagonalTiledMapRenderer (TiledMap map, float unitScale, Batch batch) 
+	public HexagonalTiledMapRenderer (TiledMap map, float unitScale, IBatch batch) 
 	: base(map, unitScale, batch)
 	{
 		
@@ -175,7 +175,7 @@ public class HexagonalTiledMapRenderer : BatchTiledMapRenderer {
 	/** render a single cell */
 	private void renderCell ( TiledMapTileLayer.Cell cell,  float x,  float y,  float color) {
 		if (cell != null) {
-			 TiledMapTile tile = cell.getTile();
+			 ITiledMapTile tile = cell.getTile();
 			if (tile != null) {
 				if (tile is Tiles.AnimatedTiledMapTile) return;
 

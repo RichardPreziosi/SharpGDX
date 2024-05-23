@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Audio
 {
 	/**
  * <p>
@@ -28,7 +22,7 @@ namespace SharpGDX
  * </p>
  * 
  * @author mzechner */
-	public interface Music : Disposable
+	public interface IMusic : Disposable
 	{
 	/** Starts the play back of the music stream. In case the stream was paused this will resume the play back. In case the music
 	 * stream is finished playing this will restart the play back. */
@@ -86,7 +80,7 @@ namespace SharpGDX
 		/** Called when the end of a media source is reached during playback.
 		 * 
 		 * @param music the Music that reached the end of the file */
-		public abstract void onCompletion(Music music);
+		public abstract void onCompletion(IMusic music);
 	}
 }
 }

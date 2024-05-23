@@ -16,17 +16,17 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Window : Disposable {
+	public class DesktopWindow : Disposable {
 	private unsafe Window* windowHandle;
-	readonly ApplicationListener listener;
-	readonly Lwjgl3ApplicationBase application;
+	readonly IApplicationListener listener;
+	readonly IDesktopApplicationBase application;
 	private bool listenerInitialized = false;
-	Lwjgl3WindowListener windowListener;
-	private Lwjgl3Graphics graphics;
-	private Lwjgl3Input input;
-	private readonly Lwjgl3ApplicationConfiguration config;
-	private readonly Array<Runnable> runnables = new Array<Runnable>();
-	private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
+	IDesktopWindowListener windowListener;
+	private DesktopGraphics graphics;
+	private IDesktopInput input;
+	private readonly DesktopApplicationConfiguration config;
+	private readonly Array<Runnable> runnables = new ();
+	private readonly Array<Runnable> executedRunnables = new();
 	private readonly IntBuffer tmpBuffer;
 	private readonly IntBuffer tmpBuffer2;
 	bool iconified = false;
@@ -50,14 +50,14 @@ namespace SharpGDX.Desktop
 			postRunnable(() => {
 				
 					if (windowListener != null) {
-						windowListener.filesDropped(files);
+						windowListener.FilesDropped(files);
 					}
 			});
 		}
 
 		private WindowRefreshCallback refreshCallback;
 
-	internal Lwjgl3Window (ApplicationListener listener, Lwjgl3ApplicationConfiguration config, Lwjgl3ApplicationBase application) {
+	internal DesktopWindow (IApplicationListener listener, DesktopApplicationConfiguration config, IDesktopApplicationBase application) {
 		this.listener = listener;
 		this.windowListener = config.windowListener;
 		this.config = config;
@@ -70,8 +70,8 @@ namespace SharpGDX.Desktop
 
 	internal unsafe void create (Window* windowHandle) {
 		this.windowHandle = windowHandle;
-		this.input = application.createInput(this);
-		this.graphics = new Lwjgl3Graphics(this);
+		this.input = application.CreateInput(this);
+		this.graphics = new DesktopGraphics(this);
 
 		GLFW.SetWindowFocusCallback
 		(
@@ -83,11 +83,11 @@ namespace SharpGDX.Desktop
 				{
 					if (focused)
 					{
-						windowListener.focusGained();
+						windowListener.FocusGained();
 					}
 					else
 					{
-						windowListener.focusLost();
+						windowListener.FocusLost();
 					}
 
 					this.focused = focused;
@@ -103,7 +103,7 @@ namespace SharpGDX.Desktop
 
 				if (windowListener != null)
 				{
-					windowListener.iconified(iconified);
+					windowListener.Iconified(iconified);
 				}
 
 				this.iconified = iconified;
@@ -122,7 +122,7 @@ namespace SharpGDX.Desktop
 		{
 			if (windowListener != null)
 			{
-				windowListener.maximized(maximized);
+				windowListener.Maximized(maximized);
 			}
 
 		}));
@@ -135,7 +135,7 @@ namespace SharpGDX.Desktop
 
 				if (windowListener != null)
 				{
-					if (!windowListener.closeRequested())
+					if (!windowListener.CloseRequested())
 					{
 						GLFW.SetWindowShouldClose(windowHandle, false);
 					}
@@ -153,28 +153,28 @@ namespace SharpGDX.Desktop
 			{
 				if (windowListener != null)
 				{
-					windowListener.refreshRequested();
+					windowListener.RefreshRequested();
 				}
 
 			})
 		);
 
 		if (windowListener != null) {
-			windowListener.created(this);
+			windowListener.Created(this);
 		}
 	}
 
 	/** @return the {@link ApplicationListener} associated with this window **/
-	public ApplicationListener getListener () {
+	public IApplicationListener getListener () {
 		return listener;
 	}
 
-	/** @return the {@link Lwjgl3WindowListener} set on this window **/
-	public Lwjgl3WindowListener getWindowListener () {
+		/** @return the {@link DesktopWindowListener} set on this window **/
+		public IDesktopWindowListener getWindowListener () {
 		return windowListener;
 	}
 
-	public void setWindowListener (Lwjgl3WindowListener listener) {
+	public void setWindowListener (IDesktopWindowListener listener) {
 		this.windowListener = listener;
 	}
 
@@ -259,7 +259,7 @@ namespace SharpGDX.Desktop
 		setIcon(windowHandle, image);
 	}
 
-	private static unsafe void setIcon (Window* windowHandle, String[] imagePaths, Files.FileType imageFileType) {
+	private static unsafe void setIcon (Window* windowHandle, String[] imagePaths, IFiles.FileType imageFileType) {
 		if (SharedLibraryLoader.isMac) return;
 
 		Pixmap[] pixmaps = new Pixmap[imagePaths.Length];
@@ -326,11 +326,11 @@ namespace SharpGDX.Desktop
 			maxHeight > -1 ? maxHeight : GLFW.DontCare);
 	}
 
-	internal Lwjgl3Graphics getGraphics () {
+	internal DesktopGraphics getGraphics () {
 		return graphics;
 	}
 
-	internal Lwjgl3Input getInput () {
+	internal IDesktopInput getInput () {
 		return input;
 	}
 
@@ -393,7 +393,7 @@ namespace SharpGDX.Desktop
 		return GLFW.WindowShouldClose(windowHandle);
 	}
 
-	internal Lwjgl3ApplicationConfiguration getConfig () {
+	internal DesktopApplicationConfiguration getConfig () {
 		return config;
 	}
 
@@ -424,7 +424,7 @@ namespace SharpGDX.Desktop
 	public unsafe void dispose () {
 		listener.pause();
 		listener.dispose();
-		Lwjgl3Cursor.dispose(this);
+		DesktopCursor.dispose(this);
 		graphics.dispose();
 		input.dispose();
 
@@ -450,7 +450,7 @@ namespace SharpGDX.Desktop
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (GetType() != obj.GetType()) return false;
-		Lwjgl3Window other = (Lwjgl3Window)obj;
+		DesktopWindow other = (DesktopWindow)obj;
 		if (windowHandle != other.windowHandle) return false;
 		return true;
 	}

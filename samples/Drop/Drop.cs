@@ -176,19 +176,19 @@ namespace Drop
 		public float height;
 }
 
-public class ScreenPlay : Screen
+public class ScreenPlay : IScreen
 {
 	internal Drop g;
 	Array<Box> boxes;
 
 
-	public void show()
+	public void Show()
 	{
 		boxes = new Array<Box>();
 		boxes.add(new Box(){x = 10, y = 10, height = 10, width = 10});
 	}
 
-	public void render(float delta)
+	public void Render(float delta)
 	{
 		ScreenUtils.clear(0.2f, 0,0,1);
 		foreach (Box box in boxes) {
@@ -206,23 +206,23 @@ public class ScreenPlay : Screen
 		}	
 	}
 
-	public void resize(int width, int height)
+	public void Resize(int width, int height)
 	{
 	}
 
-	public void pause()
+	public void Pause()
 	{
 	}
 
-	public void resume()
+	public void Resume()
 	{
 	}
 
-	public void hide()
+	public void Hide()
 	{
 	}
 
-	public void dispose()
+	public void Dispose()
 	{
 	}
 }

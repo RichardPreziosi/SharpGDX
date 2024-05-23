@@ -119,7 +119,7 @@ namespace SharpGDX.Utils
 		}
 
 		/** Close and ignore all errors. */
-		public static void closeQuietly(Closeable c)
+		public static void closeQuietly(ICloseable c)
 		{
 			if (c != null)
 			{

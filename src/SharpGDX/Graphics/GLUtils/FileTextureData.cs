@@ -1,10 +1,11 @@
-﻿using SharpGDX.Shims;
+﻿using SharpGDX.Files;
+using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 
 namespace SharpGDX.Graphics.GLUtils
 {
-	public class FileTextureData : TextureData {
+	public class FileTextureData : ITextureData {
 
 	readonly FileHandle file;
 	int width = 0;
@@ -80,8 +81,8 @@ namespace SharpGDX.Graphics.GLUtils
 		return file;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Pixmap;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Pixmap;
 	}
 
 	public void consumeCustomData (int target) {

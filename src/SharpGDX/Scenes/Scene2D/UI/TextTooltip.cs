@@ -70,14 +70,14 @@ public class TextTooltip : Tooltip<Label> {
 	 * @author Nathan Sweet */
 	public class TextTooltipStyle {
 		public Label.LabelStyle label;
-		public Drawable? background;
+		public IDrawable? background;
 		/** 0 means don't wrap. */
 		public float wrapWidth;
 
 		public TextTooltipStyle () {
 		}
 
-		public TextTooltipStyle (Label.LabelStyle label, Drawable? background) {
+		public TextTooltipStyle (Label.LabelStyle label, IDrawable? background) {
 			this.label = label;
 			this.background = background;
 		}

@@ -1,4 +1,5 @@
-﻿using SharpGDX.Shims;
+﻿using SharpGDX.Files;
+using SharpGDX.Shims;
 using SharpGDX;
 using SharpGDX.Mathematics;
 using SharpGDX.Utils;
@@ -172,7 +173,7 @@ public class BitmapFont : Disposable {
 
 	/** Draws text at the specified position.
 	 * @see BitmapFontCache#addText(CharSequence, float, float) */
-	public GlyphLayout draw (Batch batch, string str, float x, float y) {
+	public GlyphLayout draw (IBatch batch, string str, float x, float y) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y);
 		cache.draw(batch);
@@ -181,7 +182,7 @@ public class BitmapFont : Disposable {
 
 	/** Draws text at the specified position.
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String) */
-	public GlyphLayout draw (Batch batch, string str, float x, float y, float targetWidth, int halign, bool wrap) {
+	public GlyphLayout draw (IBatch batch, string str, float x, float y, float targetWidth, int halign, bool wrap) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, targetWidth, halign, wrap);
 		cache.draw(batch);
@@ -190,7 +191,7 @@ public class BitmapFont : Disposable {
 
 	/** Draws text at the specified position.
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String) */
-	public GlyphLayout draw (Batch batch, string str, float x, float y, int start, int end, float targetWidth, int halign,
+	public GlyphLayout draw (IBatch batch, string str, float x, float y, int start, int end, float targetWidth, int halign,
 		bool wrap) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap);
@@ -200,7 +201,7 @@ public class BitmapFont : Disposable {
 
 	/** Draws text at the specified position.
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String) */
-	public GlyphLayout draw (Batch batch, string str, float x, float y, int start, int end, float targetWidth, int halign,
+	public GlyphLayout draw (IBatch batch, string str, float x, float y, int start, int end, float targetWidth, int halign,
 		bool wrap, String truncate) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap, truncate);
@@ -210,7 +211,7 @@ public class BitmapFont : Disposable {
 
 	/** Draws text at the specified position.
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float, int, boolean, String) */
-	public void draw (Batch batch, GlyphLayout layout, float x, float y) {
+	public void draw (IBatch batch, GlyphLayout layout, float x, float y) {
 		cache.clear();
 		cache.addText(layout, x, y);
 		cache.draw(batch);

@@ -2,28 +2,17 @@
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Cursor = SharpGDX.Graphics.Cursor;
-using OpenTK.Graphics;
-using SharpGDX.Graphics.GLUtils;
 using Monitor = SharpGDX.IGraphics.Monitor;
 using SharpGDX.Mathematics;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using SharpGDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Graphics;
 using static SharpGDX.IGraphics;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Graphics : AbstractGraphics , Disposable
+	public class DesktopGraphics : AbstractGraphics , Disposable
 	{
-		readonly Lwjgl3Window window;
+		readonly DesktopWindow window;
 		GL20 gl20;
 	private GL30 gl30;
 	private GL31 gl31;
@@ -91,27 +80,27 @@ private unsafe void renderWindow(Window* windowHandle,  int width,  int height)
 	GLFW.SwapBuffers(windowHandle);
 }
 
-		public unsafe Lwjgl3Graphics (Lwjgl3Window window)
+		public unsafe DesktopGraphics (DesktopWindow window)
 {
 	this.window = window;
-	if (window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32)
+	if (window.getConfig().glEmulation == DesktopApplicationConfiguration.GLEmulation.GL32)
 	{
-		this.gl20 = this.gl30 = this.gl31 = this.gl32 = new Lwjgl3GL32();
+		this.gl20 = this.gl30 = this.gl31 = this.gl32 = new DesktopGL32();
 	}
-	else if (window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL31)
+	else if (window.getConfig().glEmulation == DesktopApplicationConfiguration.GLEmulation.GL31)
 	{
-		this.gl20 = this.gl30 = this.gl31 = new Lwjgl3GL31();
+		this.gl20 = this.gl30 = this.gl31 = new DesktopGL31();
 	}
-	else if (window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL30)
+	else if (window.getConfig().glEmulation == DesktopApplicationConfiguration.GLEmulation.GL30)
 	{
-		this.gl20 = this.gl30 = new Lwjgl3GL30();
+		this.gl20 = this.gl30 = new DesktopGL30();
 	}
 	else
 	{
 		try
 		{
-			this.gl20 = window.getConfig().glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL20
-				? new Lwjgl3GL20()
+			this.gl20 = window.getConfig().glEmulation == DesktopApplicationConfiguration.GLEmulation.GL20
+				? new DesktopGL20()
 				: throw new NotImplementedException();// TODO: (GL20)Class.forName("com.badlogic.gdx.backends.lwjgl3.angle.Lwjgl3GLES20").newInstance();
 		}
 		catch (Exception t)
@@ -132,7 +121,7 @@ private void initiateGL()
 	String versionString = gl20.glGetString(GL11.GL_VERSION);
 	String vendorString = gl20.glGetString(GL11.GL_VENDOR);
 	String rendererString = gl20.glGetString(GL11.GL_RENDERER);
-	glVersion = new GLVersion(Application.ApplicationType.Desktop, versionString, vendorString, rendererString);
+	glVersion = new GLVersion(IApplication.ApplicationType.Desktop, versionString, vendorString, rendererString);
 	if (supportsCubeMapSeamless())
 	{
 		enableCubeMapSeamless(true);
@@ -160,7 +149,7 @@ public void enableCubeMapSeamless(bool enable)
 	}
 }
 
-public Lwjgl3Window getWindow()
+public DesktopWindow getWindow()
 {
 	return window;
 }
@@ -169,7 +158,7 @@ public Lwjgl3Window getWindow()
 {
 	GLFW.GetFramebufferSize(window.getWindowPtr(), out backBufferWidth, out backBufferHeight);
 	GLFW.GetWindowSize(window.getWindowPtr(), out logicalWidth, out logicalHeight);
-	Lwjgl3ApplicationConfiguration config = window.getConfig();
+	DesktopApplicationConfiguration config = window.getConfig();
 	bufferFormat = new BufferFormat(config.r, config.g, config.b, config.a, config.depth, config.stencil, config.samples,
 		false);
 }
@@ -318,7 +307,7 @@ public override int getFramesPerSecond()
 
 public override GraphicsType getType()
 {
-	return GraphicsType.LWJGL3;
+	return GraphicsType.OpenGL;
 }
 
 public override GLVersion getGLVersion()
@@ -338,7 +327,7 @@ public override float getPpiY()
 
 public override unsafe float getPpcX()
 {
-	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
+	DesktopMonitor monitor = (DesktopMonitor)getMonitor();
 	GLFW.GetMonitorPhysicalSize(monitor.monitorHandle, out var sizeX, out var _);
 	DisplayMode mode = getDisplayMode();
 	return mode.width / (float)sizeX * 10;
@@ -346,7 +335,7 @@ public override unsafe float getPpcX()
 
 public override unsafe float getPpcY()
 {
-	Lwjgl3Monitor monitor = (Lwjgl3Monitor)getMonitor();
+	DesktopMonitor monitor = (DesktopMonitor)getMonitor();
 	GLFW.GetMonitorPhysicalSize(monitor.monitorHandle, out var _, out var sizeY);
 	DisplayMode mode = getDisplayMode();
 	return mode.height / (float)sizeY * 10;
@@ -359,7 +348,7 @@ public override bool supportsDisplayModeChange()
 
 public override unsafe Monitor getPrimaryMonitor()
 {
-	return Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(GLFW.GetPrimaryMonitor());
+	return DesktopApplicationConfiguration.toDesktopMonitor(GLFW.GetPrimaryMonitor());
 }
 
 public override unsafe Monitor getMonitor()
@@ -391,33 +380,33 @@ if (bestOverlap < overlap)
 	public override Monitor[] getMonitors()
 	{
 		throw new NotImplementedException();
-		//PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
-		//Monitor[] monitors = new Monitor[glfwMonitors.limit()];
-		//for (int i = 0; i < glfwMonitors.limit(); i++)
-		//{
-		//	monitors[i] = Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(glfwMonitors.get(i));
-		//}
-		//return monitors;
-	}
+			//PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
+			//Monitor[] monitors = new Monitor[glfwMonitors.limit()];
+			//for (int i = 0; i < glfwMonitors.limit(); i++)
+			//{
+			//	monitors[i] = DesktopApplicationConfiguration.toDesktopMonitor(glfwMonitors.get(i));
+			//}
+			//return monitors;
+		}
 
-public override DisplayMode[] getDisplayModes()
+		public override DisplayMode[] getDisplayModes()
 {
-	return Lwjgl3ApplicationConfiguration.getDisplayModes(getMonitor());
+	return DesktopApplicationConfiguration.getDisplayModes(getMonitor());
 }
 
 public override DisplayMode[] getDisplayModes(Monitor monitor)
 {
-	return Lwjgl3ApplicationConfiguration.getDisplayModes(monitor);
+	return DesktopApplicationConfiguration.getDisplayModes(monitor);
 }
 
 public override DisplayMode getDisplayMode()
 {
-	return Lwjgl3ApplicationConfiguration.getDisplayMode(getMonitor());
+	return DesktopApplicationConfiguration.getDisplayMode(getMonitor());
 }
 
 public override DisplayMode getDisplayMode(Monitor monitor)
 {
-	return Lwjgl3ApplicationConfiguration.getDisplayMode(monitor);
+	return DesktopApplicationConfiguration.getDisplayMode(monitor);
 }
 public override int getSafeInsetLeft()
 {
@@ -442,10 +431,10 @@ public override int getSafeInsetRight()
 public override unsafe bool setFullscreenMode(DisplayMode displayMode)
 {
 	window.getInput().resetPollingStates();
-	Lwjgl3DisplayMode newMode = (Lwjgl3DisplayMode)displayMode;
+	DesktopDisplayMode newMode = (DesktopDisplayMode)displayMode;
 	if (isFullscreen())
 	{
-		Lwjgl3DisplayMode currentMode = (Lwjgl3DisplayMode)getDisplayMode();
+		DesktopDisplayMode currentMode = (DesktopDisplayMode)getDisplayMode();
 		if (currentMode.getMonitor() == newMode.getMonitor() && currentMode.refreshRate == newMode.refreshRate)
 		{
 			// same monitor and refresh rate
@@ -493,7 +482,7 @@ public override unsafe bool setWindowedMode(int width, int height)
 		if (width != logicalWidth || height != logicalHeight)
 		{
 			centerWindow = true; // recenter the window since its size changed
-			newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition((Lwjgl3Monitor)getMonitor(), width, height);
+			newPos = DesktopApplicationConfiguration.calculateCenteredWindowPosition((DesktopMonitor)getMonitor(), width, height);
 		}
 		GLFW.SetWindowSize(window.getWindowPtr(), width, height);
 		if (centerWindow)
@@ -510,7 +499,7 @@ public override unsafe bool setWindowedMode(int width, int height)
 		if (width != windowWidthBeforeFullscreen || height != windowHeightBeforeFullscreen)
 		{ // center the window since its size
 		  // changed
-			GridPoint2 newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition((Lwjgl3Monitor)getMonitor(), width,
+			GridPoint2 newPos = DesktopApplicationConfiguration.calculateCenteredWindowPosition((DesktopMonitor)getMonitor(), width,
 				height);
 			GLFW.SetWindowMonitor(window.getWindowPtr(), null, newPos.x, newPos.y, width, height,
 				displayModeBeforeFullscreen.refreshRate);
@@ -588,19 +577,19 @@ public override unsafe bool isFullscreen()
 	return GLFW.GetWindowMonitor(window.getWindowPtr()) != null;
 }
 
-public override Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
+public override ICursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
 {
-	return new Lwjgl3Cursor(getWindow(), pixmap, xHotspot, yHotspot);
+	return new DesktopCursor(getWindow(), pixmap, xHotspot, yHotspot);
 }
 
-public override unsafe void setCursor(Cursor cursor)
+public override unsafe void setCursor(ICursor cursor)
 {
-	GLFW.SetCursor(getWindow().getWindowPtr(), ((Lwjgl3Cursor)cursor).glfwCursor);
+	GLFW.SetCursor(getWindow().getWindowPtr(), ((DesktopCursor)cursor).glfwCursor);
 }
 
-public override unsafe void setSystemCursor(Cursor.SystemCursor systemCursor)
+public override unsafe void setSystemCursor(ICursor.SystemCursor systemCursor)
 {
-	Lwjgl3Cursor.setSystemCursor(getWindow().getWindowPtr(), systemCursor);
+	DesktopCursor.setSystemCursor(getWindow().getWindowPtr(), systemCursor);
 }
 
 public void dispose()
@@ -609,11 +598,11 @@ public void dispose()
 	//this.resizeCallback.free();
 }
 
-internal class Lwjgl3DisplayMode : DisplayMode
+internal class DesktopDisplayMode : DisplayMode
 {
 	readonly unsafe OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitorHandle;
 
-	internal unsafe Lwjgl3DisplayMode(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int width, int height, int refreshRate, int bitsPerPixel)
+	internal unsafe DesktopDisplayMode(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int width, int height, int refreshRate, int bitsPerPixel)
 		: base(width, height, refreshRate, bitsPerPixel)
 	{
 
@@ -626,11 +615,11 @@ internal class Lwjgl3DisplayMode : DisplayMode
 	}
 }
 
-public class Lwjgl3Monitor : Monitor
+public class DesktopMonitor : Monitor
 {
 			internal unsafe readonly OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitorHandle;
 
-			internal unsafe Lwjgl3Monitor (OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int virtualX, int virtualY, String name) 
+			internal unsafe DesktopMonitor (OpenTK.Windowing.GraphicsLibraryFramework.Monitor* monitor, int virtualX, int virtualY, String name) 
 	: base(virtualX, virtualY, name)
 	{
 		

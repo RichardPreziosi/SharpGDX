@@ -1,4 +1,5 @@
-﻿using SharpGDX.Utils;
+﻿using SharpGDX.Files;
+using SharpGDX.Utils;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Shims;
 
@@ -149,18 +150,18 @@ public class DistanceFieldFont : BitmapFont {
 			return font.getDistanceFieldSmoothing() * font.getScaleX();
 		}
 
-		private void setSmoothingUniform (Batch spriteBatch, float smoothing) {
+		private void setSmoothingUniform (IBatch spriteBatch, float smoothing) {
 			spriteBatch.flush();
 			spriteBatch.getShader().setUniformf("u_smoothing", smoothing);
 		}
 
-		public override void draw (Batch spriteBatch) {
+		public override void draw (IBatch spriteBatch) {
 			setSmoothingUniform(spriteBatch, getSmoothingFactor());
 			base.draw(spriteBatch);
 			setSmoothingUniform(spriteBatch, 0);
 		}
 
-		public override void draw (Batch spriteBatch, int start, int end) {
+		public override void draw (IBatch spriteBatch, int start, int end) {
 			setSmoothingUniform(spriteBatch, getSmoothingFactor());
 			base.draw(spriteBatch, start, end);
 			setSmoothingUniform(spriteBatch, 0);

@@ -21,7 +21,7 @@ namespace SharpGDX.Scenes.Scene2D
  *
  * @see InputEvent
  * @see Actor#fire(Event) */
-public class Event : Poolable {
+public class Event : IPoolable {
 	private Stage stage;
 	private Actor targetActor;
 	private Actor listenerActor;

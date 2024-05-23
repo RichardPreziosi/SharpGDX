@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Assets
 {
 	// TODO: Split to two files
-	public interface AssetDescriptor
+	public interface IAssetDescriptor
 	{
 		public string fileName { get; }
-		public AssetLoaderParameters @params { get; }
+		public IAssetLoaderParameters @params { get; }
 		public Type type { get; }
 
 		/**
@@ -25,9 +26,9 @@ namespace SharpGDX.Assets
 	/** Describes an asset to be loaded by its filename, type and {@link AssetLoaderParameters}. Instances of this are used in
  * {@link AssetLoadingTask} to load the actual asset.
  * @author mzechner */
-	public class AssetDescriptor<T> : AssetDescriptor {
+	public class AssetDescriptor<T> : IAssetDescriptor {
 	public  String fileName { get; }
-	AssetLoaderParameters AssetDescriptor.@params => @params;
+	IAssetLoaderParameters IAssetDescriptor.@params => @params;
 	public Type type { get; }
 		public AssetLoaderParameters<T> @params { get; }
 	/** The resolved file. May be null if the fileName has not been resolved yet. */

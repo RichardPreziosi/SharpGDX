@@ -3,7 +3,7 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Desktop;
 
-public interface Lwjgl3Input : Input, Disposable
+public interface IDesktopInput : Input, Disposable
 {
 	public void prepareNext();
 

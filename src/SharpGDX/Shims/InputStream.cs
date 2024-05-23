@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class InputStream: Closeable
+	public class InputStream: ICloseable
 	{
 		internal readonly Stream _stream;
 

@@ -21,7 +21,7 @@ namespace SharpGDX.Scenes.Scene2D.UI
  * <p>
  * The preferred size of the button is determined by the background and the button contents.
  * @author Nathan Sweet */
-public class Button : Table , Disableable {
+public class Button : Table , IDisableable {
 	private ButtonStyle style;
 	internal bool _isChecked;
 		bool _isDisabled;
@@ -93,17 +93,17 @@ public class Button : Table , Disableable {
 		}
 	}
 
-	public Button (Drawable? up)
+	public Button (IDrawable? up)
 	:this(new ButtonStyle(up, null, null)){
 		
 	}
 
-	public Button (Drawable? up, Drawable? down)
+	public Button (IDrawable? up, IDrawable? down)
 	:this(new ButtonStyle(up, down, null)){
 		
 	}
 
-	public Button (Drawable? up, Drawable? down, Drawable? @checked)
+	public Button (IDrawable? up, IDrawable? down, IDrawable? @checked)
 	:this(new ButtonStyle(up, down, @checked)){
 		
 	}
@@ -185,7 +185,7 @@ public class Button : Table , Disableable {
 	}
 
 	/** Returns appropriate background drawable from the style based on the current button state. */
-	protected Drawable? getBackgroundDrawable () {
+	protected IDrawable? getBackgroundDrawable () {
 		if (isDisabled() && style.disabled != null) return style.disabled;
 		if (isPressed()) {
 			if (isChecked() && style.checkedDown != null) return style.checkedDown;
@@ -208,7 +208,7 @@ public class Button : Table , Disableable {
 		return style.up;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		setBackground(getBackgroundDrawable());
@@ -269,14 +269,14 @@ public class Button : Table , Disableable {
 	/** The style for a button, see {@link Button}.
 	 * @author mzechner */
 	public class ButtonStyle {
-		public Drawable? up, down, over, focused, disabled;
-		public Drawable? @checked, checkedOver, checkedDown, checkedFocused;
+		public IDrawable? up, down, over, focused, disabled;
+		public IDrawable? @checked, checkedOver, checkedDown, checkedFocused;
 		public float pressedOffsetX, pressedOffsetY, unpressedOffsetX, unpressedOffsetY, checkedOffsetX, checkedOffsetY;
 
 		public ButtonStyle () {
 		}
 
-		public ButtonStyle (Drawable? up, Drawable? down, Drawable? @checked) {
+		public ButtonStyle (IDrawable? up, IDrawable? down, IDrawable? @checked) {
 			this.up = up;
 			this.down = down;
 			this.@checked = @checked;

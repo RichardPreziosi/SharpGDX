@@ -5,7 +5,7 @@ namespace SharpGDX.Mathematics
 	/** A convenient 2D circle class.
  * @author mzechner */
 	[Serializable]
-	public class Circle : Shape2D {
+	public class Circle : IShape2D {
 	public float x, y;
 	public float radius;
 

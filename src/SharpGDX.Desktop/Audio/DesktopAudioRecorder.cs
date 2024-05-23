@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpGDX.Audio;
 
 namespace SharpGDX.Desktop.Audio
 {
-	public class JavaSoundAudioRecorder : AudioRecorder
+	public class JavaSoundAudioRecorder : IAudioRecorder
 	{
 	//private TargetDataLine line;
 	//private byte[] buffer = new byte[1024 * 4];

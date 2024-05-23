@@ -15,32 +15,32 @@ namespace SharpGDX
  * screen is set.
  * </p>
  */
-	public abstract class Game : ApplicationListener
+	public abstract class Game : IApplicationListener
 	{
-	protected Screen screen;
+	protected IScreen screen;
 
 	
 	public virtual void dispose()
 	{
-		if (screen != null) screen.hide();
+		if (screen != null) screen.Hide();
 	}
 
 
 		public virtual void pause()
 	{
-		if (screen != null) screen.pause();
+		if (screen != null) screen.Pause();
 	}
 
 
 		public virtual void resume()
 	{
-		if (screen != null) screen.resume();
+		if (screen != null) screen.Resume();
 	}
 
 
 		public virtual void render()
 	{
-		if (screen != null) screen.render(Gdx.graphics.getDeltaTime());
+		if (screen != null) screen.Render(Gdx.graphics.getDeltaTime());
 	}
 
 
@@ -48,25 +48,25 @@ namespace SharpGDX
 
 		public virtual void resize(int width, int height)
 	{
-		if (screen != null) screen.resize(width, height);
+		if (screen != null) screen.Resize(width, height);
 	}
 
 		/** Sets the current screen. {@link Screen#hide()} is called on any old screen, and {@link Screen#show()} is called on the new
 		 * screen, if any.
 		 * @param screen may be {@code null} */
-		public void setScreen(Screen screen)
+		public void setScreen(IScreen screen)
 	{
-		if (this.screen != null) this.screen.hide();
+		if (this.screen != null) this.screen.Hide();
 		this.screen = screen;
 		if (this.screen != null)
 		{
-			this.screen.show();
-			this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			this.screen.Show();
+			this.screen.Resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 	}
 
 	/** @return the currently active {@link Screen}. */
-	public Screen getScreen()
+	public IScreen getScreen()
 	{
 		return screen;
 	}

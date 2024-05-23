@@ -10,8 +10,8 @@ namespace SharpGDX.Mathematics
 	/** Encapsulates a general vector. Allows chaining operations by returning a reference to itself in all modification methods. See
  * {@link Vector2} and {@link Vector3} for specific implementations.
  * @author Xoppa */
-	public interface Vector<T >
-	where T : Vector<T> {
+	public interface IVector<T >
+	where T : IVector<T> {
 	/** @return a copy of this vector */
 	T cpy();
 

@@ -15,7 +15,7 @@ using Buffer = SharpGDX.Shims.Buffer;
 
 namespace SharpGDX.Desktop
 {
-	class Lwjgl3GL20 : GL20
+	class DesktopGL20 : GL20
 	{
 		private ByteBuffer buffer = null;
 		private FloatBuffer floatBuffer = null;

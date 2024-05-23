@@ -36,7 +36,7 @@ public class Stage : InputAdapter , Disposable {
 	internal static bool debug;
 
 	private Viewport viewport;
-	private readonly Batch batch;
+	private readonly IBatch batch;
 	private bool ownsBatch;
 	private Group root;
 	private readonly Vector2 tempCoords = new Vector2();
@@ -76,7 +76,7 @@ public class Stage : InputAdapter , Disposable {
 	/** Creates a stage with the specified viewport and batch. This can be used to specify an existing batch or to customize which
 	 * batch implementation is used.
 	 * @param batch Will not be disposed if {@link #dispose()} is called, handle disposal yourself. */
-	public Stage (Viewport viewport, Batch batch) {
+	public Stage (Viewport viewport, IBatch batch) {
 		if (viewport == null) throw new IllegalArgumentException("viewport cannot be null.");
 		if (batch == null) throw new IllegalArgumentException("batch cannot be null.");
 		this.viewport = viewport;
@@ -94,7 +94,7 @@ public class Stage : InputAdapter , Disposable {
 
 		if (!root.isVisible()) return;
 
-		Batch batch = this.batch;
+		IBatch batch = this.batch;
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		root.draw(batch, 1);
@@ -176,8 +176,8 @@ public class Stage : InputAdapter , Disposable {
 		}
 
 		// Update over actor for the mouse on the desktop.
-		Application.ApplicationType type = Gdx.app.getType();
-		if (type == Application.ApplicationType.Desktop || type == Application.ApplicationType.Applet || type == Application.ApplicationType.WebGL)
+		IApplication.ApplicationType type = Gdx.app.getType();
+		if (type == IApplication.ApplicationType.Desktop || type == IApplication.ApplicationType.Applet || type == IApplication.ApplicationType.WebGL)
 			mouseOverActor = fireEnterAndExit(mouseOverActor, mouseScreenX, mouseScreenY, -1);
 
 		root.act(delta);
@@ -429,7 +429,7 @@ public class Stage : InputAdapter , Disposable {
 	 * is added automatically when true is returned from {@link InputListener#touchDown(InputEvent, float, float, int, int)
 	 * touchDown}. The specified actors will be used as the {@link Event#getListenerActor() listener actor} and
 	 * {@link Event#getTarget() target} for the touchDragged and touchUp events. */
-	public void addTouchFocus (EventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
+	public void addTouchFocus (IEventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
 		TouchFocus focus = Pools.obtain< TouchFocus>(typeof(TouchFocus));
 		focus.listenerActor = listenerActor;
 		focus.target = target;
@@ -441,7 +441,7 @@ public class Stage : InputAdapter , Disposable {
 
 	/** Removes touch focus for the specified listener, pointer, and button. Note the listener will not receive a touchUp event
 	 * when this method is used. */
-	public void removeTouchFocus (EventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
+	public void removeTouchFocus (IEventListener listener, Actor listenerActor, Actor target, int pointer, int button) {
 		SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
 		for (int i = touchFocuses.size - 1; i >= 0; i--) {
 			TouchFocus focus = touchFocuses.get(i);
@@ -495,7 +495,7 @@ public class Stage : InputAdapter , Disposable {
 
 	/** Cancels touch focus for all listeners except the specified listener.
 	 * @see #cancelTouchFocus() */
-	public void cancelTouchFocusExcept (EventListener? exceptListener, Actor? exceptActor) {
+	public void cancelTouchFocusExcept (IEventListener? exceptListener, Actor? exceptActor) {
 		InputEvent @event = Pools.obtain<InputEvent>(typeof(InputEvent));
 		@event.setType(InputEvent.Type.touchUp);
 		@event.setStage(this);
@@ -542,25 +542,25 @@ public class Stage : InputAdapter , Disposable {
 
 	/** Adds a listener to the root.
 	 * @see Actor#addListener(EventListener) */
-	public bool addListener (EventListener listener) {
+	public bool addListener (IEventListener listener) {
 		return root.addListener(listener);
 	}
 
 	/** Removes a listener from the root.
 	 * @see Actor#removeListener(EventListener) */
-	public bool removeListener (EventListener listener) {
+	public bool removeListener (IEventListener listener) {
 		return root.removeListener(listener);
 	}
 
 	/** Adds a capture listener to the root.
 	 * @see Actor#addCaptureListener(EventListener) */
-	public bool addCaptureListener (EventListener listener) {
+	public bool addCaptureListener (IEventListener listener) {
 		return root.addCaptureListener(listener);
 	}
 
 	/** Removes a listener from the root.
 	 * @see Actor#removeCaptureListener(EventListener) */
-	public bool removeCaptureListener (EventListener listener) {
+	public bool removeCaptureListener (IEventListener listener) {
 		return root.removeCaptureListener(listener);
 	}
 
@@ -671,7 +671,7 @@ public class Stage : InputAdapter , Disposable {
 		return scrollFocus;
 	}
 
-	public Batch getBatch () {
+	public IBatch getBatch () {
 		return batch;
 	}
 
@@ -849,8 +849,8 @@ public class Stage : InputAdapter , Disposable {
 
 	/** Internal class for managing touch focus. Public only for GWT.
 	 * @author Nathan Sweet */
-	public sealed class TouchFocus : Poolable {
-		internal EventListener listener;
+	public sealed class TouchFocus : IPoolable {
+		internal IEventListener listener;
 		internal Actor listenerActor, target;
 		internal int pointer, button;
 

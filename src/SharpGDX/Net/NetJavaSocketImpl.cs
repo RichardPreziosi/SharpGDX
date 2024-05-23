@@ -1,3 +1,4 @@
+using SharpGDX.Net;
 using SharpGDX.Utils;
 using SharpGDX.Shims;
 
@@ -11,7 +12,7 @@ public class NetJavaSocketImpl : Socket {
 	/** Our socket or null for disposed, aka closed. */
 	// TODO: private java.net.Socket socket;
 
-	public NetJavaSocketImpl (Net.Protocol protocol, String host, int port, SocketHints hints)
+	public NetJavaSocketImpl (INet.Protocol protocol, String host, int port, SocketHints hints)
 	{
 		throw new NotImplementedException();
 		//try {

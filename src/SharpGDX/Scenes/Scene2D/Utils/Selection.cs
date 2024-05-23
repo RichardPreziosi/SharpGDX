@@ -13,7 +13,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 	/** Manages selected objects. Optionally fires a {@link ChangeEvent} on an actor. Selection changes can be vetoed via
  * {@link ChangeEvent#cancel()}.
  * @author Nathan Sweet */
-public class Selection<T> : Disableable, IEnumerable<T> {
+public class Selection<T> : IDisableable, IEnumerable<T> {
 	private Actor? actor;
 	protected readonly OrderedSet<T> selected = new ();
 	private readonly OrderedSet<T> old = new ();

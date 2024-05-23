@@ -232,7 +232,7 @@ namespace SharpGDX.Graphics.G2D
 		this.activeCount = activeCount;
 	}
 
-	public void draw (Batch batch) {
+	public void draw (IBatch batch) {
 		if (premultipliedAlpha) {
 			batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		} else if (additive) {
@@ -254,7 +254,7 @@ namespace SharpGDX.Graphics.G2D
 
 	/** Updates and draws the particles. This is slightly more efficient than calling {@link #update(float)} and
 	 * {@link #draw(Batch)} separately. */
-	public void draw (Batch batch, float delta) {
+	public void draw (IBatch batch, float delta) {
 		accumulator += delta * 1000;
 		if (accumulator < 1) {
 			draw(batch);

@@ -1,17 +1,19 @@
-﻿using System.Runtime.InteropServices;
+﻿using SharpGDX.Files;
+using System.Runtime.InteropServices;
 using SharpGDX.Mathematics;
 using OpenTK.Audio.OpenAL;
+using SharpGDX.Audio;
 using Buffer = SharpGDX.Shims.Buffer;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using static SharpGDX.Music;
+using static SharpGDX.Audio.IMusic;
 
 // TODO: Not fond of the creation of arrays just to pass queue and dequeue buffers.
 
 namespace SharpGDX.Desktop.Audio
 {
 	/** @author Nathan Sweet */
-	public abstract class OpenALMusic : Music
+	public abstract class OpenALMusic : IMusic
 	{
 	static private readonly int bufferSize = 4096 * 10;
 	static private readonly int bufferCount = 3;
@@ -23,7 +25,7 @@ namespace SharpGDX.Desktop.Audio
 
 	private FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
 
-	private readonly OpenALLwjgl3Audio audio;
+	private readonly OpenALDesktopAudio audio;
 	private IntBuffer buffers;
 	private int sourceID = -1;
 	private ALFormat format;
@@ -37,7 +39,7 @@ namespace SharpGDX.Desktop.Audio
 
 	private OnCompletionListener onCompletionListener;
 
-	public OpenALMusic(OpenALLwjgl3Audio audio, FileHandle file)
+	public OpenALMusic(OpenALDesktopAudio audio, FileHandle file)
 	{
 		this.audio = audio;
 		this.file = file;

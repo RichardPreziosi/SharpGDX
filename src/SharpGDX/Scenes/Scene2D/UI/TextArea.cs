@@ -195,12 +195,12 @@ public class TextArea : TextField {
 
 		// The number of lines showed must be updated whenever the height is updated
 		BitmapFont font = style.font;
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		float availableHeight = getHeight() - (background == null ? 0 : background.getBottomHeight() + background.getTopHeight());
 		linesShowing = (int)Math.Floor(availableHeight / font.getLineHeight());
 	}
 
-	protected float getTextY (BitmapFont font, Drawable? background) {
+	protected float getTextY (BitmapFont font, IDrawable? background) {
 		float textY = getHeight();
 		if (background != null) {
 			textY = textY - background.getTopHeight();
@@ -209,7 +209,7 @@ public class TextArea : TextField {
 		return textY;
 	}
 
-	protected void drawSelection (Drawable selection, Batch batch, BitmapFont font, float x, float y) {
+	protected void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
 		int i = firstLineShowing * 2;
 		float offsetY = 0;
 		int minIndex = Math.Min(cursor, selectionStart);
@@ -252,7 +252,7 @@ public class TextArea : TextField {
 		}
 	}
 
-	protected void drawText (Batch batch, BitmapFont font, float x, float y) {
+	protected void drawText (IBatch batch, BitmapFont font, float x, float y) {
 		float offsetY = -(style.font.getLineHeight() - textHeight) / 2;
 		for (int i = firstLineShowing * 2; i < (firstLineShowing + linesShowing) * 2 && i < linesBreak.size; i += 2) {
 			font.draw(batch, displayText, x, y + offsetY, linesBreak.items[i], linesBreak.items[i + 1], 0, Align.left, false);
@@ -260,7 +260,7 @@ public class TextArea : TextField {
 		}
 	}
 
-	protected void drawCursor (Drawable cursorPatch, Batch batch, BitmapFont font, float x, float y) {
+	protected void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
 		cursorPatch.draw(batch, x + getCursorX(), y + getCursorY(), cursorPatch.getMinWidth(), font.getLineHeight());
 	}
 
@@ -386,7 +386,7 @@ public class TextArea : TextField {
 		protected void setCursorPosition (float x, float y) {
 			_textArea.moveOffset = -1;
 
-			Drawable background = _textArea.style.background;
+			IDrawable background = _textArea.style.background;
 			BitmapFont font = _textArea.style.font;
 
 			float height = _textArea.getHeight();

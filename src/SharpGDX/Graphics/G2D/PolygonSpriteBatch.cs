@@ -33,7 +33,7 @@ namespace SharpGDX.Graphics.G2D;
  * @author mzechner
  * @author Stefan Bachmann
  * @author Nathan Sweet */
-public class PolygonSpriteBatch : PolygonBatch {
+public class PolygonSpriteBatch : IPolygonBatch {
 	private Mesh mesh;
 
 	private readonly float[] vertices;

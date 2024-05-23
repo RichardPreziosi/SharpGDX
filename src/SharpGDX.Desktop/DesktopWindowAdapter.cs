@@ -6,41 +6,41 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Desktop
 {
-	/** Convenience implementation of {@link Lwjgl3WindowListener}. Derive from this class and only overwrite the methods you are
+	/** Convenience implementation of {@link DesktopWindowListener}. Derive from this class and only overwrite the methods you are
  * interested in.
  * @author badlogic */
-	public class Lwjgl3WindowAdapter : Lwjgl3WindowListener
+	public class DesktopAdapter : IDesktopWindowListener
 	{
-	public void created(Lwjgl3Window window)
-	{
-	}
-
-	public void iconified(bool isIconified)
+	public void Created(DesktopWindow window)
 	{
 	}
 
-	public void maximized(bool isMaximized)
+	public void Iconified(bool isIconified)
 	{
 	}
 
-	public void focusLost()
+	public void Maximized(bool isMaximized)
 	{
 	}
 
-	public void focusGained()
+	public void FocusLost()
 	{
 	}
 
-	public bool closeRequested()
+	public void FocusGained()
+	{
+	}
+
+	public bool CloseRequested()
 	{
 		return true;
 	}
 
-	public void filesDropped(String[] files)
+	public void FilesDropped(String[] files)
 	{
 	}
 
-	public void refreshRequested()
+	public void RefreshRequested()
 	{
 	}
 	}

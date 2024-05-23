@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Graphics;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
@@ -8,7 +9,7 @@ namespace SharpGDX.Assets.Loaders;
 /** {@link AssetLoader} for {@link Pixmap} instances. The Pixmap is loaded asynchronously.
  * @author mzechner */
 public class PixmapLoader : AsynchronousAssetLoader<Pixmap, PixmapLoader.PixmapParameter> {
-	public PixmapLoader (FileHandleResolver resolver) 
+	public PixmapLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		

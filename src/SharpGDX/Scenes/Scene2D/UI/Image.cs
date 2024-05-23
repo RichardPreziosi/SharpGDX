@@ -15,11 +15,11 @@ public class Image : Widget {
 	private Scaling scaling;
 	private int align = Align.center;
 	private float imageX, imageY, imageWidth, imageHeight;
-	private Drawable drawable;
+	private IDrawable drawable;
 
 	/** Creates an image with no drawable, stretched, and aligned center. */
 	public Image () 
-	: this((Drawable)null)
+	: this((IDrawable)null)
 	{
 		
 	}
@@ -56,7 +56,7 @@ public class Image : Widget {
 
 	/** Creates an image stretched, and aligned center.
 	 * @param drawable May be null. */
-	public Image (Drawable? drawable) 
+	public Image (IDrawable? drawable) 
 	: this(drawable, Scaling.stretch, Align.center)
 	{
 		
@@ -64,14 +64,14 @@ public class Image : Widget {
 
 	/** Creates an image aligned center.
 	 * @param drawable May be null. */
-	public Image (Drawable? drawable, Scaling scaling) 
+	public Image (IDrawable? drawable, Scaling scaling) 
 	: this(drawable, scaling, Align.center)
 	{
 		
 	}
 
 	/** @param drawable May be null. */
-	public Image (Drawable? drawable, Scaling scaling, int align) {
+	public Image (IDrawable? drawable, Scaling scaling, int align) {
 		setDrawable(drawable);
 		this.scaling = scaling;
 		this.align = align;
@@ -105,7 +105,7 @@ public class Image : Widget {
 			imageY = (int)(height / 2 - imageHeight / 2);
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		Color color = getColor();
@@ -116,10 +116,10 @@ public class Image : Widget {
 		float scaleX = getScaleX();
 		float scaleY = getScaleY();
 
-		if (drawable is TransformDrawable) {
+		if (drawable is ITransformDrawable) {
 			float rotation = getRotation();
 			if (scaleX != 1 || scaleY != 1 || rotation != 0) {
-				((TransformDrawable)drawable).draw(batch, x + imageX, y + imageY, getOriginX() - imageX, getOriginY() - imageY,
+				((ITransformDrawable)drawable).draw(batch, x + imageX, y + imageY, getOriginX() - imageX, getOriginY() - imageY,
 					imageWidth, imageHeight, scaleX, scaleY, rotation);
 				return;
 			}
@@ -134,7 +134,7 @@ public class Image : Widget {
 	/** Sets a new drawable for the image. The image's pref size is the drawable's min size. If using the image actor's size rather
 	 * than the pref size, {@link #pack()} can be used to size the image to its pref size.
 	 * @param drawable May be null. */
-	public void setDrawable (Drawable? drawable) {
+	public void setDrawable (IDrawable? drawable) {
 		if (this.drawable == drawable) return;
 		if (drawable != null) {
 			if (getPrefWidth() != drawable.getMinWidth() || getPrefHeight() != drawable.getMinHeight()) invalidateHierarchy();
@@ -144,7 +144,7 @@ public class Image : Widget {
 	}
 
 	/** @return May be null. */
-	public Drawable? getDrawable () {
+	public IDrawable? getDrawable () {
 		return drawable;
 	}
 

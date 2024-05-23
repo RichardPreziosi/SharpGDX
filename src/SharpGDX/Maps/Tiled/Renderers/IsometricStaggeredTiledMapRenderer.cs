@@ -1,5 +1,5 @@
 using System.Collections;
-using static SharpGDX.Graphics.G2D.Batch;
+using static SharpGDX.Graphics.G2D.IBatch;
 using static SharpGDX.Maps.Tiled.TiledMapTileLayer;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Shims;
@@ -21,7 +21,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTiledMapRenderer {
 		
 	}
 
-	public IsometricStaggeredTiledMapRenderer (TiledMap map, Batch batch) 
+	public IsometricStaggeredTiledMapRenderer (TiledMap map, IBatch batch) 
 	: base(map, batch)
 	{
 		
@@ -33,7 +33,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTiledMapRenderer {
 		
 	}
 
-	public IsometricStaggeredTiledMapRenderer (TiledMap map, float unitScale, Batch batch) 
+	public IsometricStaggeredTiledMapRenderer (TiledMap map, float unitScale, IBatch batch) 
 	: base(map, unitScale, batch)
 	{
 		
@@ -69,7 +69,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTiledMapRenderer {
 			for (int x = maxX - 1; x >= minX; x--) {
 				 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 				if (cell == null) continue;
-				 TiledMapTile tile = cell.getTile();
+				 ITiledMapTile tile = cell.getTile();
 
 				if (tile != null) {
 					 bool flipX = cell.getFlipHorizontally();

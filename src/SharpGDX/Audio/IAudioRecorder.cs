@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Audio
 {
 	/** An AudioRecorder allows to record input from an audio device. It has a sampling rate and is either stereo or mono. Samples are
  * returned in signed 16-bit PCM format. Stereo samples are interleaved in the order left channel, right channel. The
  * AudioRecorder has to be disposed if no longer needed via the {@link #dispose()}.
  *
  * @author mzechner */
-	public interface AudioRecorder : Disposable
+	public interface IAudioRecorder : Disposable
 	{
 	/** Reads in numSamples samples into the array samples starting at offset. If the recorder is in stereo you have to multiply
 	 * numSamples by 2.

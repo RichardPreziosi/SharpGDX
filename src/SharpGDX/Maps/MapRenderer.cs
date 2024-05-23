@@ -12,7 +12,7 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Maps;
 
 /** Models a common way of rendering {@link Map} objects */
-public interface MapRenderer {
+public interface IMapRenderer {
 	/** Sets the projection matrix and viewbounds from the given camera. If the camera changes, you have to call this method again.
 	 * The viewbounds are taken from the camera's position and viewport size as well as the scale. This method will only work if
 	 * the camera's direction vector is (0,0,-1) and its up vector is (0, 1, 0), which are the defaults.

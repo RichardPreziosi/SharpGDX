@@ -137,14 +137,14 @@ public Cell Space(float space)
 
 	/** A cell for a {@link Table}.
  * @author Nathan Sweet */
-public class Cell<T> : Cell,Poolable
+public class Cell<T> : Cell,IPoolable
 	where T: Actor{
 	static private readonly float zerof = 0f, onef = 1f;
 	static private readonly int zeroi = 0, onei = 1;
 	static private readonly int centeri = onei, topi = SharpGDX.Utils.Align.top, bottomi = SharpGDX.Utils.Align.bottom, lefti = SharpGDX.Utils.Align.left,
 		righti = SharpGDX.Utils.Align.right;
 
-	static private Files files;
+	static private IFiles files;
 	static private Cell<T> defaults;
 
 	public Cell () {

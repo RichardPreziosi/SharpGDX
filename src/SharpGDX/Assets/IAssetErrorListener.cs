@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Assets
 {
-	public interface AssetErrorListener
+	public interface IAssetErrorListener
 	{
-		public void error(AssetDescriptor asset, Exception throwable);
+		public void error(IAssetDescriptor asset, Exception throwable);
 	}
 }

@@ -8,7 +8,7 @@ namespace SharpGDX.Graphics.G2D;
  * polygons.
  * @author mzechner
  * @author Nathan Sweet */
-public interface PolygonBatch : Batch {
+public interface IPolygonBatch : IBatch {
 	/** Draws a polygon region with the bottom left corner at x,y having the width and height of the region. */
 	void draw (PolygonRegion region, float x, float y);
 

@@ -15,7 +15,7 @@ namespace SharpGDX.Graphics.G2D
  * @see Batch
  * @author mzechner
  * @author Nathan Sweet */
-public class SpriteBatch : Batch {
+public class SpriteBatch : IBatch {
 	/** @deprecated Do not use, this field is for testing only and is likely to be removed. Sets the {@link VertexDataType} to be
 	 *             used when gles 3 is not available, defaults to {@link VertexDataType#VertexArray}. */
 	[Obsolete] public static Mesh.VertexDataType defaultVertexDataType = Mesh.VertexDataType.VertexArray;

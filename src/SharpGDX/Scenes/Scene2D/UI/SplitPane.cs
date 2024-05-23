@@ -101,7 +101,7 @@ public class SplitPane : WidgetGroup {
 			{
 				if (pointer != draggingPointer) return;
 
-				Drawable handle = _splitPane.style.handle;
+				IDrawable handle = _splitPane.style.handle;
 				if (!_splitPane.vertical)
 				{
 					float delta = x - _splitPane.lastPoint.x;
@@ -156,44 +156,44 @@ public class SplitPane : WidgetGroup {
 		if (firstWidget != null) {
 			Rectangle firstWidgetBounds = this.firstWidgetBounds;
 			firstWidget.setBounds(firstWidgetBounds.x, firstWidgetBounds.y, firstWidgetBounds.width, firstWidgetBounds.height);
-			if (firstWidget is Layout) ((Layout)firstWidget).validate();
+			if (firstWidget is ILayout) ((ILayout)firstWidget).validate();
 		}
 		Actor secondWidget = this.secondWidget;
 		if (secondWidget != null) {
 			Rectangle secondWidgetBounds = this.secondWidgetBounds;
 			secondWidget.setBounds(secondWidgetBounds.x, secondWidgetBounds.y, secondWidgetBounds.width, secondWidgetBounds.height);
-			if (secondWidget is Layout) ((Layout)secondWidget).validate();
+			if (secondWidget is ILayout) ((ILayout)secondWidget).validate();
 		}
 	}
 
 	public float getPrefWidth () {
 		float first = firstWidget == null ? 0
-			: (firstWidget is Layout ? ((Layout)firstWidget).getPrefWidth() : firstWidget.getWidth());
+			: (firstWidget is ILayout ? ((ILayout)firstWidget).getPrefWidth() : firstWidget.getWidth());
 		float second = secondWidget == null ? 0
-			: (secondWidget is Layout ? ((Layout)secondWidget).getPrefWidth() : secondWidget.getWidth());
+			: (secondWidget is ILayout ? ((ILayout)secondWidget).getPrefWidth() : secondWidget.getWidth());
 		if (vertical) return Math.Max(first, second);
 		return first + style.handle.getMinWidth() + second;
 	}
 
 	public float getPrefHeight () {
 		float first = firstWidget == null ? 0
-			: (firstWidget is Layout ? ((Layout)firstWidget).getPrefHeight() : firstWidget.getHeight());
+			: (firstWidget is ILayout ? ((ILayout)firstWidget).getPrefHeight() : firstWidget.getHeight());
 		float second = secondWidget == null ? 0
-			: (secondWidget is Layout ? ((Layout)secondWidget).getPrefHeight() : secondWidget.getHeight());
+			: (secondWidget is ILayout ? ((ILayout)secondWidget).getPrefHeight() : secondWidget.getHeight());
 		if (!vertical) return Math.Max(first, second);
 		return first + style.handle.getMinHeight() + second;
 	}
 
 	public float getMinWidth () {
-		float first = firstWidget is Layout ? ((Layout)firstWidget).getMinWidth() : 0;
-		float second = secondWidget is Layout ? ((Layout)secondWidget).getMinWidth() : 0;
+		float first = firstWidget is ILayout ? ((ILayout)firstWidget).getMinWidth() : 0;
+		float second = secondWidget is ILayout ? ((ILayout)secondWidget).getMinWidth() : 0;
 		if (vertical) return Math.Max(first, second);
 		return first + style.handle.getMinWidth() + second;
 	}
 
 	public float getMinHeight () {
-		float first = firstWidget is Layout ? ((Layout)firstWidget).getMinHeight() : 0;
-		float second = secondWidget is Layout ? ((Layout)secondWidget).getMinHeight() : 0;
+		float first = firstWidget is ILayout ? ((ILayout)firstWidget).getMinHeight() : 0;
+		float second = secondWidget is ILayout ? ((ILayout)secondWidget).getMinHeight() : 0;
 		if (!vertical) return Math.Max(first, second);
 		return first + style.handle.getMinHeight() + second;
 	}
@@ -209,7 +209,7 @@ public class SplitPane : WidgetGroup {
 	}
 
 	private void calculateHorizBoundsAndPositions () {
-		Drawable handle = style.handle;
+		IDrawable handle = style.handle;
 
 		float height = getHeight();
 
@@ -224,7 +224,7 @@ public class SplitPane : WidgetGroup {
 	}
 
 	private void calculateVertBoundsAndPositions () {
-		Drawable handle = style.handle;
+		IDrawable handle = style.handle;
 
 		float width = getWidth();
 		float height = getHeight();
@@ -239,7 +239,7 @@ public class SplitPane : WidgetGroup {
 		handleBounds.set(0, bottomAreaHeight, width, handleHeight);
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		Stage stage = getStage();
 		if (stage == null) return;
 
@@ -291,16 +291,16 @@ public class SplitPane : WidgetGroup {
 
 		if (vertical) {
 			float availableHeight = getHeight() - style.handle.getMinHeight();
-			if (firstWidget is Layout) effectiveMinAmount = Math.Max(effectiveMinAmount,
-				Math.Min(((Layout)firstWidget).getMinHeight() / availableHeight, 1));
-			if (secondWidget is Layout) effectiveMaxAmount = Math.Min(effectiveMaxAmount,
-				1 - Math.Min(((Layout)secondWidget).getMinHeight() / availableHeight, 1));
+			if (firstWidget is ILayout) effectiveMinAmount = Math.Max(effectiveMinAmount,
+				Math.Min(((ILayout)firstWidget).getMinHeight() / availableHeight, 1));
+			if (secondWidget is ILayout) effectiveMaxAmount = Math.Min(effectiveMaxAmount,
+				1 - Math.Min(((ILayout)secondWidget).getMinHeight() / availableHeight, 1));
 		} else {
 			float availableWidth = getWidth() - style.handle.getMinWidth();
-			if (firstWidget is Layout)
-				effectiveMinAmount = Math.Max(effectiveMinAmount, Math.Min(((Layout)firstWidget).getMinWidth() / availableWidth, 1));
-			if (secondWidget is Layout) effectiveMaxAmount = Math.Min(effectiveMaxAmount,
-				1 - Math.Min(((Layout)secondWidget).getMinWidth() / availableWidth, 1));
+			if (firstWidget is ILayout)
+				effectiveMinAmount = Math.Max(effectiveMinAmount, Math.Min(((ILayout)firstWidget).getMinWidth() / availableWidth, 1));
+			if (secondWidget is ILayout) effectiveMaxAmount = Math.Min(effectiveMaxAmount,
+				1 - Math.Min(((ILayout)secondWidget).getMinWidth() / availableWidth, 1));
 		}
 
 		if (effectiveMinAmount > effectiveMaxAmount) // Locked handle. Average the position.
@@ -407,12 +407,12 @@ public class SplitPane : WidgetGroup {
 	 * @author mzechner
 	 * @author Nathan Sweet */
 	public class SplitPaneStyle {
-		public Drawable handle;
+		public IDrawable handle;
 
 		public SplitPaneStyle () {
 		}
 
-		public SplitPaneStyle (Drawable handle) {
+		public SplitPaneStyle (IDrawable handle) {
 			this.handle = handle;
 		}
 

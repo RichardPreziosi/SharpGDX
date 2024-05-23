@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class FilterInputStream : InputStream, Closeable
+	public class FilterInputStream : InputStream, ICloseable
 	{
 		public int read()
 		{

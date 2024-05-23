@@ -1,7 +1,7 @@
 using SharpGDX.Utils;
 using SharpGDX.Shims;
 
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** Options for {@link Socket} instances.
  * 

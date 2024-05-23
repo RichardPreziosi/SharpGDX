@@ -5,7 +5,7 @@ namespace SharpGDX.Scenes.Scene2D
 {
 	/** Actions attach to an {@link Actor} and perform some task, often over time.
  * @author Nathan Sweet */
-	abstract public class Action : Poolable
+	abstract public class Action : IPoolable
 	{
 	/** The actor this action is attached to, or null if it is not attached. */
 	protected Actor actor;

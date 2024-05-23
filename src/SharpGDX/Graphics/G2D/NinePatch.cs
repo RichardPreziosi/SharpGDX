@@ -323,7 +323,7 @@ public class NinePatch {
 		vertices[idx + 17] = color;
 	}
 
-	private void prepareVertices (Batch batch, float x, float y, float width, float height) {
+	private void prepareVertices (IBatch batch, float x, float y, float width, float height) {
 		 float centerX = x + leftWidth;
 		 float centerY = y + bottomHeight;
 		 float centerWidth = width - rightWidth - leftWidth;
@@ -342,12 +342,12 @@ public class NinePatch {
 		if (topRight != -1) set(topRight, rightX, topY, rightWidth, topHeight, c);
 	}
 
-	public void draw (Batch batch, float x, float y, float width, float height) {
+	public void draw (IBatch batch, float x, float y, float width, float height) {
 		prepareVertices(batch, x, y, width, height);
 		batch.draw(texture, vertices, 0, idx);
 	}
 
-	public void draw (Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public void draw (IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation) {
 		prepareVertices(batch, x, y, width, height);
 		float worldOriginX = x + originX, worldOriginY = y + originY;

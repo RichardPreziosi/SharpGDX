@@ -16,9 +16,9 @@ where T: Event{
 	readonly Type eventClass;
 	bool result, active;
 
-	private readonly EventListener listener ;
+	private readonly IEventListener listener ;
 
-	private class EventActionEventListener : EventListener
+	private class EventActionEventListener : IEventListener
 	{
 		private readonly EventAction<T> _eventAction;
 

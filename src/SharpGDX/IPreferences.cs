@@ -21,19 +21,19 @@ namespace SharpGDX
  * </p>
  * 
  * @author mzechner */
-	public interface Preferences
+	public interface IPreferences
 	{
-		public Preferences putBoolean(String key, bool val);
+		public IPreferences putBoolean(String key, bool val);
 
-		public Preferences putInteger(String key, int val);
+		public IPreferences putInteger(String key, int val);
 
-		public Preferences putLong(String key, long val);
+		public IPreferences putLong(String key, long val);
 
-		public Preferences putFloat(String key, float val);
+		public IPreferences putFloat(String key, float val);
 
-		public Preferences putString(String key, String val);
+		public IPreferences putString(String key, String val);
 
-		public Preferences put(Map<String, object> vals);
+		public IPreferences put(Map<String, object> vals);
 
 		public bool getBoolean(String key);
 

@@ -1,4 +1,5 @@
-﻿using SharpGDX.Graphics;
+﻿using SharpGDX.Files;
+using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using System;
@@ -28,7 +29,7 @@ namespace SharpGDX.Graphics
  * @author badlogicgames@gmail.com */
 public class Texture : GLTexture {
 	private static AssetManager assetManager;
-	readonly static Map<Application, Array<Texture>> managedTextures = new();
+	readonly static Map<IApplication, Array<Texture>> managedTextures = new();
 		
 	public enum TextureFilter {
 		/** Fetch the nearest texel that best maps to the pixel on screen. */
@@ -87,7 +88,7 @@ public class Texture : GLTexture {
 		}
 	}
 
-	TextureData data;
+	ITextureData data;
 
 	public Texture (String internalPath) 
 	: this(Gdx.files.@internal(internalPath))
@@ -108,7 +109,7 @@ public class Texture : GLTexture {
 	}
 
 	public Texture (FileHandle file, Pixmap.Format? format, bool useMipMaps) 
-	: this(TextureData.Factory.loadFromFile(file, format, useMipMaps))
+	: this(ITextureData.Factory.loadFromFile(file, format, useMipMaps))
 	{
 		
 	}
@@ -137,13 +138,13 @@ public class Texture : GLTexture {
 		
 	}
 
-	public Texture (TextureData data) 
+	public Texture (ITextureData data) 
 	: this(GL20.GL_TEXTURE_2D, Gdx.gl.glGenTexture(), data)
 	{
 		
 	}
 
-	protected Texture (int glTarget, int glHandle, TextureData data) 
+	protected Texture (int glTarget, int glHandle, ITextureData data) 
 	: base(glTarget, glHandle)
 	{
 		
@@ -151,7 +152,7 @@ public class Texture : GLTexture {
 		if (data.isManaged()) addManagedTexture(Gdx.app, this);
 	}
 
-	public void load (TextureData data) {
+	public void load (ITextureData data) {
 		if (this.data != null && data.isManaged() != this.data.isManaged())
 			throw new GdxRuntimeException("New data must have the same managed status as the old data");
 		this.data = data;
@@ -201,7 +202,7 @@ public class Texture : GLTexture {
 		return 0;
 	}
 
-	public TextureData getTextureData () {
+	public ITextureData getTextureData () {
 		return data;
 	}
 
@@ -226,7 +227,7 @@ public class Texture : GLTexture {
 		return base.ToString();
 	}
 
-	private static void addManagedTexture (Application app, Texture texture) {
+	private static void addManagedTexture (IApplication app, Texture texture) {
 		Array<Texture> managedTextureArray = managedTextures.get(app);
 		if (managedTextureArray == null) managedTextureArray = new Array<Texture>();
 		managedTextureArray.add(texture);
@@ -234,12 +235,12 @@ public class Texture : GLTexture {
 	}
 
 	/** Clears all managed textures. This is an internal method. Do not use it! */
-	public static void clearAllTextures (Application app) {
+	public static void clearAllTextures (IApplication app) {
 		managedTextures.remove(app);
 	}
 
 	/** Invalidate all managed textures. This is an internal method. Do not use it! */
-	public static void invalidateAllTextures (Application app) {
+	public static void invalidateAllTextures (IApplication app) {
 		Array<Texture> managedTextureArray = managedTextures.get(app);
 		if (managedTextureArray == null) return;
 
@@ -309,7 +310,7 @@ public class Texture : GLTexture {
 	public static String getManagedStatus () {
 		StringBuilder builder = new StringBuilder();
 		builder.Append("Managed textures/app: { ");
-		foreach (Application app in managedTextures.keySet()) {
+		foreach (IApplication app in managedTextures.keySet()) {
 			builder.Append(managedTextures.get(app).size);
 			builder.Append(" ");
 		}

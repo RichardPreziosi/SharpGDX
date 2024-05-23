@@ -1,4 +1,5 @@
-﻿using SharpGDX.Shims;
+﻿using SharpGDX.Files;
+using SharpGDX.Shims;
 using OutputType =SharpGDX.Utils.JsonWriter.OutputType;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Mathematics;
@@ -21,11 +22,11 @@ public class Json {
 	private bool readDeprecated;
 	private bool enumNames = true;
 	private bool _sortFields;
-	private Serializer defaultSerializer;
+	private ISerializer defaultSerializer;
 	private readonly ObjectMap<Type, OrderedMap<String, FieldMetadata>> typeToFields = new ();
 	private readonly ObjectMap<String, Type> tagToClass = new ();
 	private readonly ObjectMap<Type, String> classToTag = new ();
-	private readonly ObjectMap<Type, Serializer> classToSerializer = new ();
+	private readonly ObjectMap<Type, ISerializer> classToSerializer = new ();
 	private readonly ObjectMap<Type, Object[]> classToDefaultValues = new ();
 	private readonly Object[] equals1 = {null}, equals2 = {null};
 
@@ -103,18 +104,18 @@ public class Json {
 	}
 
 	/** Sets the serializer to use when the type being deserialized is not known (null). */
-	public void setDefaultSerializer ( Serializer? defaultSerializer) {
+	public void setDefaultSerializer ( ISerializer? defaultSerializer) {
 		this.defaultSerializer = defaultSerializer;
 	}
 
 	/** Registers a serializer to use for the specified type instead of the default behavior of serializing all of an objects
 	 * fields. */
-	public void setSerializer <T>(Type type, Serializer<T> serializer) {
+	public void setSerializer <T>(Type type, ISerializer<T> serializer) {
 		throw new NotImplementedException();
 		//classToSerializer.put(type, serializer);
 		}
 
-		public Serializer<T> getSerializer<T> (Type type) {
+		public ISerializer<T> getSerializer<T> (Type type) {
 		throw new NotImplementedException();
 		//return classToSerializer.get(type);
 		}
@@ -1267,22 +1268,22 @@ public class Json {
 		}
 	}
 
-		public interface Serializer{}
+		public interface ISerializer{}
 		
-	 public interface Serializer<T> :Serializer {
+	 public interface ISerializer<T> :ISerializer {
 		public void write (Json json, T obj, Type knownType);
 
 		public new T read (Json json, JsonValue jsonData, Type type);
 	}
 
-	 abstract public class ReadOnlySerializer<T> : Serializer<T> {
+	 abstract public class ReadOnlySerializer<T> : ISerializer<T> {
 		public void write (Json json, T obj, Type knownType) {
 		}
 
 		abstract public T read (Json json, JsonValue jsonData, Type type);
 	}
 
-	 public interface Serializable {
+	 public interface ISerializable {
 		public void write (Json json);
 
 		public void read (Json json, JsonValue jsonData);

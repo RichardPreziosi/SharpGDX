@@ -133,17 +133,17 @@ public class Sprite : TextureRegion {
 		float x2 = x + width;
 		float y2 = y + height;
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] = x;
-		vertices[Batch.Y1] = y;
+		vertices[IBatch.X1] = x;
+		vertices[IBatch.Y1] = y;
 
-		vertices[Batch.X2] = x;
-		vertices[Batch.Y2] = y2;
+		vertices[IBatch.X2] = x;
+		vertices[IBatch.Y2] = y2;
 
-		vertices[Batch.X3] = x2;
-		vertices[Batch.Y3] = y2;
+		vertices[IBatch.X3] = x2;
+		vertices[IBatch.Y3] = y2;
 
-		vertices[Batch.X4] = x2;
-		vertices[Batch.Y4] = y;
+		vertices[IBatch.X4] = x2;
+		vertices[IBatch.Y4] = y;
 	}
 
 	/** Sets the size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale are changed,
@@ -162,17 +162,17 @@ public class Sprite : TextureRegion {
 		float x2 = x + width;
 		float y2 = y + height;
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] = x;
-		vertices[Batch.Y1] = y;
+		vertices[IBatch.X1] = x;
+		vertices[IBatch.Y1] = y;
 
-		vertices[Batch.X2] = x;
-		vertices[Batch.Y2] = y2;
+		vertices[IBatch.X2] = x;
+		vertices[IBatch.Y2] = y2;
 
-		vertices[Batch.X3] = x2;
-		vertices[Batch.Y3] = y2;
+		vertices[IBatch.X3] = x2;
+		vertices[IBatch.Y3] = y2;
 
-		vertices[Batch.X4] = x2;
-		vertices[Batch.Y4] = y;
+		vertices[IBatch.X4] = x2;
+		vertices[IBatch.Y4] = y;
 	}
 
 	/** Sets the position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more efficient
@@ -191,17 +191,17 @@ public class Sprite : TextureRegion {
 		float x2 = x + width;
 		float y2 = y + height;
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] = x;
-		vertices[Batch.Y1] = y;
+		vertices[IBatch.X1] = x;
+		vertices[IBatch.Y1] = y;
 
-		vertices[Batch.X2] = x;
-		vertices[Batch.Y2] = y2;
+		vertices[IBatch.X2] = x;
+		vertices[IBatch.Y2] = y2;
 
-		vertices[Batch.X3] = x2;
-		vertices[Batch.Y3] = y2;
+		vertices[IBatch.X3] = x2;
+		vertices[IBatch.Y3] = y2;
 
-		vertices[Batch.X4] = x2;
-		vertices[Batch.Y4] = y;
+		vertices[IBatch.X4] = x2;
+		vertices[IBatch.Y4] = y;
 	}
 
 	/** Sets the position where the sprite will be drawn, relative to its current origin. */
@@ -223,10 +223,10 @@ public class Sprite : TextureRegion {
 
 		float x2 = x + width;
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] = x;
-		vertices[Batch.X2] = x;
-		vertices[Batch.X3] = x2;
-		vertices[Batch.X4] = x2;
+		vertices[IBatch.X1] = x;
+		vertices[IBatch.X2] = x;
+		vertices[IBatch.X3] = x2;
+		vertices[IBatch.X4] = x2;
 	}
 
 	/** Sets the y position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more
@@ -243,10 +243,10 @@ public class Sprite : TextureRegion {
 
 		float y2 = y + height;
 		float[] vertices = this.vertices;
-		vertices[Batch.Y1] = y;
-		vertices[Batch.Y2] = y2;
-		vertices[Batch.Y3] = y2;
-		vertices[Batch.Y4] = y;
+		vertices[IBatch.Y1] = y;
+		vertices[IBatch.Y2] = y2;
+		vertices[IBatch.Y3] = y2;
+		vertices[IBatch.Y4] = y;
 	}
 
 	/** Sets the x position so that it is centered on the given x parameter */
@@ -276,10 +276,10 @@ public class Sprite : TextureRegion {
 		}
 
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] += xAmount;
-		vertices[Batch.X2] += xAmount;
-		vertices[Batch.X3] += xAmount;
-		vertices[Batch.X4] += xAmount;
+		vertices[IBatch.X1] += xAmount;
+		vertices[IBatch.X2] += xAmount;
+		vertices[IBatch.X3] += xAmount;
+		vertices[IBatch.X4] += xAmount;
 	}
 
 	/** Sets the y position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
@@ -294,10 +294,10 @@ public class Sprite : TextureRegion {
 		}
 
 		float[] vertices = this.vertices;
-		vertices[Batch.Y1] += yAmount;
-		vertices[Batch.Y2] += yAmount;
-		vertices[Batch.Y3] += yAmount;
-		vertices[Batch.Y4] += yAmount;
+		vertices[IBatch.Y1] += yAmount;
+		vertices[IBatch.Y2] += yAmount;
+		vertices[IBatch.Y3] += yAmount;
+		vertices[IBatch.Y4] += yAmount;
 	}
 
 	/** Sets the position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
@@ -313,17 +313,17 @@ public class Sprite : TextureRegion {
 		}
 
 		float[] vertices = this.vertices;
-		vertices[Batch.X1] += xAmount;
-		vertices[Batch.Y1] += yAmount;
+		vertices[IBatch.X1] += xAmount;
+		vertices[IBatch.Y1] += yAmount;
 
-		vertices[Batch.X2] += xAmount;
-		vertices[Batch.Y2] += yAmount;
+		vertices[IBatch.X2] += xAmount;
+		vertices[IBatch.Y2] += yAmount;
 
-		vertices[Batch.X3] += xAmount;
-		vertices[Batch.Y3] += yAmount;
+		vertices[IBatch.X3] += xAmount;
+		vertices[IBatch.Y3] += yAmount;
 
-		vertices[Batch.X4] += xAmount;
-		vertices[Batch.Y4] += yAmount;
+		vertices[IBatch.X4] += xAmount;
+		vertices[IBatch.Y4] += yAmount;
 	}
 
 	/** Sets the color used to tint this sprite. Default is {@link Color#WHITE}. */
@@ -331,20 +331,20 @@ public class Sprite : TextureRegion {
 		this.color.set(tint);
 		float color = tint.toFloatBits();
 		float[] vertices = this.vertices;
-		vertices[Batch.C1] = color;
-		vertices[Batch.C2] = color;
-		vertices[Batch.C3] = color;
-		vertices[Batch.C4] = color;
+		vertices[IBatch.C1] = color;
+		vertices[IBatch.C2] = color;
+		vertices[IBatch.C3] = color;
+		vertices[IBatch.C4] = color;
 	}
 
 	/** Sets the alpha portion of the color used to tint this sprite. */
 	public void setAlpha (float a) {
 		this.color.a = a;
 		float color = this.color.toFloatBits();
-		vertices[Batch.C1] = color;
-		vertices[Batch.C2] = color;
-		vertices[Batch.C3] = color;
-		vertices[Batch.C4] = color;
+		vertices[IBatch.C1] = color;
+		vertices[IBatch.C2] = color;
+		vertices[IBatch.C3] = color;
+		vertices[IBatch.C4] = color;
 	}
 
 	/** @see #setColor(Color) */
@@ -352,10 +352,10 @@ public class Sprite : TextureRegion {
 		this.color.set(r, g, b, a);
 		float color = this.color.toFloatBits();
 		float[] vertices = this.vertices;
-		vertices[Batch.C1] = color;
-		vertices[Batch.C2] = color;
-		vertices[Batch.C3] = color;
-		vertices[Batch.C4] = color;
+		vertices[IBatch.C1] = color;
+		vertices[IBatch.C2] = color;
+		vertices[IBatch.C3] = color;
+		vertices[IBatch.C4] = color;
 	}
 
 	/** Sets the color of this sprite, expanding the alpha from 0-254 to 0-255.
@@ -364,10 +364,10 @@ public class Sprite : TextureRegion {
 	public void setPackedColor (float packedColor) {
 		Color.abgr8888ToColor(color, packedColor);
 		float[] vertices = this.vertices;
-		vertices[Batch.C1] = packedColor;
-		vertices[Batch.C2] = packedColor;
-		vertices[Batch.C3] = packedColor;
-		vertices[Batch.C4] = packedColor;
+		vertices[IBatch.C1] = packedColor;
+		vertices[IBatch.C2] = packedColor;
+		vertices[IBatch.C3] = packedColor;
+		vertices[IBatch.C4] = packedColor;
 	}
 
 	/** Sets the origin in relation to the sprite's position for scaling and rotation. */
@@ -409,29 +409,29 @@ public class Sprite : TextureRegion {
 		float[] vertices = this.vertices;
 
 		if (clockwise) {
-			float temp = vertices[Batch.V1];
-			vertices[Batch.V1] = vertices[Batch.V4];
-			vertices[Batch.V4] = vertices[Batch.V3];
-			vertices[Batch.V3] = vertices[Batch.V2];
-			vertices[Batch.V2] = temp;
+			float temp = vertices[IBatch.V1];
+			vertices[IBatch.V1] = vertices[IBatch.V4];
+			vertices[IBatch.V4] = vertices[IBatch.V3];
+			vertices[IBatch.V3] = vertices[IBatch.V2];
+			vertices[IBatch.V2] = temp;
 
-			temp = vertices[Batch.U1];
-			vertices[Batch.U1] = vertices[Batch.U4];
-			vertices[Batch.U4] = vertices[Batch.U3];
-			vertices[Batch.U3] = vertices[Batch.U2];
-			vertices[Batch.U2] = temp;
+			temp = vertices[IBatch.U1];
+			vertices[IBatch.U1] = vertices[IBatch.U4];
+			vertices[IBatch.U4] = vertices[IBatch.U3];
+			vertices[IBatch.U3] = vertices[IBatch.U2];
+			vertices[IBatch.U2] = temp;
 		} else {
-			float temp = vertices[Batch.V1];
-			vertices[Batch.V1] = vertices[Batch.V2];
-			vertices[Batch.V2] = vertices[Batch.V3];
-			vertices[Batch.V3] = vertices[Batch.V4];
-			vertices[Batch.V4] = temp;
+			float temp = vertices[IBatch.V1];
+			vertices[IBatch.V1] = vertices[IBatch.V2];
+			vertices[IBatch.V2] = vertices[IBatch.V3];
+			vertices[IBatch.V3] = vertices[IBatch.V4];
+			vertices[IBatch.V4] = temp;
 
-			temp = vertices[Batch.U1];
-			vertices[Batch.U1] = vertices[Batch.U2];
-			vertices[Batch.U2] = vertices[Batch.U3];
-			vertices[Batch.U3] = vertices[Batch.U4];
-			vertices[Batch.U4] = temp;
+			temp = vertices[IBatch.U1];
+			vertices[IBatch.U1] = vertices[IBatch.U2];
+			vertices[IBatch.U2] = vertices[IBatch.U3];
+			vertices[IBatch.U3] = vertices[IBatch.U4];
+			vertices[IBatch.U4] = temp;
 		}
 	}
 
@@ -492,38 +492,38 @@ public class Sprite : TextureRegion {
 
 				 float x1 = localXCos - localYSin + worldOriginX;
 				 float y1 = localYCos + localXSin + worldOriginY;
-				vertices[Batch.X1] = x1;
-				vertices[Batch.Y1] = y1;
+				vertices[IBatch.X1] = x1;
+				vertices[IBatch.Y1] = y1;
 
 				 float x2 = localXCos - localY2Sin + worldOriginX;
 				 float y2 = localY2Cos + localXSin + worldOriginY;
-				vertices[Batch.X2] = x2;
-				vertices[Batch.Y2] = y2;
+				vertices[IBatch.X2] = x2;
+				vertices[IBatch.Y2] = y2;
 
 				 float x3 = localX2Cos - localY2Sin + worldOriginX;
 				 float y3 = localY2Cos + localX2Sin + worldOriginY;
-				vertices[Batch.X3] = x3;
-				vertices[Batch.Y3] = y3;
+				vertices[IBatch.X3] = x3;
+				vertices[IBatch.Y3] = y3;
 
-				vertices[Batch.X4] = x1 + (x3 - x2);
-				vertices[Batch.Y4] = y3 - (y2 - y1);
+				vertices[IBatch.X4] = x1 + (x3 - x2);
+				vertices[IBatch.Y4] = y3 - (y2 - y1);
 			} else {
 				 float x1 = localX + worldOriginX;
 				 float y1 = localY + worldOriginY;
 				 float x2 = localX2 + worldOriginX;
 				 float y2 = localY2 + worldOriginY;
 
-				vertices[Batch.X1] = x1;
-				vertices[Batch.Y1] = y1;
+				vertices[IBatch.X1] = x1;
+				vertices[IBatch.Y1] = y1;
 
-				vertices[Batch.X2] = x1;
-				vertices[Batch.Y2] = y2;
+				vertices[IBatch.X2] = x1;
+				vertices[IBatch.Y2] = y2;
 
-				vertices[Batch.X3] = x2;
-				vertices[Batch.Y3] = y2;
+				vertices[IBatch.X3] = x2;
+				vertices[IBatch.Y3] = y2;
 
-				vertices[Batch.X4] = x2;
-				vertices[Batch.Y4] = y1;
+				vertices[IBatch.X4] = x2;
+				vertices[IBatch.Y4] = y1;
 			}
 		}
 		return vertices;
@@ -537,26 +537,26 @@ public class Sprite : TextureRegion {
 	public Rectangle getBoundingRectangle () {
 		 float[] vertices = getVertices();
 
-		float minx = vertices[Batch.X1];
-		float miny = vertices[Batch.Y1];
-		float maxx = vertices[Batch.X1];
-		float maxy = vertices[Batch.Y1];
+		float minx = vertices[IBatch.X1];
+		float miny = vertices[IBatch.Y1];
+		float maxx = vertices[IBatch.X1];
+		float maxy = vertices[IBatch.Y1];
 
-		minx = minx > vertices[Batch.X2] ? vertices[Batch.X2] : minx;
-		minx = minx > vertices[Batch.X3] ? vertices[Batch.X3] : minx;
-		minx = minx > vertices[Batch.X4] ? vertices[Batch.X4] : minx;
+		minx = minx > vertices[IBatch.X2] ? vertices[IBatch.X2] : minx;
+		minx = minx > vertices[IBatch.X3] ? vertices[IBatch.X3] : minx;
+		minx = minx > vertices[IBatch.X4] ? vertices[IBatch.X4] : minx;
 
-		maxx = maxx < vertices[Batch.X2] ? vertices[Batch.X2] : maxx;
-		maxx = maxx < vertices[Batch.X3] ? vertices[Batch.X3] : maxx;
-		maxx = maxx < vertices[Batch.X4] ? vertices[Batch.X4] : maxx;
+		maxx = maxx < vertices[IBatch.X2] ? vertices[IBatch.X2] : maxx;
+		maxx = maxx < vertices[IBatch.X3] ? vertices[IBatch.X3] : maxx;
+		maxx = maxx < vertices[IBatch.X4] ? vertices[IBatch.X4] : maxx;
 
-		miny = miny > vertices[Batch.Y2] ? vertices[Batch.Y2] : miny;
-		miny = miny > vertices[Batch.Y3] ? vertices[Batch.Y3] : miny;
-		miny = miny > vertices[Batch.Y4] ? vertices[Batch.Y4] : miny;
+		miny = miny > vertices[IBatch.Y2] ? vertices[IBatch.Y2] : miny;
+		miny = miny > vertices[IBatch.Y3] ? vertices[IBatch.Y3] : miny;
+		miny = miny > vertices[IBatch.Y4] ? vertices[IBatch.Y4] : miny;
 
-		maxy = maxy < vertices[Batch.Y2] ? vertices[Batch.Y2] : maxy;
-		maxy = maxy < vertices[Batch.Y3] ? vertices[Batch.Y3] : maxy;
-		maxy = maxy < vertices[Batch.Y4] ? vertices[Batch.Y4] : maxy;
+		maxy = maxy < vertices[IBatch.Y2] ? vertices[IBatch.Y2] : maxy;
+		maxy = maxy < vertices[IBatch.Y3] ? vertices[IBatch.Y3] : maxy;
+		maxy = maxy < vertices[IBatch.Y4] ? vertices[IBatch.Y4] : maxy;
 
 		if (bounds == null) bounds = new Rectangle();
 		bounds.x = minx;
@@ -566,11 +566,11 @@ public class Sprite : TextureRegion {
 		return bounds;
 	}
 
-	public void draw (Batch batch) {
+	public void draw (IBatch batch) {
 		batch.draw(texture, getVertices(), 0, SPRITE_SIZE);
 	}
 
-	public void draw (Batch batch, float alphaModulation) {
+	public void draw (IBatch batch, float alphaModulation) {
 		float oldAlpha = getColor().a;
 		setAlpha(oldAlpha * alphaModulation);
 		draw(batch);
@@ -627,41 +627,41 @@ public class Sprite : TextureRegion {
 		base.setRegion(u, v, u2, v2);
 
 		float[] vertices = this.vertices;
-		vertices[Batch.U1] = u;
-		vertices[Batch.V1] = v2;
+		vertices[IBatch.U1] = u;
+		vertices[IBatch.V1] = v2;
 
-		vertices[Batch.U2] = u;
-		vertices[Batch.V2] = v;
+		vertices[IBatch.U2] = u;
+		vertices[IBatch.V2] = v;
 
-		vertices[Batch.U3] = u2;
-		vertices[Batch.V3] = v;
+		vertices[IBatch.U3] = u2;
+		vertices[IBatch.V3] = v;
 
-		vertices[Batch.U4] = u2;
-		vertices[Batch.V4] = v2;
+		vertices[IBatch.U4] = u2;
+		vertices[IBatch.V4] = v2;
 	}
 
 	public void setU (float u) {
 		base.setU(u);
-		vertices[Batch.U1] = u;
-		vertices[Batch.U2] = u;
+		vertices[IBatch.U1] = u;
+		vertices[IBatch.U2] = u;
 	}
 
 	public void setV (float v) {
 		base.setV(v);
-		vertices[Batch.V2] = v;
-		vertices[Batch.V3] = v;
+		vertices[IBatch.V2] = v;
+		vertices[IBatch.V3] = v;
 	}
 
 	public void setU2 (float u2) {
 		base.setU2(u2);
-		vertices[Batch.U3] = u2;
-		vertices[Batch.U4] = u2;
+		vertices[IBatch.U3] = u2;
+		vertices[IBatch.U4] = u2;
 	}
 
 	public void setV2 (float v2) {
 		base.setV2(v2);
-		vertices[Batch.V1] = v2;
-		vertices[Batch.V4] = v2;
+		vertices[IBatch.V1] = v2;
+		vertices[IBatch.V4] = v2;
 	}
 
 	/** Set the sprite's flip state regardless of current condition
@@ -686,44 +686,44 @@ public class Sprite : TextureRegion {
 		base.flip(x, y);
 		float[] vertices = this.vertices;
 		if (x) {
-			float temp = vertices[Batch.U1];
-			vertices[Batch.U1] = vertices[Batch.U3];
-			vertices[Batch.U3] = temp;
-			temp = vertices[Batch.U2];
-			vertices[Batch.U2] = vertices[Batch.U4];
-			vertices[Batch.U4] = temp;
+			float temp = vertices[IBatch.U1];
+			vertices[IBatch.U1] = vertices[IBatch.U3];
+			vertices[IBatch.U3] = temp;
+			temp = vertices[IBatch.U2];
+			vertices[IBatch.U2] = vertices[IBatch.U4];
+			vertices[IBatch.U4] = temp;
 		}
 		if (y) {
-			float temp = vertices[Batch.V1];
-			vertices[Batch.V1] = vertices[Batch.V3];
-			vertices[Batch.V3] = temp;
-			temp = vertices[Batch.V2];
-			vertices[Batch.V2] = vertices[Batch.V4];
-			vertices[Batch.V4] = temp;
+			float temp = vertices[IBatch.V1];
+			vertices[IBatch.V1] = vertices[IBatch.V3];
+			vertices[IBatch.V3] = temp;
+			temp = vertices[IBatch.V2];
+			vertices[IBatch.V2] = vertices[IBatch.V4];
+			vertices[IBatch.V4] = temp;
 		}
 	}
 
 	public void scroll (float xAmount, float yAmount) {
 		float[] vertices = this.vertices;
 		if (xAmount != 0) {
-			float u = (vertices[Batch.U1] + xAmount) % 1;
+			float u = (vertices[IBatch.U1] + xAmount) % 1;
 			float u2 = u + width / texture.getWidth();
 			this.u = u;
 			this.u2 = u2;
-			vertices[Batch.U1] = u;
-			vertices[Batch.U2] = u;
-			vertices[Batch.U3] = u2;
-			vertices[Batch.U4] = u2;
+			vertices[IBatch.U1] = u;
+			vertices[IBatch.U2] = u;
+			vertices[IBatch.U3] = u2;
+			vertices[IBatch.U4] = u2;
 		}
 		if (yAmount != 0) {
-			float v = (vertices[Batch.V2] + yAmount) % 1;
+			float v = (vertices[IBatch.V2] + yAmount) % 1;
 			float v2 = v + height / texture.getHeight();
 			this.v = v;
 			this.v2 = v2;
-			vertices[Batch.V1] = v2;
-			vertices[Batch.V2] = v;
-			vertices[Batch.V3] = v;
-			vertices[Batch.V4] = v2;
+			vertices[IBatch.V1] = v2;
+			vertices[IBatch.V2] = v;
+			vertices[IBatch.V3] = v;
+			vertices[IBatch.V4] = v2;
 		}
 	}
 }

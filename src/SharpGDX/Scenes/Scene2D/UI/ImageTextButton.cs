@@ -54,7 +54,7 @@ public class ImageTextButton : Button {
 	}
 
 	protected Image newImage () {
-		return new Image((Drawable)null, Scaling.fit);
+		return new Image((IDrawable)null, Scaling.fit);
 	}
 
 	protected Label newLabel (String text, Label.LabelStyle style) {
@@ -82,7 +82,7 @@ public class ImageTextButton : Button {
 	}
 
 	/** Returns the appropriate image drawable from the style based on the current button state. */
-	protected Drawable? getImageDrawable () {
+	protected IDrawable? getImageDrawable () {
 		if (isDisabled() && style.imageDisabled != null) return style.imageDisabled;
 		if (isPressed()) {
 			if (isChecked() && style.imageCheckedDown != null) return style.imageCheckedDown;
@@ -132,7 +132,7 @@ public class ImageTextButton : Button {
 		return style.fontColor;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		updateImage();
 		label.getStyle().fontColor = getFontColor();
 		base.draw(batch, parentAlpha);
@@ -180,13 +180,13 @@ public class ImageTextButton : Button {
 	/** The style for an image text button, see {@link ImageTextButton}.
 	 * @author Nathan Sweet */
 	public class ImageTextButtonStyle : TextButton.TextButtonStyle {
-		public Drawable? imageUp, imageDown, imageOver, imageDisabled;
-		public Drawable? imageChecked, imageCheckedDown, imageCheckedOver;
+		public IDrawable? imageUp, imageDown, imageOver, imageDisabled;
+		public IDrawable? imageChecked, imageCheckedDown, imageCheckedOver;
 
 		public ImageTextButtonStyle () {
 		}
 
-		public ImageTextButtonStyle (Drawable? up, Drawable? down, Drawable? @checked, BitmapFont font) 
+		public ImageTextButtonStyle (IDrawable? up, IDrawable? down, IDrawable? @checked, BitmapFont font) 
 		: base(up, down, @checked, font)
 		{
 			

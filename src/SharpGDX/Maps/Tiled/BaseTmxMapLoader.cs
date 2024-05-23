@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using System.Collections;
 using SharpGDX.Maps.Tiled.Objects;
 using SharpGDX.Maps.Objects;
@@ -55,7 +56,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 	protected IntMap<MapObject> idToObject;
 	protected Array<Runnable> runOnEndOfLoadTiled;
 
-	public BaseTmxMapLoader (FileHandleResolver resolver) 
+	public BaseTmxMapLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		
@@ -85,7 +86,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 		return idToObject;
 	}
 
-	protected abstract Array<AssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
+	protected abstract Array<IAssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
 		TextureLoader.TextureParameter textureParameter);
 
 	/** Loads the map data, given the XML root element
@@ -349,7 +350,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 		loadObject(map, layer.getObjects(), element, mapHeightInPixels);
 	}
 
-	protected void loadObject (TiledMap map, TiledMapTile tile, Element element) {
+	protected void loadObject (TiledMap map, ITiledMapTile tile, Element element) {
 		loadObject(map, tile.getObjects(), element, tile.getTextureRegion().getRegionHeight());
 	}
 
@@ -417,7 +418,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 					bool flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);
 					bool flipVertically = ((id & FLAG_FLIP_VERTICALLY) != 0);
 
-					TiledMapTile tile = map.getTileSets().getTile(id & ~MASK_CLEAR);
+					ITiledMapTile tile = map.getTileSets().getTile(id & ~MASK_CLEAR);
 					TiledMapTileMapObject tiledMapTileMapObject =
 						new TiledMapTileMapObject(tile, flipHorizontally, flipVertically);
 					TextureRegion textureRegion = tiledMapTileMapObject.getTextureRegion();
@@ -704,7 +705,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 
 			foreach (Element tileElement in tileElements) {
 				int localtid = tileElement.getIntAttribute("id", 0);
-				TiledMapTile tile = tileSet.getTile(firstgid + localtid);
+				ITiledMapTile tile = tileSet.getTile(firstgid + localtid);
 				if (tile != null) {
 					AnimatedTiledMapTile animatedTile = createAnimatedTile(tileSet, tile, tileElement, firstgid);
 					if (animatedTile != null) {
@@ -729,7 +730,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 		Element element, Array<Element> tileElements, String name, int firstgid, int tilewidth, int tileheight, int spacing,
 		int margin, String source, int offsetX, int offsetY, String imageSource, int imageWidth, int imageHeight, FileHandle image);
 
-	protected void addTileProperties (TiledMapTile tile, Element tileElement) {
+	protected void addTileProperties (ITiledMapTile tile, Element tileElement) {
 		String terrain = tileElement.getAttribute("terrain", null);
 		if (terrain != null) {
 			tile.getProperties().put("terrain", terrain);
@@ -748,7 +749,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 		}
 	}
 
-	protected void addTileObjectGroup (TiledMapTile tile, Element tileElement) {
+	protected void addTileObjectGroup (ITiledMapTile tile, Element tileElement) {
 		Element objectgroupElement = tileElement.getChildByName("objectgroup");
 		if (objectgroupElement != null) {
 			foreach (Element objectElement in objectgroupElement.getChildrenByName("object")) {
@@ -757,7 +758,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 		}
 	}
 
-	protected AnimatedTiledMapTile createAnimatedTile (TiledMapTileSet tileSet, TiledMapTile tile, Element tileElement,
+	protected AnimatedTiledMapTile createAnimatedTile (TiledMapTileSet tileSet, ITiledMapTile tile, Element tileElement,
 		int firstgid) {
 		Element animationElement = tileElement.getChildByName("animation");
 		if (animationElement != null) {
@@ -777,7 +778,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 
 	protected void addStaticTiledMapTile (TiledMapTileSet tileSet, TextureRegion textureRegion, int tileId, float offsetX,
 		float offsetY) {
-		TiledMapTile tile = new StaticTiledMapTile(textureRegion);
+		ITiledMapTile tile = new StaticTiledMapTile(textureRegion);
 		tile.setId(tileId);
 		tile.setOffsetX(offsetX);
 		tile.setOffsetY(flipY ? -offsetY : offsetY);

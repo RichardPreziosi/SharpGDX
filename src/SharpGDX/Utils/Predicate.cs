@@ -4,7 +4,7 @@ namespace SharpGDX.Utils
 {
 	/** Interface used to select items within an iterator against a predicate.
  * @author Xoppa */
-	public interface Predicate<T>
+	public interface IPredicate<T>
 	{
 
 		/** @return true if the item matches the criteria and should be included in the iterator's items */
@@ -12,30 +12,30 @@ namespace SharpGDX.Utils
 
 		public class PredicateIterator<T> : IEnumerator<T> {
 		public IEnumerator<T> iterator;
-		public Predicate<T> predicate;
+		public IPredicate<T> predicate;
 		public bool end = false;
 		public bool peeked = false;
 		public T next = default;
 
 		public void Dispose(){}
 
-		public PredicateIterator(IEnumerable<T> iterable, Predicate<T> predicate)
+		public PredicateIterator(IEnumerable<T> iterable, IPredicate<T> predicate)
 		: this(iterable.GetEnumerator(), predicate)
 			{
 			
 		}
 
-		public PredicateIterator(IEnumerator<T> iterator,  Predicate<T> predicate)
+		public PredicateIterator(IEnumerator<T> iterator,  IPredicate<T> predicate)
 		{
 			set(iterator, predicate);
 		}
 
-		public void set(IEnumerable<T> iterable,  Predicate<T> predicate)
+		public void set(IEnumerable<T> iterable,  IPredicate<T> predicate)
 		{
 			set(iterable.GetEnumerator(), predicate);
 		}
 
-		public void set(IEnumerator<T> iterator, Predicate<T> predicate)
+		public void set(IEnumerator<T> iterator, IPredicate<T> predicate)
 		{
 			this.iterator = iterator;
 			this.predicate = predicate;
@@ -90,15 +90,15 @@ namespace SharpGDX.Utils
 
 	public class PredicateIterable<T> : IEnumerable<T> {
 		public IEnumerable<T> iterable;
-	public Predicate<T> predicate;
+	public IPredicate<T> predicate;
 	public PredicateIterator<T> iterator = null;
 
-	public PredicateIterable(IEnumerable<T> iterable, Predicate<T> predicate)
+	public PredicateIterable(IEnumerable<T> iterable, IPredicate<T> predicate)
 	{
 		set(iterable, predicate);
 	}
 
-	public void set(IEnumerable<T> iterable, Predicate<T> predicate)
+	public void set(IEnumerable<T> iterable, IPredicate<T> predicate)
 	{
 		this.iterable = iterable;
 		this.predicate = predicate;

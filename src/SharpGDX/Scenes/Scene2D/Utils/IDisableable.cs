@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SharpGDX.Scenes.Scene2D.Utils
 {
-	public interface Disableable
+	public interface IDisableable
 	{
 		public void setDisabled(bool isDisabled);
 

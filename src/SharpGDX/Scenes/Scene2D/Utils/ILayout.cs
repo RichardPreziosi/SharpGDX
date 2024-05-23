@@ -9,7 +9,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** Provides methods for an actor to participate in layout and to provide a minimum, preferred, and maximum size.
  * @author Nathan Sweet */
-	public interface Layout
+	public interface ILayout
 	{
 		/** Computes and caches any information needed for drawing and, if this actor has children, positions and sizes each child,
 		 * calls {@link #invalidate()} on any each child whose width or height has changed, and calls {@link #validate()} on each

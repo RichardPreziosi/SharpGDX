@@ -24,7 +24,7 @@ namespace SharpGDX
 		 * @author mzechner */
 		enum GraphicsType
 		{
-			AndroidGL, LWJGL, WebGL, iOSGL, JGLFW, Mock, LWJGL3
+			AndroidGL, WebGL, iOSGL, JGLFW, Mock, OpenGL
 		}
 
 		/** Describe a fullscreen display mode
@@ -335,7 +335,7 @@ namespace SharpGDX
 		 * @param xHotspot the x location of the hotspot pixel within the cursor image (origin top-left corner)
 		 * @param yHotspot the y location of the hotspot pixel within the cursor image (origin top-left corner)
 		 * @return a cursor object that can be used by calling {@link #setCursor(Cursor)} or null if not supported */
-		Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
+		ICursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
 
 		/** Only viable on the lwjgl-backend and on the gwt-backend. Browsers that support cursor:url() and support the png format (the
 		 * pixmap is converted to a data-url of type image/png) should also support custom cursors. Will set the mouse cursor image to
@@ -343,9 +343,9 @@ namespace SharpGDX
 		 * render thread, and maximum one time per frame.
 		 *
 		 * @param cursor the mouse cursor as a {@link com.badlogic.gdx.graphics.Cursor} */
-		void setCursor(Cursor cursor);
+		void setCursor(ICursor cursor);
 
 		/** Sets one of the predefined {@link SystemCursor}s */
-		void setSystemCursor(Cursor.SystemCursor systemCursor);
+		void setSystemCursor(ICursor.SystemCursor systemCursor);
 	}
 }

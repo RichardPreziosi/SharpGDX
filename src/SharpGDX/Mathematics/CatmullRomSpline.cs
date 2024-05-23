@@ -1,8 +1,8 @@
 ﻿namespace SharpGDX.Mathematics
 {
 	/** @author Xoppa */
-	public class CatmullRomSpline<T > : Path<T> 
-	where T: Vector<T>
+	public class CatmullRomSpline<T > : IPath<T> 
+	where T: IVector<T>
 	{
 	/** Calculates the catmullrom value for the given position (t).
 	 * @param out The Vector to set to the result.

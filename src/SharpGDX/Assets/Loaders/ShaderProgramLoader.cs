@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Utils;
@@ -20,13 +21,13 @@ public class ShaderProgramLoader : AsynchronousAssetLoader<ShaderProgram, Shader
 	private String vertexFileSuffix = ".vert";
 	private String fragmentFileSuffix = ".frag";
 
-	public ShaderProgramLoader (FileHandleResolver resolver) 
+	public ShaderProgramLoader (IFileHandleResolver resolver) 
 	:base(resolver)
 	{
 		
 	}
 
-	public ShaderProgramLoader (FileHandleResolver resolver, String vertexFileSuffix, String fragmentFileSuffix) 
+	public ShaderProgramLoader (IFileHandleResolver resolver, String vertexFileSuffix, String fragmentFileSuffix) 
 	: base(resolver)
 	{
 		

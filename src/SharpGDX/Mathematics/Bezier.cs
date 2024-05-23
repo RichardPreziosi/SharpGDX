@@ -9,8 +9,8 @@ namespace SharpGDX.Mathematics
 {
 	/** Implementation of the Bezier curve.
  * @author Xoppa */
-	public class Bezier<T > : Path<T> 
-	where T: Vector<T>
+	public class Bezier<T > : IPath<T> 
+	where T: IVector<T>
 	{
 	// TODO implement Serializable
 

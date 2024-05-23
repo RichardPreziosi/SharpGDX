@@ -1,4 +1,4 @@
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** Options for {@link ServerSocket} instances.
  * 

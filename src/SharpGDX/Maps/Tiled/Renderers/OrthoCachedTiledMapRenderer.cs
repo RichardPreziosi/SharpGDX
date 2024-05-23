@@ -4,7 +4,7 @@ using SharpGDX.Utils.Reflect;
 using SharpGDX.Shims;
 using SharpGDX.Assets;
 using SharpGDX.Assets.Loaders;
-using static SharpGDX.Graphics.G2D.Batch;
+using static SharpGDX.Graphics.G2D.IBatch;
 using SharpGDX.Utils;
 using SharpGDX.Graphics;
 using SharpGDX.Graphics.G2D;
@@ -20,7 +20,7 @@ namespace SharpGDX.Maps.Tiled.Renderers;
  * change.
  * @author Justin Shapcott
  * @author Nathan Sweet */
-public class OrthoCachedTiledMapRenderer : TiledMapRenderer, Disposable {
+public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, Disposable {
 	static private readonly float tolerance = 0.00001f;
 	static protected readonly int NUM_VERTICES = 20;
 
@@ -212,7 +212,7 @@ public class OrthoCachedTiledMapRenderer : TiledMapRenderer, Disposable {
 				 TiledMapTileLayer.Cell cell = layer.getCell(col, row);
 				if (cell == null) continue;
 
-				 TiledMapTile tile = cell.getTile();
+				 ITiledMapTile tile = cell.getTile();
 				if (tile == null) continue;
 
 				count++;

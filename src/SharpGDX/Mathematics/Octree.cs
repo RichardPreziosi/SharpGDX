@@ -69,11 +69,11 @@ public class Octree<T> {
 		}
 
 	protected OctreeNode root;
-	readonly Collider<T> collider;
+	readonly ICollider<T> collider;
 
 	static readonly Vector3 tmp = new Vector3();
 
-	public Octree (Vector3 minimum, Vector3 maximum, int maxDepth, int maxItemsPerNode, Collider<T> collider) {
+	public Octree (Vector3 minimum, Vector3 maximum, int maxDepth, int maxItemsPerNode, ICollider<T> collider) {
 			nodePool = new OctreeNodePool(this);
 			Vector3 realMin = new Vector3(Math.Min(minimum.x, maximum.x), Math.Min(minimum.y, maximum.y),
 			Math.Min(minimum.z, maximum.z));
@@ -354,7 +354,7 @@ public class Octree<T> {
 
 	/** Interface used by octree to handle geometries' collisions against BoundingBox, Frustum and Ray.
 	 * @param <T> */
-	public interface Collider<T> {
+	public interface ICollider<T> {
 
 		/** Method to calculate intersection between aabb and the geometry.
 		 * @param nodeBounds

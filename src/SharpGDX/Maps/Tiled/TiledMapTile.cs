@@ -12,7 +12,7 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Maps.Tiled;
 
 /** @brief Generalises the concept of tile in a TiledMap */
-public interface TiledMapTile {
+public interface ITiledMapTile {
 
 	public enum BlendMode {
 		NONE, ALPHA

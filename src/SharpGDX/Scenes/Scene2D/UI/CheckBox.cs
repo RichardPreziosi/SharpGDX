@@ -44,7 +44,7 @@ public class CheckBox : TextButton {
 	}
 
 	protected Image newImage () {
-		return new Image((Drawable)null, Scaling.none);
+		return new Image((IDrawable)null, Scaling.none);
 	}
 
 	public void setStyle (Button.ButtonStyle style) {
@@ -59,12 +59,12 @@ public class CheckBox : TextButton {
 		return style;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		image.setDrawable(getImageDrawable());
 		base.draw(batch, parentAlpha);
 	}
 
-	protected Drawable? getImageDrawable () {
+	protected IDrawable? getImageDrawable () {
 		if (isDisabled()) {
 			if (_isChecked && style.checkboxOnDisabled != null) return style.checkboxOnDisabled;
 			return style.checkboxOffDisabled;
@@ -87,13 +87,13 @@ public class CheckBox : TextButton {
 	/** The style for a select box, see {@link CheckBox}.
 	 * @author Nathan Sweet */
 	public class CheckBoxStyle : TextButtonStyle {
-		public Drawable checkboxOn, checkboxOff;
-		public Drawable? checkboxOnOver, checkboxOver, checkboxOnDisabled, checkboxOffDisabled;
+		public IDrawable checkboxOn, checkboxOff;
+		public IDrawable? checkboxOnOver, checkboxOver, checkboxOnDisabled, checkboxOffDisabled;
 
 		public CheckBoxStyle () {
 		}
 
-		public CheckBoxStyle (Drawable checkboxOff, Drawable checkboxOn, BitmapFont font, Color? fontColor) {
+		public CheckBoxStyle (IDrawable checkboxOff, IDrawable checkboxOn, BitmapFont font, Color? fontColor) {
 			this.checkboxOff = checkboxOff;
 			this.checkboxOn = checkboxOn;
 			this.font = font;

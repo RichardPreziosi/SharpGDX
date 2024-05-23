@@ -1,8 +1,8 @@
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using static SharpGDX.Net;
+using static SharpGDX.INet;
 
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** A builder for {@link HttpRequest}s.
  * 
@@ -22,7 +22,7 @@ public class HttpRequestBuilder {
 	/** Will be used for the object serialization in case {@link #jsonContent(Object)} is called. */
 	public static Json json = new Json();
 
-	private Net.HttpRequest httpRequest;
+	private INet.HttpRequest httpRequest;
 
 	/** Initializes the builder and sets it up to build a new {@link HttpRequest} . */
 	public HttpRequestBuilder newRequest () {

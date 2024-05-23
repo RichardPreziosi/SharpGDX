@@ -16,7 +16,7 @@ namespace SharpGDX.Graphics
  * </p>
  *
  * @author mgsx */
-public interface Texture3DData {
+public interface ITexture3DData {
 
 	/** @return whether the TextureData is prepared or not. */
 	public bool isPrepared ();

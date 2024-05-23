@@ -85,7 +85,7 @@ namespace SharpGDX
  * </p>
  * 
  * @author mzechner */
-	public interface Application
+	public interface IApplication
 	{
 		/** Enumeration of possible {@link Application} types
 		 * 
@@ -101,22 +101,22 @@ namespace SharpGDX
 		public static readonly int LOG_ERROR = 1;
 
 		/** @return the {@link ApplicationListener} instance */
-		public ApplicationListener getApplicationListener();
+		public IApplicationListener getApplicationListener();
 
 		/** @return the {@link Graphics} instance */
 		public IGraphics getGraphics();
 
 		/** @return the {@link Audio} instance */
-		public Audio getAudio();
+		public IAudio getAudio();
 
 		/** @return the {@link Input} instance */
 		public Input getInput();
 
 		/** @return the {@link Files} instance */
-		public Files getFiles();
+		public IFiles getFiles();
 
 		/** @return the {@link Net} instance */
-		public Net getNet();
+		public INet getNet();
 
 		/** Logs a message to the console or logcat */
 		public void log(String tag, String message);
@@ -146,10 +146,10 @@ namespace SharpGDX
 
 		/** Sets the current Application logger. Calls to {@link #log(String, String)} are delegated to this
 		 * {@link ApplicationLogger} */
-		public void setApplicationLogger(ApplicationLogger applicationLogger);
+		public void setApplicationLogger(IApplicationLogger applicationLogger);
 
 		/** @return the current {@link ApplicationLogger} */
-		public ApplicationLogger getApplicationLogger();
+		public IApplicationLogger getApplicationLogger();
 
 		/** @return what {@link ApplicationType} this application has, e.g. Android or Desktop */
 		public ApplicationType getType();
@@ -166,9 +166,9 @@ namespace SharpGDX
 		/** Returns the {@link Preferences} instance of this Application. It can be used to store application settings across runs.
 		 * @param name the name of the preferences, must be useable as a file name.
 		 * @return the preferences. */
-		public Preferences getPreferences(String name);
+		public IPreferences getPreferences(String name);
 
-		public Clipboard getClipboard();
+		public IClipboard getClipboard();
 
 		/** Posts a {@link Runnable} on the main loop thread.
 		 * 
@@ -189,10 +189,10 @@ namespace SharpGDX
 		/** Adds a new {@link LifecycleListener} to the application. This can be used by extensions to hook into the lifecycle more
 		 * easily. The {@link ApplicationListener} methods are sufficient for application level development.
 		 * @param listener */
-		public void addLifecycleListener(LifecycleListener listener);
+		public void addLifecycleListener(ILifecycleListener listener);
 
 		/** Removes the {@link LifecycleListener}.
 		 * @param listener */
-		public void removeLifecycleListener(LifecycleListener listener);
+		public void removeLifecycleListener(ILifecycleListener listener);
 	}
 }

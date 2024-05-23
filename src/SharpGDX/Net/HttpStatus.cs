@@ -1,4 +1,4 @@
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** This implementation is widely based Apache's HttpStatus which uses license (Apache license 2.0) -
  * http://www.apache.org/licenses/LICENSE-2.0 For more information on the Apache Software Foundation, please see

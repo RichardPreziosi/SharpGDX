@@ -1,52 +1,52 @@
-﻿using File = SharpGDX.Shims.File;
+﻿using SharpGDX.Files;
 using SharpGDX.Utils;
+using File = SharpGDX.Shims.File;
 
-namespace SharpGDX.Headless
+namespace SharpGDX.Headless;
+
+public sealed class HeadlessFileHandle : FileHandle
 {
-	/** @author mzechner
- * @author Nathan Sweet */
-	public sealed class HeadlessFileHandle : FileHandle
+	public HeadlessFileHandle(string fileName, IFiles.FileType type)
+		: base(fileName, type)
 	{
-	public HeadlessFileHandle(String fileName, Files.FileType type)
-	: base(fileName, type)
-		{
 	}
 
-	public HeadlessFileHandle(File file, Files.FileType type)
-	: base(file, type)
-		{
+	public HeadlessFileHandle(File file, IFiles.FileType type)
+		: base(file, type)
+	{
 	}
 
-	public FileHandle child(String name)
+	public FileHandle child(string name)
 	{
-		if (_file.getPath().Length == 0) return new HeadlessFileHandle(new File(name), _type);
-		return new HeadlessFileHandle(new File(_file, name), _type);
-	}
-
-	public FileHandle sibling(String name)
-	{
-		if (_file.getPath().Length == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
-		return new HeadlessFileHandle(new File(_file.getParent(), name), _type);
-	}
-
-	public FileHandle parent()
-	{
-		File parent = _file.getParentFile();
-		if (parent == null)
-		{
-			if (_type == Files.FileType.Absolute)
-				parent = new File("/");
-			else
-				parent = new File("");
-		}
-		return new HeadlessFileHandle(parent,_type);
+		return _file.getPath().Length == 0
+			? new HeadlessFileHandle(new File(name), _type)
+			: new HeadlessFileHandle(new File(_file, name), _type);
 	}
 
 	public File file()
 	{
-		if (_type == Files.FileType.External) return new File(HeadlessFiles.externalPath, _file.getPath());
-		if (_type == Files.FileType.Local) return new File(HeadlessFiles.localPath, _file.getPath());
-		return _file;
+		return _type switch
+		{
+			IFiles.FileType.External => new File(HeadlessFiles.externalPath, _file.getPath()),
+			IFiles.FileType.Local => new File(HeadlessFiles.localPath, _file.getPath()),
+			_ => _file
+		};
 	}
+
+	public FileHandle parent()
+	{
+		var parent = _file.getParentFile() ?? (_type == IFiles.FileType.Absolute ? new File("/") : new File(""));
+
+		return new HeadlessFileHandle(parent, _type);
+	}
+
+	public FileHandle sibling(string name)
+	{
+		if (_file.getPath().Length == 0)
+		{
+			throw new GdxRuntimeException("Cannot get the sibling of the root.");
+		}
+
+		return new HeadlessFileHandle(new File(_file.getParent(), name), _type);
 	}
 }

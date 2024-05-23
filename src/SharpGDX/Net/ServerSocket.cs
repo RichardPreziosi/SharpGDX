@@ -1,3 +1,4 @@
+using SharpGDX.Net;
 using SharpGDX.Utils;
 using SharpGDX.Shims;
 
@@ -11,7 +12,7 @@ namespace SharpGDX;
 public interface ServerSocket : Disposable {
 
 	/** @return the Protocol used by this socket */
-	public Net.Protocol getProtocol ();
+	public INet.Protocol getProtocol ();
 
 	/** Accepts a new incoming connection from a client {@link Socket}. The given hints will be applied to the accepted socket.
 	 * Blocking, call on a separate thread.

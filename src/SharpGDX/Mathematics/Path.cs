@@ -8,7 +8,7 @@ namespace SharpGDX.Mathematics
 {
 	/** Interface that specifies a path of type T within the window 0.0<=t<=1.0.
  * @author Xoppa */
-	public interface Path<T>
+	public interface IPath<T>
 	{
 		T derivativeAt(T @out, float t);
 

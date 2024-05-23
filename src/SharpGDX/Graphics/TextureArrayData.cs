@@ -1,4 +1,5 @@
-﻿using SharpGDX.Graphics;
+﻿using SharpGDX.Files;
+using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using System;
@@ -23,7 +24,7 @@ namespace SharpGDX.Graphics
  *
  * Look at {@link FileTextureArrayData} for example implementation of this interface.
  * @author Tomski */
-public interface TextureArrayData {
+public interface ITextureArrayData {
 
 	/** @return whether the TextureArrayData is prepared or not. */
 	public bool isPrepared ();
@@ -59,7 +60,7 @@ public interface TextureArrayData {
 	 * @author Tomski */
 	public static class Factory {
 
-		public static TextureArrayData loadFromFiles (Pixmap.Format format, bool useMipMaps, FileHandle[] files) {
+		public static ITextureArrayData loadFromFiles (Pixmap.Format format, bool useMipMaps, FileHandle[] files) {
 			return new FileTextureArrayData(format, useMipMaps, files);
 		}
 

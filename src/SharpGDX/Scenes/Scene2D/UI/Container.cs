@@ -20,7 +20,7 @@ where T: Actor{
 	private Value _padTop = Value.zero, _padLeft = Value.zero, _padBottom = Value.zero, _padRight = Value.zero;
 	private float _fillX, _fillY;
 	private int _align;
-	private Drawable? _background;
+	private IDrawable? _background;
 	private bool _clip;
 	private bool round = true;
 
@@ -37,7 +37,7 @@ where T: Actor{
 		setActor(actor);
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 		if (isTransform()) {
 			applyTransform(batch, computeTransform());
@@ -62,7 +62,7 @@ where T: Actor{
 
 	/** Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
 	 * drawable. */
-	protected void drawBackground (Batch batch, float parentAlpha, float x, float y) {
+	protected void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
 		if (background == null) return;
 		Color color = getColor();
 		batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
@@ -71,7 +71,7 @@ where T: Actor{
 
 	/** Sets the background drawable and adjusts the container's padding to match the background.
 	 * @see #setBackground(Drawable, boolean) */
-	public void setBackground (Drawable? background) {
+	public void setBackground (IDrawable? background) {
 		setBackground(background, true);
 	}
 
@@ -79,7 +79,7 @@ where T: Actor{
 	 * {@link Drawable#getBottomHeight()} , {@link Drawable#getTopHeight()}, {@link Drawable#getLeftWidth()}, and
 	 * {@link Drawable#getRightWidth()}.
 	 * @param background If null, the background will be cleared and padding removed. */
-	public void setBackground (Drawable? background, bool adjustPadding) {
+	public void setBackground (IDrawable? background, bool adjustPadding) {
 		if (this._background == background) return;
 		this._background = background;
 		if (adjustPadding) {
@@ -92,12 +92,12 @@ where T: Actor{
 	}
 
 	/** @see #setBackground(Drawable) */
-	public Container<T> background (Drawable? background) {
+	public Container<T> background (IDrawable? background) {
 		setBackground(background);
 		return this;
 	}
 
-	public Drawable? getBackground () {
+	public IDrawable? getBackground () {
 		return _background;
 	}
 
@@ -147,12 +147,12 @@ where T: Actor{
 		}
 
 		actor.setBounds(x, y, width, height);
-		if (actor is Layout) ((Layout)actor).validate();
+		if (actor is ILayout) ((ILayout)actor).validate();
 	}
 
 	public void setCullingArea (Rectangle cullingArea) {
 		base.setCullingArea(cullingArea);
-		if (_fillX == 1 && _fillY == 1 && actor is Cullable) ((Cullable)actor).setCullingArea(cullingArea);
+		if (_fillX == 1 && _fillY == 1 && actor is ICullable) ((ICullable)actor).setCullingArea(cullingArea);
 	}
 
 	/** @param actor May be null. */

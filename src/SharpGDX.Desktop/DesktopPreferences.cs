@@ -1,4 +1,5 @@
-﻿using SharpGDX.Shims;
+﻿using SharpGDX.Files;
+using SharpGDX.Shims;
 using SharpGDX.Utils;
 using System;
 using System.Collections.Generic;
@@ -6,22 +7,22 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Files;
+using static SharpGDX.IFiles;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Preferences : Preferences
+	public class DesktopPreferences : IPreferences
 	{
 	private readonly Map<string, string> properties = new Map<string, string>();
 	private readonly FileHandle file;
 
-	public Lwjgl3Preferences(String name, String directory)
+	public DesktopPreferences(String name, String directory)
 	// TODO: : this(new HeadlessFileHandle(new File(directory, name), FileType.External))
 		{
 		
 	}
 
-	public Lwjgl3Preferences(FileHandle file)
+	public DesktopPreferences(FileHandle file)
 	{
 		//this.file = file;
 		//if (!file.exists()) return;
@@ -41,37 +42,37 @@ namespace SharpGDX.Desktop
 		//}
 	}
 
-	public Preferences putBoolean(String key, bool val)
+	public IPreferences putBoolean(String key, bool val)
 	{
 		properties.put(key, (val).ToString());
 		return this;
 	}
 
-	public Preferences putInteger(String key, int val)
+	public IPreferences putInteger(String key, int val)
 	{
 		properties.put(key, (val).ToString());
 		return this;
 	}
 
-	public Preferences putLong(String key, long val)
+	public IPreferences putLong(String key, long val)
 	{
 		properties.put(key, (val).ToString());
 		return this;
 	}
 
-public Preferences putFloat(String key, float val)
+public IPreferences putFloat(String key, float val)
 	{
 		properties.put(key, (val).ToString());
 		return this;
 	}
 
-	public Preferences putString(String key, String val)
+	public IPreferences putString(String key, String val)
 	{
 		properties.put(key, val);
 		return this;
 	}
 
-	public Preferences put(Map<String, object> vals)
+	public IPreferences put(Map<String, object> vals)
 	{
 		foreach (var val in vals.entrySet())
 		{

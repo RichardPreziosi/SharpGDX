@@ -1,3 +1,5 @@
+using SharpGDX.Audio;
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
@@ -6,11 +8,11 @@ namespace SharpGDX.Assets.Loaders;
 
 /** {@link AssetLoader} to load {@link Sound} instances.
  * @author mzechner */
-public class SoundLoader : AsynchronousAssetLoader<Sound, SoundLoader.SoundParameter> {
+public class SoundLoader : AsynchronousAssetLoader<ISound, SoundLoader.SoundParameter> {
 
-	private Sound sound;
+	private ISound sound;
 
-	public SoundLoader (FileHandleResolver resolver) 
+	public SoundLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		
@@ -19,7 +21,7 @@ public class SoundLoader : AsynchronousAssetLoader<Sound, SoundLoader.SoundParam
 	/** Returns the {@link Sound} instance currently loaded by this {@link SoundLoader}.
 	 * 
 	 * @return the currently loaded {@link Sound}, otherwise {@code null} if no {@link Sound} has been loaded yet. */
-	protected Sound getLoadedSound () {
+	protected ISound getLoadedSound () {
 		return sound;
 	}
 
@@ -27,17 +29,17 @@ public class SoundLoader : AsynchronousAssetLoader<Sound, SoundLoader.SoundParam
 		sound = Gdx.audio.newSound(file);
 	}
 
-	public override Sound loadSync (AssetManager manager, String fileName, FileHandle file, SoundParameter parameter) {
-		Sound sound = this.sound;
+	public override ISound loadSync (AssetManager manager, String fileName, FileHandle file, SoundParameter parameter) {
+		ISound sound = this.sound;
 		this.sound = null;
 		return sound;
 	}
 
-	public override Array<AssetDescriptor<Sound>> getDependencies (String fileName, FileHandle file, SoundParameter parameter) {
+	public override Array<AssetDescriptor<ISound>> getDependencies (String fileName, FileHandle file, SoundParameter parameter) {
 		return null;
 	}
 
-	public class SoundParameter : AssetLoaderParameters<Sound> {
+	public class SoundParameter : AssetLoaderParameters<ISound> {
 	}
 
 }

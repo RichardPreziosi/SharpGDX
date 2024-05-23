@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SharpGDX.Mathematics
 {
 	/** Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0). */
-public class Polygon : Shape2D {
+public class Polygon : IShape2D {
 	private float[] localVertices;
 	private float[] worldVertices;
 	private float x, y;

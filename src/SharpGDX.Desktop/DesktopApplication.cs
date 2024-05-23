@@ -14,21 +14,21 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Application : Lwjgl3ApplicationBase {
-	private readonly Lwjgl3ApplicationConfiguration config;
-	readonly Array<Lwjgl3Window> windows = new Array<Lwjgl3Window>();
-	private volatile Lwjgl3Window currentWindow;
-	private Lwjgl3Audio audio;
-	private readonly Files files;
-	private readonly Net net;
-	private readonly ObjectMap<String, Preferences> preferences = new ObjectMap<String, Preferences>();
-	private readonly Lwjgl3Clipboard clipboard;
-	private int logLevel = Application.LOG_INFO;
-	private ApplicationLogger applicationLogger;
+	public class DesktopApplication : IDesktopApplicationBase {
+	private readonly DesktopApplicationConfiguration config;
+	readonly Array<DesktopWindow> windows = new ();
+	private volatile DesktopWindow currentWindow;
+	private IDesktopAudio audio;
+	private readonly IFiles files;
+	private readonly INet net;
+	private readonly ObjectMap<String, IPreferences> preferences = new ();
+	private readonly DesktopClipboard clipboard;
+	private int logLevel = IApplication.LOG_INFO;
+	private IApplicationLogger applicationLogger;
 	private volatile bool running = true;
-	private readonly Array<Runnable> runnables = new Array<Runnable>();
-	private readonly Array<Runnable> executedRunnables = new Array<Runnable>();
-	private readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
+	private readonly Array<Runnable> runnables = new ();
+	private readonly Array<Runnable> executedRunnables = new ();
+	private readonly Array<ILifecycleListener> lifecycleListeners = new ();
 	private static ErrorCallback errorCallback;
 	private static GLVersion glVersion;
 	private static DebugProc? glDebugCallback;
@@ -41,10 +41,10 @@ namespace SharpGDX.Desktop
 					//loadGlfwAwtMacos();
 					throw new NotImplementedException();
 				}
-			Lwjgl3NativesLoader.load();
+			DesktopNativesLoader.Load();
 			errorCallback = (OpenTK.Windowing.GraphicsLibraryFramework.ErrorCode code, string description) =>
 			{
-				// TODO: ??? GLFWErrorCallback.createPrint(Lwjgl3ApplicationConfiguration.errorStream);
+				// TODO: ??? GLFWErrorCallback.createPrint(DesktopApplicationConfiguration.errorStream);
 
 				Console.WriteLine(description);
 			};
@@ -105,28 +105,28 @@ namespace SharpGDX.Desktop
 		throw new NotImplementedException();
 	}
 
-	public Lwjgl3Application (ApplicationListener listener) 
-	: this(listener, new Lwjgl3ApplicationConfiguration())
+	public DesktopApplication (IApplicationListener listener) 
+	: this(listener, new DesktopApplicationConfiguration())
 	{
 		
 	}
 
-	public unsafe Lwjgl3Application (ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
-		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) loadANGLE();
+	public unsafe DesktopApplication (IApplicationListener listener, DesktopApplicationConfiguration config) {
+		if (config.glEmulation == DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20) loadANGLE();
 		initializeGlfw();
-		setApplicationLogger(new Lwjgl3ApplicationLogger());
+		setApplicationLogger(new DesktopApplicationLogger());
 
-		this.config = config = Lwjgl3ApplicationConfiguration.copy(config);
+		this.config = config = DesktopApplicationConfiguration.copy(config);
 		if (config.title == null) config.title = listener.GetType().Name;
 
 		Gdx.app = this;
 		if (!config._disableAudio) {
 			try
 			{
-				this.audio = createAudio(config);
+				this.audio = CreateAudio(config);
 				
 			} catch (Exception t) {
-				log("Lwjgl3Application", "Couldn't initialize audio, disabling audio", t);
+				log("DesktopApplication", "Couldn't initialize audio, disabling audio", t);
 				this.audio = new MockAudio();
 			}
 		} else {
@@ -134,13 +134,13 @@ namespace SharpGDX.Desktop
 		}
 		Gdx.audio = audio;
 		this.files = Gdx.files = createFiles();
-		this.net = Gdx.net = new Lwjgl3Net(config);
-		this.clipboard = new Lwjgl3Clipboard();
+		this.net = Gdx.net = new DesktopNet(config);
+		this.clipboard = new DesktopClipboard();
 
 		this.sync = new Sync();
 
-		Lwjgl3Window window = createWindow(config, listener, null);
-		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) postLoadANGLE();
+		DesktopWindow window = createWindow(config, listener, null);
+		if (config.glEmulation == DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20) postLoadANGLE();
 		windows.add(window);
 		try {
 			loop();
@@ -156,15 +156,15 @@ namespace SharpGDX.Desktop
 	}
 
 	protected void loop () {
-		Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
+		Array<DesktopWindow> closedWindows = new Array<DesktopWindow>();
 		while (running && windows.size > 0) {
 			// FIXME put it on a separate thread
-			audio.update();
+			audio.Update();
 
 			bool haveWindowsRendered = false;
 			closedWindows.clear();
 			int targetFramerate = -2;
-			foreach (Lwjgl3Window window in windows) {
+			foreach (DesktopWindow window in windows) {
 				window.makeCurrent();
 				currentWindow = window;
 				if (targetFramerate == -2) targetFramerate = window.getConfig().foregroundFPS;
@@ -190,18 +190,18 @@ namespace SharpGDX.Desktop
 			if (shouldRequestRendering) {
 				// Must follow Runnables execution so changes done by Runnables are reflected
 				// in the following render.
-				foreach (Lwjgl3Window window in windows) {
+				foreach (DesktopWindow window in windows) {
 					if (!window.getGraphics().isContinuousRendering()) window.requestRendering();
 				}
 			}
 
-			foreach (Lwjgl3Window closedWindow in closedWindows) {
+			foreach (DesktopWindow closedWindow in closedWindows) {
 				if (windows.size == 1) {
 					// Lifecycle listener methods have to be called before ApplicationListener methods. The
 					// application will be disposed when _all_ windows have been disposed, which is the case,
 					// when there is only 1 window left, which is in the process of being disposed.
 					for (int i = lifecycleListeners.size - 1; i >= 0; i--) {
-						LifecycleListener l = lifecycleListeners.get(i);
+						ILifecycleListener l = lifecycleListeners.get(i);
 						l.pause();
 						l.dispose();
 					}
@@ -228,19 +228,19 @@ namespace SharpGDX.Desktop
 
 	protected void cleanupWindows () {
 		lock (lifecycleListeners) {
-			foreach (LifecycleListener lifecycleListener in lifecycleListeners) {
+			foreach (ILifecycleListener lifecycleListener in lifecycleListeners) {
 				lifecycleListener.pause();
 				lifecycleListener.dispose();
 			}
 		}
-		foreach (Lwjgl3Window window in windows) {
+		foreach (DesktopWindow window in windows) {
 			window.dispose();
 		}
 		windows.clear();
 	}
 
 	protected void cleanup () {
-		Lwjgl3Cursor.disposeSystemCursors();
+		DesktopCursor.disposeSystemCursors();
 		audio.dispose();
 		// TODO: errorCallback.free();
 		errorCallback = null;
@@ -251,7 +251,7 @@ namespace SharpGDX.Desktop
 		GLFW.Terminate();
 	}
 
-	public ApplicationListener getApplicationListener () {
+	public IApplicationListener getApplicationListener () {
 		return currentWindow.getListener();
 	}
 
@@ -259,7 +259,7 @@ namespace SharpGDX.Desktop
 		return currentWindow.getGraphics();
 	}
 
-	public SharpGDX.Audio getAudio () {
+	public SharpGDX.IAudio getAudio () {
 		return audio;
 	}
 
@@ -267,36 +267,36 @@ namespace SharpGDX.Desktop
 		return currentWindow.getInput();
 	}
 
-	public Files getFiles () {
+	public IFiles getFiles () {
 		return files;
 	}
 
-	public Net getNet () {
+	public INet getNet () {
 		return net;
 	}
 
 	public void debug (String tag, String message) {
-		if (logLevel >= Application.LOG_DEBUG) getApplicationLogger().debug(tag, message);
+		if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().debug(tag, message);
 	}
 
 	public void debug (String tag, String message, Exception exception) {
-		if (logLevel >= Application.LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
+		if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
 	}
 
 	public void log (String tag, String message) {
-		if (logLevel >= Application.LOG_INFO) getApplicationLogger().log(tag, message);
+		if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().log(tag, message);
 	}
 
 	public void log (String tag, String message, Exception exception) {
-		if (logLevel >= Application.LOG_INFO) getApplicationLogger().log(tag, message, exception);
+		if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().log(tag, message, exception);
 	}
 
 	public void error (String tag, String message) {
-		if (logLevel >= Application.LOG_ERROR) getApplicationLogger().error(tag, message);
+		if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().error(tag, message);
 	}
 
 	public void error (String tag, String message, Exception exception) {
-		if (logLevel >= Application.LOG_ERROR) getApplicationLogger().error(tag, message, exception);
+		if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().error(tag, message, exception);
 	}
 
 	public void setLogLevel (int logLevel) {
@@ -307,16 +307,16 @@ namespace SharpGDX.Desktop
 		return logLevel;
 	}
 
-	public void setApplicationLogger (ApplicationLogger applicationLogger) {
+	public void setApplicationLogger (IApplicationLogger applicationLogger) {
 		this.applicationLogger = applicationLogger;
 	}
 
-	public ApplicationLogger getApplicationLogger () {
+	public IApplicationLogger getApplicationLogger () {
 		return applicationLogger;
 	}
 
-	public Application.ApplicationType getType () {
-		return Application.ApplicationType.Desktop;
+	public IApplication.ApplicationType getType () {
+		return IApplication.ApplicationType.Desktop;
 	}
 
 	public int getVersion () {
@@ -331,18 +331,18 @@ namespace SharpGDX.Desktop
 		return getJavaHeap();
 	}
 
-	public Preferences getPreferences (String name) {
+	public IPreferences getPreferences (String name) {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs = new Lwjgl3Preferences(
-				new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
+			IPreferences prefs = new DesktopPreferences(
+				new DesktopFileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
 			preferences.put(name, prefs);
 			return prefs;
 		}
 	}
 
-	public Clipboard getClipboard () {
+	public IClipboard getClipboard () {
 		return clipboard;
 	}
 
@@ -356,45 +356,45 @@ namespace SharpGDX.Desktop
 		running = false;
 	}
 
-	public void addLifecycleListener (LifecycleListener listener) {
+	public void addLifecycleListener (ILifecycleListener listener) {
 		lock (lifecycleListeners) {
 			lifecycleListeners.add(listener);
 		}
 	}
 
-	public void removeLifecycleListener (LifecycleListener listener) {
+	public void removeLifecycleListener (ILifecycleListener listener) {
 		lock (lifecycleListeners) {
 			lifecycleListeners.removeValue(listener, true);
 		}
 	}
 
-	public Lwjgl3Audio createAudio (Lwjgl3ApplicationConfiguration config) {
-		return new OpenALLwjgl3Audio(config.audioDeviceSimultaneousSources, config.audioDeviceBufferCount,
+	public IDesktopAudio CreateAudio (DesktopApplicationConfiguration config) {
+		return new OpenALDesktopAudio(config.audioDeviceSimultaneousSources, config.audioDeviceBufferCount,
 			config.audioDeviceBufferSize);
 	}
 
-	public Lwjgl3Input createInput (Lwjgl3Window window) {
-		return new DefaultLwjgl3Input(window);
+	public IDesktopInput CreateInput (DesktopWindow window) {
+		return new DefaultDesktopInput(window);
 	}
 
-	protected Files createFiles () {
-		return new Lwjgl3Files();
+	protected IFiles createFiles () {
+		return new DesktopFiles();
 	}
 
-	/** Creates a new {@link Lwjgl3Window} using the provided listener and {@link Lwjgl3WindowConfiguration}.
-	 *
-	 * This function only just instantiates a {@link Lwjgl3Window} and returns immediately. The actual window creation is postponed
-	 * with {@link Application#postRunnable(Runnable)} until after all existing windows are updated. */
-	public unsafe Lwjgl3Window newWindow (ApplicationListener listener, Lwjgl3WindowConfiguration config) {
-		Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
+		/** Creates a new {@link DesktopWindow} using the provided listener and {@link DesktopWindowConfiguration}.
+		 *
+		 * This function only just instantiates a {@link DesktopWindow} and returns immediately. The actual window creation is postponed
+		 * with {@link Application#postRunnable(Runnable)} until after all existing windows are updated. */
+		public unsafe DesktopWindow newWindow (IApplicationListener listener, DesktopWindowConfiguration config) {
+		DesktopApplicationConfiguration appConfig = DesktopApplicationConfiguration.copy(this.config);
 		appConfig.setWindowConfiguration(config);
 		if (appConfig.title == null) appConfig.title = listener.GetType().Name;
 		return createWindow(appConfig, listener, windows.get(0).getWindowPtr());
 	}
 
-	private unsafe Lwjgl3Window createWindow (Lwjgl3ApplicationConfiguration config, ApplicationListener listener,
+	private unsafe DesktopWindow createWindow (DesktopApplicationConfiguration config, IApplicationListener listener,
 		Window* sharedContext) {
-		Lwjgl3Window window = new Lwjgl3Window(listener, config, this);
+		DesktopWindow window = new DesktopWindow(listener, config, this);
 		if (sharedContext == null) {
 			// the main window is created immediately
 			createWindow(window, config, sharedContext);
@@ -408,7 +408,7 @@ namespace SharpGDX.Desktop
 		return window;
 	}
 
-	private unsafe void createWindow (Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, Window* sharedContext) {
+	private unsafe void createWindow (DesktopWindow window, DesktopApplicationConfiguration config, Window* sharedContext) {
 		Window* windowHandle = createGlfwWindow(config, sharedContext);
 		window.create(windowHandle);
 		window.setVisible(config.initialVisible);
@@ -420,7 +420,7 @@ namespace SharpGDX.Desktop
 		}
 	}
 
-	private unsafe static Window* createGlfwWindow (Lwjgl3ApplicationConfiguration config, Window* sharedContextWindow) {
+	private unsafe static Window* createGlfwWindow (DesktopApplicationConfiguration config, Window* sharedContextWindow) {
 		GLFW.DefaultWindowHints();
 		GLFW.WindowHint(WindowHintBool.Visible, false);
 		GLFW.WindowHint(WindowHintBool.Resizable, config.windowResizable);
@@ -435,9 +435,9 @@ namespace SharpGDX.Desktop
 		GLFW.WindowHint(WindowHintInt.DepthBits, config.depth);
 		GLFW.WindowHint(WindowHintInt.Samples, config.samples);
 
-		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL30
-			|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL31
-			|| config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.GL32) {
+		if (config.glEmulation == DesktopApplicationConfiguration.GLEmulation.GL30
+			|| config.glEmulation == DesktopApplicationConfiguration.GLEmulation.GL31
+			|| config.glEmulation == DesktopApplicationConfiguration.GLEmulation.GL32) {
 			GLFW.WindowHint(WindowHintInt.ContextVersionMajor, config.gles30ContextMajorVersion);
 			GLFW.WindowHint(WindowHintInt.ContextVersionMinor, config.gles30ContextMinorVersion);
 			if (SharedLibraryLoader.isMac) {
@@ -448,7 +448,7 @@ namespace SharpGDX.Desktop
 				GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core);
 			}
 		} else {
-			if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
+			if (config.glEmulation == DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
 				GLFW.WindowHint(WindowHintContextApi.ContextCreationApi, ContextApi.EglContextApi);
 				GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlEsApi);
 				GLFW.WindowHint(WindowHintInt.ContextVersionMajor, 2);
@@ -477,7 +477,7 @@ namespace SharpGDX.Desktop
 		if (windowHandle == null) {
 			throw new GdxRuntimeException("Couldn't create window");
 		}
-		Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth,
+		DesktopWindow.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth,
 			config.windowMaxHeight);
 		if (config.fullscreenMode == null) {
 			if (config.windowX == -1 && config.windowY == -1) { // i.e., center the window
@@ -491,8 +491,8 @@ namespace SharpGDX.Desktop
 					monitorHandle = config.maximizedMonitor.monitorHandle;
 				}
 
-				GridPoint2 newPos = Lwjgl3ApplicationConfiguration.calculateCenteredWindowPosition(
-					Lwjgl3ApplicationConfiguration.toLwjgl3Monitor(monitorHandle), windowWidth, windowHeight);
+				GridPoint2 newPos = DesktopApplicationConfiguration.calculateCenteredWindowPosition(
+					DesktopApplicationConfiguration.toDesktopMonitor(monitorHandle), windowWidth, windowHeight);
 				GLFW.SetWindowPos(windowHandle, newPos.x, newPos.y);
 			} else {
 				GLFW.SetWindowPos(windowHandle, config.windowX, config.windowY);
@@ -503,12 +503,12 @@ namespace SharpGDX.Desktop
 			}
 		}
 		if (config.windowIconPaths != null) {
-			//Lwjgl3Window.setIcon(windowHandle, config.windowIconPaths, config.windowIconFileType);
-			throw new NotImplementedException();
+				//DesktopWindow.setIcon(windowHandle, config.windowIconPaths, config.windowIconFileType);
+				throw new NotImplementedException();
 		}
 		GLFW.MakeContextCurrent(windowHandle);
 		GLFW.SwapInterval(config.vSyncEnabled ? 1 : 0);
-		if (config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
+		if (config.glEmulation == DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20) {
 			try {
 				//Class gles = Class.forName("org.lwjgl.opengles.GLES");
 				//gles.getMethod("createCapabilities").invoke(gles);
@@ -523,7 +523,7 @@ namespace SharpGDX.Desktop
 			GL.LoadBindings(new GLFWBindingsContext());
 		}
 
-		initiateGL(config.glEmulation == Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20);
+		initiateGL(config.glEmulation == DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20);
 		if (!glVersion.IsVersionEqualToOrHigher(2, 0))
 		{
 			throw new NotImplementedException();
@@ -532,7 +532,7 @@ namespace SharpGDX.Desktop
 
 		}
 
-		if (config.glEmulation != Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20 && !supportsFBO())
+		if (config.glEmulation != DesktopApplicationConfiguration.GLEmulation.ANGLE_GLES20 && !supportsFBO())
 		{
 			throw new NotImplementedException();
 			//throw new GdxRuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
@@ -561,7 +561,7 @@ namespace SharpGDX.Desktop
 				String versionString = GL.GetString(StringName.Version);
 				String vendorString = GL.GetString(StringName.Vendor);
 				String rendererString = GL.GetString(StringName.Renderer);
-				glVersion = new GLVersion(Application.ApplicationType.Desktop, versionString, vendorString, rendererString);
+				glVersion = new GLVersion(IApplication.ApplicationType.Desktop, versionString, vendorString, rendererString);
 			} else {
 			try {
 				//Class gles = Class.forName("org.lwjgl.opengles.GLES20");
@@ -609,11 +609,11 @@ namespace SharpGDX.Desktop
 		//}
 	}
 
-	/** Enables or disables GL debug messages for the specified severity level. Returns false if the severity level could not be
-	 * set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
-	 *
-	 * See {@link Lwjgl3ApplicationConfiguration#enableGLDebugOutput(bool, PrintStream)} */
-	public static bool setGLDebugMessageControl(GLDebugMessageSeverity severity, bool enabled)
+		/** Enables or disables GL debug messages for the specified severity level. Returns false if the severity level could not be
+		 * set (e.g. the NOTIFICATION level is not supported by the ARB and AMD extensions).
+		 *
+		 * See {@link DesktopApplicationConfiguration#enableGLDebugOutput(bool, PrintStream)} */
+		public static bool setGLDebugMessageControl(GLDebugMessageSeverity severity, bool enabled)
 		{
 			// TODO: GLCapabilities caps = GL.getCapabilities();
 			int GL_DONT_CARE = 0x1100; // not defined anywhere yet

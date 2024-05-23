@@ -40,9 +40,9 @@ public class Mesh : Disposable {
 	}
 
 	/** list of all meshes **/
-	static readonly Map<Application, Array<Mesh>> meshes = new ();
+	static readonly Map<IApplication, Array<Mesh>> meshes = new ();
 
-	readonly VertexData _vertices;
+	readonly IVertexData _vertices;
 	readonly IndexData indices;
 	bool autoBind = true;
 	readonly bool isVertexArray;
@@ -50,7 +50,7 @@ public class Mesh : Disposable {
 	InstanceData instances;
 	bool _isInstanced = false;
 
-	protected Mesh (VertexData vertices, IndexData indices, bool isVertexArray) {
+	protected Mesh (IVertexData vertices, IndexData indices, bool isVertexArray) {
 		this._vertices = vertices;
 		this.indices = indices;
 		this.isVertexArray = isVertexArray;
@@ -106,7 +106,7 @@ public class Mesh : Disposable {
 		addManagedMesh(Gdx.app, this);
 	}
 
-	private VertexData makeVertexBuffer (bool isStatic, int maxVertices, VertexAttributes vertexAttributes) {
+	private IVertexData makeVertexBuffer (bool isStatic, int maxVertices, VertexAttributes vertexAttributes) {
 		if (Gdx.gl30 != null) {
 			return new VertexBufferObjectWithVAO(isStatic, maxVertices, vertexAttributes);
 		} else {
@@ -925,7 +925,7 @@ public class Mesh : Disposable {
 		return indices.getBuffer(forWriting);
 	}
 
-	private static void addManagedMesh (Application app, Mesh mesh) {
+	private static void addManagedMesh (IApplication app, Mesh mesh) {
 		Array<Mesh> managedResources = meshes.get(app);
 		if (managedResources == null) managedResources = new Array<Mesh>();
 		managedResources.add(mesh);
@@ -934,7 +934,7 @@ public class Mesh : Disposable {
 
 	/** Invalidates all meshes so the next time they are rendered new VBO handles are generated.
 	 * @param app */
-	public static void invalidateAllMeshes (Application app) {
+	public static void invalidateAllMeshes (IApplication app) {
 		Array<Mesh> meshesArray = meshes.get(app);
 		if (meshesArray == null) return;
 		for (int i = 0; i < meshesArray.size; i++) {
@@ -944,7 +944,7 @@ public class Mesh : Disposable {
 	}
 
 	/** Will clear the managed mesh cache. I wouldn't use this if i was you :) */
-	public static void clearAllMeshes (Application app) {
+	public static void clearAllMeshes (IApplication app) {
 		meshes.remove(app);
 	}
 
@@ -952,7 +952,7 @@ public class Mesh : Disposable {
 		StringBuilder builder = new StringBuilder();
 		int i = 0;
 		builder.Append("Managed meshes/app: { ");
-		foreach (Application app in meshes.keySet()) {
+		foreach (IApplication app in meshes.keySet()) {
 			builder.Append(meshes.get(app).size);
 			builder.Append(" ");
 		}

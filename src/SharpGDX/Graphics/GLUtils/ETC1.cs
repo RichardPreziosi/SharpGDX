@@ -1,4 +1,5 @@
 ﻿using SharpGDX.Shims;
+using SharpGDX.Files;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -105,7 +106,7 @@ public class ETC1 {
 			BufferUtils.disposeUnsafeByteBuffer(compressedData);
 		}
 
-		public String toString () {
+		public override String ToString() {
 			if (hasPKMHeader()) {
 				return (ETC1.isValidPKM(compressedData, 0) ? "valid" : "invalid") + " pkm [" + ETC1.getWidthPKM(compressedData, 0)
 					+ "x" + ETC1.getHeightPKM(compressedData, 0) + "], compressed: "

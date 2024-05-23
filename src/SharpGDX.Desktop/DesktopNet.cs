@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpGDX.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Net : Net
+	public class DesktopNet : INet
 	{
-		public Lwjgl3Net(Lwjgl3ApplicationConfiguration config) { }
-		public void sendHttpRequest(Net.HttpRequest httpRequest, Net.HttpResponseListener? httpResponseListener)
+		public DesktopNet(DesktopApplicationConfiguration config) { }
+		public void sendHttpRequest(INet.HttpRequest httpRequest, INet.HttpResponseListener? httpResponseListener)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void cancelHttpRequest(Net.HttpRequest httpRequest)
+		public void cancelHttpRequest(INet.HttpRequest httpRequest)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ServerSocket newServerSocket(Net.Protocol protocol, string hostname, int port, ServerSocketHints hints)
+		public ServerSocket newServerSocket(INet.Protocol protocol, string hostname, int port, ServerSocketHints hints)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ServerSocket newServerSocket(Net.Protocol protocol, int port, ServerSocketHints hints)
+		public ServerSocket newServerSocket(INet.Protocol protocol, int port, ServerSocketHints hints)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Socket newClientSocket(Net.Protocol protocol, string host, int port, SocketHints hints)
+		public Socket newClientSocket(INet.Protocol protocol, string host, int port, SocketHints hints)
 		{
 			throw new NotImplementedException();
 		}

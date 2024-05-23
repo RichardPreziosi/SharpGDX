@@ -9,21 +9,21 @@ namespace SharpGDX.Graphics.GLUtils
 {
 	/** This class will load each contained TextureData to the chosen mipmap level. All the mipmap levels must be defined and cannot
  * be null. */
-	public class MipMapTextureData : TextureData
+	public class MipMapTextureData : ITextureData
 	{
-	TextureData []
+	ITextureData []
 		mips;
 
 	/** @param mipMapData must be != null and its length must be >= 1 */
-	public MipMapTextureData(TextureData[]mipMapData)
+	public MipMapTextureData(ITextureData[]mipMapData)
 	{
-		mips = new TextureData[mipMapData.Length];
+		mips = new ITextureData[mipMapData.Length];
 		Array.Copy(mipMapData, 0, mips, 0, mipMapData.Length);
 	}
 
-		public TextureData.TextureDataType getType()
+		public ITextureData.TextureDataType getType()
 	{
-		return TextureData.TextureDataType.Custom;
+		return ITextureData.TextureDataType.Custom;
 	}
 
 		public bool isPrepared()

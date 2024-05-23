@@ -13,6 +13,7 @@ using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using SharpGDX.Assets.Loaders;
 using SharpGDX.Assets.Loaders.Resolvers;
+using SharpGDX.Audio;
 
 namespace SharpGDX.Assets
 {
@@ -24,19 +25,19 @@ public class AssetManager : Disposable {
 	readonly ObjectMap<String, Array<String>> assetDependencies = new ();
 	readonly ObjectSet<String> injected = new ();
 
-	readonly ObjectMap<Type, ObjectMap<String, AssetLoader>> loaders = new ();
-	readonly Array<AssetDescriptor> loadQueue = new ();
+	readonly ObjectMap<Type, ObjectMap<String, IAssetLoader>> loaders = new ();
+	readonly Array<IAssetDescriptor> loadQueue = new ();
 	readonly AsyncExecutor executor;
 
 	readonly Array<AssetLoadingTask> tasks = new();
-	AssetErrorListener listener;
+	IAssetErrorListener listener;
 	int loaded;
 	int toLoad;
 	int peakTasks;
 
-	readonly FileHandleResolver resolver;
+	readonly IFileHandleResolver resolver;
 
-	internal Logger log = new Logger("AssetManager", Application.LOG_NONE);
+	internal Logger log = new Logger("AssetManager", IApplication.LOG_NONE);
 
 	/** Creates a new AssetManager with all default loaders. */
 	public AssetManager () 
@@ -46,7 +47,7 @@ public class AssetManager : Disposable {
 	}
 
 	/** Creates a new AssetManager with all default loaders. */
-	public AssetManager (FileHandleResolver resolver) 
+	public AssetManager (IFileHandleResolver resolver) 
 	: this(resolver, true)
 	{
 		
@@ -55,13 +56,13 @@ public class AssetManager : Disposable {
 	/** Creates a new AssetManager with optionally all default loaders. If you don't add the default loaders then you do have to
 	 * manually add the loaders you need, including any loaders they might depend on.
 	 * @param defaultLoaders whether to add the default loaders */
-	public AssetManager (FileHandleResolver resolver, bool defaultLoaders) {
+	public AssetManager (IFileHandleResolver resolver, bool defaultLoaders) {
 		this.resolver = resolver;
 		if (defaultLoaders) {
 			//setLoader(BitmapFont.class, new BitmapFontLoader(resolver));
-			setLoader(typeof(Music), new MusicLoader(resolver));
+			setLoader(typeof(IMusic), new MusicLoader(resolver));
 			setLoader(typeof(Pixmap), new PixmapLoader(resolver));
-			setLoader(typeof(Sound), new SoundLoader(resolver));
+			setLoader(typeof(ISound), new SoundLoader(resolver));
 			//setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
 			setLoader(typeof(Texture), new TextureLoader(resolver));
 		//	setLoader(Skin.class, new SkinLoader(resolver));
@@ -80,7 +81,7 @@ public class AssetManager : Disposable {
 
 	/** Returns the {@link FileHandleResolver} for which this AssetManager was loaded with.
 	 * @return the file handle resolver which this AssetManager uses */
-	public FileHandleResolver getFileHandleResolver () {
+	public IFileHandleResolver getFileHandleResolver () {
 		return resolver;
 	}
 
@@ -324,7 +325,7 @@ public class AssetManager : Disposable {
 
 	/** @param assetDesc the AssetDescriptor of the asset
 	 * @return whether the asset is loaded */
-	public  bool isLoaded (AssetDescriptor assetDesc) {
+	public  bool isLoaded (IAssetDescriptor assetDesc) {
 		lock(this)
 		return isLoaded(assetDesc.fileName);
 	}
@@ -355,7 +356,7 @@ public class AssetManager : Disposable {
 	/** Returns the default loader for the given type.
 	 * @param type The type of the loader to get
 	 * @return The loader capable of loading the type, or null if none exists */
-	public AssetLoader getLoader(Type type) {
+	public IAssetLoader getLoader(Type type) {
 		return getLoader(type, null);
 	}
 
@@ -364,11 +365,11 @@ public class AssetManager : Disposable {
 	 * @param type The type of the loader to get
 	 * @param fileName The filename of the asset to get a loader for, or null to get the default loader
 	 * @return The loader capable of loading the type and filename, or null if none exists */
-	public AssetLoader getLoader(Type type, String fileName) {
-		ObjectMap<String, AssetLoader> loaders = this.loaders.get(type);
+	public IAssetLoader getLoader(Type type, String fileName) {
+		ObjectMap<String, IAssetLoader> loaders = this.loaders.get(type);
 		if (loaders == null || loaders.size < 1) return null;
 		if (fileName == null) return loaders.get("");
-		AssetLoader result = null;
+		IAssetLoader result = null;
 		int length = -1;
 		foreach (var entry in loaders.entries()) {
 			if (entry.key.Length > length && fileName.EndsWith(entry.key)) {
@@ -488,7 +489,7 @@ public class AssetManager : Disposable {
 	 * {@link #update()}).
 	 * @return true if all loading is finished. */
 	public bool update (int millis) {
-		if (Gdx.app.getType() == Application.ApplicationType.WebGL) return update();
+		if (Gdx.app.getType() == IApplication.ApplicationType.WebGL) return update();
 		long endTime = TimeUtils.millis() + millis;
 		while (true) {
 			bool done = update();
@@ -514,7 +515,7 @@ public class AssetManager : Disposable {
 
 	/** Blocks until the specified asset is loaded.
 	 * @param assetDesc the AssetDescriptor of the asset */
-	public T finishLoadingAsset<T>(AssetDescriptor assetDesc) {
+	public T finishLoadingAsset<T>(IAssetDescriptor assetDesc) {
 		return finishLoadingAsset<T>(assetDesc.fileName);
 	}
 
@@ -541,7 +542,7 @@ public class AssetManager : Disposable {
 		}
 	}
 
-	internal void injectDependencies(String parentAssetFilename, Array<AssetDescriptor> dependendAssetDescs)
+	internal void injectDependencies(String parentAssetFilename, Array<IAssetDescriptor> dependendAssetDescs)
 	{
 		lock (this)
 		{
@@ -556,7 +557,7 @@ public class AssetManager : Disposable {
 		}
 	}
 
-	private void injectDependency(String parentAssetFilename, AssetDescriptor dependendAssetDesc)
+	private void injectDependency(String parentAssetFilename, IAssetDescriptor dependendAssetDesc)
 	{
 		lock (this)
 		{
@@ -591,7 +592,7 @@ public class AssetManager : Disposable {
 	/** Removes a task from the loadQueue and adds it to the task stack. If the asset is already loaded (which can happen if it was
 	 * a dependency of a previously loaded asset) its reference count will be increased. */
 	private void nextTask () {
-		AssetDescriptor assetDesc = loadQueue.removeIndex(0);
+		IAssetDescriptor assetDesc = loadQueue.removeIndex(0);
 
 		// if the asset not meant to be reloaded and is already loaded, increase its reference count
 		if (isLoaded(assetDesc.fileName)) {
@@ -611,8 +612,8 @@ public class AssetManager : Disposable {
 	}
 
 	/** Adds a {@link AssetLoadingTask} to the task stack for the given asset. */
-	private void addTask (AssetDescriptor assetDesc) {
-		AssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
+	private void addTask (IAssetDescriptor assetDesc) {
+		IAssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
 		if (loader == null) throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(assetDesc.type));
 		tasks.add(new AssetLoadingTask(this, assetDesc, loader, executor));
 		peakTasks++;
@@ -674,7 +675,7 @@ public class AssetManager : Disposable {
 
 	/** Called when a task throws an exception during loading. The default implementation rethrows the exception. A subclass may
 	 * supress the default implementation when loading assets where loading failure is recoverable. */
-	protected void taskFailed (AssetDescriptor assetDesc, RuntimeException ex) {
+	protected void taskFailed (IAssetDescriptor assetDesc, RuntimeException ex) {
 		throw ex;
 	}
 
@@ -776,7 +777,7 @@ public class AssetManager : Disposable {
 
 	/** Sets an {@link AssetErrorListener} to be invoked in case loading an asset failed.
 	 * @param listener the listener or null */
-	public void setErrorListener (AssetErrorListener listener) {
+	public void setErrorListener (IAssetErrorListener listener) {
 		lock(this)
 		this.listener = listener;
 	}

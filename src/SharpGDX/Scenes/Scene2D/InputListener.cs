@@ -26,7 +26,7 @@ namespace SharpGDX.Scenes.Scene2D
  * });
  * </pre>
  */
-	public class InputListener : EventListener
+	public class InputListener : IEventListener
 	{
 		static private readonly Vector2 tmpCoords = new Vector2();
 

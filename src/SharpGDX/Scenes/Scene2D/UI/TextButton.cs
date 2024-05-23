@@ -84,7 +84,7 @@ public class TextButton : Button {
 		return style.fontColor;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		label.getStyle().fontColor = getFontColor();
 		base.draw(batch, parentAlpha);
 	}
@@ -131,7 +131,7 @@ public class TextButton : Button {
 		public TextButtonStyle () {
 		}
 
-		public TextButtonStyle (Drawable? up, Drawable? down, Drawable? @checked,  BitmapFont? font) 
+		public TextButtonStyle (IDrawable? up, IDrawable? down, IDrawable? @checked,  BitmapFont? font) 
 		: base(up, down, @checked)
 		{
 			

@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Graphics;
 using SharpGDX.Utils;
@@ -13,13 +14,13 @@ namespace SharpGDX.Assets.Loaders;
 public class TextureLoader : AsynchronousAssetLoader<Texture, TextureLoader.TextureParameter> {
 	 public class TextureLoaderInfo {
 		internal String filename;
-		internal TextureData data;
+		internal ITextureData data;
 		internal Texture texture;
 	};
 
 	TextureLoaderInfo info = new TextureLoaderInfo();
 
-	public TextureLoader (FileHandleResolver resolver) 
+	public TextureLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		
@@ -38,7 +39,7 @@ public class TextureLoader : AsynchronousAssetLoader<Texture, TextureLoader.Text
 				info.texture = parameter.texture;
 			}
 
-			info.data = TextureData.Factory.loadFromFile(file, format, genMipMaps);
+			info.data = ITextureData.Factory.loadFromFile(file, format, genMipMaps);
 		} else {
 			info.data = parameter.textureData;
 			info.texture = parameter.texture;
@@ -73,7 +74,7 @@ public class TextureLoader : AsynchronousAssetLoader<Texture, TextureLoader.Text
 		/** The texture to put the {@link TextureData} in, optional. **/
 		public Texture texture = null;
 		/** TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored */
-		public TextureData textureData = null;
+		public ITextureData textureData = null;
 		public Texture.TextureFilter minFilter = Texture.TextureFilter.Nearest;
 		public Texture.TextureFilter magFilter = Texture.TextureFilter.Nearest;
 		public Texture.TextureWrap wrapU = Texture.TextureWrap.ClampToEdge;

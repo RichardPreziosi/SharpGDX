@@ -1,4 +1,5 @@
 using SharpGDX.Shims;
+using SharpGDX.Net;
 using SharpGDX.Utils;
 
 namespace SharpGDX;
@@ -8,18 +9,18 @@ namespace SharpGDX;
  * @author noblemaster */
 public class NetJavaServerSocketImpl : ServerSocket {
 
-	private Net.Protocol protocol;
+	private INet.Protocol protocol;
 
 	/** Our server or null for disposed, aka closed. */
 	// TODO: private  java.net.ServerSocket server;
 
-	public NetJavaServerSocketImpl (Net.Protocol protocol, int port, ServerSocketHints hints) 
+	public NetJavaServerSocketImpl (INet.Protocol protocol, int port, ServerSocketHints hints) 
 	: this(protocol, null, port, hints)
 	{
 		
 	}
 
-	public NetJavaServerSocketImpl (Net.Protocol protocol, String hostname, int port, ServerSocketHints hints) {
+	public NetJavaServerSocketImpl (INet.Protocol protocol, String hostname, int port, ServerSocketHints hints) {
 		throw new NotImplementedException();
 		//this.protocol = protocol;
 		
@@ -54,7 +55,7 @@ public class NetJavaServerSocketImpl : ServerSocket {
 	}
 
 	
-	public Net.Protocol getProtocol () {
+	public INet.Protocol getProtocol () {
 		return protocol;
 	}
 

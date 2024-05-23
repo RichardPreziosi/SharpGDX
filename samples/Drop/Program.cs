@@ -9,13 +9,13 @@ namespace Drop
 	{
 		static void Main(string[] args)
 		{
-			Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+			DesktopApplicationConfiguration config = new DesktopApplicationConfiguration();
 			config.setTitle("Drop");
 			config.setWindowedMode(800, 480);
 			config.useVsync(true);
 			config.setForegroundFPS(60);
 			config.enableGLDebugOutput(true, new PrintStream());
-			new Lwjgl3Application(new Drop(), config);
+			new DesktopApplication(new Drop(), config);
 		}
 	}
 }

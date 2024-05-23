@@ -16,7 +16,7 @@ namespace SharpGDX.Graphics.GLUtils
  * consuming it (eg. before new Texture3D(data)).
  * 
  * @author mgsx */
-public class CustomTexture3DData : Texture3DData {
+public class CustomTexture3DData : ITexture3DData {
 
 	private int width, height, depth;
 	private int mipMapLevel;

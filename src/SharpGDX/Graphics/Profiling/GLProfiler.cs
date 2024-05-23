@@ -15,13 +15,13 @@ public class GLProfiler {
 
 	private IGraphics graphics;
 	private GLInterceptor glInterceptor;
-	private GLErrorListener listener;
+	private IGLErrorListener listener;
 	private bool enabled = false;
 
-	/** Create a new instance of GLProfiler to monitor a {@link com.badlogic.gdx.Graphics} instance's gl calls
-	 * @param graphics instance to monitor with this instance, With Lwjgl 2.x you can pass in Gdx.graphics, with Lwjgl3 use
-	 *           Lwjgl3Window.getGraphics() */
-	public GLProfiler (IGraphics graphics) {
+		/** Create a new instance of GLProfiler to monitor a {@link com.badlogic.gdx.Graphics} instance's gl calls
+		 * @param graphics instance to monitor with this instance, With Lwjgl 2.x you can pass in Gdx.graphics, with Desktop use
+		 *           DesktopWindow.getGraphics() */
+		public GLProfiler (IGraphics graphics) {
 		this.graphics = graphics;
 		GL32 gl32 = graphics.getGL32();
 		GL31 gl31 = graphics.getGL31();
@@ -35,7 +35,7 @@ public class GLProfiler {
 		} else {
 			glInterceptor = new GL20Interceptor(this, graphics.getGL20());
 		}
-		listener = GLErrorListener.LOGGING_LISTENER;
+		listener = IGLErrorListener.LOGGING_LISTENER;
 	}
 
 	/** Enables profiling by replacing the {@code GL20} and {@code GL30} instances with profiling ones. */
@@ -89,12 +89,12 @@ public class GLProfiler {
 	}
 
 	/** Set the current listener for the {@link GLProfiler} to {@code errorListener} */
-	public void setListener (GLErrorListener errorListener) {
+	public void setListener (IGLErrorListener errorListener) {
 		this.listener = errorListener;
 	}
 
 	/** @return the current {@link GLErrorListener} */
-	public GLErrorListener getListener () {
+	public IGLErrorListener getListener () {
 		return listener;
 	}
 

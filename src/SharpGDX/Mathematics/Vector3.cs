@@ -10,7 +10,7 @@ namespace SharpGDX.Mathematics
 	/** Encapsulates a 3D vector. Allows chaining operations by returning a reference to itself in all modification methods.
  * @author badlogicgames@gmail.com */
 	[Serializable]
-public class Vector3 :  Vector<Vector3> {
+public class Vector3 :  IVector<Vector3> {
 	private static readonly long serialVersionUID = 3840054589595372522L;
 
 	/** the x-component of this vector **/

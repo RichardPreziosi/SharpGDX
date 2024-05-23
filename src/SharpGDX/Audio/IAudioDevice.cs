@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Audio
 {
 	/** Encapsulates an audio device in mono or stereo mode. Use the {@link #writeSamples(float[], int, int)} and
  * {@link #writeSamples(short[], int, int)} methods to write float or 16-bit signed short PCM data directly to the audio device.
@@ -13,7 +8,7 @@ namespace SharpGDX
  * called when this AudioDevice is no longer needed.
  *
  * @author badlogicgames@gmail.com */
-	public interface AudioDevice : Disposable
+	public interface IAudioDevice : Disposable
 	{
 	/** @return whether this AudioDevice is in mono or stereo mode. */
 	public bool isMono();

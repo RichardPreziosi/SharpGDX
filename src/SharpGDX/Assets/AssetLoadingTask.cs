@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using SharpGDX.Assets;
 using SharpGDX.Assets.Loaders;
 using SharpGDX.Assets.Loaders.Resolvers;
@@ -17,23 +18,23 @@ namespace SharpGDX.Assets
  * update the overriding emu file on GWT backend when changing this file!
  * 
  * @author mzechner */
-class AssetLoadingTask : AsyncTask<object> {
+class AssetLoadingTask : IAsyncTask<object> {
 	AssetManager manager;
-	internal readonly AssetDescriptor assetDesc;
-	readonly AssetLoader loader;
+	internal readonly IAssetDescriptor assetDesc;
+	readonly IAssetLoader loader;
 	readonly AsyncExecutor executor;
 	internal readonly long startTime;
 
 	volatile bool asyncDone;
 	internal volatile bool dependenciesLoaded;
-	internal volatile Array<AssetDescriptor> dependencies;
+	internal volatile Array<IAssetDescriptor> dependencies;
 	volatile AsyncResult<object> depsFuture;
 	volatile AsyncResult<object> loadFuture;
 	internal volatile Object asset;
 
 	internal volatile bool cancel;
 
-	public AssetLoadingTask (AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader, AsyncExecutor threadPool) {
+	public AssetLoadingTask (AssetManager manager, IAssetDescriptor assetDesc, IAssetLoader loader, AsyncExecutor threadPool) {
 		this.manager = manager;
 		this.assetDesc = assetDesc;
 		this.loader = loader;
@@ -45,7 +46,7 @@ class AssetLoadingTask : AsyncTask<object> {
 	public object? call () // TODO: throws Exception
                      {
 		if (cancel) return null;
-		AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader)loader;
+		IAsynchronousAssetLoader asyncLoader = (IAsynchronousAssetLoader)loader;
 		if (!dependenciesLoaded) {
 			dependencies = asyncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
 			if (dependencies != null) {
@@ -70,7 +71,7 @@ class AssetLoadingTask : AsyncTask<object> {
 	 * @return true in case the asset was fully loaded, false otherwise
 	 * @throws GdxRuntimeException */
 	public bool update () {
-		if (loader is SynchronousAssetLoader)
+		if (loader is ISynchronousAssetLoader)
 			handleSyncLoader();
 		else
 			handleAsyncLoader();
@@ -78,7 +79,7 @@ class AssetLoadingTask : AsyncTask<object> {
 	}
 
 	private void handleSyncLoader () {
-		SynchronousAssetLoader syncLoader = (SynchronousAssetLoader)loader;
+		ISynchronousAssetLoader syncLoader = (ISynchronousAssetLoader)loader;
 		if (!dependenciesLoaded) {
 			dependenciesLoaded = true;
 			dependencies = syncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
@@ -93,7 +94,7 @@ class AssetLoadingTask : AsyncTask<object> {
 	}
 
 	private void handleAsyncLoader () {
-		AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader)loader;
+		IAsynchronousAssetLoader asyncLoader = (IAsynchronousAssetLoader)loader;
 		if (!dependenciesLoaded) {
 			if (depsFuture == null)
 				depsFuture = executor.submit(this);
@@ -123,16 +124,16 @@ class AssetLoadingTask : AsyncTask<object> {
 
 	/** Called when this task is the task that is currently being processed and it is unloaded. */
 	public void unload () {
-		if (loader is AsynchronousAssetLoader)
-			((AsynchronousAssetLoader)loader).unloadAsync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+		if (loader is IAsynchronousAssetLoader)
+			((IAsynchronousAssetLoader)loader).unloadAsync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
 	}
 
-	private FileHandle resolve (AssetLoader loader, AssetDescriptor assetDesc) {
+	private FileHandle resolve (IAssetLoader loader, IAssetDescriptor assetDesc) {
 		if (assetDesc.file == null) assetDesc.file = loader.resolve(assetDesc.fileName);
 		return assetDesc.file;
 	}
 
-	private void removeDuplicates (Array<AssetDescriptor> array) {
+	private void removeDuplicates (Array<IAssetDescriptor> array) {
 		bool ordered = array.ordered;
 		array.ordered = true;
 		for (int i = 0; i < array.size; ++i) {

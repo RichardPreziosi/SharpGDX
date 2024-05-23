@@ -13,9 +13,9 @@ namespace SharpGDX.Graphics
  * @author mgsx */
 public class Texture3D : GLTexture {
 
-	readonly static Map<Application, Array<Texture3D>> managedTexture3Ds = new ();
+	readonly static Map<IApplication, Array<Texture3D>> managedTexture3Ds = new ();
 
-	private Texture3DData data;
+	private ITexture3DData data;
 
 	protected TextureWrap rWrap = TextureWrap.ClampToEdge;
 
@@ -25,7 +25,7 @@ public class Texture3D : GLTexture {
 		
 	}
 
-	public Texture3D (Texture3DData data) 
+	public Texture3D (ITexture3DData data) 
 	: base(GL30.GL_TEXTURE_3D, Gdx.gl.glGenTexture())
 	{
 		
@@ -39,7 +39,7 @@ public class Texture3D : GLTexture {
 		if (data.isManaged()) addManagedTexture(Gdx.app, this);
 	}
 
-	private void load (Texture3DData data) {
+	private void load (ITexture3DData data) {
 		if (this.data != null && data.isManaged() != this.data.isManaged())
 			throw new GdxRuntimeException("New data must have the same managed status as the old data");
 		this.data = data;
@@ -56,7 +56,7 @@ public class Texture3D : GLTexture {
 		Gdx.gl.glBindTexture(glTarget, 0);
 	}
 
-	public Texture3DData getData () {
+	public ITexture3DData getData () {
 		return data;
 	}
 
@@ -87,7 +87,7 @@ public class Texture3D : GLTexture {
 		load(data);
 	}
 
-	private static void addManagedTexture (Application app, Texture3D texture) {
+	private static void addManagedTexture (IApplication app, Texture3D texture) {
 		Array<Texture3D> managedTextureArray = managedTexture3Ds.get(app);
 		if (managedTextureArray == null) managedTextureArray = new Array<Texture3D>();
 		managedTextureArray.add(texture);
@@ -95,12 +95,12 @@ public class Texture3D : GLTexture {
 	}
 
 	/** Clears all managed TextureArrays. This is an internal method. Do not use it! */
-	public static void clearAllTextureArrays (Application app) {
+	public static void clearAllTextureArrays (IApplication app) {
 		managedTexture3Ds.remove(app);
 	}
 
 	/** Invalidate all managed TextureArrays. This is an internal method. Do not use it! */
-	public static void invalidateAllTextureArrays (Application app) {
+	public static void invalidateAllTextureArrays (IApplication app) {
 		Array<Texture3D> managedTextureArray = managedTexture3Ds.get(app);
 		if (managedTextureArray == null) return;
 
@@ -113,7 +113,7 @@ public class Texture3D : GLTexture {
 	public static String getManagedStatus () {
 		StringBuilder builder = new StringBuilder();
 		builder.Append("Managed TextureArrays/app: { ");
-		foreach (Application app in managedTexture3Ds.keySet()) {
+		foreach (IApplication app in managedTexture3Ds.keySet()) {
 			builder.Append(managedTexture3Ds.get(app).size);
 			builder.Append(" ");
 		}

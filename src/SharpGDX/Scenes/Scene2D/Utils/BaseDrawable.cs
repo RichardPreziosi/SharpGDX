@@ -8,7 +8,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** Drawable that stores the size information but doesn't draw anything.
  * @author Nathan Sweet */
-public class BaseDrawable : Drawable {
+public class BaseDrawable : IDrawable {
 	private  String? name;
 	private float leftWidth, rightWidth, topHeight, bottomHeight, minWidth, minHeight;
 
@@ -16,7 +16,7 @@ public class BaseDrawable : Drawable {
 	}
 
 	/** Creates a new empty drawable with the same sizing information as the specified drawable. */
-	public BaseDrawable (Drawable drawable) {
+	public BaseDrawable (IDrawable drawable) {
 		if (drawable is BaseDrawable) name = ((BaseDrawable)drawable).getName();
 		leftWidth = drawable.getLeftWidth();
 		rightWidth = drawable.getRightWidth();
@@ -26,7 +26,7 @@ public class BaseDrawable : Drawable {
 		minHeight = drawable.getMinHeight();
 	}
 
-	public void draw (Batch batch, float x, float y, float width, float height) {
+	public void draw (IBatch batch, float x, float y, float width, float height) {
 	}
 
 	public float getLeftWidth () {

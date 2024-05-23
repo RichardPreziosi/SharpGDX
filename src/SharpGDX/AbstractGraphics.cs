@@ -36,9 +36,9 @@ namespace SharpGDX
 		public abstract bool isContinuousRendering();
 		public abstract void requestRendering();
 		public abstract bool isFullscreen();
-		public abstract Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
-		public abstract void setCursor(Cursor cursor);
-		public abstract void setSystemCursor(Cursor.SystemCursor systemCursor);
+		public abstract ICursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot);
+		public abstract void setCursor(ICursor cursor);
+		public abstract void setSystemCursor(ICursor.SystemCursor systemCursor);
 
 		public abstract bool isGL30Available();
 	public abstract bool isGL31Available();

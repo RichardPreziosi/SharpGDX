@@ -1,4 +1,6 @@
-﻿namespace SharpGDX.Desktop.Audio.Mock;
+﻿using SharpGDX.Audio;
+
+namespace SharpGDX.Desktop.Audio.Mock;
 
 /// <summary>
 ///     The headless backend does its best to mock elements.
@@ -6,7 +8,7 @@
 /// <remarks>
 ///     This is intended to make code-sharing between server and client as simple as possible.
 /// </remarks>
-public class MockMusic : Music
+public class MockMusic : IMusic
 {
 	public void dispose()
 	{
@@ -44,7 +46,7 @@ public class MockMusic : Music
 	{
 	}
 
-	public void setOnCompletionListener(Music.OnCompletionListener listener)
+	public void setOnCompletionListener(IMusic.OnCompletionListener listener)
 	{
 	}
 

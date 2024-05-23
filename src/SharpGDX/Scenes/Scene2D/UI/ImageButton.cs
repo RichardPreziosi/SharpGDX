@@ -38,23 +38,23 @@ public class ImageButton : Button {
 		setSize(getPrefWidth(), getPrefHeight());
 	}
 
-	public ImageButton (Drawable? imageUp)
+	public ImageButton (IDrawable? imageUp)
 	:this(new ImageButtonStyle(null, null, null, imageUp, null, null)){
 		
 	}
 
-	public ImageButton (Drawable? imageUp, Drawable? imageDown)
+	public ImageButton (IDrawable? imageUp, IDrawable? imageDown)
 	:this(new ImageButtonStyle(null, null, null, imageUp, imageDown, null)){
 		
 	}
 
-	public ImageButton (Drawable? imageUp, Drawable? imageDown, Drawable? imageChecked)
+	public ImageButton (IDrawable? imageUp, IDrawable? imageDown, IDrawable? imageChecked)
 	:this(new ImageButtonStyle(null, null, null, imageUp, imageDown, imageChecked)){
 		
 	}
 
 	protected Image newImage () {
-		return new Image((Drawable)null, Scaling.fit);
+		return new Image((IDrawable)null, Scaling.fit);
 	}
 
 	public void setStyle (ButtonStyle style) {
@@ -70,7 +70,7 @@ public class ImageButton : Button {
 	}
 
 	/** Returns the appropriate image drawable from the style based on the current button state. */
-	protected Drawable? getImageDrawable () {
+	protected IDrawable? getImageDrawable () {
 		if (isDisabled() && style.imageDisabled != null) return style.imageDisabled;
 		if (isPressed()) {
 			if (isChecked() && style.imageCheckedDown != null) return style.imageCheckedDown;
@@ -96,7 +96,7 @@ public class ImageButton : Button {
 		image.setDrawable(getImageDrawable());
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		updateImage();
 		base.draw(batch, parentAlpha);
 	}
@@ -121,14 +121,14 @@ public class ImageButton : Button {
 	/** The style for an image button, see {@link ImageButton}.
 	 * @author Nathan Sweet */
 	 public class ImageButtonStyle : ButtonStyle {
-		public Drawable? imageUp, imageDown, imageOver, imageDisabled;
-		public Drawable? imageChecked, imageCheckedDown, imageCheckedOver;
+		public IDrawable? imageUp, imageDown, imageOver, imageDisabled;
+		public IDrawable? imageChecked, imageCheckedDown, imageCheckedOver;
 
 		public ImageButtonStyle () {
 		}
 
-		public ImageButtonStyle (Drawable? up, Drawable? down, Drawable? @checked, Drawable? imageUp,
-			Drawable? imageDown, Drawable? imageChecked) 
+		public ImageButtonStyle (IDrawable? up, IDrawable? down, IDrawable? @checked, IDrawable? imageUp,
+			IDrawable? imageDown, IDrawable? imageChecked) 
 		: base(up, down, @checked)
 		{
 			

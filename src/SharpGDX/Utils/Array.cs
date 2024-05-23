@@ -24,7 +24,7 @@ namespace SharpGDX.Utils
 	public bool ordered;
 
 	private ArrayIterable iterable;
-	private Predicate<T>.PredicateIterable<T> predicateIterable;
+	private IPredicate<T>.PredicateIterable<T> predicateIterable;
 
 	/** Creates an ordered array with a capacity of 16. */
 	public Array()
@@ -558,11 +558,11 @@ namespace SharpGDX.Utils
 	 * <p>
 	 * If {@link Collections#allocateIterators} is false, the same iterable instance is returned each time this method is called.
 	 * Use the {@link Predicate.PredicateIterable} constructor for nested or multithreaded iteration. */
-	public IEnumerable<T> select(Predicate<T> predicate)
+	public IEnumerable<T> select(IPredicate<T> predicate)
 	{
-		if (Collections.allocateIterators) return new Predicate<T>.PredicateIterable<T>(this, predicate);
+		if (Collections.allocateIterators) return new IPredicate<T>.PredicateIterable<T>(this, predicate);
 		if (predicateIterable == null)
-			predicateIterable = new Predicate<T>.PredicateIterable<T>(this, predicate);
+			predicateIterable = new IPredicate<T>.PredicateIterable<T>(this, predicate);
 		else
 			predicateIterable.set(this, predicate);
 		return predicateIterable;

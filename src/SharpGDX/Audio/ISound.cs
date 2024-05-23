@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX
+namespace SharpGDX.Audio
 {
 	/**
 	 * <p>
@@ -28,7 +22,7 @@ namespace SharpGDX
 	 * </p>
 	 * 
 	 * @author badlogicgames@gmail.com */
-	public interface Sound : Disposable
+	public interface ISound : Disposable
 	{
 	/** Plays the sound. If the sound is already playing, it will be played again, concurrently.
 	 * @return the id of the sound instance if successful, or -1 on failure. */

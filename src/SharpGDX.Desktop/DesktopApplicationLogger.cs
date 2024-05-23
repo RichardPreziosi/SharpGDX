@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace SharpGDX.Desktop
 {
 	/// <summary>
-	///     Default implementation of <see cref="ApplicationLogger" /> for headless.
+	///     Default implementation of <see cref="IApplicationLogger" /> for headless.
 	/// </summary>
-	public class Lwjgl3ApplicationLogger : ApplicationLogger
+	public class DesktopApplicationLogger : IApplicationLogger
 	{
 		public void debug(string tag, string message)
 		{

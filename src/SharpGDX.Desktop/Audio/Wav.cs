@@ -1,4 +1,5 @@
-﻿using SharpGDX.Utils;
+﻿using SharpGDX.Files;
+using SharpGDX.Utils;
 using SharpGDX.Shims;
 using SharpGDX;
 using System;
@@ -16,7 +17,7 @@ namespace SharpGDX.Desktop.Audio
 		{
 			private WavInputStream input;
 
-			public Music(OpenALLwjgl3Audio audio, FileHandle file)
+			public Music(OpenALDesktopAudio audio, FileHandle file)
 				: base(audio, file)
 			{
 
@@ -52,7 +53,7 @@ namespace SharpGDX.Desktop.Audio
 
 		public class Sound : OpenALSound
 		{
-			public Sound(OpenALLwjgl3Audio audio, FileHandle file)
+			public Sound(OpenALDesktopAudio audio, FileHandle file)
 				: base(audio)
 			{
 

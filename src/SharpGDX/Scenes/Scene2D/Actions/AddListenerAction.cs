@@ -10,7 +10,7 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 /** Adds a listener to an actor.
  * @author Nathan Sweet */
 public class AddListenerAction : Action {
-	private EventListener listener;
+	private IEventListener listener;
 	private bool capture;
 
 	public override bool act (float delta) {
@@ -21,11 +21,11 @@ public class AddListenerAction : Action {
 		return true;
 	}
 
-	public EventListener getListener () {
+	public IEventListener getListener () {
 		return listener;
 	}
 
-	public void setListener (EventListener listener) {
+	public void setListener (IEventListener listener) {
 		this.listener = listener;
 	}
 

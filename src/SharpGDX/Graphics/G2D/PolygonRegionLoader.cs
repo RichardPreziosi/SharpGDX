@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Utils;
 using SharpGDX.Assets.Loaders.Resolvers;
 using SharpGDX.Shims;
@@ -37,7 +38,7 @@ public class PolygonRegionLoader : SynchronousAssetLoader<PolygonRegion, Polygon
 		
 	}
 
-	public PolygonRegionLoader (FileHandleResolver resolver) 
+	public PolygonRegionLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		

@@ -1,7 +1,7 @@
 using SharpGDX.Utils;
 using SharpGDX.Shims;
 
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** A client socket that talks to a server socket via some {@link Protocol}. See
  * {@link Net#newClientSocket(Protocol, String, int, SocketHints)} and

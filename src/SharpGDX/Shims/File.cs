@@ -233,7 +233,7 @@ public class File
 		return parent == null ? "" : parent.getPath();
 	}
 
-	public File getParentFile()
+	public File? getParentFile()
 	{
 		return parent;
 	}

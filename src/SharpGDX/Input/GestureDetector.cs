@@ -15,7 +15,7 @@ namespace SharpGDX
  * {@link GestureListener}.
  * @author mzechner */
 public class GestureDetector : InputAdapter {
-	readonly GestureListener listener;
+	readonly IGestureListener listener;
 	private float tapRectangleWidth;
 	private float tapRectangleHeight;
 	private long tapCountInterval;
@@ -58,7 +58,7 @@ public class GestureDetector : InputAdapter {
 
 	/** Creates a new GestureDetector with default values: halfTapSquareSize=20, tapCountInterval=0.4f, longPressDuration=1.1f,
 	 * maxFlingDelay=Integer.MAX_VALUE. */
-	public GestureDetector (GestureListener listener) 
+	public GestureDetector (IGestureListener listener) 
 	: this(20, 0.4f, 1.1f, int.MaxValue, listener)
 	{
 		
@@ -72,7 +72,7 @@ public class GestureDetector : InputAdapter {
 	 * @param maxFlingDelay no fling event is fired when the time in seconds the finger was dragged is larger than this, see
 	 *           {@link GestureListener#fling(float, float, int)} */
 	public GestureDetector (float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay,
-		GestureListener listener) 
+		IGestureListener listener) 
 	: this(halfTapSquareSize, halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, listener)
 	{
 		
@@ -88,7 +88,7 @@ public class GestureDetector : InputAdapter {
 	 * @param maxFlingDelay no fling event is fired when the time in seconds the finger was dragged is larger than this, see
 	 *           {@link GestureListener#fling(float, float, int)} */
 	public GestureDetector (float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval,
-		float longPressDuration, float maxFlingDelay, GestureListener listener) {
+		float longPressDuration, float maxFlingDelay, IGestureListener listener) {
 		longPressTask = new LongPressTask(this);
 			if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		this.tapRectangleWidth = halfTapRectangleWidth;
@@ -305,7 +305,7 @@ public class GestureDetector : InputAdapter {
 	 * panning or pinch zooming. Each method returns a boolean indicating if the event should be handed to the next listener (false
 	 * to hand it to the next listener, true otherwise).
 	 * @author mzechner */
-	public  interface GestureListener {
+	public  interface IGestureListener {
 		/** @see InputProcessor#touchDown(int, int, int, int) */
 		public bool touchDown (float x, float y, int pointer, int button);
 
@@ -351,7 +351,7 @@ public class GestureDetector : InputAdapter {
 
 	/** Derrive from this if you only want to implement a subset of {@link GestureListener}.
 	 * @author mzechner */
-	public class GestureAdapter : GestureListener {
+	public class GestureAdapter : IGestureListener {
 		public bool touchDown (float x, float y, int pointer, int button) {
 			return false;
 		}

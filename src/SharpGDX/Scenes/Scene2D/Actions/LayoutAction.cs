@@ -14,12 +14,12 @@ public class LayoutAction : Action {
 	private bool enabled;
 
 	public void setTarget (Actor actor) {
-		if (actor != null && !(actor is Layout)) throw new GdxRuntimeException("Actor must implement layout: " + actor);
+		if (actor != null && !(actor is ILayout)) throw new GdxRuntimeException("Actor must implement layout: " + actor);
 		base.setTarget(actor);
 	}
 
 	public override bool act (float delta) {
-		((Layout)target).setLayoutEnabled(enabled);
+		((ILayout)target).setLayoutEnabled(enabled);
 		return true;
 	}
 

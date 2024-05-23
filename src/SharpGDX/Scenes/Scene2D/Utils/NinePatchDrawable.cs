@@ -18,7 +18,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
  * The min size is set to the ninepatch total size by default. It could be set to the left+right and top+bottom, excluding the
  * middle size, to allow the drawable to be sized down as small as possible.
  * @author Nathan Sweet */
-public class NinePatchDrawable : BaseDrawable , TransformDrawable {
+public class NinePatchDrawable : BaseDrawable , ITransformDrawable {
 	private NinePatch patch;
 
 	/** Creates an uninitialized NinePatchDrawable. The ninepatch must be {@link #setPatch(NinePatch) set} before use. */
@@ -36,11 +36,11 @@ public class NinePatchDrawable : BaseDrawable , TransformDrawable {
 		this.patch = drawable.patch;
 	}
 
-	public void draw (Batch batch, float x, float y, float width, float height) {
+	public void draw (IBatch batch, float x, float y, float width, float height) {
 		patch.draw(batch, x, y, width, height);
 	}
 
-	public void draw (Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public void draw (IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation) {
 		patch.draw(batch, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
 	}

@@ -3,7 +3,6 @@ using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using SharpGDX.Graphics;
-using Cursor =SharpGDX.Graphics.Cursor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +14,19 @@ using SharpGDX.Shims;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3Cursor : Cursor
+	public class DesktopCursor : ICursor
 	{
-		static readonly Array<Lwjgl3Cursor> cursors = new Array<Lwjgl3Cursor>();
-		static readonly Map<Cursor.SystemCursor, IntPtr> systemCursors = new Map<Cursor.SystemCursor, IntPtr>();
+		static readonly Array<DesktopCursor> cursors = new ();
+		static readonly Map<ICursor.SystemCursor, IntPtr> systemCursors = new();
 
 		private static int inputModeBeforeNoneCursor = -1;
 
-		readonly Lwjgl3Window window;
+		readonly DesktopWindow window;
 		Pixmap pixmapCopy;
 		Image? glfwImage;
 		internal unsafe readonly OpenTK.Windowing.GraphicsLibraryFramework.Cursor* glfwCursor;
 
-		internal unsafe Lwjgl3Cursor(Lwjgl3Window window, Pixmap pixmap, int xHotspot, int yHotspot)
+		internal unsafe DesktopCursor(DesktopWindow window, Pixmap pixmap, int xHotspot, int yHotspot)
 		{
 			this.window = window;
 			if (pixmap.getFormat() != Pixmap.Format.RGBA8888)
@@ -97,11 +96,11 @@ namespace SharpGDX.Desktop
 			GLFW.DestroyCursor(glfwCursor);
 		}
 
-		internal static void dispose(Lwjgl3Window window)
+		internal static void dispose(DesktopWindow window)
 		{
 			for (int i = cursors.size - 1; i >= 0; i--)
 			{
-				Lwjgl3Cursor cursor = cursors.get(i);
+				DesktopCursor cursor = cursors.get(i);
 				if (cursor.window.Equals(window))
 				{
 					cursors.removeIndex(i).dispose();
@@ -120,9 +119,9 @@ namespace SharpGDX.Desktop
 			systemCursors.clear();
 		}
 
-		internal static unsafe void setSystemCursor(Window* windowHandle, Cursor.SystemCursor systemCursor)
+		internal static unsafe void setSystemCursor(Window* windowHandle, ICursor.SystemCursor systemCursor)
 		{
-			if (systemCursor == Cursor.SystemCursor.None)
+			if (systemCursor == ICursor.SystemCursor.None)
 			{
 				if (inputModeBeforeNoneCursor == -1)
 					inputModeBeforeNoneCursor = (int)GLFW.GetInputMode(windowHandle, CursorStateAttribute.Cursor);
@@ -143,46 +142,46 @@ namespace SharpGDX.Desktop
 			if (glfwCursor == null)
 			{
 				OpenTK.Windowing.GraphicsLibraryFramework.Cursor* handle;
-				if (systemCursor == Cursor.SystemCursor.Arrow)
+				if (systemCursor == ICursor.SystemCursor.Arrow)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.Arrow);
 				}
-				else if (systemCursor == Cursor.SystemCursor.Crosshair)
+				else if (systemCursor == ICursor.SystemCursor.Crosshair)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.Crosshair);
 				}
-				else if (systemCursor == Cursor.SystemCursor.Hand)
+				else if (systemCursor == ICursor.SystemCursor.Hand)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.Hand);
 				}
-				else if (systemCursor == Cursor.SystemCursor.HorizontalResize)
+				else if (systemCursor == ICursor.SystemCursor.HorizontalResize)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.HResize);
 				}
-				else if (systemCursor == Cursor.SystemCursor.VerticalResize)
+				else if (systemCursor == ICursor.SystemCursor.VerticalResize)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.VResize);
 				}
-				else if (systemCursor == Cursor.SystemCursor.Ibeam)
+				else if (systemCursor == ICursor.SystemCursor.Ibeam)
 				{
 					handle = GLFW.CreateStandardCursor(CursorShape.IBeam);
 				}
-				else if (systemCursor == Cursor.SystemCursor.NWSEResize)
+				else if (systemCursor == ICursor.SystemCursor.NWSEResize)
 				{
 					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_NWSE_CURSOR);
 					throw new NotImplementedException();
 				}
-				else if (systemCursor == Cursor.SystemCursor.NESWResize)
+				else if (systemCursor == ICursor.SystemCursor.NESWResize)
 				{
 					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_NESW_CURSOR);
 					throw new NotImplementedException();
 				}
-				else if (systemCursor == Cursor.SystemCursor.AllResize)
+				else if (systemCursor == ICursor.SystemCursor.AllResize)
 				{
 					//handle = GLFW.CreateStandardCursor(GLFW.GLFW_RESIZE_ALL_CURSOR);
 					throw new NotImplementedException();
 				}
-				else if (systemCursor == Cursor.SystemCursor.NotAllowed)
+				else if (systemCursor == ICursor.SystemCursor.NotAllowed)
 				{
 					// TODO: handle = GLFW.CreateStandardCursor(GLFW.GLFW_NOT_ALLOWED_CURSOR);
 					throw new NotImplementedException();

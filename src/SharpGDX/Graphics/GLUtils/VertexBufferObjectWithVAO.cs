@@ -28,7 +28,7 @@ namespace SharpGDX.Graphics.GLUtils
  *
  * Code adapted from {@link VertexBufferObject}.
  * @author mzechner, Dave Clayton <contact@redskyforge.com>, Nate Austin <nate.austin gmail> */
-public class VertexBufferObjectWithVAO : VertexData {
+public class VertexBufferObjectWithVAO : IVertexData {
 	readonly static IntBuffer tmpHandle = BufferUtils.newIntBuffer(1);
 
 	readonly VertexAttributes attributes;

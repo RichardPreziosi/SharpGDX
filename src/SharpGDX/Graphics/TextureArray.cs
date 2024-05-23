@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,9 @@ namespace SharpGDX.Graphics
  * @author Tomski */
 public class TextureArray : GLTexture {
 
-	readonly static Map<Application, Array<TextureArray>> managedTextureArrays = new ();
+	readonly static Map<IApplication, Array<TextureArray>> managedTextureArrays = new ();
 
-	private TextureArrayData data;
+	private ITextureArrayData data;
 
 	public TextureArray (String[] internalPaths) 
 	: this(getInternalHandles(internalPaths))
@@ -36,12 +37,12 @@ public class TextureArray : GLTexture {
 	}
 
 	public TextureArray (bool useMipMaps, Pixmap.Format format, FileHandle[] files) 
-	: this(TextureArrayData.Factory.loadFromFiles(format, useMipMaps, files))
+	: this(ITextureArrayData.Factory.loadFromFiles(format, useMipMaps, files))
 	{
 		
 	}
 
-	public TextureArray (TextureArrayData data) 
+	public TextureArray (ITextureArrayData data) 
 	: base(GL30.GL_TEXTURE_2D_ARRAY, Gdx.gl.glGenTexture())
 	{
 		
@@ -63,7 +64,7 @@ public class TextureArray : GLTexture {
 		return handles;
 	}
 
-	private void load (TextureArrayData data) {
+	private void load (ITextureArrayData data) {
 		if (this.data != null && data.isManaged() != this.data.isManaged())
 			throw new GdxRuntimeException("New data must have the same managed status as the old data");
 		this.data = data;
@@ -103,7 +104,7 @@ public class TextureArray : GLTexture {
 		load(data);
 	}
 
-	private static void addManagedTexture (Application app, TextureArray texture) {
+	private static void addManagedTexture (IApplication app, TextureArray texture) {
 		Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
 		if (managedTextureArray == null) managedTextureArray = new Array<TextureArray>();
 		managedTextureArray.add(texture);
@@ -111,12 +112,12 @@ public class TextureArray : GLTexture {
 	}
 
 	/** Clears all managed TextureArrays. This is an internal method. Do not use it! */
-	public static void clearAllTextureArrays (Application app) {
+	public static void clearAllTextureArrays (IApplication app) {
 		managedTextureArrays.remove(app);
 	}
 
 	/** Invalidate all managed TextureArrays. This is an internal method. Do not use it! */
-	public static void invalidateAllTextureArrays (Application app) {
+	public static void invalidateAllTextureArrays (IApplication app) {
 		Array<TextureArray> managedTextureArray = managedTextureArrays.get(app);
 		if (managedTextureArray == null) return;
 

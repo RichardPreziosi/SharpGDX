@@ -1,8 +1,10 @@
-﻿using SharpGDX;
+﻿using SharpGDX.Files;
+using SharpGDX;
 using SharpGDX.Utils;
 using SharpGDX.Desktop.Audio;
 using SharpGDX.Mathematics;
 using OpenTK.Audio.OpenAL;
+using SharpGDX.Audio;
 using SharpGDX.Shims;
 using BindingFlags = System.Reflection.BindingFlags;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -10,7 +12,7 @@ using Buffer = SharpGDX.Shims.Buffer;
 namespace SharpGDX.Desktop.Audio
 {
 	/** @author Nathan Sweet */
-public class OpenALLwjgl3Audio : Lwjgl3Audio {
+public class OpenALDesktopAudio : IDesktopAudio {
 	private readonly int deviceBufferSize;
 	private readonly int deviceBufferCount;
 	private IntArray idleSources, allSources;
@@ -31,13 +33,13 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 	ALContext context;
 	internal bool noDevice = false;
 
-	public OpenALLwjgl3Audio () 
+	public OpenALDesktopAudio () 
 	: this(16, 9, 512)
 	{
 		
 	}
 
-	public OpenALLwjgl3Audio (int simultaneousSources, int deviceBufferCount, int deviceBufferSize) {
+	public OpenALDesktopAudio (int simultaneousSources, int deviceBufferCount, int deviceBufferSize) {
 		this.deviceBufferSize = deviceBufferSize;
 		this.deviceBufferCount = deviceBufferCount;
 
@@ -146,13 +148,13 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		extensionToMusicClass.put(extension, musicClass);
 	}
 
-	public Sound newSound (FileHandle file) {
+	public ISound newSound (FileHandle file) {
 			if (file == null) throw new IllegalArgumentException("file cannot be null.");
 			Type soundClass = extensionToSoundClass.get(file.extension().ToLower());
 			if (soundClass == null) throw new GdxRuntimeException("Unknown file extension for sound: " + file);
 			try
 			{
-				return (Sound)soundClass.GetConstructor([typeof(OpenALLwjgl3Audio), typeof(FileHandle)]).Invoke([this, file]);
+				return (ISound)soundClass.GetConstructor([typeof(OpenALDesktopAudio), typeof(FileHandle)]).Invoke([this, file]);
 			}
 			catch (Exception ex)
 			{
@@ -160,13 +162,13 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 			}
 		}
 
-	public Music newMusic (FileHandle file) {
+	public IMusic newMusic (FileHandle file) {
 			if (file == null) throw new IllegalArgumentException("file cannot be null.");
 			Type musicClass = extensionToMusicClass.get(file.extension().ToLower());
 			if (musicClass == null) throw new GdxRuntimeException("Unknown file extension for music: " + file);
 			try
 			{
-				return (Music)musicClass.GetConstructor([typeof(OpenALLwjgl3Audio), typeof(FileHandle)]).Invoke([this, file]);
+				return (IMusic)musicClass.GetConstructor([typeof(OpenALDesktopAudio), typeof(FileHandle)]).Invoke([this, file]);
 			}
 			catch (Exception ex)
 			{
@@ -283,7 +285,7 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		}
 	}
 
-	public void update () {
+	public void Update () {
 		if (noDevice) return;
 		for (int i = 0; i < music.size; i++)
 			music.items[i].update();
@@ -360,14 +362,14 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		ALC.CloseDevice(device);
 	}
 
-	public AudioDevice newAudioDevice (int sampleRate, bool isMono) {
+	public IAudioDevice newAudioDevice (int sampleRate, bool isMono) {
 		if (noDevice) return new NoAudioDevice(isMono) {
 			
 		};
 		return new OpenALAudioDevice(this, sampleRate, isMono, deviceBufferSize, deviceBufferCount);
 	}
 
-	private class NoAudioDevice: AudioDevice
+	private class NoAudioDevice: IAudioDevice
 	{
 		private readonly bool _isMono;
 
@@ -411,14 +413,14 @@ public class OpenALLwjgl3Audio : Lwjgl3Audio {
 		}
 }
 
-	public AudioRecorder newAudioRecorder (int samplingRate, bool isMono) {
+	public IAudioRecorder newAudioRecorder (int samplingRate, bool isMono) {
 		if (noDevice) return new NoAudioRecorder() {
 			
 		};
 		return new JavaSoundAudioRecorder(samplingRate, isMono);
 	}
 
-	private class NoAudioRecorder : AudioRecorder
+	private class NoAudioRecorder : IAudioRecorder
 	{
 		public void read(short[] samples, int offset, int numSamples)
 		{

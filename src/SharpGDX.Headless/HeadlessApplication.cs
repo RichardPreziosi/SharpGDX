@@ -10,15 +10,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Application;
+using static SharpGDX.IApplication;
 
 namespace SharpGDX.Headless
 {
 	/** a headless implementation of a GDX Application primarily intended to be used in servers
  * @author Jon Renner */
-	public class HeadlessApplication : Application
+	public class HeadlessApplication : IApplication
 	{
-		protected readonly ApplicationListener listener;
+		protected readonly IApplicationListener listener;
 		protected Thread mainLoopThread;
 		protected readonly HeadlessFiles files;
 		protected readonly HeadlessNet net;
@@ -28,17 +28,17 @@ namespace SharpGDX.Headless
 		protected bool running = true;
 		protected readonly Array<Runnable> runnables = new Array<Runnable>();
 		protected readonly Array<Runnable> executedRunnables = new Array<Runnable>();
-		protected readonly Array<LifecycleListener> lifecycleListeners = new Array<LifecycleListener>();
+		protected readonly Array<ILifecycleListener> lifecycleListeners = new Array<ILifecycleListener>();
 		protected int logLevel = LOG_INFO;
-		protected ApplicationLogger applicationLogger;
+		protected IApplicationLogger applicationLogger;
 		private String preferencesdir;
 
-		public HeadlessApplication(ApplicationListener listener)
+		public HeadlessApplication(IApplicationListener listener)
 			: this(listener, null)
 		{
 		}
 
-		public HeadlessApplication(ApplicationListener listener, HeadlessApplicationConfiguration config)
+		public HeadlessApplication(IApplicationListener listener, HeadlessApplicationConfiguration config)
 		{
 			if (config == null) config = new HeadlessApplicationConfiguration();
 
@@ -92,7 +92,7 @@ namespace SharpGDX.Headless
 
 		protected void mainLoop()
 		{
-			Array<LifecycleListener> lifecycleListeners = this.lifecycleListeners;
+			Array<ILifecycleListener> lifecycleListeners = this.lifecycleListeners;
 
 			listener.create();
 
@@ -134,7 +134,7 @@ namespace SharpGDX.Headless
 
 			lock (lifecycleListeners)
 			{
-				foreach (LifecycleListener listener in lifecycleListeners)
+				foreach (ILifecycleListener listener in lifecycleListeners)
 				{
 					listener.pause();
 					listener.dispose();
@@ -160,7 +160,7 @@ namespace SharpGDX.Headless
 			return true;
 		}
 
-		public ApplicationListener getApplicationListener()
+		public IApplicationListener getApplicationListener()
 		{
 			return listener;
 		}
@@ -170,7 +170,7 @@ namespace SharpGDX.Headless
 			return graphics;
 		}
 
-		public Audio getAudio()
+		public IAudio getAudio()
 		{
 			return audio;
 		}
@@ -180,12 +180,12 @@ namespace SharpGDX.Headless
 			return input;
 		}
 
-		public Files getFiles()
+		public IFiles getFiles()
 		{
 			return files;
 		}
 
-		public Net getNet()
+		public INet getNet()
 		{
 			return net;
 		}
@@ -211,9 +211,9 @@ namespace SharpGDX.Headless
 			return getJavaHeap();
 		}
 
-		ObjectMap<String, Preferences> preferences = new ObjectMap<String, Preferences>();
+		ObjectMap<String, IPreferences> preferences = new ObjectMap<String, IPreferences>();
 
-		public Preferences getPreferences(String name)
+		public IPreferences getPreferences(String name)
 		{
 			if (preferences.containsKey(name))
 			{
@@ -221,13 +221,13 @@ namespace SharpGDX.Headless
 			}
 			else
 			{
-				Preferences prefs = new HeadlessPreferences(name, this.preferencesdir);
+				IPreferences prefs = new HeadlessPreferences(name, this.preferencesdir);
 				preferences.put(name, prefs);
 				return prefs;
 			}
 		}
 
-		public Clipboard getClipboard()
+		public IClipboard getClipboard()
 		{
 			// no clipboards for headless apps
 			return null;
@@ -281,12 +281,12 @@ namespace SharpGDX.Headless
 			return logLevel;
 		}
 
-		public void setApplicationLogger(ApplicationLogger applicationLogger)
+		public void setApplicationLogger(IApplicationLogger applicationLogger)
 		{
 			this.applicationLogger = applicationLogger;
 		}
 
-		public ApplicationLogger getApplicationLogger()
+		public IApplicationLogger getApplicationLogger()
 		{
 			return applicationLogger;
 		}
@@ -301,7 +301,7 @@ namespace SharpGDX.Headless
 			});
 		}
 
-		public void addLifecycleListener(LifecycleListener listener)
+		public void addLifecycleListener(ILifecycleListener listener)
 		{
 			lock (lifecycleListeners)
 			{
@@ -309,7 +309,7 @@ namespace SharpGDX.Headless
 			}
 		}
 
-		public void removeLifecycleListener(LifecycleListener listener)
+		public void removeLifecycleListener(ILifecycleListener listener)
 		{
 			lock (lifecycleListeners)
 			{

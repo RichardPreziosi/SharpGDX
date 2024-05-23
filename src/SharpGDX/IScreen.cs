@@ -14,29 +14,37 @@ namespace SharpGDX
  * Note that {@link #dispose()} is not called automatically.
  * </p>
  * @see Game */
-	public interface Screen
+	public interface IScreen
 	{
 
-		/** Called when this screen becomes the current screen for a {@link Game}. */
-		public void show();
+		/// <summary>
+		/// Called when this screen becomes the current screen for a <see cref="Game"/>.
+		/// </summary>
+		public void Show();
 
-		/** Called when the screen should render itself.
-		 * @param delta The time in seconds since the last render. */
-		public void render(float delta);
+		/// <summary>
+		/// Called when the screen should render itself.
+		/// </summary>
+		/// <param name="delta">The time in seconds since the last render.</param>
+		public void Render(float delta);
 
-		/** @see ApplicationListener#resize(int, int) */
-		public void resize(int width, int height);
+		/// <inheritdoc cref="IApplicationListener.resize(int, int)"/>>
+		public void Resize(int width, int height);
 
-		/** @see ApplicationListener#pause() */
-		public void pause();
+		/// <inheritdoc cref="IApplicationListener.pause()"/>>
+		public void Pause();
 
-		/** @see ApplicationListener#resume() */
-		public void resume();
+		/// <inheritdoc cref="IApplicationListener.resume()"/>
+		public void Resume();
 
-		/** Called when this screen is no longer the current screen for a {@link Game}. */
-		public void hide();
+		/// <summary>
+		/// Called when this screen is no longer the current screen for a <see cref="Game"/>.
+		/// </summary>
+		public void Hide();
 
-		/** Called when this screen should release all resources. */
-		public void dispose();
+		/// <summary>
+		/// Called when this screen should release all resources.
+		/// </summary>
+		public void Dispose();
 	}
 }

@@ -1032,7 +1032,7 @@ public class JsonValue : IEnumerable<JsonValue> {
 		return iterator();
 	}
 
-	public String toString () {
+	public override String ToString() {
 		if (isValue()) return name == null ? asString() : name + ": " + asString();
 		return (name == null ? "" : name + ": ") + prettyPrint(OutputType.minimal, 0);
 	}

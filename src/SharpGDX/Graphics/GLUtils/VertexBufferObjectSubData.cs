@@ -22,7 +22,7 @@ namespace SharpGDX.Graphics.GLUtils
  * VertexBufferObjects must be disposed via the {@link #dispose()} method when no longer needed
  *
  * @author mzechner */
-public class VertexBufferObjectSubData : VertexData {
+public class VertexBufferObjectSubData : IVertexData {
 	readonly VertexAttributes attributes;
 	readonly FloatBuffer buffer;
 	readonly ByteBuffer byteBuffer;

@@ -10,7 +10,7 @@ namespace SharpGDX.Scenes.Scene2D
  * @see InputListener
  * @see InputEvent
  * @author Nathan Sweet */
-	public interface EventListener
+	public interface IEventListener
 	{
 		/** Try to handle the given event, if it is applicable.
 		 * @return true if the event should be considered {@link Event#handle() handled} by scene2d. */

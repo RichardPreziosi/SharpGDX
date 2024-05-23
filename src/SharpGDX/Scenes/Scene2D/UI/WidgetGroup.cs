@@ -22,7 +22,7 @@ namespace SharpGDX.Scenes.Scene2D.UI
  * {@link #invalidate()} or {@link #invalidateHierarchy()} as needed. By default, invalidateHierarchy is called when child widgets
  * are added and removed.
  * @author Nathan Sweet */
-public class WidgetGroup : Group , Layout {
+public class WidgetGroup : Group , ILayout {
 	private bool _needsLayout = true;
 	private bool fillParent;
 	private bool layoutEnabled = true;
@@ -69,8 +69,8 @@ public class WidgetGroup : Group , Layout {
 		SnapshotArray<Actor> children = parent.getChildren();
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor actor = children.get(i);
-			if (actor is Layout)
-				((Layout)actor).setLayoutEnabled(enabled);
+			if (actor is ILayout)
+				((ILayout)actor).setLayoutEnabled(enabled);
 			else if (actor is Group) //
 				setLayoutEnabled((Group)actor, enabled);
 		}
@@ -116,7 +116,7 @@ public class WidgetGroup : Group , Layout {
 	public void invalidateHierarchy () {
 		invalidate();
 		Group parent = getParent();
-		if (parent is Layout) ((Layout)parent).invalidateHierarchy();
+		if (parent is ILayout) ((ILayout)parent).invalidateHierarchy();
 	}
 
 	protected void childrenChanged () {
@@ -152,7 +152,7 @@ public class WidgetGroup : Group , Layout {
 
 	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
 	 * out. */
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 		base.draw(batch, parentAlpha);
 	}

@@ -6,11 +6,11 @@ namespace SharpGDX.Desktop;
 /// <summary>
 ///     Clipboard implementation for desktop that uses the system clipboard via GLFW.
 /// </summary>
-public class Lwjgl3Clipboard : Clipboard
+public class DesktopClipboard : IClipboard
 {
 	public unsafe string getContents()
 	{
-		return GLFW.GetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowPtr());
+		return GLFW.GetClipboardString(((DesktopGraphics)Gdx.graphics).getWindow().getWindowPtr());
 	}
 
 	public bool hasContents()
@@ -20,6 +20,6 @@ public class Lwjgl3Clipboard : Clipboard
 
 	public unsafe void setContents(string content)
 	{
-		GLFW.SetClipboardString(((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowPtr(), content);
+		GLFW.SetClipboardString(((DesktopGraphics)Gdx.graphics).getWindow().getWindowPtr(), content);
 	}
 }

@@ -16,7 +16,7 @@ namespace SharpGDX
  * methods are executed.
  *
  * @author mzechner */
-	public interface LifecycleListener
+	public interface ILifecycleListener
 	{
 		/** Called when the {@link Application} is about to pause */
 		public void pause();

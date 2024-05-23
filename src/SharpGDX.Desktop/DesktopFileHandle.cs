@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,14 @@ namespace SharpGDX.Desktop
 {
 	/** @author mzechner
  * @author Nathan Sweet */
-	public sealed class Lwjgl3FileHandle : FileHandle
+	public sealed class DesktopFileHandle : FileHandle
 	{
-	public Lwjgl3FileHandle(String fileName, Files.FileType type)
+	public DesktopFileHandle(String fileName, IFiles.FileType type)
 	: base(fileName, type)
 		{
 	}
 
-	public Lwjgl3FileHandle(File file, Files.FileType type)
+	public DesktopFileHandle(File file, IFiles.FileType type)
 	:base(file, type)
 		{
 		
@@ -25,14 +26,14 @@ namespace SharpGDX.Desktop
 
 	public FileHandle child(String name)
 	{
-		if (_file.getPath().Length == 0) return new Lwjgl3FileHandle(new File(name), _type);
-		return new Lwjgl3FileHandle(new File(_file, name), _type);
+		if (_file.getPath().Length == 0) return new DesktopFileHandle(new File(name), _type);
+		return new DesktopFileHandle(new File(_file, name), _type);
 	}
 
 	public FileHandle sibling(String name)
 	{
 		if (_file.getPath().Length == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
-		return new Lwjgl3FileHandle(new File(_file.getParent(), name), _type);
+		return new DesktopFileHandle(new File(_file.getParent(), name), _type);
 	}
 
 	public FileHandle parent()
@@ -40,18 +41,18 @@ namespace SharpGDX.Desktop
 		File parent = _file.getParentFile();
 		if (parent == null)
 		{
-			if (_type == Files.FileType.Absolute)
+			if (_type == IFiles.FileType.Absolute)
 				parent = new File("/");
 			else
 				parent = new File("");
 		}
-		return new Lwjgl3FileHandle(parent, _type);
+		return new DesktopFileHandle(parent, _type);
 	}
 
 	public File file()
 	{
-		if (_type == Files.FileType.External) return new File(Lwjgl3Files.externalPath, _file.getPath());
-		if (_type == Files.FileType.Local) return new File(Lwjgl3Files.localPath, _file.getPath());
+		if (_type == IFiles.FileType.External) return new File(DesktopFiles.externalPath, _file.getPath());
+		if (_type == IFiles.FileType.Local) return new File(DesktopFiles.localPath, _file.getPath());
 		return _file;
 	}
 	}

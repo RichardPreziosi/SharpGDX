@@ -8,7 +8,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** Listener for {@link FocusEvent}.
  * @author Nathan Sweet */
-abstract public class FocusListener : EventListener {
+abstract public class FocusListener : IEventListener {
 	public bool handle (Event @event) {
 		if (!(@event is FocusEvent)) return false;
 		FocusEvent focusEvent = (FocusEvent) @event;

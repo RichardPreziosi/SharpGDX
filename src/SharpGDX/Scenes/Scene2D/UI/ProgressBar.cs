@@ -19,7 +19,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * width is 140, a relatively arbitrary size. These parameters are reversed for a vertical progress bar.
  * @author mzechner
  * @author Nathan Sweet */
-public class ProgressBar : Widget , Disableable {
+public class ProgressBar : Widget , IDisableable {
 	private ProgressBarStyle style;
 	protected float min, max, stepSize;
 	private float value, animateFromValue;
@@ -85,13 +85,13 @@ public class ProgressBar : Widget , Disableable {
 		}
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		ProgressBarStyle style = this.style;
 		bool disabled = this.disabled;
-		Drawable knob = style.knob, currentKnob = getKnobDrawable();
-		Drawable bg = getBackgroundDrawable();
-		Drawable knobBefore = getKnobBeforeDrawable();
-		Drawable knobAfter = getKnobAfterDrawable();
+		IDrawable knob = style.knob, currentKnob = getKnobDrawable();
+		IDrawable bg = getBackgroundDrawable();
+		IDrawable knobBefore = getKnobBeforeDrawable();
+		IDrawable knobAfter = getKnobAfterDrawable();
 
 		Color color = getColor();
 		float x = getX(), y = getY();
@@ -172,7 +172,7 @@ public class ProgressBar : Widget , Disableable {
 		}
 	}
 
-	private void drawRound (Batch batch, Drawable drawable, float x, float y, float w, float h) {
+	private void drawRound (IBatch batch, IDrawable drawable, float x, float y, float w, float h) {
 		if (_round) {
 			x = (float)Math.Round(x);
 			y = (float)Math.Round(y);
@@ -207,22 +207,22 @@ public class ProgressBar : Widget , Disableable {
 		return visualInterpolation.apply((getVisualValue() - min) / (max - min));
 	}
 
-	protected Drawable? getBackgroundDrawable () {
+	protected IDrawable? getBackgroundDrawable () {
 		if (disabled && style.disabledBackground != null) return style.disabledBackground;
 		return style.background;
 	}
 
-	protected Drawable? getKnobDrawable () {
+	protected IDrawable? getKnobDrawable () {
 		if (disabled && style.disabledKnob != null) return style.disabledKnob;
 		return style.knob;
 	}
 
-	protected Drawable getKnobBeforeDrawable () {
+	protected IDrawable getKnobBeforeDrawable () {
 		if (disabled && style.disabledKnobBefore != null) return style.disabledKnobBefore;
 		return style.knobBefore;
 	}
 
-	protected Drawable getKnobAfterDrawable () {
+	protected IDrawable getKnobAfterDrawable () {
 		if (disabled && style.disabledKnobAfter != null) return style.disabledKnobAfter;
 		return style.knobAfter;
 	}
@@ -289,7 +289,7 @@ public class ProgressBar : Widget , Disableable {
 
 	public float getPrefWidth () {
 		if (vertical) {
-			Drawable knob = style.knob, bg = getBackgroundDrawable();
+			IDrawable knob = style.knob, bg = getBackgroundDrawable();
 			return Math.Max(knob == null ? 0 : knob.getMinWidth(), bg == null ? 0 : bg.getMinWidth());
 		} else
 			return 140;
@@ -299,7 +299,7 @@ public class ProgressBar : Widget , Disableable {
 		if (vertical)
 			return 140;
 		else {
-			Drawable knob = style.knob, bg = getBackgroundDrawable();
+			IDrawable knob = style.knob, bg = getBackgroundDrawable();
 			return Math.Max(knob == null ? 0 : knob.getMinHeight(), bg == null ? 0 : bg.getMinHeight());
 		}
 	}
@@ -365,15 +365,15 @@ public class ProgressBar : Widget , Disableable {
 	 * @author Nathan Sweet */
 	public class ProgressBarStyle {
 		/** The progress bar background, stretched only in one direction. */
-		public  Drawable? background, disabledBackground;
-		public  Drawable? knob, disabledKnob;
-		public  Drawable? knobBefore, disabledKnobBefore;
-		public  Drawable? knobAfter, disabledKnobAfter;
+		public  IDrawable? background, disabledBackground;
+		public  IDrawable? knob, disabledKnob;
+		public  IDrawable? knobBefore, disabledKnobBefore;
+		public  IDrawable? knobAfter, disabledKnobAfter;
 
 		public ProgressBarStyle () {
 		}
 
-		public ProgressBarStyle ( Drawable? background, Drawable? knob) {
+		public ProgressBarStyle ( IDrawable? background, IDrawable? knob) {
 			this.background = background;
 			this.knob = knob;
 		}

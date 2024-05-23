@@ -1,4 +1,7 @@
-﻿namespace SharpGDX
+﻿using SharpGDX.Audio;
+using SharpGDX.Files;
+
+namespace SharpGDX
 {
 	/** This interface encapsulates the creation and management of audio resources. It allows you to get direct access to the audio
  * hardware via the {@link AudioDevice} and {@link AudioRecorder} interfaces, create sound effects via the {@link Sound} interface
@@ -14,7 +17,7 @@
  * </p>
  * 
  * @author mzechner */
-	public interface Audio
+	public interface IAudio
 	{
 		/** Creates a new {@link AudioDevice} either in mono or stereo mode. The AudioDevice has to be disposed via its
 		 * {@link AudioDevice#dispose()} method when it is no longer used.
@@ -24,7 +27,7 @@
 		 * @return the AudioDevice
 		 * 
 		 * @throws GdxRuntimeException in case the device could not be created */
-		public AudioDevice newAudioDevice(int samplingRate, bool isMono);
+		public IAudioDevice newAudioDevice(int samplingRate, bool isMono);
 
 		/** Creates a new {@link AudioRecorder}. The AudioRecorder has to be disposed after it is no longer used.
 		 * 
@@ -33,7 +36,7 @@
 		 * @return the AudioRecorder
 		 * 
 		 * @throws GdxRuntimeException in case the recorder could not be created */
-		public AudioRecorder newAudioRecorder(int samplingRate, bool isMono);
+		public IAudioRecorder newAudioRecorder(int samplingRate, bool isMono);
 
 		/**
 		 * <p>
@@ -52,7 +55,7 @@
 		 * 
 		 * @return the new Sound
 		 * @throws GdxRuntimeException in case the sound could not be loaded */
-		public Sound newSound(FileHandle fileHandle);
+		public ISound newSound(FileHandle fileHandle);
 
 		/** Creates a new {@link Music} instance which is used to play back a music stream from a file. Currently supported formats are
 		 * WAV, MP3 and OGG. The Music instance has to be disposed if it is no longer used via the {@link Music#dispose()} method.
@@ -62,7 +65,7 @@
 		 * @param file the FileHandle
 		 * @return the new Music or null if the Music could not be loaded
 		 * @throws GdxRuntimeException in case the music could not be loaded */
-		public Music newMusic(FileHandle file);
+		public IMusic newMusic(FileHandle file);
 
 		/** Sets a new OutputDevice. The identifier can be retrieved from {@link Audio#getAvailableOutputDevices()}. If null is passed,
 		 * it will switch to auto.

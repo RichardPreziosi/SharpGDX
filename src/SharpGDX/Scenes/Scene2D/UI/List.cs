@@ -15,7 +15,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * The preferred size of the list is determined by the text bounds of the items and the size of the {@link ListStyle#selection}.
  * @author mzechner
  * @author Nathan Sweet */
-public class List<T> : Widget , Cullable {
+public class List<T> : Widget , ICullable {
 	ListStyle style;
 	readonly Array<T> items = new ();
 	internal ArraySelection<T> selection ;
@@ -180,7 +180,7 @@ public List (ListStyle style)
 
 	public void layout () {
 		BitmapFont font = style.font;
-		Drawable selectedDrawable = style.selection;
+		IDrawable selectedDrawable = style.selection;
 
 		itemHeight = font.getCapHeight() - font.getDescent() * 2;
 		itemHeight += selectedDrawable.getTopHeight() + selectedDrawable.getBottomHeight();
@@ -196,20 +196,20 @@ public List (ListStyle style)
 		prefWidth += selectedDrawable.getLeftWidth() + selectedDrawable.getRightWidth();
 		prefHeight = items.size * itemHeight;
 
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null) {
 			prefWidth = Math.Max(prefWidth + background.getLeftWidth() + background.getRightWidth(), background.getMinWidth());
 			prefHeight = Math.Max(prefHeight + background.getTopHeight() + background.getBottomHeight(), background.getMinHeight());
 		}
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		drawBackground(batch, parentAlpha);
 
 		BitmapFont font = style.font;
-		Drawable selectedDrawable = style.selection;
+		IDrawable selectedDrawable = style.selection;
 		Color fontColorSelected = style.fontColorSelected;
 		Color fontColorUnselected = style.fontColorUnselected;
 
@@ -219,7 +219,7 @@ public List (ListStyle style)
 		float x = getX(), y = getY(), width = getWidth(), height = getHeight();
 		float itemY = height;
 
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null) {
 			float leftWidth = background.getLeftWidth();
 			x += leftWidth;
@@ -235,7 +235,7 @@ public List (ListStyle style)
 			if (cullingArea == null || (itemY - itemHeight <= cullingArea.y + cullingArea.height && itemY >= cullingArea.y)) {
 				T item = items.get(i);
 				bool selected = selection.contains(item);
-				Drawable drawable = null;
+				IDrawable drawable = null;
 				if (pressedIndex == i && style.down != null)
 					drawable = style.down;
 				else if (selected) {
@@ -256,12 +256,12 @@ public List (ListStyle style)
 		}
 	}
 
-	protected void drawSelection (Batch batch, Drawable? drawable, float x, float y, float width, float height) {
+	protected void drawSelection (IBatch batch, IDrawable? drawable, float x, float y, float width, float height) {
 		if (drawable != null) drawable.draw(batch, x, y, width, height);
 	}
 
 	/** Called to draw the background. Default implementation draws the style background drawable. */
-	protected void drawBackground (Batch batch, float parentAlpha) {
+	protected void drawBackground (IBatch batch, float parentAlpha) {
 		if (style.background != null) {
 			Color color = getColor();
 			batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
@@ -269,7 +269,7 @@ public List (ListStyle style)
 		}
 	}
 
-	protected GlyphLayout drawItem (Batch batch, BitmapFont font, int index, T item, float x, float y, float width) {
+	protected GlyphLayout drawItem (IBatch batch, BitmapFont font, int index, T item, float x, float y, float width) {
 		String @string = toString(item);
 		return font.draw(batch, @string, x, y, 0, @string.Length, width, alignment, false, "...");
 	}
@@ -336,7 +336,7 @@ public List (ListStyle style)
 	/** @return -1 if not over an item. */
 	public int getItemIndexAt (float y) {
 		float height = getHeight();
-		Drawable background = this.style.background;
+		IDrawable background = this.style.background;
 		if (background != null) {
 			height -= background.getTopHeight() + background.getBottomHeight();
 			y -= background.getBottomHeight();
@@ -446,13 +446,13 @@ public List (ListStyle style)
 		public BitmapFont font;
 		public Color fontColorSelected = new Color(1, 1, 1, 1);
 		public Color fontColorUnselected = new Color(1, 1, 1, 1);
-		public Drawable selection;
-		public Drawable? down, over, background;
+		public IDrawable selection;
+		public IDrawable? down, over, background;
 
 		public ListStyle () {
 		}
 
-		public ListStyle (BitmapFont font, Color fontColorSelected, Color fontColorUnselected, Drawable selection) {
+		public ListStyle (BitmapFont font, Color fontColorSelected, Color fontColorUnselected, IDrawable selection) {
 			this.font = font;
 			this.fontColorSelected.set(fontColorSelected);
 			this.fontColorUnselected.set(fontColorUnselected);

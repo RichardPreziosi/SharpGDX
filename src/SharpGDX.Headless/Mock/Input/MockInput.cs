@@ -222,14 +222,14 @@ namespace SharpGDX.Headless.Mock.Input
 		return false;
 	}
 
-	public void setInputProcessor(InputProcessor processor)
+	public void setInputProcessor(IInputProcessor processor)
 	{
 
 	}
 
-	private InputProcessor mockInputProcessor;
+	private IInputProcessor mockInputProcessor;
 
-	public InputProcessor getInputProcessor()
+	public IInputProcessor getInputProcessor()
 	{
 		if (mockInputProcessor == null)
 		{

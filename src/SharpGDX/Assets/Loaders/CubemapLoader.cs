@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
@@ -16,13 +17,13 @@ public class CubemapLoader : AsynchronousAssetLoader<Cubemap, CubemapLoader.Cube
 	public class CubemapLoaderInfo
 	{
 		internal String filename;
-		internal CubemapData data;
+		internal ICubemapData data;
 		internal Cubemap cubemap;
 	};
 
 	CubemapLoaderInfo info = new CubemapLoaderInfo();
 
-	public CubemapLoader(FileHandleResolver resolver)
+	public CubemapLoader(IFileHandleResolver resolver)
 	: base(resolver)
 	{
 		
@@ -87,7 +88,7 @@ public class CubemapLoader : AsynchronousAssetLoader<Cubemap, CubemapLoader.Cube
 	/** The texture to put the {@link TextureData} in, optional. **/
 	public Cubemap cubemap = null;
 	/** CubemapData for textures created on the fly, optional. When set, all format and genMipMaps are ignored */
-	public CubemapData cubemapData = null;
+	public ICubemapData cubemapData = null;
 	public Texture.TextureFilter minFilter = Texture.TextureFilter.Nearest;
 	public Texture.TextureFilter magFilter = Texture.TextureFilter.Nearest;
 	public Texture.TextureWrap wrapU = Texture.TextureWrap.ClampToEdge;

@@ -197,7 +197,7 @@ public class Timer {
 	 * @author Nathan Sweet */
 	abstract public class Task // TODO: : Runnable 
 	{
-		internal readonly Application app;
+		internal readonly IApplication app;
 		internal long executeTimeMillis, intervalMillis;
 		internal int repeatCount;
 		internal volatile Timer timer;
@@ -256,9 +256,9 @@ public class Timer {
 	/** Manages a single thread for updating timers. Uses libgdx application events to pause, resume, and dispose the thread.
 	 * @author Nathan Sweet */
 	 class TimerThread : // TODO:  Runnable,
-		LifecycleListener {
-		internal readonly Files files;
-		readonly Application app;
+		ILifecycleListener {
+		internal readonly IFiles files;
+		readonly IApplication app;
 		internal readonly Array<Timer> instances = new(1);
 		internal Timer instance;
 		internal long pauseTimeMillis;

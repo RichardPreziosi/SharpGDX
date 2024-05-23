@@ -18,7 +18,7 @@ namespace SharpGDX.Shims
  * </ul>
  * </p>
  */
-	sealed class IntToByteBufferAdapter : IntBuffer , ByteBufferWrapper
+	sealed class IntToByteBufferAdapter : IntBuffer , IByteBufferWrapper
 	{
 // implements DirectBuffer {
 

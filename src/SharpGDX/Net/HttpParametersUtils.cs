@@ -2,7 +2,7 @@ using SharpGDX.Utils;
 using SharpGDX.Shims;
 using System.Text;
 
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** Provides utility methods to work with the {@link HttpRequest} content and parameters. */
 public sealed class HttpParametersUtils {

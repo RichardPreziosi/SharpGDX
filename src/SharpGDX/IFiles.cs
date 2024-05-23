@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace SharpGDX
  * directory.
  * @author mzechner
  * @author Nathan Sweet */
-	public interface Files
+	public interface IFiles
 	{
 		/** Indicates how to resolve a path to a file.
 		 * @author mzechner

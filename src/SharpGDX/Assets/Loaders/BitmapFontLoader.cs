@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using static SharpGDX.Graphics.G2D.TextureAtlas;
 using static SharpGDX.Graphics.Texture;
@@ -16,7 +17,7 @@ namespace SharpGDX.Assets.Loaders;
  * @author mzechner */
 public class BitmapFontLoader : AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter>
 {
-	public BitmapFontLoader(FileHandleResolver resolver)
+	public BitmapFontLoader(IFileHandleResolver resolver)
 	: base(resolver)
 	{
 		

@@ -2,7 +2,7 @@ using System.Collections;
 using SharpGDX.Maps.Tiled.Tiles;
 using SharpGDX.Maps;
 using SharpGDX.Scenes.Scene2D.UI;
-using static SharpGDX.Graphics.G2D.Batch;
+using static SharpGDX.Graphics.G2D.IBatch;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Shims;
 using SharpGDX.Assets;
@@ -15,14 +15,14 @@ using SharpGDX.Mathematics;
 
 namespace SharpGDX.Maps.Tiled.Renderers;
 
-public abstract class BatchTiledMapRenderer : TiledMapRenderer, Disposable {
+public abstract class BatchTiledMapRenderer : ITiledMapRenderer, Disposable {
 	static protected readonly int NUM_VERTICES = 20;
 
 	protected TiledMap map;
 
 	protected float unitScale;
 
-	protected Batch batch;
+	protected IBatch batch;
 
 	protected Rectangle viewBounds;
 	protected Rectangle imageBounds = new Rectangle();
@@ -43,7 +43,7 @@ public abstract class BatchTiledMapRenderer : TiledMapRenderer, Disposable {
 		return unitScale;
 	}
 
-	public Batch getBatch () {
+	public IBatch getBatch () {
 		return batch;
 	}
 
@@ -65,13 +65,13 @@ public abstract class BatchTiledMapRenderer : TiledMapRenderer, Disposable {
 		this.ownsBatch = true;
 	}
 
-	public BatchTiledMapRenderer (TiledMap map, Batch batch) 
+	public BatchTiledMapRenderer (TiledMap map, IBatch batch) 
 	: this(map, 1.0f, batch)
 	{
 		
 	}
 
-	public BatchTiledMapRenderer (TiledMap map, float unitScale, Batch batch) {
+	public BatchTiledMapRenderer (TiledMap map, float unitScale, IBatch batch) {
 		this.map = map;
 		this.unitScale = unitScale;
 		this.viewBounds = new Rectangle();

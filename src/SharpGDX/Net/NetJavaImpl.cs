@@ -1,14 +1,14 @@
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 
-namespace SharpGDX;
+namespace SharpGDX.Net;
 
 /** Implements part of the {@link Net} API using {@link HttpURLConnection}, to be easily reused between the Android and Desktop
  * backends.
  * @author acoppes */
 public class NetJavaImpl {
 
-	 class HttpClientResponse : Net.HttpResponse {
+	 class HttpClientResponse : INet.HttpResponse {
 		// TODO: private readonly HttpURLConnection connection;
 		private HttpStatus status;
 
@@ -127,7 +127,7 @@ public class NetJavaImpl {
 		//tasks = new ObjectMap<HttpRequest, Future<?>>();
 	}
 
-	public void sendHttpRequest (Net. HttpRequest httpRequest, Net. HttpResponseListener httpResponseListener) {
+	public void sendHttpRequest (INet. HttpRequest httpRequest, INet. HttpResponseListener httpResponseListener) {
 		throw new NotImplementedException();
 		//if (httpRequest.getUrl() == null) {
 		//	httpResponseListener.failed(new GdxRuntimeException("can't process a HTTP request without URL set"));
@@ -229,7 +229,7 @@ public class NetJavaImpl {
 		//}
 	}
 
-	public void cancelHttpRequest (Net.HttpRequest httpRequest) {
+	public void cancelHttpRequest (INet.HttpRequest httpRequest) {
 		throw new NotImplementedException();
 		//HttpResponseListener httpResponseListener = getFromListeners(httpRequest);
 
@@ -240,7 +240,7 @@ public class NetJavaImpl {
 		//}
 	}
 
-	private void cancelTask (Net.HttpRequest httpRequest) {
+	private void cancelTask (INet.HttpRequest httpRequest) {
 		throw new NotImplementedException();
 		//Future <?> task = tasks.get(httpRequest);
 
@@ -249,7 +249,7 @@ public class NetJavaImpl {
 		//}
 	}
 
-	 void removeFromConnectionsAndListeners (Net. HttpRequest httpRequest) {
+	 void removeFromConnectionsAndListeners (INet. HttpRequest httpRequest) {
 		 throw new NotImplementedException();
 		//lock (this)
 		//{

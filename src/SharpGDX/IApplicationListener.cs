@@ -19,7 +19,7 @@ namespace SharpGDX
  * </p>
  *
  * @author mzechner */
-	public interface ApplicationListener
+	public interface IApplicationListener
 	{
 		/** Called when the {@link Application} is first created. */
 		public void create();
@@ -38,7 +38,9 @@ namespace SharpGDX
 		 * paused before it is destroyed. */
 		public void pause();
 
-		/** Called when the {@link Application} is resumed from a paused state, usually when it regains focus. */
+		/// <summary>
+		/// Called when the <see cref="IApplication"/> is resumed from a paused state, usually when it regains focus.
+		/// </summary>
 		public void resume();
 
 		/** Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}. */

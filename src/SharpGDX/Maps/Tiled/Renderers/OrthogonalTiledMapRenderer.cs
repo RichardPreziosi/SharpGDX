@@ -1,6 +1,6 @@
 using System.Collections;
 using static SharpGDX.Maps.Tiled.TiledMapTileLayer;
-using static SharpGDX.Graphics.G2D.Batch;
+using static SharpGDX.Graphics.G2D.IBatch;
 using SharpGDX.Utils.Reflect;
 using SharpGDX.Shims;
 using SharpGDX.Assets;
@@ -21,7 +21,7 @@ public class OrthogonalTiledMapRenderer : BatchTiledMapRenderer {
 		
 	}
 
-	public OrthogonalTiledMapRenderer (TiledMap map, Batch batch) 
+	public OrthogonalTiledMapRenderer (TiledMap map, IBatch batch) 
 	: base(map, batch)
 	{
 		
@@ -33,7 +33,7 @@ public class OrthogonalTiledMapRenderer : BatchTiledMapRenderer {
 		
 	}
 
-	public OrthogonalTiledMapRenderer (TiledMap map, float unitScale, Batch batch) 
+	public OrthogonalTiledMapRenderer (TiledMap map, float unitScale, IBatch batch) 
 	: base(map, unitScale, batch)
 	{
 		
@@ -73,7 +73,7 @@ public class OrthogonalTiledMapRenderer : BatchTiledMapRenderer {
 					x += layerTileWidth;
 					continue;
 				}
-				 TiledMapTile tile = cell.getTile();
+				 ITiledMapTile tile = cell.getTile();
 
 				if (tile != null) {
 					 bool flipX = cell.getFlipHorizontally();

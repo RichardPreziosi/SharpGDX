@@ -1,3 +1,5 @@
+using SharpGDX.Files;
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Graphics;
@@ -11,7 +13,7 @@ namespace SharpGDX.Assets.Loaders;
  * used for the effect's images. Per default images are loaded from the directory in which the effect file is found. */
 public class ParticleEffectLoader : SynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectParameter>
 {
-	public ParticleEffectLoader(FileHandleResolver resolver)
+	public ParticleEffectLoader(IFileHandleResolver resolver)
 	: base(resolver)
 	{
 		

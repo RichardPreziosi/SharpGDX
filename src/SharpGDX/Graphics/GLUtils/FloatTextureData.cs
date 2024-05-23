@@ -9,7 +9,7 @@ using SharpGDX.Utils;
 namespace SharpGDX.Graphics.GLUtils
 {
 	/** A {@link TextureData} implementation which should be used to create float textures. */
-public class FloatTextureData : TextureData {
+public class FloatTextureData : ITextureData {
 
 	int width = 0;
 	int height = 0;
@@ -32,8 +32,8 @@ public class FloatTextureData : TextureData {
 		this.isGpuOnly = isGpuOnly;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Custom;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Custom;
 	}
 
 	public bool isPrepared () {
@@ -56,8 +56,8 @@ public class FloatTextureData : TextureData {
 	}
 
 	public void consumeCustomData (int target) {
-		if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS
-			|| (Gdx.app.getType() == Application.ApplicationType.WebGL && !Gdx.graphics.isGL30Available())) {
+		if (Gdx.app.getType() == IApplication.ApplicationType.Android || Gdx.app.getType() == IApplication.ApplicationType.iOS
+			|| (Gdx.app.getType() == IApplication.ApplicationType.WebGL && !Gdx.graphics.isGL30Available())) {
 
 			if (!Gdx.graphics.supportsExtension("OES_texture_float"))
 				throw new GdxRuntimeException("Extension OES_texture_float not supported!");

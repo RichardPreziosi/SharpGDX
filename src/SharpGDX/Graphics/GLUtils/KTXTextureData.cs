@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace SharpGDX.Graphics.GLUtils
  * For example, KTXTextureData can be used for {@link Texture} or {@link Cubemap}.
  *
  * @author Vincent Bousquet */
-public class KTXTextureData : TextureData, CubemapData {
+public class KTXTextureData : ITextureData, ICubemapData {
 
 	// The file we are loading
 	private FileHandle file;
@@ -47,8 +48,8 @@ public class KTXTextureData : TextureData, CubemapData {
 		this._useMipMaps = genMipMaps;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Custom;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Custom;
 	}
 
 	public bool isPrepared () {

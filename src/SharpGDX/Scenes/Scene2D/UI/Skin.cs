@@ -1,4 +1,5 @@
-﻿using SharpGDX;
+﻿using SharpGDX.Files;
+using SharpGDX;
 using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
@@ -94,7 +95,7 @@ public class Skin : Disposable {
 		if (resource == null) throw new IllegalArgumentException("resource cannot be null.");
 		ObjectMap<String, Object> typeResources = resources.get(type);
 		if (typeResources == null) {
-			typeResources = new (type == typeof(TextureRegion) || type == typeof(Drawable) || type == typeof(Sprite) ? 256 : 64);
+			typeResources = new (type == typeof(TextureRegion) || type == typeof(IDrawable) || type == typeof(Sprite) ? 256 : 64);
 			resources.put(type, typeResources);
 		}
 		typeResources.put(name, resource);
@@ -256,8 +257,8 @@ public class Skin : Disposable {
 
 	/** Returns a registered drawable. If no drawable is found but a region, ninepatch, or sprite exists with the name, then the
 	 * appropriate drawable is created and stored in the skin. */
-	public Drawable getDrawable (String name) {
-		Drawable drawable = optional< Drawable>(name, typeof(Drawable));
+	public IDrawable getDrawable (String name) {
+		IDrawable drawable = optional< IDrawable>(name, typeof(IDrawable));
 		if (drawable != null) return drawable;
 
 		// Use texture or texture region. If it has splits, use ninepatch. If it has rotation or whitespace stripping, use sprite.
@@ -294,7 +295,7 @@ public class Skin : Disposable {
 
 		if (drawable is BaseDrawable) ((BaseDrawable)drawable).setName(name);
 
-		add(name, drawable, typeof(Drawable));
+		add(name, drawable, typeof(IDrawable));
 		return drawable;
 	}
 
@@ -308,22 +309,22 @@ public class Skin : Disposable {
 	}
 
 	/** Returns a copy of a drawable found in the skin via {@link #getDrawable(String)}. */
-	public Drawable newDrawable (String name) {
+	public IDrawable newDrawable (String name) {
 		return newDrawable(getDrawable(name));
 	}
 
 	/** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
-	public Drawable newDrawable (String name, float r, float g, float b, float a) {
+	public IDrawable newDrawable (String name, float r, float g, float b, float a) {
 		return newDrawable(getDrawable(name), new Color(r, g, b, a));
 	}
 
 	/** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
-	public Drawable newDrawable (String name, Color tint) {
+	public IDrawable newDrawable (String name, Color tint) {
 		return newDrawable(getDrawable(name), tint);
 	}
 
 	/** Returns a copy of the specified drawable. */
-	public Drawable newDrawable (Drawable drawable) {
+	public IDrawable newDrawable (IDrawable drawable) {
 		if (drawable is TiledDrawable) return new TiledDrawable((TiledDrawable)drawable);
 		if (drawable is TextureRegionDrawable) return new TextureRegionDrawable((TextureRegionDrawable)drawable);
 		if (drawable is NinePatchDrawable) return new NinePatchDrawable((NinePatchDrawable)drawable);
@@ -332,13 +333,13 @@ public class Skin : Disposable {
 	}
 
 	/** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
-	public Drawable newDrawable (Drawable drawable, float r, float g, float b, float a) {
+	public IDrawable newDrawable (IDrawable drawable, float r, float g, float b, float a) {
 		return newDrawable(drawable, new Color(r, g, b, a));
 	}
 
 	/** Returns a tinted copy of a drawable found in the skin via {@link #getDrawable(String)}. */
-	public Drawable newDrawable (Drawable drawable, Color tint) {
-		Drawable newDrawable;
+	public IDrawable newDrawable (IDrawable drawable, Color tint) {
+		IDrawable newDrawable;
 		if (drawable is TextureRegionDrawable)
 			newDrawable = ((TextureRegionDrawable)drawable).tint(tint);
 		else if (drawable is NinePatchDrawable)
@@ -362,7 +363,7 @@ public class Skin : Disposable {
 	/** Scales the drawable's {@link Drawable#getLeftWidth()}, {@link Drawable#getRightWidth()},
 	 * {@link Drawable#getBottomHeight()}, {@link Drawable#getTopHeight()}, {@link Drawable#getMinWidth()}, and
 	 * {@link Drawable#getMinHeight()}. */
-	public void scale (Drawable drawble) {
+	public void scale (IDrawable drawble) {
 		drawble.setLeftWidth(drawble.getLeftWidth() * _scale);
 		drawble.setRightWidth(drawble.getRightWidth() * _scale);
 		drawble.setBottomHeight(drawble.getBottomHeight() * _scale);

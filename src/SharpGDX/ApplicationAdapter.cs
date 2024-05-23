@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX;
 
-namespace SharpGDX
+/// <summary>
+///     Convenience implementation of <see cref="IApplicationListener" />.
+/// </summary>
+/// <remarks>
+///     Derive from this and only override what you need.
+/// </remarks>
+public abstract class ApplicationAdapter : IApplicationListener
 {
-	/** Convenience implementation of {@link ApplicationListener}. Derive from this and only override what you need.
- * @author mzechner */
-	public abstract class ApplicationAdapter : ApplicationListener
-	{
 	public virtual void create()
 	{
 	}
 
-		public virtual void resize(int width, int height)
+	public virtual void dispose()
 	{
 	}
 
-		public virtual void render()
+	public virtual void pause()
 	{
 	}
 
-		public virtual void pause()
+	public virtual void render()
 	{
 	}
 
-		public virtual void resume()
+	public virtual void resize(int width, int height)
 	{
 	}
 
-		public virtual void dispose()
+	public virtual void resume()
 	{
-	}
 	}
 }

@@ -43,8 +43,8 @@ public class Stack : WidgetGroup {
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = children.get(i);
 			float childMaxWidth, childMaxHeight;
-			if (child is Layout) {
-				Layout layout = (Layout)child;
+			if (child is ILayout) {
+				ILayout layout = (ILayout)child;
 				prefWidth = Math.Max(prefWidth, layout.getPrefWidth());
 				prefHeight = Math.Max(prefHeight, layout.getPrefHeight());
 				minWidth = Math.Max(minWidth, layout.getMinWidth());
@@ -75,7 +75,7 @@ public class Stack : WidgetGroup {
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = children.get(i);
 			child.setBounds(0, 0, width, height);
-			if (child is Layout) ((Layout)child).validate();
+			if (child is ILayout) ((ILayout)child).validate();
 		}
 	}
 

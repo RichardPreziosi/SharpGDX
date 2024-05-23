@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using System.Collections;
 using static SharpGDX.Graphics.G2D.TextureAtlas;
 using static SharpGDX.Utils.XmlReader;
@@ -29,11 +30,11 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 		public bool forceTextureFilters = false;
 	}
 
-	protected interface AtlasResolver : ImageResolver {
+	protected interface IAtlasResolver : ImageResolver {
 
 		public TextureAtlas getAtlas ();
 
-		public  class DirectAtlasResolver : AtlasTmxMapLoader.AtlasResolver {
+		public  class DirectAtlasResolver : AtlasTmxMapLoader.IAtlasResolver {
 			private readonly TextureAtlas atlas;
 
 			public DirectAtlasResolver (TextureAtlas atlas) {
@@ -49,7 +50,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 			}
 		}
 
-		public  class AssetManagerAtlasResolver : AtlasTmxMapLoader.AtlasResolver {
+		public  class AssetManagerAtlasResolver : AtlasTmxMapLoader.IAtlasResolver {
 			private readonly AssetManager assetManager;
 			private readonly String atlasName;
 
@@ -70,7 +71,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 
 	protected Array<Texture> trackedTextures = new Array<Texture>();
 
-	protected AtlasResolver atlasResolver;
+	protected IAtlasResolver atlasResolver;
 
 	public AtlasTmxMapLoader () 
 	: base(new InternalFileHandleResolver())
@@ -78,7 +79,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 		
 	}
 
-	public AtlasTmxMapLoader (FileHandleResolver resolver) 
+	public AtlasTmxMapLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		
@@ -122,7 +123,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 		return map;
 	}
 
-	protected override Array<AssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
+	protected override Array<IAssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
 		TextureLoader.TextureParameter textureParameter)
 	{
 		throw new NotImplementedException();
@@ -173,7 +174,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader<AtlasTmxMapLoader.AtlasTiledMa
 		// Add tiles with individual image sources
 		foreach (Element tileElement in tileElements) {
 			int tileId = firstgid + tileElement.getIntAttribute("id", 0);
-			TiledMapTile tile = tileSet.getTile(tileId);
+			ITiledMapTile tile = tileSet.getTile(tileId);
 			if (tile == null) {
 				Element imageElement = tileElement.getChildByName("image");
 				if (imageElement != null) {

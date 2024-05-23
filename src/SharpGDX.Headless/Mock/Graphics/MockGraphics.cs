@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Utils;
 using SharpGDX.Graphics.GLUtils;
-using static SharpGDX.Graphics.Cursor;
+using static SharpGDX.Graphics.ICursor;
 using SharpGDX.Graphics;
 using static SharpGDX.IGraphics;
 
@@ -17,7 +17,7 @@ namespace SharpGDX.Headless.Mock.Graphics
 	int fps;
 	long lastTime = TimeUtils.nanoTime();
 	long targetRenderInterval;
-		GLVersion glVersion = new GLVersion(Application.ApplicationType.HeadlessDesktop, "", "", "");
+		GLVersion glVersion = new GLVersion(IApplication.ApplicationType.HeadlessDesktop, "", "", "");
 
 		public override bool isGL30Available()
 	{
@@ -258,12 +258,12 @@ namespace SharpGDX.Headless.Mock.Graphics
 		frameId++;
 	}
 
-	public override Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
+	public override ICursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
 	{
 		return null;
 	}
 
-	public override void setCursor(Cursor cursor)
+	public override void setCursor(ICursor cursor)
 	{
 	}
 

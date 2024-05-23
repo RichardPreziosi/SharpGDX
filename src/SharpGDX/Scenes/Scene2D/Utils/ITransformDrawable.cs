@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** A drawable that supports scale and rotation. */
-	public interface TransformDrawable : Drawable
+	public interface ITransformDrawable : IDrawable
 	{
-	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public void draw(IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation);
 	}
 }

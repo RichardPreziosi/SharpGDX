@@ -1,6 +1,6 @@
 ﻿namespace SharpGDX.Mathematics
 {
-	public interface Shape2D
+	public interface IShape2D
 	{
 
 		/// <summary>

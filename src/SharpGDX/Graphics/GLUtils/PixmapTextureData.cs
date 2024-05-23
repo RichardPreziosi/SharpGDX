@@ -7,7 +7,7 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Graphics.GLUtils
 {
-	public class PixmapTextureData : TextureData {
+	public class PixmapTextureData : ITextureData {
 	readonly Pixmap pixmap;
 	readonly Pixmap.Format? format;
 	readonly bool _useMipMaps;
@@ -56,8 +56,8 @@ namespace SharpGDX.Graphics.GLUtils
 		return managed;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Pixmap;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Pixmap;
 	}
 
 	public void consumeCustomData (int target) {

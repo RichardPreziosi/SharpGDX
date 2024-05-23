@@ -16,10 +16,10 @@ using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
 namespace SharpGDX.Desktop
 {
-	public class DefaultLwjgl3Input : AbstractInput , Lwjgl3Input
+	public class DefaultDesktopInput : AbstractInput , IDesktopInput
 	{
-		readonly Lwjgl3Window window;
-	private InputProcessor inputProcessor;
+		readonly DesktopWindow window;
+	private IInputProcessor inputProcessor;
 	readonly InputEventQueue eventQueue = new InputEventQueue();
 
 	int mouseX, mouseY;
@@ -87,7 +87,7 @@ private int toGdxButton(int button)
 }
 	
 
-public unsafe DefaultLwjgl3Input (Lwjgl3Window window)
+public unsafe DefaultDesktopInput (DesktopWindow window)
 {
 	this.window = window;
 	windowHandleChanged(window.getWindowPtr());
@@ -315,12 +315,12 @@ public override long getCurrentEventTime()
 	return eventQueue.getCurrentEventTime();
 }
 
-public override void setInputProcessor(InputProcessor processor)
+public override void setInputProcessor(IInputProcessor processor)
 {
 	this.inputProcessor = processor;
 }
 
-public override InputProcessor getInputProcessor()
+public override IInputProcessor getInputProcessor()
 {
 	return inputProcessor;
 }

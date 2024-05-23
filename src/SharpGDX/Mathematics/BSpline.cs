@@ -4,8 +4,8 @@ using SharpGDX.Utils;
 namespace SharpGDX.Mathematics
 {
 	/** @author Xoppa */
-	public class BSpline<T > : Path<T>
-	where T : Vector<T>
+	public class BSpline<T > : IPath<T>
+	where T : IVector<T>
 	{
 	private readonly static float d6 = 1f / 6f;
 

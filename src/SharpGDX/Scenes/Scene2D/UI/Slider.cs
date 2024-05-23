@@ -110,7 +110,7 @@ public class Slider : ProgressBar {
 		return mouseOver;
 	}
 
-	protected Drawable? getBackgroundDrawable () {
+	protected IDrawable? getBackgroundDrawable () {
 		SliderStyle style = (SliderStyle)base.getStyle();
 		if (disabled && style.disabledBackground != null) return style.disabledBackground;
 		if (isDragging() && style.backgroundDown != null) return style.backgroundDown;
@@ -118,7 +118,7 @@ public class Slider : ProgressBar {
 		return style.background;
 	}
 
-	protected Drawable? getKnobDrawable () {
+	protected IDrawable? getKnobDrawable () {
 		SliderStyle style = (SliderStyle)base.getStyle();
 		if (disabled && style.disabledKnob != null) return style.disabledKnob;
 		if (isDragging() && style.knobDown != null) return style.knobDown;
@@ -126,7 +126,7 @@ public class Slider : ProgressBar {
 		return style.knob;
 	}
 
-	protected Drawable getKnobBeforeDrawable () {
+	protected IDrawable getKnobBeforeDrawable () {
 		SliderStyle style = (SliderStyle)base.getStyle();
 		if (disabled && style.disabledKnobBefore != null) return style.disabledKnobBefore;
 		if (isDragging() && style.knobBeforeDown != null) return style.knobBeforeDown;
@@ -134,7 +134,7 @@ public class Slider : ProgressBar {
 		return style.knobBefore;
 	}
 
-	protected Drawable getKnobAfterDrawable () {
+	protected IDrawable getKnobAfterDrawable () {
 		SliderStyle style = (SliderStyle)base.getStyle();
 		if (disabled && style.disabledKnobAfter != null) return style.disabledKnobAfter;
 		if (isDragging() && style.knobAfterDown != null) return style.knobAfterDown;
@@ -144,8 +144,8 @@ public class Slider : ProgressBar {
 
 	bool calculatePositionAndValue (float x, float y) {
 		SliderStyle style = getStyle();
-		Drawable knob = style.knob;
-		Drawable bg = getBackgroundDrawable();
+		IDrawable knob = style.knob;
+		IDrawable bg = getBackgroundDrawable();
 
 		float value;
 		float oldPosition = position;
@@ -236,15 +236,15 @@ public class Slider : ProgressBar {
 	 * @author mzechner
 	 * @author Nathan Sweet */
 	public class SliderStyle : ProgressBarStyle {
-		public  Drawable? backgroundOver, backgroundDown;
-		public  Drawable? knobOver, knobDown;
-		public  Drawable? knobBeforeOver, knobBeforeDown;
-		public  Drawable? knobAfterOver, knobAfterDown;
+		public  IDrawable? backgroundOver, backgroundDown;
+		public  IDrawable? knobOver, knobDown;
+		public  IDrawable? knobBeforeOver, knobBeforeDown;
+		public  IDrawable? knobAfterOver, knobAfterDown;
 
 		public SliderStyle () {
 		}
 
-		public SliderStyle ( Drawable? background,  Drawable? knob) 
+		public SliderStyle ( IDrawable? background,  IDrawable? knob) 
 		: base(background, knob)
 		{
 			

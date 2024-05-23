@@ -1,6 +1,6 @@
 ﻿namespace SharpGDX.Shims
 {
-	public class RandomAccessFile : Closeable
+	public class RandomAccessFile : ICloseable
 	{
 		public RandomAccessFile(File f, string mode) { 
 		}

@@ -422,7 +422,7 @@ public class IntMap<V> : IEnumerable<IntMap<V>.Entry> {
 		return true;
 	}
 
-	public String toString () {
+	public override String ToString() {
 		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.Append('[');
@@ -528,7 +528,7 @@ public class IntMap<V> : IEnumerable<IntMap<V>.Entry> {
 		public int key;
 		public V? value;
 
-		public String toString () {
+		public override String ToString() {
 			return key + "=" + value;
 		}
 	}

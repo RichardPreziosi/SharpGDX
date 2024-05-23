@@ -15,12 +15,12 @@ namespace SharpGDX
  * @author mzechner */
 	public class Gdx
 	{
-		public static Application app;
+		public static IApplication app;
 		public static IGraphics graphics;
-		public static Audio audio;
+		public static IAudio audio;
 		public static Input input;
-		public static Files files;
-		public static Net net;
+		public static IFiles files;
+		public static INet net;
 
 		public static GL20 gl;
 		public static GL20 gl20;

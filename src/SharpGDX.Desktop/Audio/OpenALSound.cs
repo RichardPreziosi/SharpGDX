@@ -1,18 +1,19 @@
 ﻿using SharpGDX.Shims;
 using Buffer = SharpGDX.Shims.Buffer;
 using OpenTK.Audio.OpenAL;
+using SharpGDX.Audio;
 
 namespace SharpGDX.Desktop.Audio
 {
 	/** @author Nathan Sweet */
-	public class OpenALSound : Sound
+	public class OpenALSound : ISound
 	{
 	private int bufferID = -1;
-	private readonly OpenALLwjgl3Audio audio;
+	private readonly OpenALDesktopAudio audio;
 	private float _duration;
 	private int sampleRate, channels;
 
-	public OpenALSound(OpenALLwjgl3Audio audio)
+	public OpenALSound(OpenALDesktopAudio audio)
 	{
 		this.audio = audio;
 	}

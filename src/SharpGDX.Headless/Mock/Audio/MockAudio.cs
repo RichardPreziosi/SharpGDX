@@ -1,4 +1,7 @@
-﻿namespace SharpGDX.Headless.Mock.Audio;
+﻿using SharpGDX.Audio;
+using SharpGDX.Files;
+
+namespace SharpGDX.Headless.Mock.Audio;
 
 /// <summary>
 ///     The headless backend does its best to mock elements.
@@ -6,34 +9,34 @@
 /// <remarks>
 ///     This is intended to make code-sharing between server and client as simple as possible.
 /// </remarks>
-public class MockAudio : SharpGDX.Audio
+public class MockAudio : SharpGDX.IAudio
 {
 	public string[] getAvailableOutputDevices()
 	{
 		return [];
 	}
 
-	public AudioDevice newAudioDevice(int samplingRate, bool isMono)
+	public IAudioDevice newAudioDevice(int samplingRate, bool isMono)
 	{
 		return new MockAudioDevice();
 	}
 
-	public AudioRecorder newAudioRecorder(int samplingRate, bool isMono)
+	public IAudioRecorder newAudioRecorder(int samplingRate, bool isMono)
 	{
 		return new MockAudioRecorder();
 	}
 
-	public Music newMusic(FileHandle file)
+	public IMusic newMusic(FileHandle file)
 	{
 		return new MockMusic();
 	}
 
-	public Sound newSound(FileHandle fileHandle)
+	public ISound newSound(FileHandle fileHandle)
 	{
 		return new MockSound();
 	}
 
-	public bool switchOutputDevice(string deviceIdentifier)
+	public bool switchOutputDevice(string? deviceIdentifier)
 	{
 		return true;
 	}

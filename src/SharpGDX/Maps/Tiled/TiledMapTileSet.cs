@@ -12,11 +12,11 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Maps.Tiled;
 
 /** @brief Set of {@link TiledMapTile} instances used to compose a TiledMapLayer */
-public class TiledMapTileSet : IEnumerable<TiledMapTile> {
+public class TiledMapTileSet : IEnumerable<ITiledMapTile> {
 
 	private String name;
 
-	private IntMap<TiledMapTile> tiles;
+	private IntMap<ITiledMapTile> tiles;
 
 	private MapProperties properties;
 
@@ -37,7 +37,7 @@ public class TiledMapTileSet : IEnumerable<TiledMapTile> {
 
 	/** Creates empty tileset */
 	public TiledMapTileSet () {
-		tiles = new IntMap<TiledMapTile>();
+		tiles = new IntMap<ITiledMapTile>();
 		properties = new MapProperties();
 	}
 
@@ -45,7 +45,7 @@ public class TiledMapTileSet : IEnumerable<TiledMapTile> {
 	 * 
 	 * @param id the id of the {@link TiledMapTile} to retrieve.
 	 * @return tile matching id, null if it doesn't exist */
-	public TiledMapTile getTile (int id) {
+	public ITiledMapTile getTile (int id) {
 		return tiles.get(id);
 	}
 
@@ -55,7 +55,7 @@ public class TiledMapTileSet : IEnumerable<TiledMapTile> {
 	}
 
 	/** @return iterator to tiles in this tileset */
-	public IEnumerator<TiledMapTile> GetEnumerator() {
+	public IEnumerator<ITiledMapTile> GetEnumerator() {
 		return tiles.values().GetEnumerator();
 	}
 
@@ -63,7 +63,7 @@ public class TiledMapTileSet : IEnumerable<TiledMapTile> {
 	 * 
 	 * @param id the id of the {@link TiledMapTile} to add or replace.
 	 * @param tile the {@link TiledMapTile} to add or replace. */
-	public void putTile (int id, TiledMapTile tile) {
+	public void putTile (int id, ITiledMapTile tile) {
 		tiles.put(id, tile);
 	}
 

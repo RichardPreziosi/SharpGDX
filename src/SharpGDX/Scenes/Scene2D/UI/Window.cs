@@ -53,7 +53,7 @@ public class Window : Table {
 			_window = window;
 		}
 
-		public override void draw(Batch batch, float parentAlpha)
+		public override void draw(IBatch batch, float parentAlpha)
 		{
 			if (_window.drawTitleTable) base.draw(batch, parentAlpha);
 		}
@@ -266,7 +266,7 @@ public bool keyTyped(InputEvent @event, char character)
 		}
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		Stage stage = getStage();
 		if (stage != null) {
 			if (stage.getKeyboardFocus() == null) stage.setKeyboardFocus(this);
@@ -283,13 +283,13 @@ public bool keyTyped(InputEvent @event, char character)
 		base.draw(batch, parentAlpha);
 	}
 
-	protected void drawStageBackground (Batch batch, float parentAlpha, float x, float y, float width, float height) {
+	protected void drawStageBackground (IBatch batch, float parentAlpha, float x, float y, float width, float height) {
 		Color color = getColor();
 		batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 		style.stageBackground.draw(batch, x, y, width, height);
 	}
 
-	protected void drawBackground (Batch batch, float parentAlpha, float x, float y) {
+	protected void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
 		base.drawBackground(batch, parentAlpha, x, y);
 
 		// Manually draw the title table before clipping is done.
@@ -369,15 +369,15 @@ public bool keyTyped(InputEvent @event, char character)
 	/** The style for a window, see {@link Window}.
 	 * @author Nathan Sweet */
 	public class WindowStyle {
-		public Drawable? background;
+		public IDrawable? background;
 		public BitmapFont titleFont;
 		public Color? titleFontColor = new Color(1, 1, 1, 1);
-		public Drawable? stageBackground;
+		public IDrawable? stageBackground;
 
 		public WindowStyle () {
 		}
 
-		public WindowStyle (BitmapFont titleFont, Color titleFontColor, Drawable? background) {
+		public WindowStyle (BitmapFont titleFont, Color titleFontColor, IDrawable? background) {
 			this.titleFont = titleFont;
 			this.titleFontColor.set(titleFontColor);
 			this.background = background;

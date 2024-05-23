@@ -66,7 +66,7 @@ public class Table : WidgetGroup {
 	Debug _debug = Debug.none;
 	Array<DebugRect> debugRects;
 
-	 Drawable? _background;
+	 IDrawable? _background;
 	private bool _clip;
 	private  Skin? skin;
 	bool round = true;
@@ -93,7 +93,7 @@ public class Table : WidgetGroup {
 		return cell;
 	}
 
-	public virtual void draw (Batch batch, float parentAlpha) {
+	public virtual void draw (IBatch batch, float parentAlpha) {
 		validate();
 		if (isTransform()) {
 			applyTransform(batch, computeTransform());
@@ -118,7 +118,7 @@ public class Table : WidgetGroup {
 
 	/** Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
 	 * drawable. */
-	protected void drawBackground (Batch batch, float parentAlpha, float x, float y) {
+	protected void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
 		if (_background == null) return;
 		Color color = getColor();
 		batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
@@ -134,7 +134,7 @@ public class Table : WidgetGroup {
 	}
 
 	/** @param background May be null to clear the background. */
-	public void setBackground (Drawable? background) {
+	public void setBackground (IDrawable? background) {
 		if (this._background == background) return;
 		float padTopOld = getPadTop(), padLeftOld = getPadLeft(), padBottomOld = getPadBottom(), padRightOld = getPadRight();
 		this._background = background; // The default pad values use the background's padding.
@@ -146,7 +146,7 @@ public class Table : WidgetGroup {
 	}
 
 	/** @see #setBackground(Drawable) */
-	public Table background (Drawable? background) {
+	public Table background (IDrawable? background) {
 		setBackground(background);
 		return this;
 	}
@@ -157,7 +157,7 @@ public class Table : WidgetGroup {
 		return this;
 	}
 
-	public Drawable? getBackground () {
+	public IDrawable? getBackground () {
 		return _background;
 	}
 
@@ -1163,7 +1163,7 @@ public class Table : WidgetGroup {
 		Actor[] children = childrenArray.items;
 		for (int i = 0, n = childrenArray.size; i < n; i++) {
 			Object child = children[i];
-			if (child is Layout) ((Layout)child).validate();
+			if (child is ILayout) ((ILayout)child).validate();
 		}
 
 		// Store debug rectangles.
@@ -1289,7 +1289,7 @@ public class Table : WidgetGroup {
 			{
 				public override float get(Actor? context)
 				{
-					Drawable background = ((Table)context)._background;
+					IDrawable background = ((Table)context)._background;
 					return background == null ? 0 : background.getTopHeight();
 				}
 			}
@@ -1302,7 +1302,7 @@ public class Table : WidgetGroup {
 	{
 		public override float get(Actor? context)
 		{
-			Drawable background = ((Table)context)._background;
+			IDrawable background = ((Table)context)._background;
 			return background == null ? 0 : background.getLeftWidth();
 		}
 	}
@@ -1315,7 +1315,7 @@ public class Table : WidgetGroup {
 			{
 				public override float get(Actor? context)
 				{
-					Drawable background = ((Table)context)._background;
+					IDrawable background = ((Table)context)._background;
 					return background == null ? 0 : background.getBottomHeight();
 				}
 			}
@@ -1328,7 +1328,7 @@ public class Table : WidgetGroup {
 	{
 		public override float get(Actor? context)
 		{
-			Drawable background = ((Table)context)._background;
+			IDrawable background = ((Table)context)._background;
 			return background == null ? 0 : background.getRightWidth();
 		}
 	}

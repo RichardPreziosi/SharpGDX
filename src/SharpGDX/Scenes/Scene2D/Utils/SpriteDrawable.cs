@@ -11,7 +11,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** Drawable for a {@link Sprite}.
  * @author Nathan Sweet */
-public class SpriteDrawable : BaseDrawable , TransformDrawable {
+public class SpriteDrawable : BaseDrawable , ITransformDrawable {
 	private Sprite sprite;
 
 	/** Creates an uninitialized SpriteDrawable. The sprite must be set before use. */
@@ -29,7 +29,7 @@ public class SpriteDrawable : BaseDrawable , TransformDrawable {
 		setSprite(drawable.sprite);
 	}
 
-	public void draw (Batch batch, float x, float y, float width, float height) {
+	public void draw (IBatch batch, float x, float y, float width, float height) {
 		Color spriteColor = sprite.getColor();
 		float oldColor = spriteColor.toFloatBits();
 		sprite.setColor(spriteColor.mul(batch.getColor()));
@@ -42,7 +42,7 @@ public class SpriteDrawable : BaseDrawable , TransformDrawable {
 		sprite.setPackedColor(oldColor);
 	}
 
-	public void draw (Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public void draw (IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation) {
 
 		Color spriteColor = sprite.getColor();

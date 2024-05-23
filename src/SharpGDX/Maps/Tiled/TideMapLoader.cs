@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using System.Collections;
 using static SharpGDX.Maps.Tiled.TiledMapTileLayer;
 using SharpGDX.Maps;
@@ -36,7 +37,7 @@ public class TideMapLoader : SynchronousAssetLoader<TiledMap, TideMapLoader.Para
 		
 	}
 
-	public TideMapLoader (FileHandleResolver resolver) 
+	public TideMapLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		

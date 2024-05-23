@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
@@ -34,7 +35,7 @@ namespace SharpGDX.Assets.Loaders.Resolvers;
  * fallback will try to search for the file without the resolution folder.
  * </p>
  */
-public class ResolutionFileResolver : FileHandleResolver {
+public class ResolutionFileResolver : IFileHandleResolver {
 
 	public class Resolution {
 		public readonly int portraitWidth;
@@ -54,13 +55,13 @@ public class ResolutionFileResolver : FileHandleResolver {
 		}
 	}
 
-	protected readonly FileHandleResolver baseResolver;
+	protected readonly IFileHandleResolver baseResolver;
 	protected readonly Resolution[] descriptors;
 
 	/** Creates a {@code ResolutionFileResolver} based on a given {@link FileHandleResolver} and a list of {@link Resolution}s.
 	 * @param baseResolver The {@link FileHandleResolver} that will ultimately used to resolve the file.
 	 * @param descriptors A list of {@link Resolution}s. At least one has to be supplied. */
-	public ResolutionFileResolver (FileHandleResolver baseResolver, Resolution[] descriptors) {
+	public ResolutionFileResolver (IFileHandleResolver baseResolver, Resolution[] descriptors) {
 		if (descriptors.Length == 0) throw new IllegalArgumentException("At least one Resolution needs to be supplied.");
 		this.baseResolver = baseResolver;
 		this.descriptors = descriptors;

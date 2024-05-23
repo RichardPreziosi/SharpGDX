@@ -4,13 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Assets.AssetLoaderParameters;
+using static SharpGDX.Assets.IAssetLoaderParameters;
 
 namespace SharpGDX.Assets
 {
 	// TODO: Split to two files.
 
-	public interface AssetLoaderParameters
+	public interface IAssetLoaderParameters
 	{
 		/**
 		 * Callback interface that will be invoked when the {@link AssetManager} loaded an asset.
@@ -21,9 +21,9 @@ namespace SharpGDX.Assets
 		public FinishedLoadingCallback loadedCallback { get; }
 	}
 
-	public class AssetLoaderParameters<T> : AssetLoaderParameters
+	public class AssetLoaderParameters<T> : IAssetLoaderParameters
 	{
 		public FinishedLoadingCallback loadedCallback;
-		FinishedLoadingCallback AssetLoaderParameters.loadedCallback => loadedCallback;
+		FinishedLoadingCallback IAssetLoaderParameters.loadedCallback => loadedCallback;
 	}
 }

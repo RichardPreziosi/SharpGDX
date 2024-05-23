@@ -81,7 +81,7 @@ public class TiledMapTileLayer : MapLayer {
 	/** @brief represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties. */
 	public  class Cell {
 
-		private TiledMapTile tile;
+		private ITiledMapTile tile;
 
 		private bool flipHorizontally;
 
@@ -90,7 +90,7 @@ public class TiledMapTileLayer : MapLayer {
 		private int rotation;
 
 		/** @return The tile currently assigned to this cell. */
-		public TiledMapTile getTile () {
+		public ITiledMapTile getTile () {
 			return tile;
 		}
 
@@ -98,7 +98,7 @@ public class TiledMapTileLayer : MapLayer {
 		 * 
 		 * @param tile the {@link TiledMapTile} to use for this cell.
 		 * @return this, for method chaining */
-		public Cell setTile (TiledMapTile tile) {
+		public Cell setTile (ITiledMapTile tile) {
 			this.tile = tile;
 			return this;
 		}

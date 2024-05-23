@@ -5,7 +5,7 @@ namespace SharpGDX.Mathematics
 	/** Encapsulates a 2D rectangle defined by its corner point in the bottom left and its extents in x (width) and y (height).
  * @author badlogicgames@gmail.com */
 	[Serializable]
-	public class Rectangle : Shape2D {
+	public class Rectangle : IShape2D {
 	/** Static temporary rectangle. Use with care! Use only when sure other code will not also use this. */
 	static public readonly Rectangle tmp = new Rectangle();
 

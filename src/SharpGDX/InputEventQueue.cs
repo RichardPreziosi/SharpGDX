@@ -28,7 +28,7 @@ namespace SharpGDX
 		private readonly IntArray processingQueue = new IntArray();
 		private long currentEventTime;
 
-		public void drain(InputProcessor? processor)
+		public void drain(IInputProcessor? processor)
 		{
 			lock(this) {
 				if (processor == null)

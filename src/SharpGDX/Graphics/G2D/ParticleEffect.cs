@@ -1,4 +1,5 @@
-﻿using SharpGDX.Utils;
+﻿using SharpGDX.Files;
+using SharpGDX.Utils;
 using File = SharpGDX.Shims.File;
 using SharpGDX.Shims;
 using SharpGDX.Mathematics.Collision;
@@ -54,12 +55,12 @@ public class ParticleEffect : Disposable {
 			emitters.get(i).update(delta);
 	}
 
-	public void draw (Batch spriteBatch) {
+	public void draw (IBatch spriteBatch) {
 		for (int i = 0, n = emitters.size; i < n; i++)
 			emitters.get(i).draw(spriteBatch);
 	}
 
-	public void draw (Batch spriteBatch, float delta) {
+	public void draw (IBatch spriteBatch, float delta) {
 		for (int i = 0, n = emitters.size; i < n; i++)
 			emitters.get(i).draw(spriteBatch, delta);
 	}

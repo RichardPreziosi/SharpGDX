@@ -11,20 +11,20 @@ namespace SharpGDX
 	/** An {@link InputProcessor} that delegates to an ordered list of other InputProcessors. Delegation for an event stops if a
  * processor returns true, which indicates that the event was handled.
  * @author Nathan Sweet */
-	public class InputMultiplexer : InputProcessor
+	public class InputMultiplexer : IInputProcessor
 	{
-	private SnapshotArray<InputProcessor> processors = new (4);
+	private SnapshotArray<IInputProcessor> processors = new (4);
 
 	public InputMultiplexer()
 	{
 	}
 
-	public InputMultiplexer(InputProcessor[]processors)
+	public InputMultiplexer(IInputProcessor[]processors)
 	{
 		this.processors.addAll(processors);
 	}
 
-	public void addProcessor(int index, InputProcessor processor)
+	public void addProcessor(int index, IInputProcessor processor)
 	{
 		if (processor == null) throw new NullPointerException("processor cannot be null");
 		processors.insert(index, processor);
@@ -35,13 +35,13 @@ namespace SharpGDX
 		processors.removeIndex(index);
 	}
 
-	public void addProcessor(InputProcessor processor)
+	public void addProcessor(IInputProcessor processor)
 	{
 		if (processor == null) throw new NullPointerException("processor cannot be null");
 		processors.add(processor);
 	}
 
-	public void removeProcessor(InputProcessor processor)
+	public void removeProcessor(IInputProcessor processor)
 	{
 		processors.removeValue(processor, true);
 	}
@@ -57,19 +57,19 @@ namespace SharpGDX
 		processors.clear();
 	}
 
-	public void setProcessors(InputProcessor[]processors)
+	public void setProcessors(IInputProcessor[]processors)
 	{
 		this.processors.clear();
 		this.processors.addAll(processors);
 	}
 
-	public void setProcessors(Array<InputProcessor> processors)
+	public void setProcessors(Array<IInputProcessor> processors)
 	{
 		this.processors.clear();
 		this.processors.addAll(processors);
 	}
 
-	public SnapshotArray<InputProcessor> getProcessors()
+	public SnapshotArray<IInputProcessor> getProcessors()
 	{
 		return processors;
 	}
@@ -80,7 +80,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).keyDown(keycode)) return true;
+				if (((IInputProcessor)items[i]).keyDown(keycode)) return true;
 		}
 		finally
 		{
@@ -95,7 +95,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).keyUp(keycode)) return true;
+				if (((IInputProcessor)items[i]).keyUp(keycode)) return true;
 		}
 		finally
 		{
@@ -110,7 +110,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).keyTyped(character)) return true;
+				if (((IInputProcessor)items[i]).keyTyped(character)) return true;
 		}
 		finally
 		{
@@ -125,7 +125,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).touchDown(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).touchDown(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -140,7 +140,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).touchUp(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).touchUp(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -155,7 +155,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).touchCancelled(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).touchCancelled(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -170,7 +170,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).touchDragged(screenX, screenY, pointer)) return true;
+				if (((IInputProcessor)items[i]).touchDragged(screenX, screenY, pointer)) return true;
 		}
 		finally
 		{
@@ -185,7 +185,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).mouseMoved(screenX, screenY)) return true;
+				if (((IInputProcessor)items[i]).mouseMoved(screenX, screenY)) return true;
 		}
 		finally
 		{
@@ -200,7 +200,7 @@ namespace SharpGDX
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((InputProcessor)items[i]).scrolled(amountX, amountY)) return true;
+				if (((IInputProcessor)items[i]).scrolled(amountX, amountY)) return true;
 		}
 		finally
 		{

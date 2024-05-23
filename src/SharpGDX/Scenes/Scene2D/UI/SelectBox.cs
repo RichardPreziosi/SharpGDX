@@ -21,7 +21,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * {@link SelectBoxStyle#background}.
  * @author mzechner
  * @author Nathan Sweet */
-public class SelectBox<T> : Widget , Disableable {
+public class SelectBox<T> : Widget , IDisableable {
 	static readonly Vector2 temp = new Vector2();
 
 	SelectBoxStyle style;
@@ -181,7 +181,7 @@ private class SelectBoxSelection : ArraySelection<T>
 	}
 
 	public void layout () {
-		Drawable bg = style.background;
+		IDrawable bg = style.background;
 		BitmapFont font = style.font;
 
 		if (bg != null) {
@@ -225,7 +225,7 @@ private class SelectBoxSelection : ArraySelection<T>
 	}
 
 	/** Returns appropriate background drawable from the style based on the current select box state. */
-	protected Drawable? getBackgroundDrawable () {
+	protected IDrawable? getBackgroundDrawable () {
 		if (isDisabled() && style.backgroundDisabled != null) return style.backgroundDisabled;
 		if (scrollPane.hasParent() && style.backgroundOpen != null) return style.backgroundOpen;
 		if (isOver() && style.backgroundOver != null) return style.backgroundOver;
@@ -239,10 +239,10 @@ private class SelectBoxSelection : ArraySelection<T>
 		return style.fontColor;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 
-		Drawable background = getBackgroundDrawable();
+		IDrawable background = getBackgroundDrawable();
 		Color fontColor = getFontColor();
 		BitmapFont font = style.font;
 
@@ -268,7 +268,7 @@ private class SelectBoxSelection : ArraySelection<T>
 		}
 	}
 
-	protected GlyphLayout drawItem (Batch batch, BitmapFont font, T item, float x, float y, float width) {
+	protected GlyphLayout drawItem (IBatch batch, BitmapFont font, T item, float x, float y, float width) {
 		String @string = toString(item);
 		return font.draw(batch, @string, x, y, 0, @string.Length, width, alignment, false, "...");
 	}
@@ -331,7 +331,7 @@ private class SelectBoxSelection : ArraySelection<T>
 			layout.setText(style.font, toString(items.get(i)));
 			width = Math.Max(layout.width, width);
 		}
-		Drawable bg = style.background;
+		IDrawable bg = style.background;
 		if (bg != null) width = Math.Max(width + bg.getLeftWidth() + bg.getRightWidth(), bg.getMinWidth());
 		return width;
 	}
@@ -549,9 +549,9 @@ protected List<T> newList () {
 			// Show the list above or below the select box, limited to a number of items and the available height in the stage.
 			float itemHeight = list.getItemHeight();
 			float height = itemHeight * (maxListCount <= 0 ? selectBox.items.size : Math.Min(maxListCount, selectBox.items.size));
-			Drawable scrollPaneBackground = getStyle().background;
+			IDrawable scrollPaneBackground = getStyle().background;
 			if (scrollPaneBackground != null) height += scrollPaneBackground.getTopHeight() + scrollPaneBackground.getBottomHeight();
-			Drawable listBackground = list.getStyle().background;
+			IDrawable listBackground = list.getStyle().background;
 			if (listBackground != null) height += listBackground.getTopHeight() + listBackground.getBottomHeight();
 
 			float heightBelow = stagePosition.y;
@@ -607,7 +607,7 @@ protected List<T> newList () {
 			selectBox.onHide(this);
 		}
 
-		public void draw (Batch batch, float parentAlpha) {
+		public void draw (IBatch batch, float parentAlpha) {
 			selectBox.localToStageCoordinates(temp.set(0, 0));
 			if (!temp.Equals(stagePosition)) hide();
 			base.draw(batch, parentAlpha);
@@ -643,15 +643,15 @@ protected List<T> newList () {
 		public BitmapFont font;
 		public Color fontColor = new Color(1, 1, 1, 1);
 		public Color? overFontColor, disabledFontColor;
-		public Drawable? background;
+		public IDrawable? background;
 		public ScrollPane.ScrollPaneStyle scrollStyle;
 		public List<T>.ListStyle listStyle;
-		public Drawable? backgroundOver, backgroundOpen, backgroundDisabled;
+		public IDrawable? backgroundOver, backgroundOpen, backgroundDisabled;
 
 		public SelectBoxStyle () {
 		}
 
-		public SelectBoxStyle (BitmapFont font, Color fontColor, Drawable? background, ScrollPane.ScrollPaneStyle scrollStyle,
+		public SelectBoxStyle (BitmapFont font, Color fontColor, IDrawable? background, ScrollPane.ScrollPaneStyle scrollStyle,
 			List<T>.ListStyle listStyle) {
 			this.font = font;
 			this.fontColor.set(fontColor);

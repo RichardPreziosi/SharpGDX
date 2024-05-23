@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,7 +64,7 @@ public class ShaderProgram : Disposable {
 	public static String prependFragmentCode = "";
 
 	/** the list of currently available shaders **/
-	private readonly static ObjectMap<Application, Array<ShaderProgram>> shaders = new ObjectMap<Application, Array<ShaderProgram>>();
+	private readonly static ObjectMap<IApplication, Array<ShaderProgram>> shaders = new ObjectMap<IApplication, Array<ShaderProgram>>();
 
 	/** the log **/
 	private String log = "";
@@ -724,7 +725,7 @@ public class ShaderProgram : Disposable {
 		}
 	}
 
-	private void addManagedShader (Application app, ShaderProgram shaderProgram) {
+	private void addManagedShader (IApplication app, ShaderProgram shaderProgram) {
 		Array<ShaderProgram> managedResources = shaders.get(app);
 		if (managedResources == null) managedResources = new Array<ShaderProgram>();
 		managedResources.add(shaderProgram);
@@ -733,7 +734,7 @@ public class ShaderProgram : Disposable {
 
 	/** Invalidates all shaders so the next time they are used new handles are generated
 	 * @param app */
-	public static void invalidateAllShaderPrograms (Application app) {
+	public static void invalidateAllShaderPrograms (IApplication app) {
 		if (Gdx.gl20 == null) return;
 
 		Array<ShaderProgram> shaderArray = shaders.get(app);
@@ -745,7 +746,7 @@ public class ShaderProgram : Disposable {
 		}
 	}
 
-	public static void clearAllShaderPrograms (Application app) {
+	public static void clearAllShaderPrograms (IApplication app) {
 		shaders.remove(app);
 	}
 
@@ -753,7 +754,7 @@ public class ShaderProgram : Disposable {
 		StringBuilder builder = new StringBuilder();
 		int i = 0;
 		builder.Append("Managed shaders/app: { ");
-		foreach (Application app in shaders.keys()) {
+		foreach (IApplication app in shaders.keys()) {
 			builder.Append(shaders.get(app).size);
 			builder.Append(" ");
 		}

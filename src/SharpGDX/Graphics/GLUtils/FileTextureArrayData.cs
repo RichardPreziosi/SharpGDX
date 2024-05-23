@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Graphics.GLUtils
 {
 	/** @author Tomski **/
-public class FileTextureArrayData : TextureArrayData {
+public class FileTextureArrayData : ITextureArrayData {
 
-	private TextureData[] textureDatas;
+	private ITextureData[] textureDatas;
 	private bool prepared;
 	private Pixmap.Format format;
 	private int depth;
@@ -22,9 +23,9 @@ public class FileTextureArrayData : TextureArrayData {
 		this.format = format;
 		this.useMipMaps = useMipMaps;
 		this.depth = files.Length;
-		textureDatas = new TextureData[files.Length];
+		textureDatas = new ITextureData[files.Length];
 		for (int i = 0; i < files.Length; i++) {
-			textureDatas[i] = TextureData.Factory.loadFromFile(files[i], format, useMipMaps);
+			textureDatas[i] = ITextureData.Factory.loadFromFile(files[i], format, useMipMaps);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class FileTextureArrayData : TextureArrayData {
 	public void prepare () {
 		int width = -1;
 		int height = -1;
-		foreach (TextureData data in textureDatas) {
+		foreach (ITextureData data in textureDatas) {
 			data.prepare();
 			if (width == -1) {
 				width = data.getWidth();
@@ -53,11 +54,11 @@ public class FileTextureArrayData : TextureArrayData {
 	public void consumeTextureArrayData () {
 		bool containsCustomData = false;
 		for (int i = 0; i < textureDatas.Length; i++) {
-			if (textureDatas[i].getType() == TextureData.TextureDataType.Custom) {
+			if (textureDatas[i].getType() == ITextureData.TextureDataType.Custom) {
 				textureDatas[i].consumeCustomData(GL30.GL_TEXTURE_2D_ARRAY);
 				containsCustomData = true;
 			} else {
-				TextureData texData = textureDatas[i];
+				ITextureData texData = textureDatas[i];
 				Pixmap pixmap = texData.consumePixmap();
 				bool disposePixmap = texData.disposePixmap();
 				if (texData.getFormat() != pixmap.getFormat()) {
@@ -101,7 +102,7 @@ public class FileTextureArrayData : TextureArrayData {
 	}
 
 	public bool isManaged () {
-		foreach (TextureData data in textureDatas) {
+		foreach (ITextureData data in textureDatas) {
 			if (!data.isManaged()) {
 				return false;
 			}

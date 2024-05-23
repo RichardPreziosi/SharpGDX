@@ -11,7 +11,7 @@ namespace SharpGDX.Mathematics
  * @author badlogicgames@gmail.com
  * @author Antz */
 	[Serializable]
-public class Vector4 :  Vector<Vector4> {
+public class Vector4 :  IVector<Vector4> {
 
 	private static readonly long serialVersionUID = -5394070284130414492L;
 

@@ -13,7 +13,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * @author Nathan Sweet */
 public class TooltipManager {
 	static private TooltipManager instance;
-	static private Files files;
+	static private IFiles files;
 
 	/** Seconds from when an actor is hovered to when the tooltip is shown. Default is 2. Call {@link #hideAll()} after changing to
 	 * reset internal state. */

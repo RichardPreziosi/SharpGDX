@@ -220,11 +220,11 @@ public abstract class GLTexture : Disposable {
 		delete();
 	}
 
-	protected static void uploadImageData (int target, TextureData data) {
+	protected static void uploadImageData (int target, ITextureData data) {
 		uploadImageData(target, data, 0);
 	}
 
-	public static void uploadImageData (int target, TextureData data, int miplevel) {
+	public static void uploadImageData (int target, ITextureData data, int miplevel) {
 		if (data == null) {
 			// FIXME: remove texture on target?
 			return;
@@ -232,8 +232,8 @@ public abstract class GLTexture : Disposable {
 
 		if (!data.isPrepared()) data.prepare();
 
-		TextureData.TextureDataType type = data.getType();
-		if (type == TextureData.TextureDataType.Custom) {
+		ITextureData.TextureDataType type = data.getType();
+		if (type == ITextureData.TextureDataType.Custom) {
 			data.consumeCustomData(target);
 			return;
 		}

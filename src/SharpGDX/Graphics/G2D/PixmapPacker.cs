@@ -78,7 +78,7 @@ public class PixmapPacker : Disposable {
 	int alphaThreshold;
 	Color transparentColor = new Color(0f, 0f, 0f, 0f);
 	internal readonly Array<Page> pages = new();
-	PackStrategy packStrategy;
+	IPackStrategy packStrategy;
 
 	// TODO: static Pattern indexPattern = Pattern.compile("(.+)_(\\d+)$");
 
@@ -93,7 +93,7 @@ public class PixmapPacker : Disposable {
 	/** Uses {@link GuillotineStrategy}.
 	 * @see PixmapPacker#PixmapPacker(int, int, Format, int, bool, bool, boolean, PackStrategy) */
 	public PixmapPacker (int pageWidth, int pageHeight, Format pageFormat, int padding, bool duplicateBorder,
-		PackStrategy packStrategy) 
+		IPackStrategy packStrategy) 
 	: this(pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, packStrategy)
 	{
 		
@@ -107,7 +107,7 @@ public class PixmapPacker : Disposable {
 	 * @param stripWhitespaceX strip whitespace in x axis
 	 * @param stripWhitespaceY strip whitespace in y axis */
 	public PixmapPacker (int pageWidth, int pageHeight, Format pageFormat, int padding, bool duplicateBorder,
-		bool stripWhitespaceX, bool stripWhitespaceY, PackStrategy packStrategy) {
+		bool stripWhitespaceX, bool stripWhitespaceY, IPackStrategy packStrategy) {
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
 		this.pageFormat = pageFormat;
@@ -589,7 +589,7 @@ public class PixmapPacker : Disposable {
 
 	/** Choose the page and location for each rectangle.
 	 * @author Nathan Sweet */
-	public interface PackStrategy {
+	public interface IPackStrategy {
 		public void sort (Array<Pixmap> images);
 
 		/** Returns the page the rectangle should be placed in and modifies the specified rectangle position. */
@@ -601,7 +601,7 @@ public class PixmapPacker : Disposable {
 	 * @author mzechner
 	 * @author Nathan Sweet
 	 * @author Rob Rendell */
-	 public class GuillotineStrategy : PackStrategy {
+	 public class GuillotineStrategy : IPackStrategy {
 		IComparer<Pixmap> comparator;
 
 		public void sort (Array<Pixmap> pixmaps)
@@ -711,7 +711,7 @@ public class PixmapPacker : Disposable {
 
 	/** Does bin packing by inserting in rows. This is good at packing images that have similar heights.
 	 * @author Nathan Sweet */
-	 public class SkylineStrategy : PackStrategy {
+	 public class SkylineStrategy : IPackStrategy {
 		IComparer<Pixmap> comparator;
 
 		public void sort (Array<Pixmap> images) {

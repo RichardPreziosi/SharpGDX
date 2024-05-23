@@ -23,7 +23,7 @@ namespace SharpGDX.Graphics.G2D
  * @author davebaol
  * @author Alexander Dorokhov
  * @author Thomas Creutzenberg */
-public class GlyphLayout : Poolable {
+public class GlyphLayout : IPoolable {
 	static private readonly Pool<GlyphRun> glyphRunPool = Pools.get<GlyphRun>(typeof(GlyphRun));
 	static private readonly IntArray colorStack = new IntArray(4);
 	static private readonly float epsilon = 0.0001f;
@@ -520,7 +520,7 @@ public class GlyphLayout : Poolable {
 
 	/** Stores glyphs and positions for a line of text.
 	 * @author Nathan Sweet */
-	 public class GlyphRun : Poolable {
+	 public class GlyphRun : IPoolable {
 		public Array<BitmapFont.Glyph> glyphs = new ();
 
 		/** Contains glyphs.size+1 entries:<br>

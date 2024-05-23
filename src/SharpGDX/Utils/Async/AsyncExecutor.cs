@@ -40,7 +40,7 @@ namespace SharpGDX.Utils.Async
 /** Submits a {@link Runnable} to be executed asynchronously. If maxConcurrent runnables are already running, the runnable will
  * be queued.
  * @param task the task to execute asynchronously */
-public  AsyncResult < T > submit<T>(AsyncTask < T > task) {
+public  AsyncResult < T > submit<T>(IAsyncTask < T > task) {
 	if (cancellationTokenSource.IsCancellationRequested)
 	{
 		throw new GdxRuntimeException("Cannot run tasks on an executor that has been shutdown (disposed)");

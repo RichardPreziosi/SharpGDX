@@ -46,7 +46,7 @@ public class FloatFrameBuffer : FrameBuffer {
 		FloatTextureData data = new FloatTextureData(bufferBuilder.width, bufferBuilder.height, attachmentSpec.internalFormat,
 			attachmentSpec.format, attachmentSpec.type, attachmentSpec.isGpuOnly);
 		Texture result = new Texture(data);
-		if (Gdx.app.getType() == Application.ApplicationType.Desktop || Gdx.app.getType() == Application.ApplicationType.Applet)
+		if (Gdx.app.getType() == IApplication.ApplicationType.Desktop || Gdx.app.getType() == IApplication.ApplicationType.Applet)
 			result.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		else
 			// no filtering for float textures in OpenGL ES
@@ -57,7 +57,7 @@ public class FloatFrameBuffer : FrameBuffer {
 
 	/** Check for support for any required extensions on the current platform. */
 	private void checkExtensions () {
-		if (Gdx.graphics.isGL30Available() && Gdx.app.getType() == Application.ApplicationType.WebGL) {
+		if (Gdx.graphics.isGL30Available() && Gdx.app.getType() == IApplication.ApplicationType.WebGL) {
 			// For WebGL2, Rendering to a Floating Point Texture requires this extension
 			if (!Gdx.graphics.supportsExtension("EXT_color_buffer_float"))
 				throw new GdxRuntimeException("Extension EXT_color_buffer_float not supported!");

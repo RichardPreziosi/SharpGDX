@@ -4,16 +4,17 @@ using SharpGDX.Utils;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenTK.Audio.OpenAL;
+using SharpGDX.Audio;
 using Buffer = SharpGDX.Shims.Buffer;
 
 namespace SharpGDX.Desktop.Audio
 {
 	/** @author Nathan Sweet */
-	public class OpenALAudioDevice : AudioDevice
+	public class OpenALAudioDevice : IAudioDevice
 	{
 		static private readonly int bytesPerSample = 2;
 
-		private readonly OpenALLwjgl3Audio audio;
+		private readonly OpenALDesktopAudio audio;
 		private readonly int channels;
 		private IntBuffer buffers;
 		private int sourceID = -1;
@@ -27,7 +28,7 @@ namespace SharpGDX.Desktop.Audio
 		private readonly int bufferCount;
 		private readonly ByteBuffer tempBuffer;
 
-		public OpenALAudioDevice(OpenALLwjgl3Audio audio, int sampleRate, bool isMono, int bufferSize, int bufferCount)
+		public OpenALAudioDevice(OpenALDesktopAudio audio, int sampleRate, bool isMono, int bufferSize, int bufferCount)
 		{
 			this.audio = audio;
 			channels = isMono ? 1 : 2;

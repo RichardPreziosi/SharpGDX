@@ -17,7 +17,7 @@ namespace SharpGDX.Graphics
  *
  * Look at {@link KTXTextureData} for example implementation of this interface.
  * @author Vincent Bousquet */
-	public interface CubemapData
+	public interface ICubemapData
 	{
 
 		/** @return whether the TextureData is prepared or not. */

@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
@@ -44,7 +45,7 @@ public class ParticleEffectActor : Actor , Disposable {
 		ownsEffect = true;
 	}
 
-	public override void draw (Batch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		particleEffect.setPosition(getX(), getY());
 		if (lastDelta > 0) {
 			particleEffect.update(lastDelta);

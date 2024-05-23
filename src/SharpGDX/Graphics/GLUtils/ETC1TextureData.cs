@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Buffer = SharpGDX.Shims.Buffer;
 
 namespace SharpGDX.Graphics.GLUtils
 {
-	public class ETC1TextureData : TextureData {
+	public class ETC1TextureData : ITextureData {
 	FileHandle file;
 	ETC1.ETC1Data data;
 	bool _useMipMaps;
@@ -34,8 +35,8 @@ namespace SharpGDX.Graphics.GLUtils
 		this._useMipMaps = useMipMaps;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Custom;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Custom;
 	}
 
 	public bool isPrepared () {

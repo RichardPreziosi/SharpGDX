@@ -21,9 +21,9 @@ public class TiledMapTileMapObject : TextureMapObject {
 	private bool flipHorizontally;
 	private bool flipVertically;
 
-	private TiledMapTile tile;
+	private ITiledMapTile tile;
 
-	public TiledMapTileMapObject (TiledMapTile tile, bool flipHorizontally, bool flipVertically) {
+	public TiledMapTileMapObject (ITiledMapTile tile, bool flipHorizontally, bool flipVertically) {
 		this.flipHorizontally = flipHorizontally;
 		this.flipVertically = flipVertically;
 		this.tile = tile;
@@ -49,11 +49,11 @@ public class TiledMapTileMapObject : TextureMapObject {
 		this.flipVertically = flipVertically;
 	}
 
-	public TiledMapTile getTile () {
+	public ITiledMapTile getTile () {
 		return tile;
 	}
 
-	public void setTile (TiledMapTile tile) {
+	public void setTile (ITiledMapTile tile) {
 		this.tile = tile;
 	}
 

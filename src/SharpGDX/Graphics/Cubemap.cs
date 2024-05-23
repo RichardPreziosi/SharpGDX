@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpGDX.Files;
+using System;
 using static SharpGDX.Assets.Loaders.CubemapLoader;
 using SharpGDX.Graphics.GLUtils;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace SharpGDX.Graphics
  * @author Xoppa */
 public class Cubemap : GLTexture {
 	private static AssetManager assetManager;
-	readonly static Map<Application, Array<Cubemap>> managedCubemaps = new ();
+	readonly static Map<IApplication, Array<Cubemap>> managedCubemaps = new ();
 
 	/** Enum to identify each side of a Cubemap */
 	// TODO: Should this be converted to an enum with extension methods? -RP
@@ -89,10 +90,10 @@ public class Cubemap : GLTexture {
 		}
 	}
 
-	protected CubemapData data;
+	protected ICubemapData data;
 
 	/** Construct a Cubemap based on the given CubemapData. */
-	public Cubemap (CubemapData data) 
+	public Cubemap (ICubemapData data) 
 		: base(GL20.GL_TEXTURE_CUBE_MAP)
 	{
 		
@@ -112,9 +113,9 @@ public class Cubemap : GLTexture {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public Cubemap (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY, FileHandle positiveZ,
 		FileHandle negativeZ, bool useMipMaps) 
-	: this(TextureData.Factory.loadFromFile(positiveX, useMipMaps), TextureData.Factory.loadFromFile(negativeX, useMipMaps),
-		TextureData.Factory.loadFromFile(positiveY, useMipMaps), TextureData.Factory.loadFromFile(negativeY, useMipMaps),
-		TextureData.Factory.loadFromFile(positiveZ, useMipMaps), TextureData.Factory.loadFromFile(negativeZ, useMipMaps))
+	: this(ITextureData.Factory.loadFromFile(positiveX, useMipMaps), ITextureData.Factory.loadFromFile(negativeX, useMipMaps),
+		ITextureData.Factory.loadFromFile(positiveY, useMipMaps), ITextureData.Factory.loadFromFile(negativeY, useMipMaps),
+		ITextureData.Factory.loadFromFile(positiveZ, useMipMaps), ITextureData.Factory.loadFromFile(negativeZ, useMipMaps))
 	{
 		
 	}
@@ -152,15 +153,15 @@ public class Cubemap : GLTexture {
 	}
 
 	/** Construct a Cubemap with the specified {@link TextureData}'s for the sides */
-	public Cubemap (TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY,
-		TextureData positiveZ, TextureData negativeZ) 
+	public Cubemap (ITextureData positiveX, ITextureData negativeX, ITextureData positiveY, ITextureData negativeY,
+		ITextureData positiveZ, ITextureData negativeZ) 
 	: this(new FacedCubemapData(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ))
 	{
 		
 	}
 
 	/** Sets the sides of this cubemap to the specified {@link CubemapData}. */
-	public void load (CubemapData data) {
+	public void load (ICubemapData data) {
 		if (!data.isPrepared()) data.prepare();
 		bind();
 		unsafeSetFilter(minFilter, magFilter, true);
@@ -170,7 +171,7 @@ public class Cubemap : GLTexture {
 		Gdx.gl.glBindTexture(glTarget, 0);
 	}
 
-	public CubemapData getCubemapData () {
+	public ICubemapData getCubemapData () {
 		return data;
 	}
 
@@ -207,7 +208,7 @@ public class Cubemap : GLTexture {
 		if (data.isManaged()) if (managedCubemaps.get(Gdx.app) != null) managedCubemaps.get(Gdx.app).removeValue(this, true);
 	}
 
-	private static void addManagedCubemap (Application app, Cubemap cubemap) {
+	private static void addManagedCubemap (IApplication app, Cubemap cubemap) {
 		Array<Cubemap> managedCubemapArray = managedCubemaps.get(app);
 		if (managedCubemapArray == null) managedCubemapArray = new Array<Cubemap>();
 		managedCubemapArray.add(cubemap);
@@ -215,12 +216,12 @@ public class Cubemap : GLTexture {
 	}
 
 	/** Clears all managed cubemaps. This is an internal method. Do not use it! */
-	public static void clearAllCubemaps (Application app) {
+	public static void clearAllCubemaps (IApplication app) {
 		managedCubemaps.remove(app);
 	}
 
 	/** Invalidate all managed cubemaps. This is an internal method. Do not use it! */
-	public static void invalidateAllCubemaps (Application app) {
+	public static void invalidateAllCubemaps (IApplication app) {
 		Array<Cubemap> managedCubemapArray = managedCubemaps.get(app);
 		if (managedCubemapArray == null) return;
 
@@ -289,7 +290,7 @@ public class Cubemap : GLTexture {
 	public static String getManagedStatus () {
 		StringBuilder builder = new StringBuilder();
 		builder.Append("Managed cubemap/app: { ");
-		foreach (Application app in managedCubemaps.keySet()) {
+		foreach (IApplication app in managedCubemaps.keySet()) {
 			builder.Append(managedCubemaps.get(app).size);
 			builder.Append(" ");
 		}

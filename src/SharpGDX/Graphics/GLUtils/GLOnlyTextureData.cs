@@ -9,7 +9,7 @@ namespace SharpGDX.Graphics.GLUtils
 {
 	/** A {@link TextureData} implementation which should be used to create gl only textures. This TextureData fits perfectly for
  * FrameBuffer. The data is not managed. */
-public class GLOnlyTextureData : TextureData {
+public class GLOnlyTextureData : ITextureData {
 
 	/** width and height */
 	int width = 0;
@@ -41,8 +41,8 @@ public class GLOnlyTextureData : TextureData {
 		this.type = type;
 	}
 
-	public TextureData.TextureDataType getType () {
-		return TextureData.TextureDataType.Custom;
+	public ITextureData.TextureDataType getType () {
+		return ITextureData.TextureDataType.Custom;
 	}
 
 	public bool isPrepared () {

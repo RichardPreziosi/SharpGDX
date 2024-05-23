@@ -11,7 +11,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
  * {@link ClickListener}.
  * @see GestureDetector
  * @author Nathan Sweet */
-public class ActorGestureListener : EventListener {
+public class ActorGestureListener : IEventListener {
 	static readonly Vector2 tmpCoords = new Vector2(), tmpCoords2 = new Vector2();
 
 	private readonly GestureDetector detector;

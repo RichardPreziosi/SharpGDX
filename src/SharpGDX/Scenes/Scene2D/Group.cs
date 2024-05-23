@@ -18,7 +18,7 @@ namespace SharpGDX.Scenes.Scene2D
  * actors added earlier. Touch events that hit more than one actor are distributed to topmost actors first.
  * @author mzechner
  * @author Nathan Sweet */
-public class Group : Actor , Cullable {
+public class Group : Actor , ICullable {
 	static private readonly Vector2 tmp = new Vector2();
 
 	internal readonly SnapshotArray<Actor> children = new (true, 4, typeof(Actor));
@@ -38,7 +38,7 @@ public class Group : Actor , Cullable {
 
 	/** Draws the group and its children. The default implementation calls {@link #applyTransform(Batch, Matrix4)} if needed, then
 	 * {@link #drawChildren(Batch, float)}, then {@link #resetTransform(Batch)} if needed. */
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		if (transform) applyTransform(batch, computeTransform());
 		drawChildren(batch, parentAlpha);
 		if (transform) resetTransform(batch);
@@ -48,7 +48,7 @@ public class Group : Actor , Cullable {
 	 * after this method if {@link #setTransform(boolean) transform} is true. If {@link #setTransform(boolean) transform} is false
 	 * these methods don't need to be called, children positions are temporarily offset by the group position when drawn. This
 	 * method avoids drawing children completely outside the {@link #setCullingArea(Rectangle) culling area}, if set. */
-	protected void drawChildren (Batch batch, float parentAlpha) {
+	protected void drawChildren (IBatch batch, float parentAlpha) {
 		parentAlpha *= this.color.a;
 		SnapshotArray<Actor> children = this.children;
 		Actor[] actors = children.begin();
@@ -185,14 +185,14 @@ public class Group : Actor , Cullable {
 
 	/** Set the batch's transformation matrix, often with the result of {@link #computeTransform()}. Note this causes the batch to
 	 * be flushed. {@link #resetTransform(Batch)} will restore the transform to what it was before this call. */
-	protected void applyTransform (Batch batch, Matrix4 transform) {
+	protected void applyTransform (IBatch batch, Matrix4 transform) {
 		oldTransform.set(batch.getTransformMatrix());
 		batch.setTransformMatrix(transform);
 	}
 
 	/** Restores the batch transform to what it was before {@link #applyTransform(Batch, Matrix4)}. Note this causes the batch to
 	 * be flushed. */
-	protected void resetTransform (Batch batch) {
+	protected void resetTransform (IBatch batch) {
 		batch.setTransformMatrix(oldTransform);
 	}
 

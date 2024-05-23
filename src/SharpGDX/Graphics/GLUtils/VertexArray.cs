@@ -21,7 +21,7 @@ namespace SharpGDX.Graphics.GLUtils
  * </p>
  *
  * @author mzechner, Dave Clayton <contact@redskyforge.com> */
-public class VertexArray : VertexData {
+public class VertexArray : IVertexData {
 	readonly VertexAttributes attributes;
 	readonly FloatBuffer buffer;
 	readonly ByteBuffer byteBuffer;

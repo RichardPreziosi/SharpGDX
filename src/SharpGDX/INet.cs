@@ -1,4 +1,5 @@
 ﻿using SharpGDX.Shims;
+using SharpGDX.Net;
 using SharpGDX.Utils;
 
 namespace SharpGDX
@@ -25,7 +26,7 @@ namespace SharpGDX
  * @author mzechner
  * @author noblemaster
  * @author arielsan */
-public interface Net {
+public interface INet {
 
 	/** HTTP response interface with methods to get the response data as a byte[], a {@link String} or an {@link InputStream}. */
 	public interface HttpResponse {
@@ -129,7 +130,7 @@ public interface Net {
 	 * });
 	 * </pre>
 	 */
-	public  class HttpRequest : Poolable {
+	public  class HttpRequest : IPoolable {
 
 		private String httpMethod;
 		private String url;
@@ -198,7 +199,7 @@ public interface Net {
 		 * @exception IllegalArgumentException if redirection is disabled on the GWT backend. */
 		public void setFollowRedirects (bool followRedirects) // TODO: throws IllegalArgumentException 
 		{
-			if (followRedirects || Gdx.app.getType() != Application.ApplicationType.WebGL) {
+			if (followRedirects || Gdx.app.getType() != IApplication.ApplicationType.WebGL) {
 				this.followRedirects = followRedirects;
 			} else {
 				throw new IllegalArgumentException("Following redirects can't be disabled using the GWT/WebGL backend!");

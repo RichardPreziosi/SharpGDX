@@ -880,10 +880,10 @@ namespace SharpGDX
 		 * {@link ApplicationListener#render()} method each frame.
 		 * 
 		 * @param processor the InputProcessor */
-		public void setInputProcessor(InputProcessor processor);
+		public void setInputProcessor(IInputProcessor processor);
 
 		/** @return the currently set {@link InputProcessor} or null. */
-		public InputProcessor getInputProcessor();
+		public IInputProcessor getInputProcessor();
 
 		/** Queries whether a {@link Peripheral} is currently available. In case of Android and the {@link Peripheral#HardwareKeyboard}
 		 * this returns the whether the keyboard is currently slid out or not.

@@ -179,7 +179,7 @@ public Label (String? text, LabelStyle style) {
 		}
 
 		float width = getWidth(), height = getHeight();
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		float x = 0, y = 0;
 		if (background != null) {
 			x = background.getLeftWidth();
@@ -228,7 +228,7 @@ public Label (String? text, LabelStyle style) {
 		if (fontScaleChanged) font.getData().setScale(oldScaleX, oldScaleY);
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		validate();
 		Color color = tempColor.set(getColor());
 		color.a *= parentAlpha;
@@ -246,7 +246,7 @@ public Label (String? text, LabelStyle style) {
 		if (wrap) return 0;
 		if (prefSizeInvalid) scaleAndComputePrefSize();
 		float width = prefWidth;
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null)
 			width = Math.Max(width + background.getLeftWidth() + background.getRightWidth(), background.getMinWidth());
 		return width;
@@ -257,7 +257,7 @@ public Label (String? text, LabelStyle style) {
 		float descentScaleCorrection = 1;
 		if (fontScaleChanged) descentScaleCorrection = fontScaleY / style.font.getScaleY();
 		float height = prefHeight - style.font.getDescent() * descentScaleCorrection * 2;
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null)
 			height = Math.Max(height + background.getTopHeight() + background.getBottomHeight(), background.getMinHeight());
 		return height;
@@ -361,7 +361,7 @@ public Label (String? text, LabelStyle style) {
 		return cache;
 	}
 
-	public String toString () {
+	public override String ToString() {
 		String name = getName();
 		if (name != null) return name;
 		String className = GetType().Name;
@@ -375,7 +375,7 @@ public Label (String? text, LabelStyle style) {
 	public class LabelStyle {
 		public BitmapFont font;
 		public Color? fontColor;
-		public Drawable? background;
+		public IDrawable? background;
 
 		public LabelStyle () {
 		}

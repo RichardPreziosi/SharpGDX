@@ -52,7 +52,7 @@ abstract public class DelegateAction : Action {
 		base.setTarget(target);
 	}
 
-	public String toString () {
+	public override String ToString() {
 		return base.toString() + (action == null ? "" : "(" + action + ")");
 	}
 }

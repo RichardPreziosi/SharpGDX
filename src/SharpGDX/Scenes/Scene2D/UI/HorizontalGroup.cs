@@ -62,8 +62,8 @@ public class HorizontalGroup : WidgetGroup {
 				Actor child = children.get(i);
 
 				float width, height;
-				if (child is Layout) {
-					Layout layout = (Layout)child;
+				if (child is ILayout) {
+					ILayout layout = (ILayout)child;
 					width = layout.getPrefWidth();
 					if (width > groupWidth) width = Math.Max(groupWidth, layout.getMinWidth());
 					height = layout.getPrefHeight();
@@ -95,8 +95,8 @@ public class HorizontalGroup : WidgetGroup {
 			prefWidth = _padLeft + _padRight + _space * (n - 1);
 			for (int i = 0; i < n; i++) {
 				Actor child = children.get(i);
-				if (child is Layout) {
-					Layout layout = (Layout)child;
+				if (child is ILayout) {
+					ILayout layout = (ILayout)child;
 					prefWidth += layout.getPrefWidth();
 					prefHeight = Math.Max(prefHeight, layout.getPrefHeight());
 				} else {
@@ -151,9 +151,9 @@ public class HorizontalGroup : WidgetGroup {
 			Actor child = children.get(i);
 
 			float width, height;
-			Layout layout = null;
-			if (child is Layout) {
-				layout = (Layout)child;
+			ILayout layout = null;
+			if (child is ILayout) {
+				layout = (ILayout)child;
 				width = layout.getPrefWidth();
 				height = layout.getPrefHeight();
 			} else {
@@ -227,9 +227,9 @@ public class HorizontalGroup : WidgetGroup {
 			Actor child = children.get(i);
 
 			float width, height;
-			Layout layout = null;
-			if (child is Layout) {
-				layout = (Layout)child;
+			ILayout layout = null;
+			if (child is ILayout) {
+				layout = (ILayout)child;
 				width = layout.getPrefWidth();
 				if (width > groupWidth) width = Math.Max(groupWidth, layout.getMinWidth());
 				height = layout.getPrefHeight();

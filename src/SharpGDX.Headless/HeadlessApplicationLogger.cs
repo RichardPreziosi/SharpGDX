@@ -1,9 +1,9 @@
 ﻿namespace SharpGDX.Headless;
 
 /// <summary>
-///     Default implementation of <see cref="ApplicationLogger" /> for headless.
+///     Default implementation of <see cref="IApplicationLogger" /> for headless.
 /// </summary>
-public class HeadlessApplicationLogger : ApplicationLogger
+public class HeadlessApplicationLogger : IApplicationLogger
 {
 	public void debug(string tag, string message)
 	{

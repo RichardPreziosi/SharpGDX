@@ -6,7 +6,7 @@
  * {@link InputMultiplexer} to chain input processors.
  * 
  * @author mzechner */
-	public interface InputProcessor
+	public interface IInputProcessor
 	{
 		/** Called when a key was pressed
 		 * 

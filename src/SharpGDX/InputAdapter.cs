@@ -9,7 +9,7 @@ namespace SharpGDX
 	/** An adapter class for {@link InputProcessor}. You can derive from this and only override what you are interested in.
  *
  * @author mzechner */
-	public class InputAdapter : InputProcessor
+	public class InputAdapter : IInputProcessor
 	{
 	public virtual bool keyDown(int keycode)
 	{

@@ -1,38 +1,38 @@
 ﻿namespace SharpGDX;
 
 /// <summary>
-///     Convenience implementation of <see cref="Screen" />.
+///     Convenience implementation of <see cref="IScreen" />.
 /// </summary>
 /// <remarks>
 ///     Derive from this and only override what you need.
 /// </remarks>
-public class ScreenAdapter : Screen
+public class ScreenAdapter : IScreen
 {
-	public void dispose()
+	public void Dispose()
 	{
 	}
 
-	public void hide()
+	public void Hide()
 	{
 	}
 
-	public void pause()
+	public void Pause()
 	{
 	}
 
-	public void render(float delta)
+	public void Render(float delta)
 	{
 	}
 
-	public void resize(int width, int height)
+	public void Resize(int width, int height)
 	{
 	}
 
-	public void resume()
+	public void Resume()
 	{
 	}
 
-	public void show()
+	public void Show()
 	{
 	}
 }

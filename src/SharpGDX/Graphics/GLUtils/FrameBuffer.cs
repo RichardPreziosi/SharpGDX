@@ -67,7 +67,7 @@ public class FrameBuffer : GLFrameBuffer<Texture> {
 			attachmentSpec.format, attachmentSpec.type);
 		Texture result = new Texture(data);
 		// Filtering support for depth textures on WebGL is spotty https://github.com/KhronosGroup/OpenGL-API/issues/84
-		bool webGLDepth = attachmentSpec.isDepth && Gdx.app.getType() == Application.ApplicationType.WebGL;
+		bool webGLDepth = attachmentSpec.isDepth && Gdx.app.getType() == IApplication.ApplicationType.WebGL;
 		if (!webGLDepth) {
 			result.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		}

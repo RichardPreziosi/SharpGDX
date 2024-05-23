@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public interface ByteBufferWrapper
+	public interface IByteBufferWrapper
 	{
 		ByteBuffer getByteBuffer();
 	}

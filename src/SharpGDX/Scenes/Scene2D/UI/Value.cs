@@ -66,7 +66,7 @@ abstract public class Value {
 	{
 		public override float get(Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getMinWidth();
+			if (context is ILayout) return ((ILayout)context).getMinWidth();
 			return context == null ? 0 : context.getWidth();
 		}
 		}
@@ -80,7 +80,7 @@ abstract public class Value {
 	{
 		public override float get(Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getMinHeight();
+			if (context is ILayout) return ((ILayout)context).getMinHeight();
 			return context == null ? 0 : context.getHeight();
 		}
 		}
@@ -94,7 +94,7 @@ abstract public class Value {
 	{
 		public override float get( Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getPrefWidth();
+			if (context is ILayout) return ((ILayout)context).getPrefWidth();
 			return context == null ? 0 : context.getWidth();
 
 		}
@@ -109,7 +109,7 @@ abstract public class Value {
 	{
 		public override float get(Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getPrefHeight();
+			if (context is ILayout) return ((ILayout)context).getPrefHeight();
 			return context == null ? 0 : context.getHeight();
 		}
 	}
@@ -123,7 +123,7 @@ abstract public class Value {
 	{
 		public override float get(Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getMaxWidth();
+			if (context is ILayout) return ((ILayout)context).getMaxWidth();
 			return context == null ? 0 : context.getWidth();
 		}
 		}
@@ -137,7 +137,7 @@ abstract public class Value {
 	{
 		public override float get( Actor? context)
 		{
-			if (context is Layout) return ((Layout)context).getMaxHeight();
+			if (context is ILayout) return ((ILayout)context).getMaxHeight();
 			return context == null ? 0 : context.getHeight();
 		}
 		}

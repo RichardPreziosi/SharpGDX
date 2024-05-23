@@ -413,7 +413,7 @@ public class ScrollPane : WidgetGroup {
 	}
 
 	public void layout () {
-		Drawable bg = style.background, hScrollKnob = style.hScrollKnob, vScrollKnob = style.vScrollKnob;
+		IDrawable bg = style.background, hScrollKnob = style.hScrollKnob, vScrollKnob = style.vScrollKnob;
 		float bgLeftWidth = 0, bgRightWidth = 0, bgTopHeight = 0, bgBottomHeight = 0;
 		if (bg != null) {
 			bgLeftWidth = bg.getLeftWidth();
@@ -434,8 +434,8 @@ public class ScrollPane : WidgetGroup {
 
 		// Get actor's desired width.
 		float actorWidth, actorHeight;
-		if (actor is Layout) {
-			Layout layout = (Layout)actor;
+		if (actor is ILayout) {
+			ILayout layout = (ILayout)actor;
 			actorWidth = layout.getPrefWidth();
 			actorHeight = layout.getPrefHeight();
 		} else {
@@ -526,9 +526,9 @@ public class ScrollPane : WidgetGroup {
 		}
 
 		updateActorPosition();
-		if (actor is Layout) {
+		if (actor is ILayout) {
 			actor.setSize(actorWidth, actorHeight);
-			((Layout)actor).validate();
+			((ILayout)actor).validate();
 		}
 	}
 
@@ -538,16 +538,16 @@ public class ScrollPane : WidgetGroup {
 		float y = actorArea.y - (int)(_scrollY ? maxY - visualAmountY : maxY);
 		actor.setPosition(x, y);
 
-		if (actor is Cullable) {
+		if (actor is ICullable) {
 			actorCullingArea.x = actorArea.x - x;
 			actorCullingArea.y = actorArea.y - y;
 			actorCullingArea.width = actorArea.width;
 			actorCullingArea.height = actorArea.height;
-			((Cullable)actor).setCullingArea(actorCullingArea);
+			((ICullable)actor).setCullingArea(actorCullingArea);
 		}
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		if (actor == null) return;
 
 		validate();
@@ -586,7 +586,7 @@ public class ScrollPane : WidgetGroup {
 
 	/** Renders the scrollbars after the children have been drawn. If the scrollbars faded out, a is zero and rendering can be
 	 * skipped. */
-	protected void drawScrollBars (Batch batch, float r, float g, float b, float a) {
+	protected void drawScrollBars (IBatch batch, float r, float g, float b, float a) {
 		if (a <= 0) return;
 		batch.setColor(r, g, b, a);
 
@@ -621,12 +621,12 @@ public class ScrollPane : WidgetGroup {
 
 	public float getPrefWidth () {
 		float width = 0;
-		if (actor is Layout)
-			width = ((Layout)actor).getPrefWidth();
+		if (actor is ILayout)
+			width = ((ILayout)actor).getPrefWidth();
 		else if (actor != null) //
 			width = actor.getWidth();
 
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null)
 			width = Math.Max(width + background.getLeftWidth() + background.getRightWidth(), background.getMinWidth());
 
@@ -641,12 +641,12 @@ public class ScrollPane : WidgetGroup {
 
 	public float getPrefHeight () {
 		float height = 0;
-		if (actor is Layout)
-			height = ((Layout)actor).getPrefHeight();
+		if (actor is ILayout)
+			height = ((ILayout)actor).getPrefHeight();
 		else if (actor != null) //
 			height = actor.getHeight();
 
-		Drawable background = style.background;
+		IDrawable background = style.background;
 		if (background != null)
 			height = Math.Max(height + background.getTopHeight() + background.getBottomHeight(), background.getMinHeight());
 
@@ -1065,15 +1065,15 @@ public class ScrollPane : WidgetGroup {
 	 * @author mzechner
 	 * @author Nathan Sweet */
 	public class ScrollPaneStyle {
-		public Drawable? background, corner;
-		public Drawable? hScroll, hScrollKnob;
-		public Drawable? vScroll, vScrollKnob;
+		public IDrawable? background, corner;
+		public IDrawable? hScroll, hScrollKnob;
+		public IDrawable? vScroll, vScrollKnob;
 
 		public ScrollPaneStyle () {
 		}
 
-		public ScrollPaneStyle (Drawable? background, Drawable? hScroll, Drawable? hScrollKnob,
-			Drawable? vScroll, Drawable? vScrollKnob) {
+		public ScrollPaneStyle (IDrawable? background, IDrawable? hScroll, IDrawable? hScrollKnob,
+			IDrawable? vScroll, IDrawable? vScrollKnob) {
 			this.background = background;
 			this.hScroll = hScroll;
 			this.hScrollKnob = hScrollKnob;

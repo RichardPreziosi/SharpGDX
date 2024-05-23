@@ -1,7 +1,7 @@
 using System.Collections;
 using SharpGDX.Scenes.Scene2D.UI;
-using static SharpGDX.Graphics.G2D.Batch;
-using static SharpGDX.Maps.Tiled.TiledMapTile;
+using static SharpGDX.Graphics.G2D.IBatch;
+using static SharpGDX.Maps.Tiled.ITiledMapTile;
 using SharpGDX.Maps.Tiled;
 using SharpGDX.Maps;
 using SharpGDX.Utils.Reflect;
@@ -17,7 +17,7 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Maps.Tiled.Tiles;
 
 /** @brief Represents a changing {@link TiledMapTile}. */
-public class AnimatedTiledMapTile : TiledMapTile {
+public class AnimatedTiledMapTile : ITiledMapTile {
 
 	private static long lastTiledMapRenderTime = 0;
 
@@ -64,7 +64,7 @@ public class AnimatedTiledMapTile : TiledMapTile {
 			"Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen.");
 	}
 
-	public TiledMapTile getCurrentFrame () {
+	public ITiledMapTile getCurrentFrame () {
 		return frameTiles[getCurrentFrameIndex()];
 	}
 

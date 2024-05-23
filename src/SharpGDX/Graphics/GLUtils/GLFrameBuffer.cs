@@ -36,7 +36,7 @@ namespace SharpGDX.Graphics.GLUtils
 public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable 
 	where T: GLTexture{
 	/** the frame buffers **/
-	protected readonly static Map<Application, Array<GLFrameBuffer>> buffers = new ();
+	protected readonly static Map<IApplication, Array<GLFrameBuffer>> buffers = new ();
 
 	protected readonly static int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 
@@ -100,7 +100,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 		// iOS uses a different framebuffer handle! (not necessarily 0)
 		if (!defaultFramebufferHandleInitialized) {
 			defaultFramebufferHandleInitialized = true;
-			if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+			if (Gdx.app.getType() == IApplication.ApplicationType.iOS) {
 				// TODO: sizeof(int) may not work here in place of Integer.SIZE
 				IntBuffer intbuf = ByteBuffer.allocateDirect(16 * sizeof(int) / 8).order(ByteOrder.nativeOrder()).asIntBuffer();
 				gl.glGetIntegerv(GL20.GL_FRAMEBUFFER_BINDING, intbuf);
@@ -364,7 +364,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 		return bufferBuilder.width;
 	}
 
-	private static void addManagedFrameBuffer (Application app, GLFrameBuffer frameBuffer) {
+	private static void addManagedFrameBuffer (IApplication app, GLFrameBuffer frameBuffer) {
 		Array<GLFrameBuffer> managedResources = buffers.get(app);
 		if (managedResources == null) managedResources = new Array<GLFrameBuffer>();
 		managedResources.add(frameBuffer);
@@ -373,7 +373,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 
 	/** Invalidates all frame buffers. This can be used when the OpenGL context is lost to rebuild all managed frame buffers. This
 	 * assumes that the texture attached to this buffer has already been rebuild! Use with care. */
-	public static void invalidateAllFrameBuffers (Application app) {
+	public static void invalidateAllFrameBuffers (IApplication app) {
 		if (Gdx.gl20 == null) return;
 
 		Array<GLFrameBuffer> bufferArray = buffers.get(app);
@@ -383,13 +383,13 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 		}
 	}
 
-	public static void clearAllFrameBuffers (Application app) {
+	public static void clearAllFrameBuffers (IApplication app) {
 		buffers.remove(app);
 	}
 
 	public static StringBuilder getManagedStatus ( StringBuilder builder) {
 		builder.Append("Managed buffers/app: { ");
-		foreach (Application app in buffers.keySet()) {
+		foreach (IApplication app in buffers.keySet()) {
 			builder.Append(buffers.get(app).size);
 			builder.Append(" ");
 		}

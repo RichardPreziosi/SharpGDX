@@ -12,11 +12,11 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Maps.Tiled.Tiles;
 
 /** @brief Represents a non changing {@link TiledMapTile} (can be cached) */
-public class StaticTiledMapTile : TiledMapTile {
+public class StaticTiledMapTile : ITiledMapTile {
 
 	private int id;
 
-	private TiledMapTile.BlendMode blendMode = TiledMapTile.BlendMode.ALPHA;
+	private ITiledMapTile.BlendMode blendMode = ITiledMapTile.BlendMode.ALPHA;
 
 	private MapProperties properties;
 
@@ -36,11 +36,11 @@ public class StaticTiledMapTile : TiledMapTile {
 		this.id = id;
 	}
 
-	public TiledMapTile.BlendMode getBlendMode () {
+	public ITiledMapTile.BlendMode getBlendMode () {
 		return blendMode;
 	}
 
-	public void setBlendMode (TiledMapTile.BlendMode blendMode) {
+	public void setBlendMode (ITiledMapTile.BlendMode blendMode) {
 		this.blendMode = blendMode;
 	}
 

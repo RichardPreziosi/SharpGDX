@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using System.Collections;
 using static SharpGDX.Maps.ImageResolver;
 using static SharpGDX.Utils.XmlReader;
@@ -34,7 +35,7 @@ public class TmxMapLoader : BaseTmxMapLoader<TmxMapLoader.Parameters> {
 	/** Creates loader
 	 * 
 	 * @param resolver */
-	public TmxMapLoader (FileHandleResolver resolver) 
+	public TmxMapLoader (IFileHandleResolver resolver) 
 	: base(resolver)
 	{
 		
@@ -83,7 +84,7 @@ public class TmxMapLoader : BaseTmxMapLoader<TmxMapLoader.Parameters> {
 		return map;
 	}
 
-	protected override Array<AssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
+	protected override Array<IAssetDescriptor> getDependencyAssetDescriptors (FileHandle tmxFile,
 		TextureLoader.TextureParameter textureParameter)
 	{
 		throw new NotImplementedException();

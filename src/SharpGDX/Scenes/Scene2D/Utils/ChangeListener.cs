@@ -8,7 +8,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 {
 	/** Listener for {@link ChangeEvent}.
  * @author Nathan Sweet */
-	abstract public class ChangeListener : EventListener
+	abstract public class ChangeListener : IEventListener
 	{
 	public bool handle(Event @event)
 	{

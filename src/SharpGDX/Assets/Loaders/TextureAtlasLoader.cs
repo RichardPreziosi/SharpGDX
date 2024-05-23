@@ -1,3 +1,4 @@
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics;
@@ -15,7 +16,7 @@ namespace SharpGDX.Assets.Loaders;
  * @author mzechner */
 public class TextureAtlasLoader : SynchronousAssetLoader<TextureAtlas, TextureAtlasLoader.TextureAtlasParameter>
 {
-	public TextureAtlasLoader(FileHandleResolver resolver)
+	public TextureAtlasLoader(IFileHandleResolver resolver)
 		: base(resolver)
 	{
 
@@ -49,7 +50,7 @@ public class TextureAtlasLoader : SynchronousAssetLoader<TextureAtlas, TextureAt
 			data = new TextureAtlas.TextureAtlasData(atlasFile, imgDir, false);
 		}
 
-		Array<AssetDescriptor> dependencies = new();
+		Array<IAssetDescriptor> dependencies = new();
 		foreach (var page in data.getPages())
 		{
 			TextureLoader.TextureParameter @params = new TextureLoader.TextureParameter();

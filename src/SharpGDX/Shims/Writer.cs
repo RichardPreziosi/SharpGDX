@@ -12,7 +12,7 @@ namespace SharpGDX.Shims
  * Many specialized readers for purposes like reading from a file already exist in this package.
  * 
  * @see Reader */
-	public abstract class Writer : Closeable  {
+	public abstract class Writer : ICloseable  {
 
 	static readonly String TOKEN_NULL = "null"; //$NON-NLS-1$
 

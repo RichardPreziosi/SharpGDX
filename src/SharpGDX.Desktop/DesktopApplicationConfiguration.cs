@@ -9,13 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Mathematics;
-using static SharpGDX.Files;
+using static SharpGDX.IFiles;
 using static SharpGDX.IGraphics;
 using Monitor = SharpGDX.IGraphics.Monitor;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3ApplicationConfiguration : Lwjgl3WindowConfiguration
+	public class DesktopApplicationConfiguration : DesktopWindowConfiguration
 	{
 	public static PrintStream errorStream = new PrintStream();
 
@@ -46,21 +46,21 @@ namespace SharpGDX.Desktop
 	internal int foregroundFPS = 0;
 
 	internal String preferencesDirectory = ".prefs/";
-	internal Files.FileType preferencesFileType = FileType.External;
+	internal IFiles.FileType preferencesFileType = FileType.External;
 
 	internal HdpiMode hdpiMode = HdpiMode.Logical;
 
 	internal bool debug = false;
 	internal PrintStream debugStream = new PrintStream();
 
-	internal static Lwjgl3ApplicationConfiguration copy(Lwjgl3ApplicationConfiguration config)
+	internal static DesktopApplicationConfiguration copy(DesktopApplicationConfiguration config)
 	{
-		Lwjgl3ApplicationConfiguration copy = new Lwjgl3ApplicationConfiguration();
+		DesktopApplicationConfiguration copy = new DesktopApplicationConfiguration();
 		copy.set(config);
 		return copy;
 	}
 
-	void set(Lwjgl3ApplicationConfiguration config)
+	void set(DesktopApplicationConfiguration config)
 	{
 		base.setWindowConfiguration(config);
 		_disableAudio = config._disableAudio;
@@ -177,7 +177,7 @@ namespace SharpGDX.Desktop
 
 	/** Sets the directory where {@link Preferences} will be stored, as well as the file type to be used to store them. Defaults to
 	 * "$USER_HOME/.prefs/" and {@link FileType#External}. */
-	public void setPreferencesConfig(String preferencesDirectory, Files.FileType preferencesFileType)
+	public void setPreferencesConfig(String preferencesDirectory, IFiles.FileType preferencesFileType)
 	{
 		this.preferencesDirectory = preferencesDirectory;
 		this.preferencesFileType = preferencesFileType;
@@ -194,15 +194,15 @@ namespace SharpGDX.Desktop
 		this.hdpiMode = mode;
 	}
 
-	/** Enables use of OpenGL debug message callbacks. If not supported by the core GL driver (since GL 4.3), this uses the
-	 * KHR_debug, ARB_debug_output or AMD_debug_output extension if available. By default, debug messages with NOTIFICATION
-	 * severity are disabled to avoid log spam.
-	 *
-	 * You can call with {@link System#err} to output to the "standard" error output stream.
-	 *
-	 * Use {@link Lwjgl3Application#setGLDebugMessageControl(Lwjgl3Application.GLDebugMessageSeverity, boolean)} to enable or
-	 * disable other severity debug levels. */
-	public void enableGLDebugOutput(bool enable, PrintStream debugOutputStream)
+		/** Enables use of OpenGL debug message callbacks. If not supported by the core GL driver (since GL 4.3), this uses the
+		 * KHR_debug, ARB_debug_output or AMD_debug_output extension if available. By default, debug messages with NOTIFICATION
+		 * severity are disabled to avoid log spam.
+		 *
+		 * You can call with {@link System#err} to output to the "standard" error output stream.
+		 *
+		 * Use {@link DesktopApplication#setGLDebugMessageControl(DesktopApplication.GLDebugMessageSeverity, boolean)} to enable or
+		 * disable other severity debug levels. */
+		public void enableGLDebugOutput(bool enable, PrintStream debugOutputStream)
 	{
 		debug = enable;
 		debugStream = debugOutputStream;
@@ -211,85 +211,85 @@ namespace SharpGDX.Desktop
 	/** @return the currently active {@link DisplayMode} of the primary monitor */
 	public unsafe static DisplayMode getDisplayMode()
 	{
-		Lwjgl3Application.initializeGlfw();
+		DesktopApplication.initializeGlfw();
 		var videoMode = GLFW.GetVideoMode(GLFW.GetPrimaryMonitor());
-		return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.GetPrimaryMonitor(), videoMode->Width, videoMode->Height,
+		return new DesktopGraphics.DesktopDisplayMode(GLFW.GetPrimaryMonitor(), videoMode->Width, videoMode->Height,
 			videoMode->RefreshRate, videoMode->RedBits + videoMode->GreenBits + videoMode->BlueBits);
 	}
 
 	/** @return the currently active {@link DisplayMode} of the given monitor */
 	public static unsafe DisplayMode getDisplayMode(Monitor monitor)
 	{
-		Lwjgl3Application.initializeGlfw();
-		var videoMode = GLFW.GetVideoMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
-		return new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, videoMode->Width, videoMode->Height,
+		DesktopApplication.initializeGlfw();
+		var videoMode = GLFW.GetVideoMode(((DesktopGraphics.DesktopMonitor)monitor).monitorHandle);
+		return new DesktopGraphics.DesktopDisplayMode(((DesktopGraphics.DesktopMonitor)monitor).monitorHandle, videoMode->Width, videoMode->Height,
 			videoMode->RefreshRate, videoMode->RedBits + videoMode->GreenBits + videoMode->BlueBits);
 	}
 
 	/** @return the available {@link DisplayMode}s of the primary monitor */
 	public static unsafe DisplayMode[] getDisplayModes()
 	{
-		Lwjgl3Application.initializeGlfw();
+		DesktopApplication.initializeGlfw();
 		var videoModes = GLFW.GetVideoModes(GLFW.GetPrimaryMonitor());
 		DisplayMode[] result = new DisplayMode[videoModes.Length];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
-			//GLFW.GLFWVidMode videoMode = videoModes.get(i);
-			//result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.Width, videoMode.Height,
-			//	videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
-		}
-		return result;
+				//GLFW.GLFWVidMode videoMode = videoModes.get(i);
+				//result[i] = new DesktopGraphics.DesktopDisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.Width, videoMode.Height,
+				//	videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
+			}
+			return result;
 	}
 
 	/** @return the available {@link DisplayMode}s of the given {@link Monitor} */
 	public static unsafe DisplayMode[] getDisplayModes(Monitor monitor)
 	{
-		Lwjgl3Application.initializeGlfw();
-		var videoModes = GLFW.GetVideoModes(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle);
+		DesktopApplication.initializeGlfw();
+		var videoModes = GLFW.GetVideoModes(((DesktopGraphics.DesktopMonitor)monitor).monitorHandle);
 		DisplayMode[] result = new DisplayMode[videoModes.Length];
 		for (int i = 0; i < result.Length; i++)
 		{
 			throw new NotImplementedException();
 				//GLFW.GLFWVidMode videoMode = videoModes.get(i);
-				//result[i] = new Lwjgl3Graphics.Lwjgl3DisplayMode(((Lwjgl3Graphics.Lwjgl3Monitor)monitor).monitorHandle, videoMode.Width,
+				//result[i] = new DesktopGraphics.DesktopDisplayMode(((DesktopGraphics.DesktopMonitor)monitor).monitorHandle, videoMode.Width,
 				//	videoMode.Height, videoMode.RefreshRate, videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits);
 			}
-		return result;
+			return result;
 	}
 
 	/** @return the primary {@link Monitor} */
 	public static unsafe Monitor getPrimaryMonitor()
 	{
-		Lwjgl3Application.initializeGlfw();
-		return toLwjgl3Monitor(GLFW.GetPrimaryMonitor());
+		DesktopApplication.initializeGlfw();
+		return toDesktopMonitor(GLFW.GetPrimaryMonitor());
 	}
 
 	/** @return the connected {@link Monitor}s */
 	public static Monitor[] getMonitors()
 	{
 			throw new NotImplementedException();
-			//Lwjgl3Application.initializeGlfw();
+			//DesktopApplication.initializeGlfw();
 			//PointerBuffer glfwMonitors = GLFW.glfwGetMonitors();
 			//Monitor[] monitors = new Monitor[glfwMonitors.limit()];
 			//for (int i = 0; i < glfwMonitors.limit(); i++)
 			//{
-			//	monitors[i] = toLwjgl3Monitor(glfwMonitors.get(i));
+			//	monitors[i] = toDesktopMonitor(glfwMonitors.get(i));
 			//}
 			//return monitors;
 		}
 
-	internal unsafe static Lwjgl3Graphics.Lwjgl3Monitor toLwjgl3Monitor(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* glfwMonitor)
+		internal unsafe static DesktopGraphics.DesktopMonitor toDesktopMonitor(OpenTK.Windowing.GraphicsLibraryFramework.Monitor* glfwMonitor)
 	{
 			// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
 			IntBuffer tmp = IntBuffer.allocate(1);
 		IntBuffer tmp2 = IntBuffer.allocate(1);
 		GLFW.GetMonitorPos(glfwMonitor, out var virtualX, out var virtualY);
 		String name = GLFW.GetMonitorName(glfwMonitor);
-		return new Lwjgl3Graphics.Lwjgl3Monitor(glfwMonitor, virtualX, virtualY, name);
+		return new DesktopGraphics.DesktopMonitor(glfwMonitor, virtualX, virtualY, name);
 	}
 
-	internal unsafe static GridPoint2 calculateCenteredWindowPosition(Lwjgl3Graphics.Lwjgl3Monitor monitor, int newWidth, int newHeight)
+	internal unsafe static GridPoint2 calculateCenteredWindowPosition(DesktopGraphics.DesktopMonitor monitor, int newWidth, int newHeight)
 	{
 		// TODO: This was originally BufferUtils.createIntBuffer, not sure if this will work.
 			

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpGDX.Shims
 {
-	public class OutputStream : Closeable
+	public class OutputStream : ICloseable
 	{
 		// TODO: Should this be a memory stream?
 		protected MemoryStream stream;

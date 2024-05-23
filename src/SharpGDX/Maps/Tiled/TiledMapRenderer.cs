@@ -11,7 +11,7 @@ using SharpGDX.Mathematics;
 
 namespace SharpGDX.Maps.Tiled;
 
-public interface TiledMapRenderer : MapRenderer {
+public interface ITiledMapRenderer : IMapRenderer {
 	public void renderObjects (MapLayer layer);
 
 	public void renderObject (MapObject obj);

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX.Desktop.Audio
+namespace SharpGDX.Desktop.Audio;
+
+public interface IDesktopAudio : SharpGDX.IAudio, Disposable
 {
-	public interface Lwjgl3Audio :SharpGDX.Audio, Disposable {
-
-		void update();
-	}
+	void Update();
 }

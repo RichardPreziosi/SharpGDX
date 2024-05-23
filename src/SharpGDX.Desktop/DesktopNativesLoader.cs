@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX.Desktop
+namespace SharpGDX.Desktop;
+
+public static class DesktopNativesLoader
 {
-	public static class Lwjgl3NativesLoader
+	public static void Load()
 	{
-		static public void load()
-		{
-			GdxNativesLoader.Load();
-		}
+		GdxNativesLoader.Load();
 	}
 }

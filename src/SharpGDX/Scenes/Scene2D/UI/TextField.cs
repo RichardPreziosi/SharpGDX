@@ -31,7 +31,7 @@ namespace SharpGDX.Scenes.Scene2D.UI;
  * implementation will bring up the default IME.
  * @author mzechner
  * @author Nathan Sweet */
-public class TextField : Widget , Disableable {
+public class TextField : Widget , IDisableable {
 	protected const char BACKSPACE = (char)8;
 	protected const char CARRIAGE_RETURN = '\r';
 	protected const char NEWLINE = '\n';
@@ -56,11 +56,11 @@ public class TextField : Widget , Disableable {
 	protected TextFieldStyle style;
 	private String messageText;
 	protected string displayText;
-	Clipboard clipboard;
+	IClipboard clipboard;
 	InputListener inputListener;
-	TextFieldListener? listener;
-	TextFieldFilter? filter;
-	OnscreenKeyboard keyboard = new DefaultOnscreenKeyboard();
+	ITextFieldListener? listener;
+	ITextFieldFilter? filter;
+	IOnscreenKeyboard keyboard = new DefaultOnscreenKeyboard();
 	protected bool focusTraversal = true, onlyFontChars = true, disabled;
 	private int textHAlign = Align.left;
 	private float selectionX, selectionWidth;
@@ -138,7 +138,7 @@ public class TextField : Widget , Disableable {
 
 	protected int letterUnderCursor (float x) {
 		x -= textOffset + fontOffset - style.font.getData().cursorX - this.glyphPositions.get(visibleTextStart);
-		Drawable background = getBackgroundDrawable();
+		IDrawable background = getBackgroundDrawable();
 		if (background != null) x -= style.background.getLeftWidth();
 		int n = this.glyphPositions.size;
 		float[] glyphPositions = this.glyphPositions.items;
@@ -219,7 +219,7 @@ public class TextField : Widget , Disableable {
 
 	protected void calculateOffsets () {
 		float visibleWidth = getWidth();
-		Drawable background = getBackgroundDrawable();
+		IDrawable background = getBackgroundDrawable();
 		if (background != null) visibleWidth -= background.getLeftWidth() + background.getRightWidth();
 
 		int glyphCount = this.glyphPositions.size;
@@ -281,13 +281,13 @@ public class TextField : Widget , Disableable {
 		}
 	}
 
-	protected Drawable? getBackgroundDrawable () {
+	protected IDrawable? getBackgroundDrawable () {
 		if (disabled && style.disabledBackground != null) return style.disabledBackground;
 		if (style.focusedBackground != null && hasKeyboardFocus()) return style.focusedBackground;
 		return style.background;
 	}
 
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw (IBatch batch, float parentAlpha) {
 		bool focused = hasKeyboardFocus();
 		if (focused != this.focused || (focused && !blinkTask.isScheduled())) {
 			this.focused = focused;
@@ -303,9 +303,9 @@ public class TextField : Widget , Disableable {
 		 BitmapFont font = style.font;
 		 Color fontColor = (disabled && style.disabledFontColor != null) ? style.disabledFontColor
 			: ((focused && style.focusedFontColor != null) ? style.focusedFontColor : style.fontColor);
-		 Drawable selection = style.selection;
-		 Drawable cursorPatch = style.cursor;
-		 Drawable background = getBackgroundDrawable();
+		 IDrawable selection = style.selection;
+		 IDrawable cursorPatch = style.cursor;
+		 IDrawable background = getBackgroundDrawable();
 
 		Color color = getColor();
 		float x = getX();
@@ -348,7 +348,7 @@ public class TextField : Widget , Disableable {
 		}
 	}
 
-	protected float getTextY (BitmapFont font, Drawable? background) {
+	protected float getTextY (BitmapFont font, IDrawable? background) {
 		float height = getHeight();
 		float textY = textHeight / 2 + font.getDescent();
 		if (background != null) {
@@ -362,20 +362,20 @@ public class TextField : Widget , Disableable {
 	}
 
 	/** Draws selection rectangle **/
-	protected void drawSelection (Drawable selection, Batch batch, BitmapFont font, float x, float y) {
+	protected void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
 		selection.draw(batch, x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth,
 			textHeight);
 	}
 
-	protected void drawText (Batch batch, BitmapFont font, float x, float y) {
+	protected void drawText (IBatch batch, BitmapFont font, float x, float y) {
 		font.draw(batch, displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, 0, Align.left, false);
 	}
 
-	protected void drawMessageText (Batch batch, BitmapFont font, float x, float y, float maxWidth) {
+	protected void drawMessageText (IBatch batch, BitmapFont font, float x, float y, float maxWidth) {
 		font.draw(batch, messageText, x, y, 0, messageText.Length, maxWidth, textHAlign, false, "...");
 	}
 
-	protected void drawCursor (Drawable cursorPatch, Batch batch, BitmapFont font, float x, float y) {
+	protected void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
 		cursorPatch.draw(batch,
 			x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset + font.getData().cursorX,
 			y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);
@@ -556,16 +556,16 @@ public class TextField : Widget , Disableable {
 	}
 
 	/** @param listener May be null. */
-	public void setTextFieldListener ( TextFieldListener? listener) {
+	public void setTextFieldListener ( ITextFieldListener? listener) {
 		this.listener = listener;
 	}
 
 	/** @param filter May be null. */
-	public void setTextFieldFilter (TextFieldFilter? filter) {
+	public void setTextFieldFilter (ITextFieldFilter? filter) {
 		this.filter = filter;
 	}
 
-	public  TextFieldFilter? getTextFieldFilter () {
+	public  ITextFieldFilter? getTextFieldFilter () {
 		return filter;
 	}
 
@@ -686,15 +686,15 @@ public class TextField : Widget , Disableable {
 	}
 
 	/** Default is an instance of {@link DefaultOnscreenKeyboard}. */
-	public OnscreenKeyboard getOnscreenKeyboard () {
+	public IOnscreenKeyboard getOnscreenKeyboard () {
 		return keyboard;
 	}
 
-	public void setOnscreenKeyboard (OnscreenKeyboard keyboard) {
+	public void setOnscreenKeyboard (IOnscreenKeyboard keyboard) {
 		this.keyboard = keyboard;
 	}
 
-	public void setClipboard (Clipboard clipboard) {
+	public void setClipboard (IClipboard clipboard) {
 		this.clipboard = clipboard;
 	}
 
@@ -794,16 +794,16 @@ public class TextField : Widget , Disableable {
 
 	/** Interface for listening to typed characters.
 	 * @author mzechner */
-	public interface TextFieldListener {
+	public interface ITextFieldListener {
 		public void keyTyped (TextField textField, char c);
 	}
 
 	/** Interface for filtering characters entered into the text field.
 	 * @author mzechner */
-	public interface TextFieldFilter {
+	public interface ITextFieldFilter {
 		public bool acceptChar (TextField textField, char c);
 
-		public class DigitsOnlyFilter : TextFieldFilter {
+		public class DigitsOnlyFilter : ITextFieldFilter {
 			public bool acceptChar (TextField textField, char c) {
 				// TODO: Not sure if this is 100% equivalent to Java. -RP
 				return Char.IsDigit(c);
@@ -813,14 +813,14 @@ public class TextField : Widget , Disableable {
 
 	/** An interface for onscreen keyboards. Can invoke the default keyboard or render your own keyboard!
 	 * @author mzechner */
-	public interface OnscreenKeyboard {
+	public interface IOnscreenKeyboard {
 		public void show (bool visible);
 	}
 
 	/** The default {@link OnscreenKeyboard} used by all {@link TextField} instances. Just uses
 	 * {@link Input#setOnscreenKeyboardVisible(boolean)} as appropriate. Might overlap your actual rendering, so use with care!
 	 * @author mzechner */
-	public class DefaultOnscreenKeyboard : OnscreenKeyboard {
+	public class DefaultOnscreenKeyboard : IOnscreenKeyboard {
 		public void show (bool visible) {
 			Gdx.input.setOnscreenKeyboardVisible(visible);
 		}
@@ -1106,15 +1106,15 @@ public class TextField : Widget , Disableable {
 		public BitmapFont font;
 		public Color fontColor;
 		public  Color? focusedFontColor, disabledFontColor;
-		public Drawable? background, focusedBackground, disabledBackground, cursor, selection;
+		public IDrawable? background, focusedBackground, disabledBackground, cursor, selection;
 		public  BitmapFont? messageFont;
 		public  Color? messageFontColor;
 
 		public TextFieldStyle () {
 		}
 
-		public TextFieldStyle (BitmapFont font, Color fontColor, Drawable? cursor, Drawable? selection,
-			Drawable? background) {
+		public TextFieldStyle (BitmapFont font, Color fontColor, IDrawable? cursor, IDrawable? selection,
+			IDrawable? background) {
 			this.font = font;
 			this.fontColor = fontColor;
 			this.cursor = cursor;

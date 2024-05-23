@@ -54,8 +54,8 @@ public class Ray  {
 		return this;
 	}
 
-	/** {@inheritDoc} */
-	public String toString () {
+		/** {@inheritDoc} */
+		public override String ToString() {
 		return "ray [" + origin + ":" + direction + "]";
 	}
 

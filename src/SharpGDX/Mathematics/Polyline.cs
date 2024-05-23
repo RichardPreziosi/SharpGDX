@@ -4,7 +4,7 @@ using SharpGDX.Mathematics.Collision;
 
 namespace SharpGDX.Mathematics
 {
-	public class Polyline : Shape2D {
+	public class Polyline : IShape2D {
 	private float[] localVertices;
 	private float[] worldVertices;
 	private float x, y;

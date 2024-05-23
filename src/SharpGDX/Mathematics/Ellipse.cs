@@ -5,7 +5,7 @@ namespace SharpGDX.Mathematics
 	/** A convenient 2D ellipse class, based on the circle class
  * @author tonyp7 */
 	[Serializable]
-	public class Ellipse : Shape2D {
+	public class Ellipse : IShape2D {
 
 	public float x, y;
 	public float width, height;

@@ -11,7 +11,7 @@ namespace SharpGDX.Mathematics
  * {@link #put(float)} into the stream.
  * 
  * @author xoppa */
-public class FloatCounter : Poolable {
+public class FloatCounter : IPoolable {
 	/** The amount of values added */
 	public int count;
 	/** The sum of all values */

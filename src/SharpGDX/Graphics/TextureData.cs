@@ -1,4 +1,5 @@
-﻿using SharpGDX.Graphics;
+﻿using SharpGDX.Files;
+using SharpGDX.Graphics;
 using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using System;
@@ -25,7 +26,7 @@ namespace SharpGDX.Graphics
  * 
  * Look at {@link FileTextureData} and {@link ETC1TextureData} for example implementations of this interface.
  * @author mzechner */
-public interface TextureData {
+public interface ITextureData {
 	/** The type of this {@link TextureData}.
 	 * @author mzechner */
 	public enum TextureDataType {
@@ -75,11 +76,11 @@ public interface TextureData {
 	 * @author Vincent Bousquet */
 	public static class Factory {
 
-		public static TextureData loadFromFile (FileHandle file, bool useMipMaps) {
+		public static ITextureData loadFromFile (FileHandle file, bool useMipMaps) {
 			return loadFromFile(file, null, useMipMaps);
 		}
 
-		public static TextureData loadFromFile (FileHandle file, Pixmap.Format? format, bool useMipMaps) {
+		public static ITextureData loadFromFile (FileHandle file, Pixmap.Format? format, bool useMipMaps) {
 			if (file == null) return null;
 			if (file.name().EndsWith(".cim")) return new FileTextureData(file, PixmapIO.readCIM(file), format, useMipMaps);
 			if (file.name().EndsWith(".etc1")) return new ETC1TextureData(file, useMipMaps);

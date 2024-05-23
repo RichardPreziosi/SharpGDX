@@ -1,4 +1,5 @@
-﻿using SharpGDX.Utils;
+﻿using SharpGDX.Files;
+using SharpGDX.Utils;
 using SharpGDX.Shims;
 
 namespace SharpGDX.Graphics.G2D
@@ -587,7 +588,7 @@ public class TextureAtlas : Disposable {
 			return null;
 		}
 
-		public String toString () {
+		public override String ToString () {
 			return name;
 		}
 	}
@@ -744,8 +745,8 @@ public class TextureAtlas : Disposable {
 			return region;
 		}
 
-		public String toString () {
-			return region.toString();
+		public override String ToString() {
+			return region.ToString();
 		}
 	}
 }

@@ -1,10 +1,10 @@
-﻿using static SharpGDX.Files;
+﻿using static SharpGDX.IFiles;
 using SharpGDX.Graphics;
 using static SharpGDX.IGraphics;
 
 namespace SharpGDX.Desktop
 {
-	public class Lwjgl3WindowConfiguration
+	public class DesktopWindowConfiguration
 	{
 		internal int windowX = -1;
 		internal int windowY = -1;
@@ -14,18 +14,18 @@ namespace SharpGDX.Desktop
 		internal bool windowResizable = true;
 		internal bool windowDecorated = true;
 		internal bool windowMaximized = false;
-		internal Lwjgl3Graphics.Lwjgl3Monitor maximizedMonitor;
+		internal DesktopGraphics.DesktopMonitor maximizedMonitor;
 		internal bool autoIconify = true;
 		internal FileType windowIconFileType;
 		internal String[]? windowIconPaths;
-		internal Lwjgl3WindowListener windowListener;
-		internal Lwjgl3Graphics.Lwjgl3DisplayMode fullscreenMode;
+		internal IDesktopWindowListener windowListener;
+		internal DesktopGraphics.DesktopDisplayMode fullscreenMode;
 		internal String title;
 		internal Color initialBackgroundColor = Color.BLACK;
 		internal bool initialVisible = true;
 		internal bool vSyncEnabled = true;
 
-		internal void setWindowConfiguration(Lwjgl3WindowConfiguration config)
+		internal void setWindowConfiguration(DesktopWindowConfiguration config)
 		{
 			windowX = config.windowX;
 			windowY = config.windowY;
@@ -91,7 +91,7 @@ namespace SharpGDX.Desktop
 		/** @param monitor what monitor the window should maximize to */
 		public void setMaximizedMonitor(IGraphics.Monitor monitor)
 		{
-			this.maximizedMonitor = (Lwjgl3Graphics.Lwjgl3Monitor)monitor;
+			this.maximizedMonitor = (DesktopGraphics.DesktopMonitor)monitor;
 		}
 
 		/** @param autoIconify whether the window should automatically iconify and restore previous video mode on input focus loss.
@@ -136,17 +136,17 @@ namespace SharpGDX.Desktop
 			windowIconPaths = filePaths;
 		}
 
-		/** Sets the {@link Lwjgl3WindowListener} which will be informed about iconficiation, focus loss and window close events. */
-		public void setWindowListener(Lwjgl3WindowListener windowListener)
+		/** Sets the {@link DesktopWindowListener} which will be informed about iconficiation, focus loss and window close events. */
+		public void setWindowListener(IDesktopWindowListener windowListener)
 		{
 			this.windowListener = windowListener;
 		}
 
-		/** Sets the app to use fullscreen mode. Use the static methods like {@link Lwjgl3ApplicationConfiguration#getDisplayMode()} on
+		/** Sets the app to use fullscreen mode. Use the static methods like {@link DesktopApplicationConfiguration#getDisplayMode()} on
 		 * this class to enumerate connected monitors and their fullscreen display modes. */
 		public void setFullscreenMode(DisplayMode mode)
 		{
-			this.fullscreenMode = (Lwjgl3Graphics.Lwjgl3DisplayMode)mode;
+			this.fullscreenMode = (DesktopGraphics.DesktopDisplayMode)mode;
 		}
 
 		/** Sets the window title. If null, the application listener's class name is used. */
