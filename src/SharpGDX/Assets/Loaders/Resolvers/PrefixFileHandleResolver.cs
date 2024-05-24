@@ -33,7 +33,7 @@ public class PrefixFileHandleResolver : IFileHandleResolver {
 		return prefix;
 	}
 
-	public FileHandle resolve (String fileName) {
-		return baseResolver.resolve(prefix + fileName);
+	public FileHandle Resolve (String fileName) {
+		return baseResolver.Resolve(prefix + fileName);
 	}
 }

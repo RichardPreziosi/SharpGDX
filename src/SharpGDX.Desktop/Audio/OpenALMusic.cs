@@ -1,9 +1,7 @@
 ﻿using SharpGDX.Files;
-using System.Runtime.InteropServices;
 using SharpGDX.Mathematics;
 using OpenTK.Audio.OpenAL;
 using SharpGDX.Audio;
-using Buffer = SharpGDX.Shims.Buffer;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using static SharpGDX.Audio.IMusic;
@@ -15,13 +13,13 @@ namespace SharpGDX.Desktop.Audio
 	/** @author Nathan Sweet */
 	public abstract class OpenALMusic : IMusic
 	{
-	static private readonly int bufferSize = 4096 * 10;
-	static private readonly int bufferCount = 3;
-	static private readonly int bytesPerSample = 2;
-	static private readonly byte[] tempBytes = new byte[bufferSize];
+	private static readonly int bufferSize = 4096 * 10;
+	private static readonly int bufferCount = 3;
+	private static readonly int bytesPerSample = 2;
+	private static readonly byte[] tempBytes = new byte[bufferSize];
 
 		// TODO: This was originally using BufferUtils.createByteBuffer, not sure if this will work.
-		static private readonly ByteBuffer tempBuffer = ByteBuffer.allocate(bufferSize);
+		private static readonly ByteBuffer tempBuffer = ByteBuffer.allocate(bufferSize);
 
 	private FloatArray renderedSecondsQueue = new FloatArray(bufferCount);
 
@@ -37,7 +35,7 @@ namespace SharpGDX.Desktop.Audio
 
 	protected readonly FileHandle file;
 
-	private OnCompletionListener onCompletionListener;
+	private IOnCompletionListener onCompletionListener;
 
 	public OpenALMusic(OpenALDesktopAudio audio, FileHandle file)
 	{
@@ -65,10 +63,10 @@ namespace SharpGDX.Desktop.Audio
 
 			if (buffers == null)
 			{
-					// TODO: This was originally using BufferUtils.createIntBuffer, not sure if this will work
-					buffers = IntBuffer.allocate(bufferCount);
-					AL.GetError();
-					AL.GenBuffers(bufferCount, buffers.array());
+				// TODO: This was originally using BufferUtils.createIntBuffer, not sure if this will work
+				buffers = IntBuffer.allocate(bufferCount);
+				AL.GetError();
+				AL.GenBuffers(bufferCount, buffers.array());
 				var errorCode = AL.GetError();
 				if (errorCode != ALError.NoError)
 					throw new GdxRuntimeException("Unable to allocate audio buffers. AL Error: " + errorCode);
@@ -86,17 +84,19 @@ namespace SharpGDX.Desktop.Audio
 				if (!fill(bufferID)) break;
 				filled = true;
 				// TODO: Verify
-				AL.SourceQueueBuffers(sourceID, 1, new int[]{ bufferID});
+				AL.SourceQueueBuffers(sourceID, 1, new [] { bufferID });
 
-				}
+			}
+
 			if (!filled && onCompletionListener != null) onCompletionListener.onCompletion(this);
-			
+
 			if (AL.GetError() != ALError.NoError)
 			{
 				stop();
 				return;
 			}
 		}
+
 		if (!_isPlaying)
 		{
 			AL.SourcePlay(sourceID);
@@ -223,10 +223,10 @@ namespace SharpGDX.Desktop.Audio
 
 	/** Fills as much of the buffer as possible and returns the number of bytes filled. Returns <= 0 to indicate the end of the
 	 * stream. */
-	abstract public int read(byte[] buffer);
+	public abstract int read(byte[] buffer);
 
 	/** Resets the stream to the beginning. */
-	abstract public void reset();
+	public abstract void reset();
 
 	/** By default, does just the same as reset(). Used to add special behaviour in Ogg.Music. */
 	protected void loop()
@@ -319,7 +319,7 @@ namespace SharpGDX.Desktop.Audio
 		onCompletionListener = null;
 	}
 
-	public void setOnCompletionListener(OnCompletionListener listener)
+	public void setOnCompletionListener(IOnCompletionListener listener)
 	{
 		onCompletionListener = listener;
 	}

@@ -46,7 +46,7 @@ public class MockMusic : IMusic
 	{
 	}
 
-	public void setOnCompletionListener(IMusic.OnCompletionListener listener)
+	public void setOnCompletionListener(IMusic.IOnCompletionListener listener)
 	{
 	}
 

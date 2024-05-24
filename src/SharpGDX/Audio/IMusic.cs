@@ -72,10 +72,10 @@ namespace SharpGDX.Audio
 	/** Register a callback to be invoked when the end of a music stream has been reached during playback.
 	 * 
 	 * @param listener the callback that will be run. */
-	public void setOnCompletionListener(OnCompletionListener listener);
+	public void setOnCompletionListener(IOnCompletionListener listener);
 
 	/** Interface definition for a callback to be invoked when playback of a music stream has completed. */
-	public interface OnCompletionListener
+	public interface IOnCompletionListener
 	{
 		/** Called when the end of a media source is reached during playback.
 		 * 

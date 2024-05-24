@@ -1,13 +1,5 @@
 ﻿using SharpGDX.Graphics;
-using SharpGDX.Graphics.GLUtils;
-using SharpGDX.Graphics.G2D;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Unicode;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
 using SharpGDX.Shims;
 using SharpGDX.Utils;

@@ -1,14 +1,4 @@
-﻿using SharpGDX.Graphics;
-using SharpGDX.Graphics.GLUtils;
-using SharpGDX.Graphics.G2D;
-using SharpGDX.Desktop;
-using SharpGDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Utils;
 using static SharpGDX.Input;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -20,7 +10,7 @@ namespace SharpGDX.Desktop
 	{
 		readonly DesktopWindow window;
 	private IInputProcessor inputProcessor;
-	readonly InputEventQueue eventQueue = new InputEventQueue();
+	readonly InputEventQueue eventQueue = new ();
 
 	int mouseX, mouseY;
 	int mousePressed;

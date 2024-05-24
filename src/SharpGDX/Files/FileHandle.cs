@@ -607,7 +607,7 @@ public FileHandle sibling(String name)
 	return new FileHandle(new File(_file.getParent(), name), _type);
 }
 
-public FileHandle parent()
+public FileHandle? parent()
 {
 	File parent = _file.getParentFile();
 	if (parent == null)

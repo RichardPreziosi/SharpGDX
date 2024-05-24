@@ -1,13 +1,6 @@
 ﻿using SharpGDX.Files;
 using SharpGDX.Utils;
 using SharpGDX.Shims;
-using SharpGDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 
 namespace SharpGDX.Desktop.Audio
 {

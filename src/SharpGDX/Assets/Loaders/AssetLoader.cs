@@ -42,7 +42,7 @@ where P: AssetLoaderParameters<T>
 	/** @param fileName file name to resolve
 	 * @return handle to the file, as resolved by the {@link FileHandleResolver} set on the loader */
 	public FileHandle resolve (String fileName) {
-		return resolver.resolve(fileName);
+		return resolver.Resolve(fileName);
 	}
 
 	/** Returns the assets this asset requires to be loaded first. This method may be called on a thread other than the GL thread.

@@ -6,7 +6,7 @@ using SharpGDX.Mathematics;
 namespace SharpGDX.Assets.Loaders.Resolvers;
 
 public class AbsoluteFileHandleResolver : IFileHandleResolver {
-	public FileHandle resolve (String fileName) {
+	public FileHandle Resolve (String fileName) {
 		return Gdx.files.absolute(fileName);
 	}
 }

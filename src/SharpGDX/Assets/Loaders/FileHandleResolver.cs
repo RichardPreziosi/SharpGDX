@@ -9,5 +9,5 @@ namespace SharpGDX.Assets.Loaders;
  * resources from anywhere or implement caching strategies.
  * @author mzechner */
 public interface IFileHandleResolver {
-	public FileHandle resolve (String fileName);
+	public FileHandle Resolve (String fileName);
 }

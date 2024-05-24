@@ -18,14 +18,15 @@ namespace SharpGDX.Assets.Loaders;
 public class BitmapFontLoader : AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter>
 {
 	public BitmapFontLoader(IFileHandleResolver resolver)
-	: base(resolver)
+		: base(resolver)
 	{
-		
+
 	}
 
 	BitmapFontData data;
 
-	public override Array<AssetDescriptor<BitmapFont>> getDependencies(String fileName, FileHandle file, BitmapFontParameter parameter)
+	public override Array<AssetDescriptor<BitmapFont>> getDependencies(String fileName, FileHandle file,
+		BitmapFontParameter parameter)
 	{
 		throw new NotImplementedException();
 //		Array<AssetDescriptor> deps = new();
@@ -60,29 +61,34 @@ public class BitmapFontLoader : AsynchronousAssetLoader<BitmapFont, BitmapFontLo
 //		return deps;
 	}
 
-	public override void loadAsync(AssetManager manager, String fileName, FileHandle file, BitmapFontParameter parameter)
-{
-}
-
-public override BitmapFont loadSync(AssetManager manager, String fileName, FileHandle file, BitmapFontParameter parameter)
-{
-	if (parameter != null && parameter.atlasName != null)
+	public override void loadAsync(AssetManager manager, String fileName, FileHandle file,
+		BitmapFontParameter parameter)
 	{
-		TextureAtlas atlas = manager.get< TextureAtlas>(parameter.atlasName, typeof(TextureAtlas));
-String name = file.sibling(data.imagePaths[0]).nameWithoutExtension().ToString();
-AtlasRegion region = atlas.findRegion(name);
+	}
 
-if (region == null)
-	throw new GdxRuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
-return new BitmapFont(file, region);
-		} else
-{
-	int n = data.getImagePaths().Length;
-	Array<TextureRegion> regs = new (n);
-	for (int i = 0; i < n; i++)
+	public override BitmapFont loadSync(AssetManager manager, String fileName, FileHandle file,
+		BitmapFontParameter parameter)
 	{
-		regs.add(new TextureRegion(manager.get< Texture>(data.getImagePath(i), typeof(Texture))));
+		if (parameter != null && parameter.atlasName != null)
+		{
+			TextureAtlas atlas = manager.get<TextureAtlas>(parameter.atlasName, typeof(TextureAtlas));
+			String name = file.sibling(data.imagePaths[0]).nameWithoutExtension().ToString();
+			AtlasRegion region = atlas.findRegion(name);
+
+			if (region == null)
+				throw new GdxRuntimeException("Could not find font region " + name + " in atlas " +
+				                              parameter.atlasName);
+			return new BitmapFont(file, region);
+		}
+		else
+		{
+			int n = data.getImagePaths().Length;
+			Array<TextureRegion> regs = new(n);
+			for (int i = 0; i < n; i++)
+			{
+				regs.add(new TextureRegion(manager.get<Texture>(data.getImagePath(i), typeof(Texture))));
 			}
+
 			return new BitmapFont(data, regs, true);
 		}
 	}
@@ -90,25 +96,26 @@ return new BitmapFont(file, region);
 	/** Parameter to be passed to {@link AssetManager#load(String, Class, AssetLoaderParameters)} if additional configuration is
 	 * necessary for the {@link BitmapFont}.
 	 * @author mzechner */
-	 public class BitmapFontParameter : AssetLoaderParameters<BitmapFont> {
+	public class BitmapFontParameter : AssetLoaderParameters<BitmapFont>
+	{
 		/** Flips the font vertically if {@code true}. Defaults to {@code false}. **/
 		public bool flip = false;
 
-/** Generates mipmaps for the font if {@code true}. Defaults to {@code false}. **/
-public bool genMipMaps = false;
+		/** Generates mipmaps for the font if {@code true}. Defaults to {@code false}. **/
+		public bool genMipMaps = false;
 
-/** The {@link TextureFilter} to use when scaling down the {@link BitmapFont}. Defaults to {@link TextureFilter#Nearest}. */
-public TextureFilter minFilter = TextureFilter.Nearest;
+		/** The {@link TextureFilter} to use when scaling down the {@link BitmapFont}. Defaults to {@link TextureFilter#Nearest}. */
+		public TextureFilter minFilter = TextureFilter.Nearest;
 
-/** The {@link TextureFilter} to use when scaling up the {@link BitmapFont}. Defaults to {@link TextureFilter#Nearest}. */
-public TextureFilter magFilter = TextureFilter.Nearest;
+		/** The {@link TextureFilter} to use when scaling up the {@link BitmapFont}. Defaults to {@link TextureFilter#Nearest}. */
+		public TextureFilter magFilter = TextureFilter.Nearest;
 
-/** optional {@link BitmapFontData} to be used instead of loading the {@link Texture} directly. Use this if your font is
- * embedded in a {@link Skin}. **/
-public BitmapFontData bitmapFontData = null;
+		/** optional {@link BitmapFontData} to be used instead of loading the {@link Texture} directly. Use this if your font is
+		 * embedded in a {@link Skin}. **/
+		public BitmapFontData bitmapFontData = null;
 
-/** The name of the {@link TextureAtlas} to load the {@link BitmapFont} itself from. Optional; if {@code null}, will look
- * for a separate image */
-public String atlasName = null;
+		/** The name of the {@link TextureAtlas} to load the {@link BitmapFont} itself from. Optional; if {@code null}, will look
+		 * for a separate image */
+		public String atlasName = null;
 	}
 }

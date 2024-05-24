@@ -1,8 +1,6 @@
 ﻿using SharpGDX.Mathematics;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
-using System.Linq;
-using System.Runtime.InteropServices;
 using OpenTK.Audio.OpenAL;
 using SharpGDX.Audio;
 using Buffer = SharpGDX.Shims.Buffer;
@@ -12,18 +10,18 @@ namespace SharpGDX.Desktop.Audio
 	/** @author Nathan Sweet */
 	public class OpenALAudioDevice : IAudioDevice
 	{
-		static private readonly int bytesPerSample = 2;
+		private static readonly int bytesPerSample = 2;
 
 		private readonly OpenALDesktopAudio audio;
 		private readonly int channels;
-		private IntBuffer buffers;
+		private IntBuffer? buffers;
 		private int sourceID = -1;
 		private ALFormat format;
 		private int sampleRate;
 		private bool _isPlaying;
 		private float volume = 1;
 		private float renderedSeconds, secondsPerBuffer;
-		private byte[] bytes;
+		private byte[]? bytes;
 		private readonly int bufferSize;
 		private readonly int bufferCount;
 		private readonly ByteBuffer tempBuffer;
