@@ -127,21 +127,52 @@ namespace SharpGDX.Files
 			                                || (_type == FileType.Local && !file().exists()))
 			{
 				InputStream input = FileHandle.getResourceAsStream("/" + _file.getPath().Replace('\\', '/'));
-			if (input == null) throw new GdxRuntimeException("File not found: " + _file + " (" + _type + ")");
-			return input;
-		}
-		try {
-			return new FileInputStream(file());
-} catch (Exception ex) {
-			if (file().isDirectory())
-				throw new GdxRuntimeException("Cannot open a stream to a directory: " + _file + " (" + _type + ")", ex);
-throw new GdxRuntimeException("Error reading file: " + _file + " (" + _type + ")", ex);
-		}
-	}
+				if (input == null) throw new GdxRuntimeException("File not found: " + _file + " (" + _type + ")");
+				return input;
+			}
 
-	/** Returns a buffered stream for reading this file as bytes.
-	 * @throws GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read. */
-	public BufferedInputStream read(int bufferSize)
+			try
+			{
+				return new FileInputStream(file());
+			}
+			catch (Exception ex)
+			{
+				if (file().isDirectory())
+					throw new GdxRuntimeException("Cannot open a stream to a directory: " + _file + " (" + _type + ")",
+						ex);
+				throw new GdxRuntimeException("Error reading file: " + _file + " (" + _type + ")", ex);
+			}
+		}
+
+		/** Returns a stream for reading this file as bytes.
+		 * @throws GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read. */
+		public FileStream Read()
+		{
+			if (_type == FileType.Classpath || (_type == FileType.Internal && !file().exists())
+			                                || (_type == FileType.Local && !file().exists()))
+			{
+				throw new NotImplementedException();
+				//InputStream input = FileHandle.getResourceAsStream("/" + _file.getPath().Replace('\\', '/'));
+				//if (input == null) throw new GdxRuntimeException("File not found: " + _file + " (" + _type + ")");
+				//return input;
+			}
+
+			try
+			{
+				return System.IO.File.OpenRead(file().getCanonicalPath());
+			}
+			catch (Exception ex)
+			{
+				if (file().isDirectory())
+					throw new GdxRuntimeException("Cannot open a stream to a directory: " + _file + " (" + _type + ")",
+						ex);
+				throw new GdxRuntimeException("Error reading file: " + _file + " (" + _type + ")", ex);
+			}
+		}
+
+		/** Returns a buffered stream for reading this file as bytes.
+		 * @throws GdxRuntimeException if the file handle represents a directory, doesn't exist, or could not be read. */
+		public BufferedInputStream read(int bufferSize)
 {
 	return new BufferedInputStream(read(), bufferSize);
 }
@@ -338,12 +369,34 @@ public OutputStream write(bool append)
 	}
 }
 
-/** Returns a buffered stream for writing to this file. Parent directories will be created if necessary.
+/** Returns a stream for writing to this file. Parent directories will be created if necessary.
  * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
- * @param bufferSize The size of the buffer.
  * @throws GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
  *            {@link FileType#Internal} file, or if it could not be written. */
-public OutputStream write(bool append, int bufferSize)
+		public FileStream Write(bool append)
+{
+	if (_type == FileType.Classpath) throw new GdxRuntimeException("Cannot write to a classpath file: " + file);
+	if (_type == FileType.Internal) throw new GdxRuntimeException("Cannot write to an internal file: " + file);
+	parent().mkdirs();
+	try
+	{
+		// TODO: Verify that this is the expected behavior.
+		return new FileStream(file().getCanonicalPath(),append ? FileMode.Append : FileMode.Create);
+	}
+	catch (Exception ex)
+	{
+		if (file().isDirectory())
+			throw new GdxRuntimeException("Cannot open a stream to a directory: " + file + " (" + type + ")", ex);
+		throw new GdxRuntimeException("Error writing file: " + file + " (" + type + ")", ex);
+	}
+}
+
+		/** Returns a buffered stream for writing to this file. Parent directories will be created if necessary.
+		 * @param append If false, this file will be overwritten if it exists, otherwise it will be appended.
+		 * @param bufferSize The size of the buffer.
+		 * @throws GdxRuntimeException if this file handle represents a directory, if it is a {@link FileType#Classpath} or
+		 *            {@link FileType#Internal} file, or if it could not be written. */
+		public OutputStream write(bool append, int bufferSize)
 {
 	return new BufferedOutputStream(write(append), bufferSize);
 }

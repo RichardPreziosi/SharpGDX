@@ -42,7 +42,7 @@ namespace SharpGDX.Headless
 		{
 			if (config == null) config = new HeadlessApplicationConfiguration();
 
-			HeadlessNativesLoader.load();
+			HeadlessNativesLoader.Load();
 			setApplicationLogger(new HeadlessApplicationLogger());
 			this.listener = listener;
 			this.files = new HeadlessFiles();
@@ -94,7 +94,7 @@ namespace SharpGDX.Headless
 		{
 			Array<ILifecycleListener> lifecycleListeners = this.lifecycleListeners;
 
-			listener.create();
+			listener.Create();
 
 			// unlike LwjglApplication, a headless application will eat up CPU in this while loop
 			// it is up to the implementation to call Thread.sleep as necessary
@@ -124,7 +124,7 @@ namespace SharpGDX.Headless
 
 					executeRunnables();
 					graphics.incrementFrameId();
-					listener.render();
+					listener.Render();
 					graphics.updateTime();
 
 					// If one of the runnables set running to false, for example after an exit().
@@ -141,8 +141,8 @@ namespace SharpGDX.Headless
 				}
 			}
 
-			listener.pause();
-			listener.dispose();
+			listener.Pause();
+			listener.Dispose();
 		}
 
 		public bool executeRunnables()
@@ -175,7 +175,7 @@ namespace SharpGDX.Headless
 			return audio;
 		}
 
-		public Input getInput()
+		public IInput getInput()
 		{
 			return input;
 		}
@@ -243,32 +243,32 @@ namespace SharpGDX.Headless
 
 		public void debug(String tag, String message)
 		{
-			if (logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message);
+			if (logLevel >= LOG_DEBUG) getApplicationLogger().Debug(tag, message);
 		}
 
 		public void debug(String tag, String message, Exception exception)
 		{
-			if (logLevel >= LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
+			if (logLevel >= LOG_DEBUG) getApplicationLogger().Debug(tag, message, exception);
 		}
 
 		public void log(String tag, String message)
 		{
-			if (logLevel >= LOG_INFO) getApplicationLogger().log(tag, message);
+			if (logLevel >= LOG_INFO) getApplicationLogger().Log(tag, message);
 		}
 
 		public void log(String tag, String message, Exception exception)
 		{
-			if (logLevel >= LOG_INFO) getApplicationLogger().log(tag, message, exception);
+			if (logLevel >= LOG_INFO) getApplicationLogger().Log(tag, message, exception);
 		}
 
 		public void error(String tag, String message)
 		{
-			if (logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message);
+			if (logLevel >= LOG_ERROR) getApplicationLogger().Error(tag, message);
 		}
 
 		public void error(String tag, String message, Exception exception)
 		{
-			if (logLevel >= LOG_ERROR) getApplicationLogger().error(tag, message, exception);
+			if (logLevel >= LOG_ERROR) getApplicationLogger().Error(tag, message, exception);
 		}
 
 		public void setLogLevel(int logLevel)

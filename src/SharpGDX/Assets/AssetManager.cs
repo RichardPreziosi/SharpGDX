@@ -176,7 +176,7 @@ namespace SharpGDX.Assets
 		public T get<T>(AssetDescriptor<T> assetDescriptor)
 		{
 			lock (this)
-				return get<T>(assetDescriptor.fileName, assetDescriptor.type, true);
+				return get<T>(assetDescriptor.FileName, assetDescriptor.Type, true);
 		}
 
 		/** @param type the asset type
@@ -201,10 +201,10 @@ namespace SharpGDX.Assets
 		{
 			lock (this)
 			{
-				if (tasks.size > 0 && tasks.first().assetDesc.fileName.Equals(fileName)) return true;
+				if (tasks.size > 0 && tasks.first().assetDesc.FileName.Equals(fileName)) return true;
 
 				for (int i = 0; i < loadQueue.size; i++)
-					if (loadQueue.get(i).fileName.Equals(fileName))
+					if (loadQueue.get(i).FileName.Equals(fileName))
 						return true;
 
 				return isLoaded(fileName);
@@ -219,13 +219,13 @@ namespace SharpGDX.Assets
 				if (tasks.size > 0)
 				{
 					var assetDesc = tasks.first().assetDesc;
-					if (assetDesc.type == type && assetDesc.fileName.Equals(fileName)) return true;
+					if (assetDesc.Type == type && assetDesc.FileName.Equals(fileName)) return true;
 				}
 
 				for (int i = 0; i < loadQueue.size; i++)
 				{
 					var assetDesc = loadQueue.get(i);
-					if (assetDesc.type == type && assetDesc.fileName.Equals(fileName)) return true;
+					if (assetDesc.Type == type && assetDesc.FileName.Equals(fileName)) return true;
 				}
 
 				return isLoaded(fileName, type);
@@ -242,7 +242,7 @@ namespace SharpGDX.Assets
 				if (tasks.size > 0)
 				{
 					AssetLoadingTask currentTask = tasks.first();
-					if (currentTask.assetDesc.fileName.Equals(fileName))
+					if (currentTask.assetDesc.FileName.Equals(fileName))
 					{
 						log.info("Unload (from tasks): " + fileName);
 						currentTask.cancel = true;
@@ -257,7 +257,7 @@ namespace SharpGDX.Assets
 				int foundIndex = -1;
 				for (int i = 0; i < loadQueue.size; i++)
 				{
-					if (loadQueue.get(i).fileName.Equals(fileName))
+					if (loadQueue.get(i).FileName.Equals(fileName))
 					{
 						foundIndex = i;
 						break;
@@ -271,8 +271,8 @@ namespace SharpGDX.Assets
 					log.info("Unload (from queue): " + fileName);
 
 					// if the queued asset was already loaded, let the callback know it is available.
-					if (type != null && desc.@params != null && desc.@params.loadedCallback != null)
-						desc.@params.loadedCallback.Invoke(this, desc.fileName, desc.type);
+					if (type != null && desc.Parameters != null && desc.Parameters.loadedCallback != null)
+						desc.Parameters.loadedCallback.Invoke(this, desc.FileName, desc.Type);
 					return;
 				}
 
@@ -350,7 +350,7 @@ namespace SharpGDX.Assets
 		public bool isLoaded(IAssetDescriptor assetDesc)
 		{
 			lock (this)
-				return isLoaded(assetDesc.fileName);
+				return isLoaded(assetDesc.FileName);
 		}
 
 		/** @param fileName the file name of the asset
@@ -443,12 +443,12 @@ namespace SharpGDX.Assets
 				for (int i = 0; i < loadQueue.size; i++)
 				{
 					var desc = loadQueue.get(i);
-					if (desc.fileName.Equals(fileName) && !desc.type.Equals(type))
+					if (desc.FileName.Equals(fileName) && !desc.Type.Equals(type))
 						throw new GdxRuntimeException(
 							"Asset with name '" + fileName +
 							"' already in preload queue, but has different type (expected: "
 							+ ClassReflection.getSimpleName(type) + ", found: " +
-							ClassReflection.getSimpleName(desc.type) +
+							ClassReflection.getSimpleName(desc.Type) +
 							")");
 				}
 
@@ -456,12 +456,12 @@ namespace SharpGDX.Assets
 				for (int i = 0; i < tasks.size; i++)
 				{
 					var desc = tasks.get(i).assetDesc;
-					if (desc.fileName.Equals(fileName) && !desc.type.Equals(type))
+					if (desc.FileName.Equals(fileName) && !desc.Type.Equals(type))
 						throw new GdxRuntimeException(
 							"Asset with name '" + fileName +
 							"' already in task list, but has different type (expected: "
 							+ ClassReflection.getSimpleName(type) + ", found: " +
-							ClassReflection.getSimpleName(desc.type) +
+							ClassReflection.getSimpleName(desc.Type) +
 							")");
 				}
 
@@ -485,7 +485,7 @@ namespace SharpGDX.Assets
 		public void load<T>(AssetDescriptor<T> desc)
 		{
 			lock (this)
-				load<T>(desc.fileName, desc.type, desc.@params);
+				load<T>(desc.FileName, desc.Type, desc.Parameters);
 		}
 
 		/** Updates the AssetManager for a single task. Returns if the current task is still being processed or there are no tasks,
@@ -554,7 +554,7 @@ namespace SharpGDX.Assets
 		 * @param assetDesc the AssetDescriptor of the asset */
 		public T finishLoadingAsset<T>(IAssetDescriptor assetDesc)
 		{
-			return finishLoadingAsset<T>(assetDesc.fileName);
+			return finishLoadingAsset<T>(assetDesc.FileName);
 		}
 
 		/** Blocks until the specified asset is loaded.
@@ -595,9 +595,9 @@ namespace SharpGDX.Assets
 				ObjectSet<String> injected = this.injected;
 				foreach (var desc in dependendAssetDescs)
 				{
-					if (injected.contains(desc.fileName))
+					if (injected.contains(desc.FileName))
 						continue; // Ignore subsequent dependencies if there are duplicates.
-					injected.add(desc.fileName);
+					injected.add(desc.FileName);
 					injectDependency(parentAssetFilename, desc);
 				}
 
@@ -617,16 +617,16 @@ namespace SharpGDX.Assets
 					assetDependencies.put(parentAssetFilename, dependencies);
 				}
 
-				dependencies.add(dependendAssetDesc.fileName);
+				dependencies.add(dependendAssetDesc.FileName);
 
 				// if the asset is already loaded, increase its reference count.
-				if (isLoaded(dependendAssetDesc.fileName))
+				if (isLoaded(dependendAssetDesc.FileName))
 				{
 					log.debug("Dependency already loaded: " + dependendAssetDesc);
-					Type type = assetTypes.get(dependendAssetDesc.fileName);
-					RefCountedContainer assetRef = assets.get(type).get(dependendAssetDesc.fileName);
+					Type type = assetTypes.get(dependendAssetDesc.FileName);
+					RefCountedContainer assetRef = assets.get(type).get(dependendAssetDesc.FileName);
 					assetRef.refCount++;
-					incrementRefCountedDependencies(dependendAssetDesc.fileName);
+					incrementRefCountedDependencies(dependendAssetDesc.FileName);
 				}
 				else
 				{
@@ -644,15 +644,15 @@ namespace SharpGDX.Assets
 			IAssetDescriptor assetDesc = loadQueue.removeIndex(0);
 
 			// if the asset not meant to be reloaded and is already loaded, increase its reference count
-			if (isLoaded(assetDesc.fileName))
+			if (isLoaded(assetDesc.FileName))
 			{
 				log.debug("Already loaded: " + assetDesc);
-				Type type = assetTypes.get(assetDesc.fileName);
-				RefCountedContainer assetRef = assets.get(type).get(assetDesc.fileName);
+				Type type = assetTypes.get(assetDesc.FileName);
+				RefCountedContainer assetRef = assets.get(type).get(assetDesc.FileName);
 				assetRef.refCount++;
-				incrementRefCountedDependencies(assetDesc.fileName);
-				if (assetDesc.@params != null && assetDesc.@params.loadedCallback != null)
-					assetDesc.@params.loadedCallback.Invoke(this, assetDesc.fileName, assetDesc.type);
+				incrementRefCountedDependencies(assetDesc.FileName);
+				if (assetDesc.Parameters != null && assetDesc.Parameters.loadedCallback != null)
+					assetDesc.Parameters.loadedCallback.Invoke(this, assetDesc.FileName, assetDesc.Type);
 				loaded++;
 			}
 			else
@@ -666,9 +666,9 @@ namespace SharpGDX.Assets
 		/** Adds a {@link AssetLoadingTask} to the task stack for the given asset. */
 		private void addTask(IAssetDescriptor assetDesc)
 		{
-			IAssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
+			IAssetLoader loader = getLoader(assetDesc.Type, assetDesc.FileName);
 			if (loader == null)
-				throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(assetDesc.type));
+				throw new GdxRuntimeException("No loader for type: " + ClassReflection.getSimpleName(assetDesc.Type));
 			tasks.add(new AssetLoadingTask(this, assetDesc, loader, executor));
 			peakTasks++;
 		}
@@ -723,11 +723,11 @@ namespace SharpGDX.Assets
 
 				if (task.cancel) return true;
 
-				addAsset(task.assetDesc.fileName, task.assetDesc.type, task.asset);
+				addAsset(task.assetDesc.FileName, task.assetDesc.Type, task.asset);
 
 				// otherwise, if a listener was found in the parameter invoke it
-				if (task.assetDesc.@params != null && task.assetDesc.@params.loadedCallback != null)
-					task.assetDesc.@params.loadedCallback.Invoke(this, task.assetDesc.fileName, task.assetDesc.type);
+				if (task.assetDesc.Parameters != null && task.assetDesc.Parameters.loadedCallback != null)
+					task.assetDesc.Parameters.loadedCallback.Invoke(this, task.assetDesc.FileName, task.assetDesc.Type);
 
 				long endTime = TimeUtils.nanoTime();
 				log.debug("Loaded: " + (endTime - task.startTime) / 1000000f + "ms " + task.assetDesc);
@@ -775,7 +775,7 @@ namespace SharpGDX.Assets
 			if (task.dependenciesLoaded && task.dependencies != null)
 			{
 				foreach (var desc in task.dependencies)
-					unload(desc.fileName);
+					unload(desc.FileName);
 			}
 
 			// clear the rest of the stack
@@ -783,7 +783,7 @@ namespace SharpGDX.Assets
 
 			// inform the listener that something bad happened
 			if (listener != null)
-				listener.error(assetDesc, t);
+				listener.Error(assetDesc, t);
 			else
 				throw new GdxRuntimeException(t);
 		}

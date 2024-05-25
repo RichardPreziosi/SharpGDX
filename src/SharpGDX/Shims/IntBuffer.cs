@@ -431,12 +431,12 @@ namespace SharpGDX.Shims
 	 * @since Android 1.0 */
 	public abstract IntBuffer slice();
 
-	/** Returns a string represents of the state of this int buffer.
-	 * 
-	 * @return a string represents of the state of this int buffer.
-	 * @since Android 1.0 */
-	public String toString()
-	{
+		/** Returns a string represents of the state of this int buffer.
+		 * 
+		 * @return a string represents of the state of this int buffer.
+		 * @since Android 1.0 */
+		public override String ToString()
+		{
 		StringBuilder sb = new StringBuilder();
 		sb.Append(GetType().Name);
 		sb.Append(", status: capacity="); //$NON-NLS-1$

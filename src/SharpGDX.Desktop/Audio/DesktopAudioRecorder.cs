@@ -23,7 +23,7 @@ namespace SharpGDX.Desktop.Audio
 		//}
 	}
 
-	public void read(short[] samples, int offset, int numSamples)
+	public void Read(short[] samples, int offset, int numSamples)
 	{
 		//if (buffer.length < numSamples * 2) buffer = new byte[numSamples * 2];
 

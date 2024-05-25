@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpGDX.Utils;
+﻿using SharpGDX.Utils;
 
-namespace SharpGDX.Headless
+namespace SharpGDX.Headless;
+
+public class HeadlessNativesLoader
 {
-	public class HeadlessNativesLoader
+	public static void Load()
 	{
-		public static void load()
-		{
-			GdxNativesLoader.Load();
-		}
+		GdxNativesLoader.Load();
 	}
 }

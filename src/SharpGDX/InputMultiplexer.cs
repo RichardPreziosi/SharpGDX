@@ -74,13 +74,13 @@ namespace SharpGDX
 		return processors;
 	}
 
-	public bool keyDown(int keycode)
+	public bool KeyDown(int keycode)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).keyDown(keycode)) return true;
+				if (((IInputProcessor)items[i]).KeyDown(keycode)) return true;
 		}
 		finally
 		{
@@ -89,13 +89,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool keyUp(int keycode)
+	public bool KeyUp(int keycode)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).keyUp(keycode)) return true;
+				if (((IInputProcessor)items[i]).KeyUp(keycode)) return true;
 		}
 		finally
 		{
@@ -104,13 +104,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool keyTyped(char character)
+	public bool KeyTyped(char character)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).keyTyped(character)) return true;
+				if (((IInputProcessor)items[i]).KeyTyped(character)) return true;
 		}
 		finally
 		{
@@ -119,13 +119,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool touchDown(int screenX, int screenY, int pointer, int button)
+	public bool TouchDown(int screenX, int screenY, int pointer, int button)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).touchDown(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).TouchDown(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -134,13 +134,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool touchUp(int screenX, int screenY, int pointer, int button)
+	public bool TouchUp(int screenX, int screenY, int pointer, int button)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).touchUp(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).TouchUp(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -149,13 +149,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool touchCancelled(int screenX, int screenY, int pointer, int button)
+	public bool TouchCancelled(int screenX, int screenY, int pointer, int button)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).touchCancelled(screenX, screenY, pointer, button)) return true;
+				if (((IInputProcessor)items[i]).TouchCancelled(screenX, screenY, pointer, button)) return true;
 		}
 		finally
 		{
@@ -164,13 +164,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool touchDragged(int screenX, int screenY, int pointer)
+	public bool TouchDragged(int screenX, int screenY, int pointer)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).touchDragged(screenX, screenY, pointer)) return true;
+				if (((IInputProcessor)items[i]).TouchDragged(screenX, screenY, pointer)) return true;
 		}
 		finally
 		{
@@ -179,13 +179,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool mouseMoved(int screenX, int screenY)
+	public bool MouseMoved(int screenX, int screenY)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).mouseMoved(screenX, screenY)) return true;
+				if (((IInputProcessor)items[i]).MouseMoved(screenX, screenY)) return true;
 		}
 		finally
 		{
@@ -194,13 +194,13 @@ namespace SharpGDX
 		return false;
 	}
 
-	public bool scrolled(float amountX, float amountY)
+	public bool Scrolled(float amountX, float amountY)
 	{
 		Object[] items = processors.begin();
 		try
 		{
 			for (int i = 0, n = processors.size; i < n; i++)
-				if (((IInputProcessor)items[i]).scrolled(amountX, amountY)) return true;
+				if (((IInputProcessor)items[i]).Scrolled(amountX, amountY)) return true;
 		}
 		finally
 		{

@@ -57,7 +57,7 @@ public class List<T> : Widget , ICullable {
 			int index;
 			switch (keycode)
 			{
-				case Input.Keys.A:
+				case IInput.Keys.A:
 					if (UIUtils.ctrl() && _list.selection.getMultiple())
 					{
 						_list.selection.clear();
@@ -65,23 +65,23 @@ public class List<T> : Widget , ICullable {
 						return true;
 					}
 					break;
-				case Input.Keys.HOME:
+				case IInput.Keys.HOME:
 					_list.setSelectedIndex(0);
 					return true;
-				case Input.Keys.END:
+				case IInput.Keys.END:
 					_list.setSelectedIndex(_list.items.size - 1);
 					return true;
-				case Input.Keys.DOWN:
+				case IInput.Keys.DOWN:
 					index = _list.items.indexOf(_list.getSelected(), false) + 1;
 					if (index >= _list.items.size) index = 0;
 					_list.setSelectedIndex(index);
 					return true;
-				case Input.Keys.UP:
+				case IInput.Keys.UP:
 					index = _list.items.indexOf(_list.getSelected(), false) - 1;
 					if (index < 0) index = _list.items.size - 1;
 					_list.setSelectedIndex(index);
 					return true;
-				case Input.Keys.ESCAPE:
+				case IInput.Keys.ESCAPE:
 					if (_list.getStage() != null) _list.getStage().setKeyboardFocus(null);
 					return true;
 			}

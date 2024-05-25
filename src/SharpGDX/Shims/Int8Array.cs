@@ -468,7 +468,7 @@ namespace SharpGDX.Shims
 			return true;
 		}
 
-		public String toString()
+		public override String ToString()
 		{
 			if (size == 0) return "[]";
 			byte[] items = this.items;

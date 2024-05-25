@@ -1,6 +1,6 @@
 ﻿using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Utils;
-using static SharpGDX.Input;
+using static SharpGDX.IInput;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
@@ -80,10 +80,10 @@ private int toGdxButton(int button)
 public unsafe DefaultDesktopInput (DesktopWindow window)
 {
 	this.window = window;
-	windowHandleChanged(window.getWindowPtr());
+	WindowHandleChanged(window.getWindowPtr());
 }
 
-public void resetPollingStates()
+public void ResetPollingStates()
 {
 	_justTouched = false;
 	keyJustPressed = false;
@@ -98,9 +98,9 @@ public void resetPollingStates()
 	eventQueue.drain(null);
 }
 
-	public unsafe void windowHandleChanged(Window* windowHandle)
+	public unsafe void WindowHandleChanged(Window* windowHandle)
 {
-	resetPollingStates();
+	ResetPollingStates();
 	GLFW.SetKeyCallback(window.getWindowPtr(), keyCallback= (Window* window, OpenTK.Windowing.GraphicsLibraryFramework.Keys key, int scancode, InputAction action, KeyModifiers mods) =>
 	{
 		var intKey = getGdxKeyCode((int)key);
@@ -172,12 +172,12 @@ public void resetPollingStates()
 	GLFW.SetMouseButtonCallback(window.getWindowPtr(), _mouseButtonCallback= mouseButtonCallback);
 }
 
-	public void update()
+	public void Update()
 {
 	eventQueue.drain(inputProcessor);
 }
 
-	public void prepareNext()
+	public void PrepareNext()
 {
 	if (_justTouched)
 	{
@@ -344,14 +344,14 @@ protected char characterForKeyCode(int key)
 	// Map certain key codes to character codes.
 	switch (key)
 	{
-		case Input.Keys.BACKSPACE:
+		case IInput.Keys.BACKSPACE:
 			return (char)8;
-		case Input.Keys.TAB:
+		case IInput.Keys.TAB:
 			return '\t';
-		case Input.Keys.FORWARD_DEL:
+		case IInput.Keys.FORWARD_DEL:
 			return (char)127;
-		case Input.Keys.NUMPAD_ENTER:
-		case Input.Keys.ENTER:
+		case IInput.Keys.NUMPAD_ENTER:
+		case IInput.Keys.ENTER:
 			return '\n';
 	}
 	return (char)0;
@@ -362,246 +362,246 @@ public int getGdxKeyCode(int lwjglKeyCode)
 	switch ((OpenTK.Windowing.GraphicsLibraryFramework.Keys)lwjglKeyCode)
 	{
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space:
-			return Input.Keys.SPACE;
+			return IInput.Keys.SPACE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Apostrophe:
-			return Input.Keys.APOSTROPHE;
+			return IInput.Keys.APOSTROPHE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Comma:
-			return Input.Keys.COMMA;
+			return IInput.Keys.COMMA;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Minus:
-			return Input.Keys.MINUS;
+			return IInput.Keys.MINUS;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Period:
-			return Input.Keys.PERIOD;
+			return IInput.Keys.PERIOD;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Slash:
-			return Input.Keys.SLASH;
+			return IInput.Keys.SLASH;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D0:
-			return Input.Keys.NUM_0;
+			return IInput.Keys.NUM_0;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D1:
-			return Input.Keys.NUM_1;
+			return IInput.Keys.NUM_1;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D2:
-			return Input.Keys.NUM_2;
+			return IInput.Keys.NUM_2;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D3:
-			return Input.Keys.NUM_3;
+			return IInput.Keys.NUM_3;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D4:
-			return Input.Keys.NUM_4;
+			return IInput.Keys.NUM_4;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D5:
-			return Input.Keys.NUM_5;
+			return IInput.Keys.NUM_5;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D6:
-			return Input.Keys.NUM_6;
+			return IInput.Keys.NUM_6;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D7:
-			return Input.Keys.NUM_7;
+			return IInput.Keys.NUM_7;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D8:
-			return Input.Keys.NUM_8;
+			return IInput.Keys.NUM_8;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D9:
-			return Input.Keys.NUM_9;
+			return IInput.Keys.NUM_9;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Semicolon:
-			return Input.Keys.SEMICOLON;
+			return IInput.Keys.SEMICOLON;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Equal:
-			return Input.Keys.EQUALS;
+			return IInput.Keys.EQUALS;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.A:
-			return Input.Keys.A;
+			return IInput.Keys.A;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.B:
-			return Input.Keys.B;
+			return IInput.Keys.B;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.C:
-			return Input.Keys.C;
+			return IInput.Keys.C;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.D:
-			return Input.Keys.D;
+			return IInput.Keys.D;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.E:
-			return Input.Keys.E;
+			return IInput.Keys.E;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F:
-			return Input.Keys.F;
+			return IInput.Keys.F;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.G:
-			return Input.Keys.G;
+			return IInput.Keys.G;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.H:
-			return Input.Keys.H;
+			return IInput.Keys.H;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.I:
-			return Input.Keys.I;
+			return IInput.Keys.I;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.J:
-			return Input.Keys.J;
+			return IInput.Keys.J;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.K:
-			return Input.Keys.K;
+			return IInput.Keys.K;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.L:
-			return Input.Keys.L;
+			return IInput.Keys.L;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.M:
-			return Input.Keys.M;
+			return IInput.Keys.M;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.N:
-			return Input.Keys.N;
+			return IInput.Keys.N;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.O:
-			return Input.Keys.O;
+			return IInput.Keys.O;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.P:
-			return Input.Keys.P;
+			return IInput.Keys.P;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Q:
-			return Input.Keys.Q;
+			return IInput.Keys.Q;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.R:
-			return Input.Keys.R;
+			return IInput.Keys.R;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.S:
-			return Input.Keys.S;
+			return IInput.Keys.S;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.T:
-			return Input.Keys.T;
+			return IInput.Keys.T;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.U:
-			return Input.Keys.U;
+			return IInput.Keys.U;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.V:
-			return Input.Keys.V;
+			return IInput.Keys.V;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.W:
-			return Input.Keys.W;
+			return IInput.Keys.W;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.X:
-			return Input.Keys.X;
+			return IInput.Keys.X;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Y:
-			return Input.Keys.Y;
+			return IInput.Keys.Y;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Z:
-			return Input.Keys.Z;
+			return IInput.Keys.Z;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftBracket:
-			return Input.Keys.LEFT_BRACKET;
+			return IInput.Keys.LEFT_BRACKET;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Backslash:
-			return Input.Keys.BACKSLASH;
+			return IInput.Keys.BACKSLASH;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightBracket:
-			return Input.Keys.RIGHT_BRACKET;
+			return IInput.Keys.RIGHT_BRACKET;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.GraveAccent:
-			return Input.Keys.GRAVE;
+			return IInput.Keys.GRAVE;
 		//case OpenTK.Windowing.GraphicsLibraryFramework.Keys.WORLD_1:
 		//case OpenTK.Windowing.GraphicsLibraryFramework.Keys.WORLD_2:
 		//	return Input.Keys.UNKNOWN;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape:
-			return Input.Keys.ESCAPE;
+			return IInput.Keys.ESCAPE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Enter:
-			return Input.Keys.ENTER;
+			return IInput.Keys.ENTER;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Tab:
-			return Input.Keys.TAB;
+			return IInput.Keys.TAB;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Backspace:
-			return Input.Keys.BACKSPACE;
+			return IInput.Keys.BACKSPACE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Insert:
-			return Input.Keys.INSERT;
+			return IInput.Keys.INSERT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Delete:
-			return Input.Keys.FORWARD_DEL;
+			return IInput.Keys.FORWARD_DEL;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Right:
-			return Input.Keys.RIGHT;
+			return IInput.Keys.RIGHT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Left:
-			return Input.Keys.LEFT;
+			return IInput.Keys.LEFT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Down:
-			return Input.Keys.DOWN;
+			return IInput.Keys.DOWN;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Up:
-			return Input.Keys.UP;
+			return IInput.Keys.UP;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageUp:
-			return Input.Keys.PAGE_UP;
+			return IInput.Keys.PAGE_UP;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageDown:
-			return Input.Keys.PAGE_DOWN;
+			return IInput.Keys.PAGE_DOWN;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Home:
-			return Input.Keys.HOME;
+			return IInput.Keys.HOME;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.End:
-			return Input.Keys.END;
+			return IInput.Keys.END;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.CapsLock:
-			return Input.Keys.CAPS_LOCK;
+			return IInput.Keys.CAPS_LOCK;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.ScrollLock:
-			return Input.Keys.SCROLL_LOCK;
+			return IInput.Keys.SCROLL_LOCK;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.PrintScreen:
-			return Input.Keys.PRINT_SCREEN;
+			return IInput.Keys.PRINT_SCREEN;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Pause:
-			return Input.Keys.PAUSE;
+			return IInput.Keys.PAUSE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F1:
-			return Input.Keys.F1;
+			return IInput.Keys.F1;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F2:
-			return Input.Keys.F2;
+			return IInput.Keys.F2;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F3:
-			return Input.Keys.F3;
+			return IInput.Keys.F3;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F4:
-			return Input.Keys.F4;
+			return IInput.Keys.F4;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F5:
-			return Input.Keys.F5;
+			return IInput.Keys.F5;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F6:
-			return Input.Keys.F6;
+			return IInput.Keys.F6;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F7:
-			return Input.Keys.F7;
+			return IInput.Keys.F7;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F8:
-			return Input.Keys.F8;
+			return IInput.Keys.F8;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F9:
-			return Input.Keys.F9;
+			return IInput.Keys.F9;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F10:
-			return Input.Keys.F10;
+			return IInput.Keys.F10;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F11:
-			return Input.Keys.F11;
+			return IInput.Keys.F11;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F12:
-			return Input.Keys.F12;
+			return IInput.Keys.F12;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F13:
-			return Input.Keys.F13;
+			return IInput.Keys.F13;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F14:
-			return Input.Keys.F14;
+			return IInput.Keys.F14;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F15:
-			return Input.Keys.F15;
+			return IInput.Keys.F15;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F16:
-			return Input.Keys.F16;
+			return IInput.Keys.F16;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F17:
-			return Input.Keys.F17;
+			return IInput.Keys.F17;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F18:
-			return Input.Keys.F18;
+			return IInput.Keys.F18;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F19:
-			return Input.Keys.F19;
+			return IInput.Keys.F19;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F20:
-			return Input.Keys.F20;
+			return IInput.Keys.F20;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F21:
-			return Input.Keys.F21;
+			return IInput.Keys.F21;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F22:
-			return Input.Keys.F22;
+			return IInput.Keys.F22;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F23:
-			return Input.Keys.F23;
+			return IInput.Keys.F23;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F24:
-			return Input.Keys.F24;
+			return IInput.Keys.F24;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.F25:
-			return Input.Keys.UNKNOWN;
+			return IInput.Keys.UNKNOWN;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.NumLock:
-			return Input.Keys.NUM_LOCK;
+			return IInput.Keys.NUM_LOCK;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad0:
-			return Input.Keys.NUMPAD_0;
+			return IInput.Keys.NUMPAD_0;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad1:
-			return Input.Keys.NUMPAD_1;
+			return IInput.Keys.NUMPAD_1;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad2:
-			return Input.Keys.NUMPAD_2;
+			return IInput.Keys.NUMPAD_2;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad3:
-			return Input.Keys.NUMPAD_3;
+			return IInput.Keys.NUMPAD_3;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad4:
-			return Input.Keys.NUMPAD_4;
+			return IInput.Keys.NUMPAD_4;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad5:
-			return Input.Keys.NUMPAD_5;
+			return IInput.Keys.NUMPAD_5;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad6:
-			return Input.Keys.NUMPAD_6;
+			return IInput.Keys.NUMPAD_6;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad7:
-			return Input.Keys.NUMPAD_7;
+			return IInput.Keys.NUMPAD_7;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad8:
-			return Input.Keys.NUMPAD_8;
+			return IInput.Keys.NUMPAD_8;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPad9:
-			return Input.Keys.NUMPAD_9;
+			return IInput.Keys.NUMPAD_9;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadDecimal:
-			return Input.Keys.NUMPAD_DOT;
+			return IInput.Keys.NUMPAD_DOT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadDivide:
-			return Input.Keys.NUMPAD_DIVIDE;
+			return IInput.Keys.NUMPAD_DIVIDE;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadMultiply:
-			return Input.Keys.NUMPAD_MULTIPLY;
+			return IInput.Keys.NUMPAD_MULTIPLY;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadSubtract:
-			return Input.Keys.NUMPAD_SUBTRACT;
+			return IInput.Keys.NUMPAD_SUBTRACT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadAdd:
-			return Input.Keys.NUMPAD_ADD;
+			return IInput.Keys.NUMPAD_ADD;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadEnter:
-			return Input.Keys.NUMPAD_ENTER;
+			return IInput.Keys.NUMPAD_ENTER;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadEqual:
-			return Input.Keys.NUMPAD_EQUALS;
+			return IInput.Keys.NUMPAD_EQUALS;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift:
-			return Input.Keys.SHIFT_LEFT;
+			return IInput.Keys.SHIFT_LEFT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftControl:
-			return Input.Keys.CONTROL_LEFT;
+			return IInput.Keys.CONTROL_LEFT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftAlt:
-			return Input.Keys.ALT_LEFT;
+			return IInput.Keys.ALT_LEFT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftSuper:
-			return Input.Keys.SYM;
+			return IInput.Keys.SYM;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightShift:
-			return Input.Keys.SHIFT_RIGHT;
+			return IInput.Keys.SHIFT_RIGHT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightControl:
-			return Input.Keys.CONTROL_RIGHT;
+			return IInput.Keys.CONTROL_RIGHT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightAlt:
-			return Input.Keys.ALT_RIGHT;
+			return IInput.Keys.ALT_RIGHT;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightSuper:
-			return Input.Keys.SYM;
+			return IInput.Keys.SYM;
 		case OpenTK.Windowing.GraphicsLibraryFramework.Keys.Menu:
-			return Input.Keys.MENU;
+			return IInput.Keys.MENU;
 		default:
-			return Input.Keys.UNKNOWN;
+			return IInput.Keys.UNKNOWN;
 	}
 }
 

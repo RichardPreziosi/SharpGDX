@@ -1,47 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX.Desktop;
 
-namespace SharpGDX.Desktop
+/// <summary>
+///     Convenience implementation of {@link DesktopWindowListener}.
+/// </summary>
+/// <remarks>
+///     Derive from this class and only overwrite the methods you are interested in.
+/// </remarks>
+public class DesktopAdapter : IDesktopWindowListener
 {
-	/** Convenience implementation of {@link DesktopWindowListener}. Derive from this class and only overwrite the methods you are
- * interested in.
- * @author badlogic */
-	public class DesktopAdapter : IDesktopWindowListener
-	{
-	public void Created(DesktopWindow window)
-	{
-	}
-
-	public void Iconified(bool isIconified)
-	{
-	}
-
-	public void Maximized(bool isMaximized)
-	{
-	}
-
-	public void FocusLost()
-	{
-	}
-
-	public void FocusGained()
-	{
-	}
-
-	public bool CloseRequested()
+	public virtual bool CloseRequested()
 	{
 		return true;
 	}
 
-	public void FilesDropped(String[] files)
+	public virtual void Created(DesktopWindow window)
 	{
 	}
 
-	public void RefreshRequested()
+	public virtual void FilesDropped(string[] files)
 	{
 	}
+
+	public virtual void FocusGained()
+	{
+	}
+
+	public virtual void FocusLost()
+	{
+	}
+
+	public virtual void Iconified(bool isIconified)
+	{
+	}
+
+	public virtual void Maximized(bool isMaximized)
+	{
+	}
+
+	public virtual void RefreshRequested()
+	{
 	}
 }

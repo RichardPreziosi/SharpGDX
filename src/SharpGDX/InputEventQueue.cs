@@ -50,28 +50,28 @@ namespace SharpGDX
 						i += q[i];
 						break;
 					case KEY_DOWN:
-						processor.keyDown(q[i++]);
+						processor.KeyDown(q[i++]);
 						break;
 					case KEY_UP:
-						processor.keyUp(q[i++]);
+						processor.KeyUp(q[i++]);
 						break;
 					case KEY_TYPED:
-						processor.keyTyped((char)q[i++]);
+						processor.KeyTyped((char)q[i++]);
 						break;
 					case TOUCH_DOWN:
-						processor.touchDown(q[i++], q[i++], q[i++], q[i++]);
+						processor.TouchDown(q[i++], q[i++], q[i++], q[i++]);
 						break;
 					case TOUCH_UP:
-						processor.touchUp(q[i++], q[i++], q[i++], q[i++]);
+						processor.TouchUp(q[i++], q[i++], q[i++], q[i++]);
 						break;
 					case TOUCH_DRAGGED:
-						processor.touchDragged(q[i++], q[i++], q[i++]);
+						processor.TouchDragged(q[i++], q[i++], q[i++]);
 						break;
 					case MOUSE_MOVED:
-						processor.mouseMoved(q[i++], q[i++]);
+						processor.MouseMoved(q[i++], q[i++]);
 						break;
 					case SCROLLED:
-						processor.scrolled(NumberUtils.intBitsToFloat(q[i++]), NumberUtils.intBitsToFloat(q[i++]));
+						processor.Scrolled(NumberUtils.intBitsToFloat(q[i++]), NumberUtils.intBitsToFloat(q[i++]));
 						break;
 					default:
 						throw new RuntimeException();

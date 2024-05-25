@@ -40,7 +40,7 @@ namespace SharpGDX.Desktop.Audio
 			tempBuffer = ByteBuffer.allocate(bufferSize);
 		}
 
-		public void writeSamples(short[] samples, int offset, int numSamples)
+		public void WriteSamples(short[] samples, int offset, int numSamples)
 		{
 			if (bytes == null || bytes.Length < numSamples * 2) bytes = new byte[numSamples * 2];
 			int end = Math.Min(offset + numSamples, samples.Length);
@@ -54,7 +54,7 @@ namespace SharpGDX.Desktop.Audio
 			writeSamples(bytes, 0, numSamples * 2);
 		}
 
-		public void writeSamples(float[] samples, int offset, int numSamples)
+		public void WriteSamples(float[] samples, int offset, int numSamples)
 		{
 			if (bytes == null || bytes.Length < numSamples * 2) bytes = new byte[numSamples * 2];
 			int end = Math.Min(offset + numSamples, samples.Length);
@@ -181,7 +181,7 @@ namespace SharpGDX.Desktop.Audio
 			return _isPlaying;
 		}
 
-		public void setVolume(float volume)
+		public void SetVolume(float volume)
 		{
 			this.volume = volume;
 			if (sourceID != -1) AL.Source(sourceID, ALSourcef.Gain, volume);
@@ -225,22 +225,22 @@ namespace SharpGDX.Desktop.Audio
 			buffers = null;
 		}
 
-		public bool isMono()
+		public bool IsMono()
 		{
 			return channels == 1;
 		}
 
-		public int getLatency()
+		public int GetLatency()
 		{
 			return (int)((float)bufferSize / bytesPerSample / channels * bufferCount);
 		}
 
-		public void pause()
+		public void Pause()
 		{
 			// A buffer underflow will cause the source to stop.
 		}
 
-		public void resume()
+		public void Resume()
 		{
 			// Automatically resumes when samples are written
 		}

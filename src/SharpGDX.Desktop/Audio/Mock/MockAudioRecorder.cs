@@ -14,7 +14,7 @@ public class MockAudioRecorder : IAudioRecorder
 	{
 	}
 
-	public void read(short[] samples, int offset, int numSamples)
+	public void Read(short[] samples, int offset, int numSamples)
 	{
 	}
 }

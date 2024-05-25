@@ -12,7 +12,7 @@ public interface IDesktopWindowListener
 	///     keyboard shortcut.
 	/// </summary>
 	/// <returns>Whether the window should actually close.</returns>
-	bool CloseRequested();
+	public bool CloseRequested();
 
 	/// <summary>
 	///     Called after the GLFW window is created. Before this callback is received, it's unsafe to use any
@@ -28,35 +28,36 @@ public interface IDesktopWindowListener
 	///     </para>
 	/// </remarks>
 	/// <param name="window">window the window instance.</param>
-	void Created(DesktopWindow window);
+	public void Created(DesktopWindow window);
 
 	/// <summary>
 	///     Called when external files are dropped into the window, e.g from the Desktop.
 	/// </summary>
 	/// <param name="files">Array with absolute paths to the files.</param>
-	void FilesDropped(string[] files);
+	public void FilesDropped(string[] files);
 
 	/// <summary>
 	///     Called when the window gained focus.
 	/// </summary>
-	void FocusGained();
+	public void FocusGained();
 
 	/// <summary>
 	///     Called when the window lost focus to another window. The window's <see cref="IApplicationListener" /> will continue
 	///     to be called.
 	/// </summary>
-	void FocusLost();
+	public void FocusLost();
 
 	/// <summary>
 	///     Called when the window is iconified (i.e. its minimize button was clicked), or when restored from the iconified
-	///     state. When a window becomes iconified, its <see cref="IApplicationListener" /> will be paused, and when restored it
+	///     state. When a window becomes iconified, its <see cref="IApplicationListener" /> will be paused, and when restored
+	///     it
 	///     will be resumed.
 	/// </summary>
 	/// <param name="isIconified">
 	///     <see langword="true" /> if window is iconified, <see langword="false" /> if it leaves the
 	///     iconified state
 	/// </param>
-	void Iconified(bool isIconified);
+	public void Iconified(bool isIconified);
 
 	/// <summary>
 	///     Called when the window is maximized, or restored from the maximized state.
@@ -65,11 +66,11 @@ public interface IDesktopWindowListener
 	///     <see langword="true" /> if window is maximized, <see langword="false" /> if it leaves the
 	///     maximized state.
 	/// </param>
-	void Maximized(bool isMaximized);
+	public void Maximized(bool isMaximized);
 
 	/// <summary>
 	///     Called when the window content is damaged and needs to be refreshed. When this occurs,
 	///     <see cref="DesktopGraphics.requestRendering()" /> is automatically called.
 	/// </summary>
-	void RefreshRequested();
+	public void RefreshRequested();
 }

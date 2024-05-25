@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX.Assets;
 
-namespace SharpGDX.Assets
+public interface IAssetErrorListener
 {
-	public interface IAssetErrorListener
-	{
-		public void error(IAssetDescriptor asset, Exception throwable);
-	}
+	public void Error(IAssetDescriptor asset, Exception throwable);
 }

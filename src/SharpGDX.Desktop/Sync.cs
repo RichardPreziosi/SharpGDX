@@ -2,174 +2,139 @@
 
 namespace SharpGDX.Desktop;
 
-/**
- * A highly accurate sync method that continually adapts to the system it runs on to provide reliable results.
- * 
- * @author Riven
- * @author kappaOne
- */
 internal class Sync
 {
-	/**
-	 * number of nano seconds in a second
-	 */
-	private static readonly long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
+	private const long NanosInSecond = 1000L * 1000L * 1000L;
 
-	/**
-	 * whether the initialisation code has run
-	 */
-	private bool initialised;
+	private readonly RunningAverage _sleepDurations = new(10);
 
-	/**
-	 * The time to sleep/yield until the next frame
-	 */
-	private long nextFrame;
+	private readonly RunningAverage _yieldDurations = new(10);
 
-	/**
-	 * for calculating the averages the previous sleep/yield times are stored
-	 */
-	private readonly RunningAvg sleepDurations = new(10);
+	private bool _initialized;
 
-	private readonly RunningAvg yieldDurations = new(10);
+	private long _nextFrame;
 
-	/**
-	 * An accurate sync method that will attempt to run at a constant frame rate. It should be called once every frame.
-	 * 
-	 * @param fps - the desired frame rate, in frames per second
-	 */
-	public void sync(int fps)
+	public void SyncTo(int fps)
 	{
 		if (fps <= 0)
 		{
 			return;
 		}
 
-		if (!initialised)
+		if (!_initialized)
 		{
-			initialise();
+			Initialize();
 		}
 
 		try
 		{
-			// sleep until the average sleep time is greater than the time remaining till nextFrame
-			for (long t0 = getTime(), t1; nextFrame - t0 > sleepDurations.avg(); t0 = t1)
+			for (long t0 = GetTime(), t1; _nextFrame - t0 > _sleepDurations.Average(); t0 = t1)
 			{
 				Thread.Sleep(1);
-				sleepDurations.add((t1 = getTime()) - t0); // update average sleep time
+				_sleepDurations.Add((t1 = GetTime()) - t0);
 			}
 
-			// slowly dampen sleep average if too high to avoid yielding too much
-			sleepDurations.dampenForLowResTicker();
+			_sleepDurations.DampenForLowResTicker();
 
-			// yield until the average yield time is greater than the time remaining till nextFrame
-			for (long t0 = getTime(), t1; nextFrame - t0 > yieldDurations.avg(); t0 = t1)
+			for (long t0 = GetTime(), t1; _nextFrame - t0 > _yieldDurations.Average(); t0 = t1)
 			{
 				Thread.Yield();
-				yieldDurations.add((t1 = getTime()) - t0); // update average yield time
+				_yieldDurations.Add((t1 = GetTime()) - t0);
 			}
 		}
-		catch (ThreadInterruptedException e)
+		catch (ThreadInterruptedException)
 		{
+			// ignored
 		}
 
-		// schedule next frame, drop frame(s) if already too late for next frame
-		nextFrame = Math.Max(nextFrame + NANOS_IN_SECOND / fps, getTime());
+		_nextFrame = Math.Max(_nextFrame + NanosInSecond / fps, GetTime());
 	}
 
-	/**
-	 * Get the system time in nano seconds
-	 * 
-	 * @return will return the current time in nano's
-	 */
-	private long getTime()
+	private long GetTime()
 	{
-		return (long)(GLFW.GetTime() * NANOS_IN_SECOND);
+		return (long)(GLFW.GetTime() * NanosInSecond);
 	}
 
-	/**
-	 * This method will initialise the sync method by setting initial values for sleepDurations/yieldDurations and nextFrame.
-	 * 
-	 * If running on windows it will start the sleep timer fix.
-	 */
-	private void initialise()
+	private void Initialize()
 	{
-		initialised = true;
+		_initialized = true;
 
-		sleepDurations.init(1000 * 1000);
-		yieldDurations.init((int)(-(getTime() - getTime()) * 1.333));
+		_sleepDurations.Init(1000 * 1000);
+		_yieldDurations.Init((int)(-(GetTime() - GetTime()) * 1.333));
 
-		nextFrame = getTime();
+		_nextFrame = GetTime();
 
-		if (OperatingSystem.IsWindows())
+		if (!OperatingSystem.IsWindows())
 		{
-			// On windows the sleep functions can be highly inaccurate by
-			// over 10ms making in unusable. However it can be forced to
-			// be a bit more accurate by running a separate sleeping daemon
-			// thread.
-			var timerAccuracyThread = new Thread(() =>
+			return;
+		}
+
+		var timerAccuracyThread = new Thread
+		(() =>
 			{
 				try
 				{
 					Thread.Sleep(int.MaxValue);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
+					// ignored
 				}
-			});
+			}
+		)
+		{
+			Name = "SharpGDX Timer",
+			IsBackground = true
+		};
 
-			timerAccuracyThread.Name = "SharpGDX Timer";
-			timerAccuracyThread.IsBackground = true;
-			timerAccuracyThread.Start();
-		}
+		timerAccuracyThread.Start();
 	}
 
-	private class RunningAvg
+	private class RunningAverage(int slotCount)
 	{
-		private static readonly float DAMPEN_FACTOR = 0.9f; // don't change: 0.9f is exactly right!
+		private static readonly float DampenFactor = 0.9f;
+		private static readonly long DampenThreshold = 10 * 1000L * 1000L;
 
-		private static readonly long DAMPEN_THRESHOLD = 10 * 1000L * 1000L; // 10ms
-		private readonly long[] slots;
-		private int offset;
+		private readonly long[] _slots = new long[slotCount];
 
-		public RunningAvg(int slotCount)
+		private int _offset;
+
+		public void Add(long value)
 		{
-			slots = new long[slotCount];
-			offset = 0;
+			_slots[_offset++ % _slots.Length] = value;
+			_offset %= _slots.Length;
 		}
 
-		public void add(long value)
-		{
-			slots[offset++ % slots.Length] = value;
-			offset %= slots.Length;
-		}
-
-		public long avg()
+		public long Average()
 		{
 			long sum = 0;
-			for (var i = 0; i < slots.Length; i++)
+
+			foreach (var slot in _slots)
 			{
-				sum += slots[i];
+				sum += slot;
 			}
 
-			return sum / slots.Length;
+			return sum / _slots.Length;
 		}
 
-		public void dampenForLowResTicker()
+		public void DampenForLowResTicker()
 		{
-			if (avg() > DAMPEN_THRESHOLD)
+			if (Average() <= DampenThreshold)
 			{
-				for (var i = 0; i < slots.Length; i++)
-				{
-					slots[i] = (long)(slots[i] * DAMPEN_FACTOR);
-				}
+				return;
+			}
+
+			for (var i = 0; i < _slots.Length; i++)
+			{
+				_slots[i] = (long)(_slots[i] * DampenFactor);
 			}
 		}
 
-		public void init(long value)
+		public void Init(long value)
 		{
-			while (offset < slots.Length)
+			while (_offset < _slots.Length)
 			{
-				slots[offset++] = value;
+				_slots[_offset++] = value;
 			}
 		}
 	}

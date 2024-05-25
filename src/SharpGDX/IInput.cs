@@ -27,7 +27,7 @@ namespace SharpGDX
  * </p>
  * 
  * @author mzechner */
-	public interface Input
+	public interface IInput
 	{
 		/** Callback interface for {@link Input#getTextInput(TextInputListener, String, String, String)}
 		 * 
@@ -50,10 +50,7 @@ namespace SharpGDX
 			public const int FORWARD = 4;
 		}
 
-		/** Keys.
-		 * 
-		 * @author mzechner */
-		static public class Keys
+		public static class Keys
 		{
 			public const int ANY_KEY = -1;
 			public const int NUM_0 = 7;

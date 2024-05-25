@@ -8,17 +8,20 @@ namespace SharpGDX.Desktop;
 /// </summary>
 public class DesktopClipboard : IClipboard
 {
-	public unsafe string getContents()
+	/// <inheritdoc cref="IClipboard.GetContents()" />
+	public unsafe string? GetContents()
 	{
 		return GLFW.GetClipboardString(((DesktopGraphics)Gdx.graphics).getWindow().getWindowPtr());
 	}
 
-	public bool hasContents()
+	/// <inheritdoc cref="IClipboard.HasContents" />
+	public bool HasContents()
 	{
-		return !string.IsNullOrEmpty(getContents());
+		return !string.IsNullOrEmpty(GetContents());
 	}
 
-	public unsafe void setContents(string content)
+	/// <inheritdoc cref="IClipboard.SetContents" />
+	public unsafe void SetContents(string content)
 	{
 		GLFW.SetClipboardString(((DesktopGraphics)Gdx.graphics).getWindow().getWindowPtr(), content);
 	}

@@ -109,11 +109,11 @@ namespace SharpGDX.Desktop
 				this.iconified = iconified;
 				if (iconified)
 				{
-					listener.pause();
+					listener.Pause();
 				}
 				else
 				{
-					listener.resume();
+					listener.Resume();
 				}
 			})
 		);
@@ -348,7 +348,7 @@ namespace SharpGDX.Desktop
 
 	private unsafe void windowHandleChanged (Window* windowHandle) {
 		this.windowHandle = windowHandle;
-		input.windowHandleChanged(windowHandle);
+		input.WindowHandleChanged(windowHandle);
 	}
 
 	internal unsafe bool update () {
@@ -365,7 +365,7 @@ namespace SharpGDX.Desktop
 		bool shouldRender = executedRunnables.size > 0 || graphics.isContinuousRendering();
 		executedRunnables.clear();
 
-		if (!iconified) input.update();
+		if (!iconified) input.Update();
 
 		lock (this) {
 			shouldRender |= _requestRendering && !iconified;
@@ -374,11 +374,11 @@ namespace SharpGDX.Desktop
 
 		if (shouldRender) {
 			graphics.update();
-			listener.render();
+			listener.Render();
 			GLFW.SwapBuffers(windowHandle);
 		}
 
-		if (!iconified) input.prepareNext();
+		if (!iconified) input.PrepareNext();
 
 		return shouldRender;
 	}
@@ -403,8 +403,8 @@ namespace SharpGDX.Desktop
 
 	void initializeListener () {
 		if (!listenerInitialized) {
-			listener.create();
-			listener.resize(graphics.getWidth(), graphics.getHeight());
+			listener.Create();
+			listener.Resize(graphics.getWidth(), graphics.getHeight());
 			listenerInitialized = true;
 		}
 	}
@@ -422,8 +422,8 @@ namespace SharpGDX.Desktop
 	}
 
 	public unsafe void dispose () {
-		listener.pause();
-		listener.dispose();
+		listener.Pause();
+		listener.Dispose();
 		DesktopCursor.dispose(this);
 		graphics.dispose();
 		input.dispose();

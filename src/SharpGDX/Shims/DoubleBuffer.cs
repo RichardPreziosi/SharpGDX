@@ -436,12 +436,12 @@ namespace SharpGDX.Shims
 	 * @since Android 1.0 */
 	public abstract DoubleBuffer slice();
 
-	/** Returns a string representing the state of this double buffer.
-	 * 
-	 * @return A string representing the state of this double buffer.
-	 * @since Android 1.0 */
-	public String toString()
-	{
+		/** Returns a string representing the state of this double buffer.
+		 * 
+		 * @return A string representing the state of this double buffer.
+		 * @since Android 1.0 */
+		public override String ToString()
+		{
 		StringBuilder sb = new StringBuilder();
 		sb.Append(GetType().Name);
 		sb.Append(", status: capacity="); //$NON-NLS-1$

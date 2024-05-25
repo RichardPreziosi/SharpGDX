@@ -110,7 +110,7 @@ namespace SharpGDX
 		public IAudio getAudio();
 
 		/** @return the {@link Input} instance */
-		public Input getInput();
+		public IInput getInput();
 
 		/** @return the {@link Files} instance */
 		public IFiles getFiles();

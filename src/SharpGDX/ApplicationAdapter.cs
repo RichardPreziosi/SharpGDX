@@ -8,27 +8,27 @@
 /// </remarks>
 public abstract class ApplicationAdapter : IApplicationListener
 {
-	public virtual void create()
+	public virtual void Create()
 	{
 	}
 
-	public virtual void dispose()
+	public virtual void Dispose()
 	{
 	}
 
-	public virtual void pause()
+	public virtual void Pause()
 	{
 	}
 
-	public virtual void render()
+	public virtual void Render()
 	{
 	}
 
-	public virtual void resize(int width, int height)
+	public virtual void Resize(int width, int height)
 	{
 	}
 
-	public virtual void resume()
+	public virtual void Resume()
 	{
 	}
 }

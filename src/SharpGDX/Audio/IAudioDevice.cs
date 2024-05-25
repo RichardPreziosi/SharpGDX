@@ -10,36 +10,54 @@ namespace SharpGDX.Audio
  * @author badlogicgames@gmail.com */
 	public interface IAudioDevice : Disposable
 	{
-	/** @return whether this AudioDevice is in mono or stereo mode. */
-	public bool isMono();
+		/// <summary>
+		/// Returns whether this AudioDevice is in mono or stereo mode.
+		/// </summary>
+		/// <returns>Whether this AudioDevice is in mono or stereo mode.</returns>
+		public bool IsMono();
 
-	/** Writes the array of 16-bit signed PCM samples to the audio device and blocks until they have been processed.
-	 *
-	 * @param samples The samples.
-	 * @param offset The offset into the samples array
-	 * @param numSamples the number of samples to write to the device */
-	public void writeSamples(short[] samples, int offset, int numSamples);
+		/** Writes the array of 16-bit signed PCM samples to the audio device and blocks until they have been processed.
+		 *
+		 * @param samples The samples.
+		 * @param offset The offset into the samples array
+		 * @param numSamples the number of samples to write to the device */
+		public void WriteSamples(short[] samples, int offset, int numSamples);
 
-	/** Writes the array of float PCM samples to the audio device and blocks until they have been processed.
-	 *
-	 * @param samples The samples.
-	 * @param offset The offset into the samples array
-	 * @param numSamples the number of samples to write to the device */
-	public void writeSamples(float[] samples, int offset, int numSamples);
+		/** Writes the array of float PCM samples to the audio device and blocks until they have been processed.
+		 *
+		 * @param samples The samples.
+		 * @param offset The offset into the samples array
+		 * @param numSamples the number of samples to write to the device */
+		public void WriteSamples(float[] samples, int offset, int numSamples);
 
-	/** @return the latency in samples. */
-	public int getLatency();
+		/// <summary>
+		/// Returns the latency in samples.
+		/// </summary>
+		/// <returns>The latency in samples.</returns>
+		public int GetLatency();
 
-	/** Frees all resources associated with this AudioDevice. Needs to be called when the device is no longer needed. */
-	public void dispose();
+		/// <summary>
+		/// Frees all resources associated with this AudioDevice.
+		/// </summary>
+		/// <remarks>
+		/// Needs to be called when the device is no longer needed.
+		/// </remarks>
+		public new void dispose();
 
-	/** Sets the volume in the range [0,1]. */
-	public void setVolume(float volume);
+		/// <summary>
+		/// Sets the volume in the range [0,1].
+		/// </summary>
+		/// <param name="volume">The volume.</param>
+		public void SetVolume(float volume);
 
-	/** Pauses the audio device if supported */
-	public void pause();
+		/// <summary>
+		/// Pauses the audio device if supported.
+		/// </summary>
+		public void Pause();
 
-	/** Unpauses the audio device if supported */
-	public void resume();
+		/// <summary>
+		/// Unpauses the audio device if supported.
+		/// </summary>
+		public void Resume();
 	}
 }

@@ -3,6 +3,7 @@ using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Utils.Viewports;
 using SharpGDX.Utils;
 using SharpGDX;
+using SharpGDX.Desktop;
 
 namespace Drop
 {
@@ -145,16 +146,18 @@ namespace Drop
 	internal OrthographicCamera camera;
 	internal ShapeRenderer shape;
 
-	public override void create()
+		public override void Create()
 	{
 		shape = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		viewport = new FitViewport(WIDTH, HEIGHT, camera);
 
-		setScreen(new ScreenPlay(){g = this});
+		SetScreen(new ScreenPlay(){g = this});
+
+		Gdx.app.getPreferences("test").putString("hi", "hello").flush();
 	}
 
-	public override void resize(int width, int height)
+	public override void Resize(int width, int height)
 	{
 		viewport.update(width, height);
 	}
@@ -174,8 +177,7 @@ public class ScreenPlay : IScreen
 	internal Drop g;
 	Array<Box> boxes;
 
-
-	public void Show()
+		public void Show()
 	{
 		boxes = new Array<Box>();
 		boxes.add(new Box(){x = 10, y = 10, height = 10, width = 10});

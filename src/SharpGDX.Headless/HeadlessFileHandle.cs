@@ -27,8 +27,8 @@ public sealed class HeadlessFileHandle : FileHandle
 	{
 		return _type switch
 		{
-			IFiles.FileType.External => new File(HeadlessFiles.externalPath, _file.getPath()),
-			IFiles.FileType.Local => new File(HeadlessFiles.localPath, _file.getPath()),
+			IFiles.FileType.External => new File(HeadlessFiles.ExternalPath, _file.getPath()),
+			IFiles.FileType.Local => new File(HeadlessFiles.LocalPath, _file.getPath()),
 			_ => _file
 		};
 	}

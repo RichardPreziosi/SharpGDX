@@ -3,14 +3,14 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Desktop;
 
-public interface IDesktopInput : Input, Disposable
+public interface IDesktopInput : IInput, Disposable
 {
-	public void prepareNext();
+	public void PrepareNext();
 
-	public void resetPollingStates();
+	public void ResetPollingStates();
 
-	public void update();
+	public void Update();
 
 	// TODO: Really don't want to expose this, marked internal for now. -RP
-	internal unsafe void windowHandleChanged(Window* windowHandle);
+	internal unsafe void WindowHandleChanged(Window* windowHandle);
 }

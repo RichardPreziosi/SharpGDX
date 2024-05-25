@@ -1,35 +1,56 @@
-﻿using SharpGDX.Shims;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX;
 
-namespace SharpGDX
+/// <summary>
+///     The IApplicationLogger provides an interface for a SharpGDX Application to log messages and exceptions.
+/// </summary>
+/// <remarks>
+///     A default implementations is provided for each backend. Custom implementations can be provided and set using
+///     <see cref="IApplication.setApplicationLogger(IApplicationLogger)" />.
+/// </remarks>
+public interface IApplicationLogger
 {
-	/** The ApplicationLogger provides an interface for a libGDX Application to log messages and exceptions. A default implementations
- * is provided for each backend, custom implementations can be provided and set using
- * {@link Application#setApplicationLogger(ApplicationLogger) } */
-	public interface IApplicationLogger
-	{
+	/// <summary>
+	///     Logs a debug message with a tag.
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	public void Debug(string tag, string message);
 
-		/** Logs a message with a tag */
-		public void log(String tag, String message);
+	/// <summary>
+	///     Logs a debug message and exception with a tag.
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	/// <param name="exception">The exception</param>
+	public void Debug(string tag, string message, Exception exception);
 
-		/** Logs a message and exception with a tag */
-		public void log(String tag, String message, Exception exception);
+	/// <summary>
+	///     Logs an error message with a tag.
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	public void Error(string tag, string message);
 
-		/** Logs an error message with a tag */
-		public void error(String tag, String message);
+	/// <summary>
+	///     Logs an error message and exception with a tag.
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	/// <param name="exception">The exception</param>
+	public void Error(string tag, string message, Exception exception);
 
-		/** Logs an error message and exception with a tag */
-		public void error(String tag, String message, Exception exception);
+	/// <summary>
+	///     Logs a message with a tag
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	public void Log(string tag, string message);
 
-		/** Logs a debug message with a tag */
-		public void debug(String tag, String message);
-
-		/** Logs a debug message and exception with a tag */
-		public void debug(String tag, String message, Exception exception);
-
-	}
+	/// <summary>
+	///     Logs a message and exception with a tag.
+	/// </summary>
+	/// <param name="tag">The tag.</param>
+	/// <param name="message">The message.</param>
+	/// <param name="exception">The exception</param>
+	public void Log(string tag, string message, Exception exception);
 }

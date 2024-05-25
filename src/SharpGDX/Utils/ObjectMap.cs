@@ -432,7 +432,7 @@ namespace SharpGDX.Utils
 			return toString(separator, false);
 		}
 
-		public String toString()
+		public override String ToString()
 		{
 			return toString(", ", true);
 		}

@@ -10,7 +10,7 @@ using SharpGDX.Shims;
 
 namespace SharpGDX.Desktop
 {
-	 class DesktopGL31 : DesktopGL30, GL31
+	 internal class DesktopGL31 : DesktopGL30, GL31
 	{
 		public void glDispatchCompute(int num_groups_x, int num_groups_y, int num_groups_z)
 		{

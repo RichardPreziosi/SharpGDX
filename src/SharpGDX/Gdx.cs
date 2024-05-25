@@ -18,7 +18,7 @@ namespace SharpGDX
 		public static IApplication app;
 		public static IGraphics graphics;
 		public static IAudio audio;
-		public static Input input;
+		public static IInput input;
 		public static IFiles files;
 		public static INet net;
 

@@ -565,12 +565,12 @@ protected		CharBuffer(int capacity)
 	 * @since Android 1.0 */
 	public abstract string subSequence(int start, int end);
 
-	/** Returns a string representing the current remaining chars of this buffer.
-	 * 
-	 * @return a string representing the current remaining chars of this buffer.
-	 * @since Android 1.0 */
-	public String toString()
-	{
+		/** Returns a string representing the current remaining chars of this buffer.
+		 * 
+		 * @return a string representing the current remaining chars of this buffer.
+		 * @since Android 1.0 */
+		public override String ToString()
+		{
 		StringBuilder sb = new StringBuilder();
 		for (int i = _position; i < _limit; i++)
 		{

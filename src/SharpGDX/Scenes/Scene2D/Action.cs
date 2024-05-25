@@ -97,8 +97,8 @@ namespace SharpGDX.Scenes.Scene2D
 		this.pool = pool;
 	}
 
-	public String toString()
-	{
+	public override String ToString()
+		{
 		String name = GetType().Name;
 		int dotIndex = name.LastIndexOf('.');
 		if (dotIndex != -1) name = name.Substring(dotIndex + 1);

@@ -76,8 +76,8 @@ namespace SharpGDX.Desktop
 
 			window.makeCurrent();
 			gl20.glViewport(0, 0, backBufferWidth, backBufferHeight);
-			window.getListener().resize(getWidth(), getHeight());
-			window.getListener().render();
+			window.getListener().Resize(getWidth(), getHeight());
+			window.getListener().Render();
 			GLFW.SwapBuffers(windowHandle);
 		}
 
@@ -443,7 +443,7 @@ namespace SharpGDX.Desktop
 
 		public override unsafe bool setFullscreenMode(DisplayMode displayMode)
 		{
-			window.getInput().resetPollingStates();
+			window.getInput().ResetPollingStates();
 			DesktopDisplayMode newMode = (DesktopDisplayMode)displayMode;
 			if (isFullscreen())
 			{
@@ -489,7 +489,7 @@ namespace SharpGDX.Desktop
 
 		public override unsafe bool setWindowedMode(int width, int height)
 		{
-			window.getInput().resetPollingStates();
+			window.getInput().ResetPollingStates();
 			if (!isFullscreen())
 			{
 				GridPoint2 newPos = null;

@@ -1,47 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX.Desktop;
 
-namespace SharpGDX.Desktop
+/// <summary>
+///     Default implementation of <see cref="IApplicationLogger" /> for headless.
+/// </summary>
+public class DesktopApplicationLogger : IApplicationLogger
 {
-	/// <summary>
-	///     Default implementation of <see cref="IApplicationLogger" /> for headless.
-	/// </summary>
-	public class DesktopApplicationLogger : IApplicationLogger
+	/// <inheritdoc cref="IApplicationLogger.Debug(string, string)" />
+	public void Debug(string tag, string message)
 	{
-		public void debug(string tag, string message)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-		}
+		Console.WriteLine("[" + tag + "] " + message);
+	}
 
-		public void debug(string tag, string message, Exception exception)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-			Console.WriteLine(exception.StackTrace);
-		}
+	/// <inheritdoc cref="IApplicationLogger.Debug(string, string, Exception)" />
+	public void Debug(string tag, string message, Exception exception)
+	{
+		Console.WriteLine("[" + tag + "] " + message);
+		Console.WriteLine(exception.StackTrace);
+	}
 
-		public void error(string tag, string message)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-		}
+	/// <inheritdoc cref="IApplicationLogger.Error(string, string)" />
+	public void Error(string tag, string message)
+	{
+		Console.WriteLine("[" + tag + "] " + message);
+	}
 
-		public void error(string tag, string message, Exception exception)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-			Console.WriteLine(exception.StackTrace);
-		}
+	/// <inheritdoc cref="IApplicationLogger.Error(string, string, Exception)" />
+	public void Error(string tag, string message, Exception exception)
+	{
+		Console.WriteLine("[" + tag + "] " + message);
+		Console.WriteLine(exception.StackTrace);
+	}
 
-		public void log(string tag, string message)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-		}
+	/// <inheritdoc cref="IApplicationLogger.Log(string, string)" />
+	public void Log(string tag, string message)
+	{
+		Console.WriteLine("[" + tag + "] " + message);
+	}
 
-		public void log(string tag, string message, Exception exception)
-		{
-			Console.WriteLine("[" + tag + "] " + message);
-			Console.WriteLine(exception.StackTrace);
-		}
+	/// <inheritdoc cref="IApplicationLogger.Log(string, string, Exception)" />
+	public void Log(string tag, string message, Exception exception)
+	{
+		Console.WriteLine("[" + tag + "] " + message);
+		Console.WriteLine(exception.StackTrace);
 	}
 }

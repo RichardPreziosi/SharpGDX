@@ -11,7 +11,7 @@ using Buffer = SharpGDX.Shims.Buffer;
 
 namespace SharpGDX.Desktop
 {
-	 class DesktopGL32 : DesktopGL31, GL32
+	internal class DesktopGL32 : DesktopGL31, GL32
 	{
 		public void glBlendBarrier()
 		{

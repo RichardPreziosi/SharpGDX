@@ -265,7 +265,7 @@ namespace SharpGDX.Desktop
 				}
 				else if (targetFramerate > 0)
 				{
-					sync.sync(targetFramerate); // sleep as needed to meet the target framerate
+					sync.SyncTo(targetFramerate); // sleep as needed to meet the target framerate
 				}
 			}
 		}
@@ -319,7 +319,7 @@ namespace SharpGDX.Desktop
 			return audio;
 		}
 
-		public Input getInput()
+		public IInput getInput()
 		{
 			return currentWindow.getInput();
 		}
@@ -336,32 +336,32 @@ namespace SharpGDX.Desktop
 
 		public void debug(String tag, String message)
 		{
-			if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().debug(tag, message);
+			if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().Debug(tag, message);
 		}
 
 		public void debug(String tag, String message, Exception exception)
 		{
-			if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().debug(tag, message, exception);
+			if (logLevel >= IApplication.LOG_DEBUG) getApplicationLogger().Debug(tag, message, exception);
 		}
 
 		public void log(String tag, String message)
 		{
-			if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().log(tag, message);
+			if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().Log(tag, message);
 		}
 
 		public void log(String tag, String message, Exception exception)
 		{
-			if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().log(tag, message, exception);
+			if (logLevel >= IApplication.LOG_INFO) getApplicationLogger().Log(tag, message, exception);
 		}
 
 		public void error(String tag, String message)
 		{
-			if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().error(tag, message);
+			if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().Error(tag, message);
 		}
 
 		public void error(String tag, String message, Exception exception)
 		{
-			if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().error(tag, message, exception);
+			if (logLevel >= IApplication.LOG_ERROR) getApplicationLogger().Error(tag, message, exception);
 		}
 
 		public void setLogLevel(int logLevel)
@@ -415,6 +415,7 @@ namespace SharpGDX.Desktop
 				IPreferences prefs = new DesktopPreferences(
 					new DesktopFileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
 				preferences.put(name, prefs);
+				
 				return prefs;
 			}
 		}

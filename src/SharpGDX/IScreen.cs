@@ -28,13 +28,13 @@ namespace SharpGDX
 		/// <param name="delta">The time in seconds since the last render.</param>
 		public void Render(float delta);
 
-		/// <inheritdoc cref="IApplicationListener.resize(int, int)"/>>
+		/// <inheritdoc cref="IApplicationListener.Resize"/>>
 		public void Resize(int width, int height);
 
-		/// <inheritdoc cref="IApplicationListener.pause()"/>>
+		/// <inheritdoc cref="IApplicationListener.Pause"/>>
 		public void Pause();
 
-		/// <inheritdoc cref="IApplicationListener.resume()"/>
+		/// <inheritdoc cref="IApplicationListener.Resume"/>
 		public void Resume();
 
 		/// <summary>

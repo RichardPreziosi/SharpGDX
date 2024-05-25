@@ -400,7 +400,7 @@ public class File
 		return false;
 	}
 
-	public string toString()
+	public override String ToString()
 	{
 		return name;
 	}

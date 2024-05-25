@@ -1,74 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SharpGDX;
 
-namespace SharpGDX
+/// <summary>
+///     An <see cref="IApplicationListener" /> that delegates to a <see cref="IScreen" />.
+/// </summary>
+/// <remarks>
+///     <para>
+///         This allows an application to easily have multiple screens.
+///     </para>
+///     <para>
+///         Screens are not disposed automatically. You must handle whether you want to keep screens around or dispose of
+///         them when another screen is set.
+///     </para>
+/// </remarks>
+public abstract class Game : IApplicationListener
 {
-	/**
- * <p>
- * An {@link ApplicationListener} that delegates to a {@link Screen}. This allows an application to easily have multiple screens.
- * </p>
- * <p>
- * Screens are not disposed automatically. You must handle whether you want to keep screens around or dispose of them when another
- * screen is set.
- * </p>
- */
-	public abstract class Game : IApplicationListener
-	{
-	protected IScreen screen;
+	protected IScreen? Screen;
 
-	
-	public virtual void dispose()
+	/// <inheritdoc cref="IApplicationListener.Create()" />
+	public abstract void Create();
+
+	/// <inheritdoc cref="IApplicationListener.Dispose()" />
+	public virtual void Dispose()
 	{
-		if (screen != null) screen.Hide();
+		Screen?.Hide();
 	}
 
-
-		public virtual void pause()
+	/// <summary>
+	///     Returns the currently active <see cref="IScreen" />.
+	/// </summary>
+	/// <returns>The currently active <see cref="IScreen" /></returns>
+	public IScreen? GetScreen()
 	{
-		if (screen != null) screen.Pause();
+		return Screen;
 	}
 
-
-		public virtual void resume()
+	/// <inheritdoc cref="IApplicationListener.Pause()" />
+	public virtual void Pause()
 	{
-		if (screen != null) screen.Resume();
-	}
-
-
-		public virtual void render()
-	{
-		if (screen != null) screen.Render(Gdx.graphics.getDeltaTime());
-	}
-
-
-	public abstract void create();
-
-		public virtual void resize(int width, int height)
-	{
-		if (screen != null) screen.Resize(width, height);
-	}
-
-		/** Sets the current screen. {@link Screen#hide()} is called on any old screen, and {@link Screen#show()} is called on the new
-		 * screen, if any.
-		 * @param screen may be {@code null} */
-		public void setScreen(IScreen screen)
-	{
-		if (this.screen != null) this.screen.Hide();
-		this.screen = screen;
-		if (this.screen != null)
+		if (Screen != null)
 		{
-			this.screen.Show();
-			this.screen.Resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			Screen.Pause();
 		}
 	}
 
-	/** @return the currently active {@link Screen}. */
-	public IScreen getScreen()
+	/// <inheritdoc cref="IApplicationListener.Render()" />
+	public virtual void Render()
 	{
-		return screen;
+		Screen?.Render(Gdx.graphics.getDeltaTime());
 	}
+
+	/// <inheritdoc cref="IApplicationListener.Resize(int, int)" />
+	public virtual void Resize(int width, int height)
+	{
+		Screen?.Resize(width, height);
+	}
+
+	/// <inheritdoc cref="IApplicationListener.Resume()" />
+	public virtual void Resume()
+	{
+		Screen?.Resume();
+	}
+
+	/// <summary>
+	///     Sets the current screen.
+	/// </summary>
+	/// <remarks>
+	///     <see cref="IScreen.Hide()" /> is called on any old screen, and <see cref="IScreen.Show()" /> is called on the new
+	///     screen, if any.
+	/// </remarks>
+	/// <param name="screen">The screen.</param>
+	public void SetScreen(IScreen? screen)
+	{
+		Screen?.Hide();
+
+		Screen = screen;
+
+		Screen?.Show();
+		Screen?.Resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 }

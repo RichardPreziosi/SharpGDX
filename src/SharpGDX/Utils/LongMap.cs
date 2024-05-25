@@ -469,8 +469,8 @@ namespace SharpGDX.Utils
 		return true;
 	}
 
-	public String toString()
-	{
+	public override String ToString()
+		{
 		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.Append('[');
@@ -592,8 +592,8 @@ namespace SharpGDX.Utils
 		public long key;
 		public V? value;
 
-		public String toString()
-		{
+		public override String ToString()
+			{
 			return key + "=" + value;
 		}
 	}

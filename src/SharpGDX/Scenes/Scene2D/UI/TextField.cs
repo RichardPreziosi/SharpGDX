@@ -1,12 +1,8 @@
 using SharpGDX.Shims;
 using SharpGDX.Graphics;
-using SharpGDX.Graphics.GLUtils;
 using SharpGDX.Graphics.G2D;
 using Timer = SharpGDX.Utils.Timer;
 using Task = SharpGDX.Utils.Timer.Task;
-using SharpGDX.Scenes.Scene2D;
-using SharpGDX;
-using SharpGDX.Scenes.Scene2D.UI;
 using System.Text;
 using SharpGDX.Scenes.Scene2D.Utils;
 using SharpGDX.Mathematics;
@@ -430,7 +426,7 @@ public class TextField : Widget , IDisableable {
 	/** Copies the contents of this TextField to the {@link Clipboard} implementation set on this TextField. */
 	public void copy () {
 		if (hasSelection && !passwordMode) {
-			clipboard.setContents(text.Substring(Math.Min(cursor, selectionStart), Math.Max(cursor, selectionStart)));
+			clipboard.SetContents(text.Substring(Math.Min(cursor, selectionStart), Math.Max(cursor, selectionStart)));
 		}
 	}
 
@@ -900,21 +896,21 @@ public class TextField : Widget , IDisableable {
 
 			if (ctrl) {
 				switch (keycode) {
-				case Input.Keys.V:
-					_textField.paste(_textField.clipboard.getContents(), true);
+				case IInput.Keys.V:
+					_textField.paste(_textField.clipboard.GetContents(), true);
 					repeat = true;
 					break;
-				case Input.Keys.C:
-				case Input.Keys.INSERT:
+				case IInput.Keys.C:
+				case IInput.Keys.INSERT:
 					_textField.copy();
 					return true;
-				case Input.Keys.X:
+				case IInput.Keys.X:
 					_textField.cut(true);
 					return true;
-				case Input.Keys.A:
+				case IInput.Keys.A:
 					_textField.selectAll();
 					return true;
-				case Input.Keys.Z:
+				case IInput.Keys.Z:
 					String oldText = _textField.text;
 					_textField.setText(_textField.undoText);
 					_textField.undoText = oldText;
@@ -928,10 +924,10 @@ public class TextField : Widget , IDisableable {
 
 			if (UIUtils.shift()) {
 				switch (keycode) {
-				case Input.Keys.INSERT:
-					_textField.paste(_textField.clipboard.getContents(), true);
+				case IInput.Keys.INSERT:
+					_textField.paste(_textField.clipboard.GetContents(), true);
 					break;
-				case Input.Keys.FORWARD_DEL:
+				case IInput.Keys.FORWARD_DEL:
 					_textField.cut(true);
 					break;
 				}
@@ -942,21 +938,21 @@ public class TextField : Widget , IDisableable {
 					{
 						switch (keycode)
 						{
-							case Input.Keys.LEFT:
+							case IInput.Keys.LEFT:
 								_textField.moveCursor(false, jump);
 								repeat = true;
 								handled = true;
 								goto keys;
-							case Input.Keys.RIGHT:
+							case IInput.Keys.RIGHT:
 								_textField.moveCursor(true, jump);
 								repeat = true;
 								handled = true;
 								goto keys;
-							case Input.Keys.HOME:
+							case IInput.Keys.HOME:
 								goHome(jump);
 								handled = true;
 								goto keys;
-							case Input.Keys.END:
+							case IInput.Keys.END:
 								goEnd(jump);
 								handled = true;
 								goto keys;
@@ -979,24 +975,24 @@ public class TextField : Widget , IDisableable {
 			} else {
 				// Cursor movement or other keys (kills selection).
 				switch (keycode) {
-				case Input.Keys.LEFT:
+				case IInput.Keys.LEFT:
 					_textField.moveCursor(false, jump);
 					_textField.clearSelection();
 					repeat = true;
 					handled = true;
 					break;
-				case Input.Keys.RIGHT:
+				case IInput.Keys.RIGHT:
 					_textField.moveCursor(true, jump);
 					_textField.clearSelection();
 					repeat = true;
 					handled = true;
 					break;
-				case Input.Keys.HOME:
+				case IInput.Keys.HOME:
 					goHome(jump);
 					_textField.clearSelection();
 					handled = true;
 					break;
-				case Input.Keys.END:
+				case IInput.Keys.END:
 					goEnd(jump);
 					_textField.clearSelection();
 					handled = true;
@@ -1050,7 +1046,7 @@ public class TextField : Widget , IDisableable {
 
 			if (!_textField.hasKeyboardFocus()) return false;
 
-			if (UIUtils.isMac && Gdx.input.isKeyPressed(Input.Keys.SYM)) return true;
+			if (UIUtils.isMac && Gdx.input.isKeyPressed(IInput.Keys.SYM)) return true;
 
 			if (checkFocusTraversal(character))
 				_textField.next(UIUtils.shift());

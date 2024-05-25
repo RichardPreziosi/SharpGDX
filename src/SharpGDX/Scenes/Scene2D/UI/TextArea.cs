@@ -411,8 +411,8 @@ public class TextArea : TextField {
 			bool result = base.keyDown(@event, keycode);
 			if (_textArea.hasKeyboardFocus()) {
 				bool repeat = false;
-				bool shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-				if (keycode == Input.Keys.DOWN) {
+				bool shift = Gdx.input.isKeyPressed(IInput.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(IInput.Keys.SHIFT_RIGHT);
+				if (keycode == IInput.Keys.DOWN) {
 					if (shift) {
 						if (!_textArea.hasSelection) {
 							_textArea.selectionStart = _textArea.cursor;
@@ -424,7 +424,7 @@ public class TextArea : TextField {
 					_textArea.moveCursorLine(_textArea.cursorLine + 1);
 					repeat = true;
 
-				} else if (keycode == Input.Keys.UP) {
+				} else if (keycode == IInput.Keys.UP) {
 					if (shift) {
 						if (!_textArea.hasSelection) {
 							_textArea.selectionStart = _textArea.cursor;

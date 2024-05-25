@@ -49,7 +49,7 @@ namespace SharpGDX
 				this.bitsPerPixel = bitsPerPixel;
 			}
 
-			public String toString()
+			public override String ToString()
 			{
 				return width + "x" + height + ", bpp: " + bitsPerPixel + ", hz: " + refreshRate;
 			}
@@ -96,7 +96,7 @@ namespace SharpGDX
 				this.coverageSampling = coverageSampling;
 			}
 
-			public String toString()
+			public override String ToString()
 			{
 				return "r: " + r + ", g: " + g + ", b: " + b + ", a: " + a + ", depth: " + depth + ", stencil: " + stencil
 					+ ", num samples: " + samples + ", coverage sampling: " + coverageSampling;

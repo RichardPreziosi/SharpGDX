@@ -8,7 +8,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static SharpGDX.Input;
+using static SharpGDX.IInput;
 
 
 namespace SharpGDX.Utils
@@ -509,8 +509,8 @@ namespace SharpGDX.Utils
 		public K key;
 		public int value;
 
-		public String toString()
-		{
+		public override String ToString()
+			{
 			return key + "=" + value;
 		}
 	}

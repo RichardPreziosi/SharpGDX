@@ -4,8 +4,6 @@ using SharpGDX.Utils;
 
 namespace SharpGDX.Desktop
 {
-	/** @author mzechner
- * @author Nathan Sweet */
 	public sealed class DesktopFileHandle : FileHandle
 	{
 	public DesktopFileHandle(String fileName, IFiles.FileType type)

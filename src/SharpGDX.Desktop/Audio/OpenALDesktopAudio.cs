@@ -449,24 +449,24 @@ namespace SharpGDX.Desktop.Audio
 				_isMono = isMono;
 			}
 
-			public void writeSamples(float[] samples, int offset, int numSamples)
+			public void WriteSamples(float[] samples, int offset, int numSamples)
 			{
 			}
 
-			public void writeSamples(short[] samples, int offset, int numSamples)
+			public void WriteSamples(short[] samples, int offset, int numSamples)
 			{
 			}
 
-			public void setVolume(float volume)
+			public void SetVolume(float volume)
 			{
 			}
 
-			public bool isMono()
+			public bool IsMono()
 			{
 				return _isMono;
 			}
 
-			public int getLatency()
+			public int GetLatency()
 			{
 				return 0;
 			}
@@ -475,11 +475,11 @@ namespace SharpGDX.Desktop.Audio
 			{
 			}
 
-			public void pause()
+			public void Pause()
 			{
 			}
 
-			public void resume()
+			public void Resume()
 			{
 			}
 		}
@@ -496,7 +496,7 @@ namespace SharpGDX.Desktop.Audio
 
 		private class NoAudioRecorder : IAudioRecorder
 		{
-			public void read(short[] samples, int offset, int numSamples)
+			public void Read(short[] samples, int offset, int numSamples)
 			{
 			}
 

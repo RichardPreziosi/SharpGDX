@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 using static SharpGDX.IFiles;
 
 namespace SharpGDX.Desktop
@@ -17,29 +19,31 @@ namespace SharpGDX.Desktop
 		private readonly FileHandle file;
 
 		public DesktopPreferences(String name, String directory)
-			// TODO: : this(new HeadlessFileHandle(new File(directory, name), FileType.External))
+			: this(new DesktopFileHandle(new SharpGDX.Shims.File(directory, name), FileType.External))
 		{
 
 		}
 
 		public DesktopPreferences(FileHandle file)
 		{
-			//this.file = file;
-			//if (!file.exists()) return;
-			//InputStream in = null;
-			//try
-			//{
-			//	in = new BufferedInputStream(file.read());
-			//	properties.loadFromXML(in);
-			//}
-			//catch (Throwable t)
-			//{
-			//	t.printStackTrace();
-			//}
-			//finally
-			//{
-			//	StreamUtils.closeQuietly(in);
-			//}
+			this.file = file;
+			if (!file.exists()) return;
+			FileStream @in = null;
+			try
+			{
+				@in = file.Read();
+				// TODO: properties.loadFromXML(in);
+			}
+			catch (Exception t)
+			{
+				// TODO: t.printStackTrace();
+				Console.WriteLine(t.StackTrace);
+			}
+			finally
+			{
+				@in.Close();
+				// TODO: StreamUtils.closeQuietly(@in);
+			}
 		}
 
 		public IPreferences putBoolean(String key, bool val)
@@ -164,20 +168,26 @@ namespace SharpGDX.Desktop
 
 		public void flush()
 		{
-			//OutputStream out = null;
-			//try
-			//{
-			//		out = new BufferedOutputStream(file.write(false));
-			//	properties.storeToXML(out, null);
-			//}
-			//catch (Exception ex)
-			//{
-			//	throw new GdxRuntimeException("Error writing preferences: " + file, ex);
-			//}
-			//finally
-			//{
-			//	StreamUtils.closeQuietly(out);
-			//}
+			Stream @out = null;
+			try
+			{
+				@out = file.Write(false);
+				using XmlTextWriter writer = new XmlTextWriter(@out, Encoding.UTF8);
+
+				foreach (var item in properties.entrySet())
+				{
+					writer.WriteElementString(item.Key, item.Value);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new GdxRuntimeException("Error writing preferences: " + file, ex);
+			}
+			finally
+			{
+				// TODO: StreamUtils.closeQuietly(@out);
+				@out.Close();
+			}
 		}
 
 		public void remove(String key)

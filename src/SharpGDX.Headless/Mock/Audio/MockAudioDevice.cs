@@ -14,33 +14,33 @@ public class MockAudioDevice : IAudioDevice
 	{
 	}
 
-	public int getLatency()
+	public int GetLatency()
 	{
 		return 0;
 	}
 
-	public bool isMono()
+	public bool IsMono()
 	{
 		return false;
 	}
 
-	public void pause()
+	public void Pause()
 	{
 	}
 
-	public void resume()
+	public void Resume()
 	{
 	}
 
-	public void setVolume(float volume)
+	public void SetVolume(float volume)
 	{
 	}
 
-	public void writeSamples(short[] samples, int offset, int numSamples)
+	public void WriteSamples(short[] samples, int offset, int numSamples)
 	{
 	}
 
-	public void writeSamples(float[] samples, int offset, int numSamples)
+	public void WriteSamples(float[] samples, int offset, int numSamples)
 	{
 	}
 }

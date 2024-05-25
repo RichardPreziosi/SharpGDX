@@ -15,9 +15,11 @@ namespace SharpGDX.Audio
 	 * @param samples the array to write the samples to
 	 * @param offset the offset into the array
 	 * @param numSamples the number of samples to be read */
-	public void read(short[] samples, int offset, int numSamples);
+	public void Read(short[] samples, int offset, int numSamples);
 
-	/** Disposes the AudioRecorder */
-	public void dispose();
+		/// <summary>
+		/// Disposes the IAudioRecorder.
+		/// </summary>
+		public new void dispose();
 	}
 }

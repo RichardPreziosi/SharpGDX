@@ -48,17 +48,17 @@ class AssetLoadingTask : IAsyncTask<object> {
 		if (cancel) return null;
 		IAsynchronousAssetLoader asyncLoader = (IAsynchronousAssetLoader)loader;
 		if (!dependenciesLoaded) {
-			dependencies = asyncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			dependencies = asyncLoader.getDependencies(assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 			if (dependencies != null) {
 				removeDuplicates(dependencies);
-				manager.injectDependencies(assetDesc.fileName, dependencies);
+				manager.injectDependencies(assetDesc.FileName, dependencies);
 			} else {
 				// if we have no dependencies, we load the async part of the task immediately.
-				asyncLoader.loadAsync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+				asyncLoader.loadAsync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 				asyncDone = true;
 			}
 		} else {
-			asyncLoader.loadAsync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			asyncLoader.loadAsync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 			asyncDone = true;
 		}
 		return null;
@@ -82,15 +82,15 @@ class AssetLoadingTask : IAsyncTask<object> {
 		ISynchronousAssetLoader syncLoader = (ISynchronousAssetLoader)loader;
 		if (!dependenciesLoaded) {
 			dependenciesLoaded = true;
-			dependencies = syncLoader.getDependencies(assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			dependencies = syncLoader.getDependencies(assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 			if (dependencies == null) {
-				asset = syncLoader.load(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+				asset = syncLoader.load(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 				return;
 			}
 			removeDuplicates(dependencies);
-			manager.injectDependencies(assetDesc.fileName, dependencies);
+			manager.injectDependencies(assetDesc.FileName, dependencies);
 		} else
-			asset = syncLoader.load(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			asset = syncLoader.load(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 	}
 
 	private void handleAsyncLoader () {
@@ -102,45 +102,45 @@ class AssetLoadingTask : IAsyncTask<object> {
 				try {
 					depsFuture.get();
 				} catch (Exception e) {
-					throw new GdxRuntimeException("Couldn't load dependencies of asset: " + assetDesc.fileName, e);
+					throw new GdxRuntimeException("Couldn't load dependencies of asset: " + assetDesc.FileName, e);
 				}
 				dependenciesLoaded = true;
 				if (asyncDone)
-					asset = asyncLoader.loadSync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+					asset = asyncLoader.loadSync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 			}
 		} else if (loadFuture == null && !asyncDone)
 			loadFuture = executor.submit(this);
 		else if (asyncDone)
-			asset = asyncLoader.loadSync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			asset = asyncLoader.loadSync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 		else if (loadFuture.isDone()) {
 			try {
 				loadFuture.get();
 			} catch (Exception e) {
-				throw new GdxRuntimeException("Couldn't load asset: " + assetDesc.fileName, e);
+				throw new GdxRuntimeException("Couldn't load asset: " + assetDesc.FileName, e);
 			}
-			asset = asyncLoader.loadSync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			asset = asyncLoader.loadSync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 		}
 	}
 
 	/** Called when this task is the task that is currently being processed and it is unloaded. */
 	public void unload () {
 		if (loader is IAsynchronousAssetLoader)
-			((IAsynchronousAssetLoader)loader).unloadAsync(manager, assetDesc.fileName, resolve(loader, assetDesc), assetDesc.@params);
+			((IAsynchronousAssetLoader)loader).unloadAsync(manager, assetDesc.FileName, resolve(loader, assetDesc), assetDesc.Parameters);
 	}
 
 	private FileHandle resolve (IAssetLoader loader, IAssetDescriptor assetDesc) {
-		if (assetDesc.file == null) assetDesc.file = loader.resolve(assetDesc.fileName);
-		return assetDesc.file;
+		if (assetDesc.File == null) assetDesc.File = loader.resolve(assetDesc.FileName);
+		return assetDesc.File;
 	}
 
 	private void removeDuplicates (Array<IAssetDescriptor> array) {
 		bool ordered = array.ordered;
 		array.ordered = true;
 		for (int i = 0; i < array.size; ++i) {
-			 String fn = array.get(i).fileName;
-			 Type type = array.get(i).type;
+			 String fn = array.get(i).FileName;
+			 Type type = array.get(i).Type;
 			for (int j = array.size - 1; j > i; --j)
-				if (type == array.get(j).type && fn.Equals(array.get(j).fileName)) array.removeIndex(j);
+				if (type == array.get(j).Type && fn.Equals(array.get(j).FileName)) array.removeIndex(j);
 		}
 		array.ordered = ordered;
 	}

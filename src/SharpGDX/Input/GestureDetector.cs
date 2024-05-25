@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpGDX
+namespace SharpGDX.Input
 {
 	/** {@link InputProcessor} implementation that detects gestures (tap, long press, fling, pan, zoom, pinch) and hands them to a
  * {@link GestureListener}.
@@ -99,7 +99,7 @@ public class GestureDetector : InputAdapter {
 		this.listener = listener;
 	}
 
-	public override bool touchDown (int x, int y, int pointer, int button) {
+	public override bool TouchDown (int x, int y, int pointer, int button) {
 		return touchDown((float)x, (float)y, pointer, button);
 	}
 
@@ -138,7 +138,7 @@ public class GestureDetector : InputAdapter {
 		return listener.touchDown(x, y, pointer, button);
 	}
 
-	public override bool touchDragged (int x, int y, int pointer) {
+	public override bool TouchDragged (int x, int y, int pointer) {
 		return touchDragged((float)x, (float)y, pointer);
 	}
 
@@ -175,7 +175,7 @@ public class GestureDetector : InputAdapter {
 		return false;
 	}
 
-	public override bool touchUp (int x, int y, int pointer, int button) {
+	public override bool TouchUp (int x, int y, int pointer, int button) {
 		return touchUp((float)x, (float)y, pointer, button);
 	}
 
@@ -235,9 +235,9 @@ public class GestureDetector : InputAdapter {
 		return handled;
 	}
 
-	public override bool touchCancelled (int screenX, int screenY, int pointer, int button) {
+	public override bool TouchCancelled (int screenX, int screenY, int pointer, int button) {
 		cancel();
-		return base.touchCancelled(screenX, screenY, pointer, button);
+		return base.TouchCancelled(screenX, screenY, pointer, button);
 	}
 
 	/** No further gesture events will be triggered for the current touch, if any. */
