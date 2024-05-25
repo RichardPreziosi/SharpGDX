@@ -164,7 +164,7 @@ internal CharSequenceAdapter(string chseq)
 		CharSequenceAdapter result = copy(this);
 		result._position = _position + start;
 		result._limit = _position + end;
-		return result.toString();
+		return result.ToString();
 	}
 }
 }

@@ -53,6 +53,6 @@ abstract public class DelegateAction : Action {
 	}
 
 	public override String ToString() {
-		return base.toString() + (action == null ? "" : "(" + action + ")");
+		return base.ToString() + (action == null ? "" : "(" + action + ")");
 	}
 }

@@ -95,7 +95,7 @@ public class ParallelAction : Action {
 
 	public override String ToString () {
 		StringBuilder buffer = new StringBuilder(64);
-		buffer.Append(base.toString());
+		buffer.Append(base.ToString());
 		buffer.Append('(');
 		Array<Action> actions = this.actions;
 		for (int i = 0, n = actions.size; i < n; i++) {

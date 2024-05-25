@@ -93,7 +93,7 @@ protected	CharArrayBuffer(char[] array)
 		CharBuffer result = duplicate();
 		result.limit(_position + end);
 		result.position(_position + start);
-		return result.toString();
+		return result.ToString();
 	}
 
 		public override String ToString()

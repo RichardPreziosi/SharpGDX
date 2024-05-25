@@ -205,7 +205,7 @@ namespace SharpGDX.Shims
 		CharBuffer result = duplicate();
 		result.limit(_position + end);
 		result.position(_position + start);
-		return result.toString();
+		return result.ToString();
 	}
 }
 }
