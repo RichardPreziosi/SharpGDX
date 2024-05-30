@@ -54,7 +54,7 @@ public class DragScrollListener : DragListener {
 		return interpolation.apply(minSpeed, maxSpeed, Math.Min(1, (TimeUtils.currentTimeMillis() - startTime) / (float)rampTime));
 	}
 
-	public void drag (InputEvent @event, float x, float y, int pointer) {
+		public override void drag (InputEvent @event, float x, float y, int pointer) {
 		@event.getListenerActor().localToActorCoordinates(_scroll, tmpCoords.set(x, y));
 		if (isAbove(tmpCoords.y)) {
 			scrollDown.cancel();
@@ -75,7 +75,7 @@ public class DragScrollListener : DragListener {
 		scrollDown.cancel();
 	}
 
-	public void dragStop (InputEvent @event, float x, float y, int pointer) {
+		public override void dragStop (InputEvent @event, float x, float y, int pointer) {
 		scrollUp.cancel();
 		scrollDown.cancel();
 	}

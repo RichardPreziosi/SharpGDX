@@ -61,7 +61,7 @@ public class SequenceAction : ParallelAction {
 		}
 	}
 
-	public void restart () {
+	public override void restart () {
 		base.restart();
 		index = 0;
 	}

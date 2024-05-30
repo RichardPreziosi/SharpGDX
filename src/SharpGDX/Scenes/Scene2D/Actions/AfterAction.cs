@@ -12,12 +12,12 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 public class AfterAction : DelegateAction {
 	private Array<Action> waitForActions = new (false, 4);
 
-	public void setTarget (Actor target) {
+	public override void setTarget (Actor target) {
 		if (target != null) waitForActions.addAll(target.getActions());
 		base.setTarget(target);
 	}
 
-	public void restart () {
+	public override void restart () {
 		base.restart();
 		waitForActions.clear();
 	}

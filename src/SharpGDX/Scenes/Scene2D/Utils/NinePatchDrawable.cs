@@ -36,7 +36,7 @@ public class NinePatchDrawable : BaseDrawable , ITransformDrawable {
 		this.patch = drawable.patch;
 	}
 
-	public void draw (IBatch batch, float x, float y, float width, float height) {
+		public override void draw (IBatch batch, float x, float y, float width, float height) {
 		patch.draw(batch, x, y, width, height);
 	}
 

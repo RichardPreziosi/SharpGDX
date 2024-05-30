@@ -129,7 +129,7 @@ namespace SharpGDX.Utils
 
 	/** Returns true if the key was added to the set or false if it was already in the set. If this set already contains the key,
 	 * the call leaves the set unchanged and returns false. */
-	public bool add(T key)
+	public virtual bool add(T key)
 	{
 		int i = locateKey(key);
 		if (i >= 0) return false; // Existing key was found.
@@ -237,7 +237,7 @@ namespace SharpGDX.Utils
 	/** Clears the set and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
 	 * The reduction is done by allocating new arrays, though for large arrays this can be faster than clearing the existing
 	 * array. */
-	public void clear(int maximumCapacity)
+	public virtual void clear(int maximumCapacity)
 	{
 		int tableSize = ObjectSet<T>.tableSize(maximumCapacity, loadFactor);
 		if (keyTable.Length <= tableSize)
@@ -251,7 +251,7 @@ namespace SharpGDX.Utils
 
 	/** Clears the set, leaving the backing arrays at the current capacity. When the capacity is high and the population is low,
 	 * iteration can be unnecessarily slow. {@link #clear(int)} can be used to reduce the capacity. */
-	public void clear()
+	public virtual void clear()
 	{
 		if (size == 0) return;
 		size = 0;

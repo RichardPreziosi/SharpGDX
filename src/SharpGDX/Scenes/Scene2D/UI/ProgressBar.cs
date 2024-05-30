@@ -287,7 +287,7 @@ public class ProgressBar : Widget , IDisableable {
 		this.stepSize = stepSize;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (vertical) {
 			IDrawable knob = style.knob, bg = getBackgroundDrawable();
 			return Math.Max(knob == null ? 0 : knob.getMinWidth(), bg == null ? 0 : bg.getMinWidth());
@@ -295,7 +295,7 @@ public class ProgressBar : Widget , IDisableable {
 			return 140;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (vertical)
 			return 140;
 		else {

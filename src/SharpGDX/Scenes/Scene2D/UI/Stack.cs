@@ -26,7 +26,7 @@ public class Stack : WidgetGroup {
 			addActor(actor);
 	}
 
-	public void invalidate () {
+	public override void invalidate () {
 		base.invalidate();
 		sizeInvalid = true;
 	}
@@ -68,7 +68,7 @@ public class Stack : WidgetGroup {
 		addActor(actor);
 	}
 
-	public void layout () {
+	public override void layout () {
 		if (sizeInvalid) computeSize();
 		float width = getWidth(), height = getHeight();
 		Array<Actor> children = getChildren();
@@ -79,22 +79,22 @@ public class Stack : WidgetGroup {
 		}
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (sizeInvalid) computeSize();
 		return prefWidth;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (sizeInvalid) computeSize();
 		return prefHeight;
 	}
 
-	public float getMinWidth () {
+	public override float getMinWidth () {
 		if (sizeInvalid) computeSize();
 		return minWidth;
 	}
 
-	public float getMinHeight () {
+	public override float getMinHeight () {
 		if (sizeInvalid) computeSize();
 		return minHeight;
 	}

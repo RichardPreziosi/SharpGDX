@@ -33,7 +33,7 @@ public class VerticalGroup : WidgetGroup {
 		setTouchable(Touchable.childrenOnly);
 	}
 
-	public void invalidate () {
+	public override void invalidate () {
 		base.invalidate();
 		sizeInvalid = true;
 	}
@@ -274,12 +274,12 @@ public class VerticalGroup : WidgetGroup {
 		}
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (sizeInvalid) computeSize();
 		return prefWidth;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (_wrap) return 0;
 		if (sizeInvalid) computeSize();
 		return prefHeight;
@@ -534,7 +534,7 @@ public class VerticalGroup : WidgetGroup {
 		return this;
 	}
 
-	protected void drawDebugBounds (ShapeRenderer shapes) {
+	protected override void drawDebugBounds (ShapeRenderer shapes) {
 		base.drawDebugBounds(shapes);
 		if (!getDebug()) return;
 		shapes.set(ShapeRenderer.ShapeType.Line);

@@ -25,11 +25,11 @@ public class AddAction : Action {
 		this.action = action;
 	}
 
-	public void restart () {
+	public override void restart () {
 		if (action != null) action.restart();
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		action = null;
 	}

@@ -77,17 +77,17 @@ namespace SharpGDX.Shims
 		throw new ReadOnlyBufferException();
 	}
 
-		public CharBuffer put(char[] src, int off, int len)
+		public override CharBuffer put(char[] src, int off, int len)
 	{
 		throw new ReadOnlyBufferException();
 	}
 
-		public CharBuffer put(CharBuffer src)
+		public override CharBuffer put(CharBuffer src)
 	{
 		throw new ReadOnlyBufferException();
 	}
 
-	public CharBuffer put(String src, int start, int end)
+		public override CharBuffer put(String src, int start, int end)
 	{
 		if ((start < 0) || (end < 0) || (long)start + (long)end > src.Length)
 		{

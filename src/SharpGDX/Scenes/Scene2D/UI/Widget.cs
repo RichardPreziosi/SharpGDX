@@ -20,19 +20,19 @@ public class Widget : Actor , ILayout {
 	private bool fillParent;
 	private bool layoutEnabled = true;
 
-	public float getMinWidth () {
+	public virtual float getMinWidth () {
 		return getPrefWidth();
 	}
 
-	public float getMinHeight () {
+	public virtual float getMinHeight () {
 		return getPrefHeight();
 	}
 
-	public float getPrefWidth () {
+	public virtual float getPrefWidth () {
 		return 0;
 	}
 
-	public float getPrefHeight () {
+	public virtual float getPrefHeight () {
 		return 0;
 	}
 
@@ -87,7 +87,7 @@ public class Widget : Actor , ILayout {
 		if (parent is ILayout) ((ILayout)parent).invalidateHierarchy();
 	}
 
-	protected void sizeChanged () {
+	protected override void sizeChanged () {
 		invalidate();
 	}
 
@@ -101,7 +101,7 @@ public class Widget : Actor , ILayout {
 	}
 
 	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget is laid out. */
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 	}
 

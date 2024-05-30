@@ -12,24 +12,24 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
  * transitions from the alpha at the time the action starts to the specified alpha.
  * @author Nathan Sweet */
 public class AlphaAction : TemporalAction {
-	private float start, end;
+	private float _start, _end;
 	private  Color? color;
 
-	protected void begin () {
+	protected override void begin () {
 		if (color == null) color = target.getColor();
-		start = color.a;
+		_start = color.a;
 	}
 
 	protected override void update (float percent) {
 		if (percent == 0)
-			color.a = start;
+			color.a = _start;
 		else if (percent == 1)
-			color.a = end;
+			color.a = _end;
 		else
-			color.a = start + (end - start) * percent;
+			color.a = _start + (_end - _start) * percent;
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		color = null;
 	}
@@ -45,10 +45,10 @@ public class AlphaAction : TemporalAction {
 	}
 
 	public float getAlpha () {
-		return end;
+		return _end;
 	}
 
 	public void setAlpha (float alpha) {
-		this.end = alpha;
+		this._end = alpha;
 	}
 }

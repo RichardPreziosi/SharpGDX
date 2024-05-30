@@ -17,7 +17,7 @@ namespace SharpGDX.Shims
 			stream = new MemoryStream();
 		}
 
-		public void write(byte[] buffer, int offset, int length)
+		public virtual void write(byte[] buffer, int offset, int length)
 		{
 			stream.Write(buffer, offset, length);
 
@@ -33,7 +33,7 @@ namespace SharpGDX.Shims
 			var s = 1;
 		}
 
-		public void close()
+		public virtual void close()
 		{
 			// TODO: Should probably be disposing honestly. -RP
 			stream.Close();

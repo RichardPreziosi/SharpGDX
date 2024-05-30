@@ -19,7 +19,7 @@ public class ArraySelection<T> : Selection<T> {
 		this.array = array;
 	}
 
-	public void choose (T item) {
+		public override void choose (T item) {
 		if (item == null) throw new IllegalArgumentException("item cannot be null.");
 		if (_isDisabled) return;
 
@@ -57,7 +57,7 @@ public class ArraySelection<T> : Selection<T> {
 	}
 
 	/** Called after the selection changes, clears the range start item. */
-	protected void changed () {
+	protected override void changed () {
 		rangeStart = default;
 	}
 

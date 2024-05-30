@@ -228,7 +228,7 @@ public Label (String? text, LabelStyle style) {
 		if (fontScaleChanged) font.getData().setScale(oldScaleX, oldScaleY);
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 		Color color = tempColor.set(getColor());
 		color.a *= parentAlpha;
@@ -242,7 +242,7 @@ public Label (String? text, LabelStyle style) {
 		cache.draw(batch);
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (wrap) return 0;
 		if (prefSizeInvalid) scaleAndComputePrefSize();
 		float width = prefWidth;
@@ -252,7 +252,7 @@ public Label (String? text, LabelStyle style) {
 		return width;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (prefSizeInvalid) scaleAndComputePrefSize();
 		float descentScaleCorrection = 1;
 		if (fontScaleChanged) descentScaleCorrection = fontScaleY / style.font.getScaleY();

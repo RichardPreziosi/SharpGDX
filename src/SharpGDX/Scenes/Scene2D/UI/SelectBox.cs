@@ -115,7 +115,7 @@ private class SelectBoxSelection : ArraySelection<T>
 		return scrollPane.maxListCount;
 	}
 
-	protected void setStage (Stage stage) {
+	internal protected override void setStage (Stage stage) {
 		if (stage == null) scrollPane.hide();
 		base.setStage(stage);
 	}
@@ -607,18 +607,18 @@ protected List<T> newList () {
 			selectBox.onHide(this);
 		}
 
-		public void draw (IBatch batch, float parentAlpha) {
+		public override void draw (IBatch batch, float parentAlpha) {
 			selectBox.localToStageCoordinates(temp.set(0, 0));
 			if (!temp.Equals(stagePosition)) hide();
 			base.draw(batch, parentAlpha);
 		}
 
-		public void act (float delta) {
+		public override void act (float delta) {
 			base.act(delta);
 			toFront();
 		}
 
-		protected void setStage (Stage stage) {
+		internal protected override void setStage (Stage stage) {
 			Stage oldStage = getStage();
 			if (oldStage != null) {
 				oldStage.removeCaptureListener(hideListener);

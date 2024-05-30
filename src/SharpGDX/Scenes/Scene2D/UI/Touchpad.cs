@@ -63,7 +63,7 @@ public class Touchpad : Widget {
 			_touchpad = touchpad;
 		}
 
-		public bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
+		public override bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
 		{
 			if (_touchpad.touched) return false;
 			_touchpad.touched = true;
@@ -71,12 +71,12 @@ public class Touchpad : Widget {
 			return true;
 		}
 
-		public void touchDragged(InputEvent @event, float x, float y, int pointer)
+		public override void touchDragged(InputEvent @event, float x, float y, int pointer)
 		{
 			_touchpad.calculatePositionAndValue(x, y, false);
 		}
 
-		public void touchUp(InputEvent @event, float x, float y, int pointer, int button)
+		public override void touchUp(InputEvent @event, float x, float y, int pointer, int button)
 		{
 			_touchpad.touched = false;
 			_touchpad.calculatePositionAndValue(x, y, _touchpad.resetOnTouchUp);

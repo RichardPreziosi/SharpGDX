@@ -47,7 +47,7 @@ public class CheckBox : TextButton {
 		return new Image((IDrawable)null, Scaling.none);
 	}
 
-	public void setStyle (Button.ButtonStyle style) {
+	public override void setStyle (Button.ButtonStyle style) {
 		if (!(style is CheckBoxStyle)) throw new IllegalArgumentException("style must be a CheckBoxStyle.");
 		this.style = (CheckBoxStyle)style;
 		base.setStyle(style);
@@ -55,11 +55,11 @@ public class CheckBox : TextButton {
 
 	/** Returns the checkbox's style. Modifying the returned style may not have an effect until {@link #setStyle(ButtonStyle)} is
 	 * called. */
-	public CheckBoxStyle getStyle () {
+	public override CheckBoxStyle getStyle () {
 		return style;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		image.setDrawable(getImageDrawable());
 		base.draw(batch, parentAlpha);
 	}

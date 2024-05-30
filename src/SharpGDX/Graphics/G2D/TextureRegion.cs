@@ -79,7 +79,7 @@ public class TextureRegion {
 		regionHeight = Math.Abs(height);
 	}
 
-	public void setRegion (float u, float v, float u2, float v2) {
+	public virtual void setRegion (float u, float v, float u2, float v2) {
 		int texWidth = texture.getWidth(), texHeight = texture.getHeight();
 		regionWidth = (int)Math.Round(Math.Abs(u2 - u) * texWidth);
 		regionHeight = (int)Math.Round(Math.Abs(v2 - v) * texHeight);
@@ -124,7 +124,7 @@ public class TextureRegion {
 		return u;
 	}
 
-	public void setU (float u) {
+	public virtual void setU (float u) {
 		this.u = u;
 		regionWidth = (int)Math.Round(Math.Abs(u2 - u) * texture.getWidth());
 	}
@@ -133,7 +133,7 @@ public class TextureRegion {
 		return v;
 	}
 
-	public void setV (float v) {
+	public virtual void setV (float v) {
 		this.v = v;
 		regionHeight = (int)Math.Round(Math.Abs(v2 - v) * texture.getHeight());
 	}
@@ -142,7 +142,7 @@ public class TextureRegion {
 		return u2;
 	}
 
-	public void setU2 (float u2) {
+	public virtual void setU2 (float u2) {
 		this.u2 = u2;
 		regionWidth = (int)Math.Round(Math.Abs(u2 - u) * texture.getWidth());
 	}
@@ -151,7 +151,7 @@ public class TextureRegion {
 		return v2;
 	}
 
-	public void setV2 (float v2) {
+	public virtual void setV2 (float v2) {
 		this.v2 = v2;
 		regionHeight = (int)Math.Round(Math.Abs(v2 - v) * texture.getHeight());
 	}
@@ -223,7 +223,7 @@ public class TextureRegion {
 	 * the direction(s) it is scrolled.
 	 * @param xAmount The percentage to offset horizontally.
 	 * @param yAmount The percentage to offset vertically. This is done in texture space, so up is negative. */
-	public void scroll (float xAmount, float yAmount) {
+	public virtual void scroll (float xAmount, float yAmount) {
 		if (xAmount != 0) {
 			float width = (u2 - u) * texture.getWidth();
 			u = (u + xAmount) % 1;

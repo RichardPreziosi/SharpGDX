@@ -134,7 +134,7 @@ public class ShaderProgram : Disposable {
 
 		this.vertexShaderSource = vertexShader;
 		this.fragmentShaderSource = fragmentShader;
-		this.matrix = BufferUtils.newFloatBuffer(16);
+		this.matrix = FloatBuffer.allocate(16); // TODO: BufferUtils.newFloatBuffer(16);
 
 		compileShaders(vertexShader, fragmentShader);
 		if (isCompiled()) {
@@ -174,7 +174,7 @@ public class ShaderProgram : Disposable {
 
 	private int loadShader (int type, String source) {
 		GL20 gl = Gdx.gl20;
-		IntBuffer intbuf = BufferUtils.newIntBuffer(1);
+		IntBuffer intbuf = IntBuffer.allocate(1); // TODO: BufferUtils.newIntBuffer(1);
 
 		int shader = gl.glCreateShader(type);
 
@@ -213,7 +213,7 @@ public class ShaderProgram : Disposable {
 		gl.glAttachShader(program, fragmentShaderHandle);
 		gl.glLinkProgram(program);
 
-		ByteBuffer tmp = ByteBuffer.allocateDirect(4);
+		ByteBuffer tmp = ByteBuffer.allocate(4); // TODO: ByteBuffer.allocateDirect(4);
 		tmp.order(ByteOrder.nativeOrder());
 		IntBuffer intbuf = tmp.asIntBuffer();
 
@@ -231,7 +231,7 @@ public class ShaderProgram : Disposable {
 		return program;
 	}
 
-	readonly static IntBuffer intbuf = BufferUtils.newIntBuffer(1);
+	readonly static IntBuffer intbuf = IntBuffer.allocate(1); // TODO: BufferUtils.newIntBuffer(1);
 
 	/** @return the log info for the shader compilation and program linking stage. The shader needs to be bound for this method to
 	 *         have an effect. */
@@ -780,8 +780,8 @@ public class ShaderProgram : Disposable {
 		gl.glVertexAttrib4f(location, value1, value2, value3, value4);
 	}
 
-	IntBuffer @params = BufferUtils.newIntBuffer(1);
-	IntBuffer type = BufferUtils.newIntBuffer(1);
+	private IntBuffer @params = IntBuffer.allocate(1); // TODO: BufferUtils.newIntBuffer(1);
+	private IntBuffer type = IntBuffer.allocate(1); // TODO: BufferUtils.newIntBuffer(1);
 
 	private void fetchUniforms () {
 		((Buffer)@params).clear();

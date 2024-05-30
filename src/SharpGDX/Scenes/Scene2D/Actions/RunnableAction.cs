@@ -33,11 +33,11 @@ public class RunnableAction : Action {
 		}
 	}
 
-	public void restart () {
+	public override void restart () {
 		ran = false;
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		runnable = null;
 	}

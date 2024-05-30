@@ -48,7 +48,7 @@ public class TextArea : TextField {
 		
 	}
 
-	protected void initialize () {
+	protected override void initialize () {
 		base.initialize();
 		writeEnters = true;
 		linesBreak = new IntArray();
@@ -58,7 +58,7 @@ public class TextArea : TextField {
 		linesShowing = 0;
 	}
 
-	protected int letterUnderCursor (float x) {
+	protected override int letterUnderCursor (float x) {
 		if (linesBreak.size > 0) {
 			if (cursorLine * 2 >= linesBreak.size) {
 				return text.Length;
@@ -78,7 +78,7 @@ public class TextArea : TextField {
 		}
 	}
 
-	public void setStyle (TextFieldStyle style) {
+	public override void setStyle (TextFieldStyle style) {
 		// same as super(), just different textHeight. no super() so we don't do same work twice
 		if (style == null) throw new IllegalArgumentException("style cannot be null.");
 		this.style = style;
@@ -94,7 +94,7 @@ public class TextArea : TextField {
 		this.prefRows = prefRows;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (prefRows <= 0) {
 			return base.getPrefHeight();
 		} else {
@@ -264,7 +264,7 @@ public class TextArea : TextField {
 		cursorPatch.draw(batch, x + getCursorX(), y + getCursorY(), cursorPatch.getMinWidth(), font.getLineHeight());
 	}
 
-	protected void calculateOffsets () {
+	protected override void calculateOffsets () {
 		base.calculateOffsets();
 		if (!this.text.Equals(lastText)) {
 			this.lastText = text;
@@ -308,16 +308,16 @@ public class TextArea : TextField {
 		}
 	}
 
-	protected InputListener createInputListener () {
+	protected override InputListener createInputListener () {
 		return new TextAreaListener(this);
 	}
 
-	public void setSelection (int selectionStart, int selectionEnd) {
+	public override void setSelection(int selectionStart, int selectionEnd) {
 		base.setSelection(selectionStart, selectionEnd);
 		updateCurrentLine();
 	}
 
-	protected void moveCursor (bool forward, bool jump) {
+	protected override void moveCursor (bool forward, bool jump) {
 		int count = forward ? 1 : -1;
 		int index = (cursorLine * 2) + count;
 		if (index >= 0 && index + 1 < linesBreak.size && linesBreak.items[index] == cursor
@@ -334,7 +334,7 @@ public class TextArea : TextField {
 
 	}
 
-	protected bool continueCursor (int index, int offset) {
+	protected override bool continueCursor (int index, int offset) {
 		int pos = calculateCurrentLineIndex(index + offset);
 		return base.continueCursor(index, offset) && (pos < 0 || pos >= linesBreak.size - 2 || (linesBreak.items[pos + 1] != index)
 			|| (linesBreak.items[pos + 1] == linesBreak.items[pos + 2]));
@@ -383,7 +383,7 @@ public class TextArea : TextField {
 			_textArea = textArea;
 		}
 
-		protected void setCursorPosition (float x, float y) {
+		protected override void setCursorPosition (float x, float y) {
 			_textArea.moveOffset = -1;
 
 			IDrawable background = _textArea.style.background;
@@ -407,7 +407,7 @@ public class TextArea : TextField {
 			_textArea.updateCurrentLine();
 		}
 
-		public bool keyDown (InputEvent @event, int keycode) {
+		public override bool keyDown (InputEvent @event, int keycode) {
 			bool result = base.keyDown(@event, keycode);
 			if (_textArea.hasKeyboardFocus()) {
 				bool repeat = false;
@@ -448,17 +448,17 @@ public class TextArea : TextField {
 			return result;
 		}
 
-		protected bool checkFocusTraversal (char character) {
+		protected override bool checkFocusTraversal (char character) {
 			return _textArea.focusTraversal && character == TAB;
 		}
 
-		public bool keyTyped (InputEvent @event, char character) {
+		public override bool keyTyped (InputEvent @event, char character) {
 			bool result = base.keyTyped(@event, character);
 			_textArea.showCursor();
 			return result;
 		}
 
-		protected void goHome (bool jump) {
+		protected override void goHome (bool jump) {
 			if (jump) {
 				_textArea.cursor = 0;
 			} else if (_textArea.cursorLine * 2 < _textArea.linesBreak.size) {
@@ -466,7 +466,7 @@ public class TextArea : TextField {
 			}
 		}
 
-		protected void goEnd (bool jump) {
+		protected override void goEnd (bool jump) {
 			if (jump || _textArea.cursorLine >= _textArea.getLines()) {
 				_textArea.cursor = _textArea.text.Length;
 			} else if (_textArea.cursorLine * 2 + 1 < _textArea.linesBreak.size) {

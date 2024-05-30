@@ -107,7 +107,7 @@ internal	ReadWriteFloatArrayBuffer(float[] array)
 		return this;
 	}
 
-	public FloatBuffer put(float[] src, int off, int len)
+		public override FloatBuffer put(float[] src, int off, int len)
 	{
 		int length = src.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length)

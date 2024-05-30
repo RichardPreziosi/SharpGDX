@@ -14,9 +14,9 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 public class ColorAction : TemporalAction {
 	private float startR, startG, startB, startA;
 	private  Color? color;
-	private readonly Color end = new Color();
+	private readonly Color _end = new Color();
 
-	protected void begin () {
+	protected override void begin () {
 		if (color == null) color = target.getColor();
 		startR = color.r;
 		startG = color.g;
@@ -28,17 +28,17 @@ public class ColorAction : TemporalAction {
 		if (percent == 0)
 			color.set(startR, startG, startB, startA);
 		else if (percent == 1)
-			color.set(end);
+			color.set(_end);
 		else {
-			float r = startR + (end.r - startR) * percent;
-			float g = startG + (end.g - startG) * percent;
-			float b = startB + (end.b - startB) * percent;
-			float a = startA + (end.a - startA) * percent;
+			float r = startR + (_end.r - startR) * percent;
+			float g = startG + (_end.g - startG) * percent;
+			float b = startB + (_end.b - startB) * percent;
+			float a = startA + (_end.a - startA) * percent;
 			color.set(r, g, b, a);
 		}
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		color = null;
 	}
@@ -54,11 +54,11 @@ public class ColorAction : TemporalAction {
 	}
 
 	public Color getEndColor () {
-		return end;
+		return _end;
 	}
 
 	/** Sets the color to transition to. Required. */
 	public void setEndColor (Color color) {
-		end.set(color);
+		_end.set(color);
 	}
 }

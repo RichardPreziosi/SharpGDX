@@ -18,7 +18,7 @@ public class InputEvent : Event {
 	private Actor? relatedActor;
 	private bool touchFocus = true;
 
-	public void reset () {
+		public override void reset () {
 		base.reset();
 		relatedActor = null;
 		button = -1;

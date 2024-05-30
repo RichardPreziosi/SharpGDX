@@ -93,7 +93,7 @@ public class Table : WidgetGroup {
 		return cell;
 	}
 
-	public virtual void draw (IBatch batch, float parentAlpha) {
+		public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 		if (isTransform()) {
 			applyTransform(batch, computeTransform());
@@ -161,7 +161,7 @@ public class Table : WidgetGroup {
 		return _background;
 	}
 
-	public Actor? hit (float x, float y, bool touchable) {
+	public virtual Actor? hit (float x, float y, bool touchable) {
 		if (_clip) {
 			if (touchable && getTouchable() == Touchable.disabled) return null;
 			if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
@@ -303,26 +303,26 @@ public class Table : WidgetGroup {
 		return add(stack);
 	}
 
-	public bool removeActor (Actor actor) {
+		public override bool removeActor (Actor actor) {
 		return removeActor(actor, true);
 	}
 
-	public bool removeActor (Actor actor, bool unfocus) {
+		public override bool removeActor (Actor actor, bool unfocus) {
 		if (!base.removeActor(actor, unfocus)) return false;
 		Cell cell = getCell(actor);
 		if (cell != null) cell.actor = null;
 		return true;
 	}
 
-	public Actor removeActorAt (int index, bool unfocus) {
+		public override Actor removeActorAt (int index, bool unfocus) {
 		Actor actor = base.removeActorAt(index, unfocus);
 		Cell cell = getCell(actor);
 		if (cell != null) cell.actor = null;
 		return actor;
 	}
 
-	/** Removes all actors and cells from the table. */
-	public void clearChildren (bool unfocus) {
+		/** Removes all actors and cells from the table. */
+		public override void clearChildren (bool unfocus) {
 		Object[] cells = this.cells.items;
 		for (int i = this.cells.size - 1; i >= 0; i--) {
 			Cell cell = (Cell)cells[i];
@@ -422,26 +422,26 @@ public class Table : WidgetGroup {
 		return cells;
 	}
 
-	public float getPrefWidth () {
+		public override float getPrefWidth () {
 		if (sizeInvalid) computeSize();
 		float width = tablePrefWidth;
 		if (_background != null) return Math.Max(width, _background.getMinWidth());
 		return width;
 	}
 
-	public float getPrefHeight () {
+		public override float getPrefHeight () {
 		if (sizeInvalid) computeSize();
 		float height = tablePrefHeight;
 		if (_background != null) return Math.Max(height, _background.getMinHeight());
 		return height;
 	}
 
-	public float getMinWidth () {
+		public override float getMinWidth () {
 		if (sizeInvalid) computeSize();
 		return tableMinWidth;
 	}
 
-	public float getMinHeight () {
+		public override float getMinHeight () {
 		if (sizeInvalid) computeSize();
 		return tableMinHeight;
 	}
@@ -591,16 +591,16 @@ public class Table : WidgetGroup {
 		return this;
 	}
 
-	public void setDebug (bool enabled) {
+		public override void setDebug (bool enabled) {
 		debug(enabled ? Debug.all : Debug.none);
 	}
 
-	public Table debug () {
+		public override Table debug () {
 		base.debug();
 		return this;
 	}
 
-	public Table debugAll () {
+		public override Table debugAll () {
 		base.debugAll();
 		return this;
 	}
@@ -948,9 +948,9 @@ public class Table : WidgetGroup {
 		}
 	}
 
-	/** Positions and sizes children of the table using the cell associated with each child. The values given are the position
-	 * within the parent and size of the table. */
-	public void layout () {
+		/** Positions and sizes children of the table using the cell associated with each child. The values given are the position
+		 * within the parent and size of the table. */
+		public override void layout () {
 		if (sizeInvalid) computeSize();
 
 		float layoutWidth = getWidth(), layoutHeight = getHeight();
@@ -1219,7 +1219,7 @@ public class Table : WidgetGroup {
 		debugRects.add(rect);
 	}
 
-	public void drawDebug (ShapeRenderer shapes) {
+		public override void drawDebug (ShapeRenderer shapes) {
 		if (isTransform()) {
 			applyTransform(shapes, computeTransform());
 			drawDebugRects(shapes);

@@ -162,7 +162,7 @@ public class BitmapFont : Disposable {
 		load(data);
 	}
 
-	protected void load (BitmapFontData data) {
+	protected virtual void load (BitmapFontData data) {
 		foreach (Glyph[] page in data.glyphs) {
 			if (page == null) continue;
 			foreach (Glyph glyph in page)

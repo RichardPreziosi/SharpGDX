@@ -300,7 +300,7 @@ protected		CharBuffer(int capacity)
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception BufferUnderflowException if {@code len} is greater than {@code remaining()}.
 	 * @since Android 1.0 */
-	public CharBuffer get(char[] dest, int off, int len)
+	public virtual CharBuffer get(char[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if ((off < 0) || (len < 0) || (long)off + (long)len > length)
@@ -430,7 +430,7 @@ protected		CharBuffer(int capacity)
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public CharBuffer put(char[] src, int off, int len)
+	public virtual CharBuffer put(char[] src, int off, int len)
 	{
 		int length = src.Length;
 		if ((off < 0) || (len < 0) || (long)off + (long)len > length)
@@ -458,7 +458,7 @@ protected		CharBuffer(int capacity)
 	 * @exception IllegalArgumentException if {@code src} is this buffer.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public CharBuffer put(CharBuffer src)
+	public virtual CharBuffer put(CharBuffer src)
 	{
 		if (src == this)
 		{
@@ -512,7 +512,7 @@ protected		CharBuffer(int capacity)
 	 * @exception IndexOutOfBoundsException if either {@code start} or {@code end} is invalid.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public CharBuffer put(String str, int start, int end)
+	public virtual CharBuffer put(String str, int start, int end)
 	{
 		int length = str.Length;
 		if (start < 0 || end < start || end > length)

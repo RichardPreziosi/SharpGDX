@@ -142,7 +142,7 @@ namespace SharpGDX.Shims
 		return byteBuffer.isDirect();
 	}
 
-		public bool isReadOnly()
+		public override bool isReadOnly()
 	{
 		return byteBuffer.isReadOnly();
 	}

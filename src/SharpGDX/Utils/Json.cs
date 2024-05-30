@@ -872,7 +872,7 @@ public class Json {
 			//}
 		}
 
-		public void readFields (Object obj, JsonValue jsonMap) {
+		public virtual void readFields (Object obj, JsonValue jsonMap) {
 		throw new NotImplementedException();
 		//Type type = obj.GetType();
 			//OrderedMap<String, FieldMetadata> fields = getFields(type);
@@ -915,7 +915,7 @@ public class Json {
 		 * @param fieldName A field name encountered in the JSON for which there is no matching class field.
 		 * @return true if the field name should be ignored and an exception won't be thrown by
 		 *         {@link #readFields(Object, JsonValue)}. */
-		protected bool ignoreUnknownField (Type type, String fieldName) {
+		protected virtual bool ignoreUnknownField (Type type, String fieldName) {
 		return false;
 	}
 
@@ -965,7 +965,7 @@ public class Json {
 	/** @param type May be null if the type is unknown.
 	 * @param elementType May be null if the type is unknown.
 	 * @return May be null. */
-	public  T? readValue<T>(Type? type, Type? elementType, JsonValue jsonData) {
+	public  virtual T? readValue<T>(Type? type, Type? elementType, JsonValue jsonData) {
 		throw new NotImplementedException();
 		//if (jsonData == null) return null;
 
@@ -1273,7 +1273,7 @@ public class Json {
 	 public interface ISerializer<T> :ISerializer {
 		public void write (Json json, T obj, Type knownType);
 
-		public new T read (Json json, JsonValue jsonData, Type type);
+		public T read (Json json, JsonValue jsonData, Type type);
 	}
 
 	 abstract public class ReadOnlySerializer<T> : ISerializer<T> {

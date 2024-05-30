@@ -15,7 +15,7 @@ public class DragListener : InputListener {
 	private int _button;
 	private bool dragging;
 
-	public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
+		public override bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
 		if (pressedPointer != -1) return false;
 		if (pointer == 0 && this._button != -1 && button != this._button) return false;
 		pressedPointer = pointer;
@@ -26,7 +26,7 @@ public class DragListener : InputListener {
 		return true;
 	}
 
-	public void touchDragged (InputEvent @event, float x, float y, int pointer) {
+		public override void touchDragged (InputEvent @event, float x, float y, int pointer) {
 		if (pointer != pressedPointer) return;
 		if (!dragging && (Math.Abs(touchDownX - x) > tapSquareSize || Math.Abs(touchDownY - y) > tapSquareSize)) {
 			dragging = true;
@@ -45,7 +45,7 @@ public class DragListener : InputListener {
 		}
 	}
 
-	public void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
+		public override void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
 		if (pointer == pressedPointer) {
 			if (dragging) dragStop(@event, x, y, pointer);
 			cancel();
@@ -55,10 +55,10 @@ public class DragListener : InputListener {
 	public void dragStart (InputEvent @event, float x, float y, int pointer) {
 	}
 
-	public void drag (InputEvent @event, float x, float y, int pointer) {
+	public virtual void drag (InputEvent @event, float x, float y, int pointer) {
 	}
 
-	public void dragStop (InputEvent @event, float x, float y, int pointer) {
+	public virtual void dragStop (InputEvent @event, float x, float y, int pointer) {
 	}
 
 	/* If a drag is in progress, no further drag methods will be called until a new drag is started. */

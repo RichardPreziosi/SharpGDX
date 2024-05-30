@@ -57,7 +57,7 @@ protected	CharArrayBuffer(char[] array)
 		return backingArray[offset + index];
 	}
 
-	public  CharBuffer get(char[] dest, int off, int len)
+	public override CharBuffer get(char[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if ((off < 0) || (len < 0) || (long)off + (long)len > length)

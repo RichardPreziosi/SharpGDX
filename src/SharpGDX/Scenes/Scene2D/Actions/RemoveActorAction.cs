@@ -20,7 +20,7 @@ public class RemoveActorAction : Action {
 		return true;
 	}
 
-	public void restart () {
+	public override void restart () {
 		removed = false;
 	}
 }

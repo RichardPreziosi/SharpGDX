@@ -450,7 +450,7 @@ public class Skin : Disposable {
 	{
 		static private String parentFieldName = "parent";
 
-		public T readValue<T>(Type type, Type elementType, JsonValue jsonData)
+			public override T readValue<T>(Type type, Type elementType, JsonValue jsonData)
 		{
 			throw new NotImplementedException();
 				// If the JSON is a string but the type is not, look up the actual value by name.
@@ -459,12 +459,12 @@ public class Skin : Disposable {
 			//return base.readValue(type, elementType, jsonData);
 		}
 
-		protected  bool ignoreUnknownField(Type type, String fieldName)
+			protected override bool ignoreUnknownField(Type type, String fieldName)
 		{
 			return fieldName.Equals(parentFieldName);
 		}
 
-		public  void readFields(Object obj, JsonValue jsonMap)
+			public override void readFields(Object obj, JsonValue jsonMap)
 		{
 			throw new NotImplementedException();
 			//	if (jsonMap.has(parentFieldName))

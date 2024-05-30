@@ -61,7 +61,7 @@ public class ImageTextButton : Button {
 		return new Label(text, style);
 	}
 
-	public void setStyle (ButtonStyle style) {
+	public override void setStyle (ButtonStyle style) {
 		if (!(style is ImageTextButtonStyle)) throw new IllegalArgumentException("style must be a ImageTextButtonStyle.");
 		this.style = (ImageTextButtonStyle)style;
 		base.setStyle(style);
@@ -77,7 +77,7 @@ public class ImageTextButton : Button {
 		}
 	}
 
-	public ImageTextButtonStyle getStyle () {
+	public override ImageTextButtonStyle getStyle () {
 		return style;
 	}
 

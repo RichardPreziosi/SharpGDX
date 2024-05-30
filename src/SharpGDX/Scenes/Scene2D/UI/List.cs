@@ -51,7 +51,7 @@ public class List<T> : Widget , ICullable {
 			_list = list;
 		}
 
-		public bool keyDown(InputEvent @event, int keycode)
+		public override bool keyDown(InputEvent @event, int keycode)
 		{
 			if (_list.items.isEmpty()) return false;
 			int index;
@@ -88,7 +88,7 @@ public class List<T> : Widget , ICullable {
 			return false;
 		}
 
-		public bool keyTyped(InputEvent @event, char character)
+		public override bool keyTyped(InputEvent @event, char character)
 		{
 			if (!_list.typeToSelect) return false;
 			long time = TimeUtils.currentTimeMillis();
@@ -115,7 +115,7 @@ public class List<T> : Widget , ICullable {
 			_list = list;
 		}
 
-		public bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
+		public override bool touchDown(InputEvent @event, float x, float y, int pointer, int button)
 		{
 			if (pointer != 0 || button != 0) return true;
 			if (_list.selection.isDisabled()) return true;
@@ -128,24 +128,24 @@ public class List<T> : Widget , ICullable {
 			return true;
 		}
 
-		public void touchUp(InputEvent @event, float x, float y, int pointer, int button)
+		public override void touchUp(InputEvent @event, float x, float y, int pointer, int button)
 		{
 			if (pointer != 0 || button != 0) return;
 			_list.pressedIndex = -1;
 		}
 
-		public void touchDragged(InputEvent @event, float x, float y, int pointer)
+		public override void touchDragged(InputEvent @event, float x, float y, int pointer)
 		{
 			_list.overIndex = _list.getItemIndexAt(y);
 		}
 
-		public bool mouseMoved(InputEvent @event, float x, float y)
+		public override bool mouseMoved(InputEvent @event, float x, float y)
 		{
 			_list.overIndex = _list.getItemIndexAt(y);
 			return false;
 		}
 
-		public void exit(InputEvent @event, float x, float y, int pointer, Actor toActor)
+		public override void exit(InputEvent @event, float x, float y, int pointer, Actor toActor)
 		{
 			if (pointer == 0) _list.pressedIndex = -1;
 			if (pointer == -1) _list.overIndex = -1;

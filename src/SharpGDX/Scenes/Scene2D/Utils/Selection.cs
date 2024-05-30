@@ -31,7 +31,7 @@ public class Selection<T> : IDisableable, IEnumerable<T> {
 
 	/** Selects or deselects the specified item based on how the selection is configured, whether ctrl is currently pressed, etc.
 	 * This is typically invoked by user interaction. */
-	public void choose (T item) {
+	public virtual void choose (T item) {
 		if (item == null) throw new IllegalArgumentException("item cannot be null.");
 		if (_isDisabled) return;
 		snapshot();
@@ -209,7 +209,7 @@ public class Selection<T> : IDisableable, IEnumerable<T> {
 	}
 
 	/** Called after the selection changes. The default implementation does nothing. */
-	protected void changed () {
+	protected virtual void changed () {
 	}
 
 	/** Fires a change event on the selection's actor, if any. Called internally when the selection changes, depending on

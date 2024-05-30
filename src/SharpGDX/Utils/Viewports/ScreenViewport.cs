@@ -24,7 +24,7 @@ namespace SharpGDX.Utils.Viewports
 		setCamera(camera);
 	}
 
-	public void update(int screenWidth, int screenHeight, bool centerCamera)
+		public override void update(int screenWidth, int screenHeight, bool centerCamera)
 	{
 		setScreenBounds(0, 0, screenWidth, screenHeight);
 		setWorldSize(screenWidth * unitsPerPixel, screenHeight * unitsPerPixel);

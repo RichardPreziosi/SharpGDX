@@ -97,13 +97,13 @@ public class Dialog : Window {
 		{
 			_dialog = dialog;
 		}
-		
-	public void keyboardFocusChanged(FocusEvent @event, Actor actor, bool focused)
+
+		public override void keyboardFocusChanged(FocusEvent @event, Actor actor, bool focused)
 			{
 				if (!focused) focusChanged(@event);
 			}
 
-			public void scrollFocusChanged(FocusListener.FocusEvent @event, Actor actor, bool focused)
+		public override void scrollFocusChanged(FocusListener.FocusEvent @event, Actor actor, bool focused)
 			{
 				if (!focused) focusChanged(@event);
 			}
@@ -275,7 +275,7 @@ public class Dialog : Window {
 			this.obj = obj;
 		}
 
-		public bool keyDown(InputEvent @event, int keycode2)
+		public override bool keyDown(InputEvent @event, int keycode2)
 		{
 			if (keycode == keycode2)
 			{

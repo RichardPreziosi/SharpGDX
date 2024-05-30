@@ -46,14 +46,14 @@ protected	HeapByteBuffer(byte[] backingArray)
 		}
 	}
 
-	/*
-	 * Override ByteBuffer.get(byte[], int, int) to improve performance.
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see java.nio.ByteBuffer#get(byte[], int, int)
-	 */
-	public ByteBuffer get(byte[] dest, int off, int len)
+		/*
+		 * Override ByteBuffer.get(byte[], int, int) to improve performance.
+		 * 
+		 * (non-Javadoc)
+		 * 
+		 * @see java.nio.ByteBuffer#get(byte[], int, int)
+		 */
+		public override ByteBuffer get(byte[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length)

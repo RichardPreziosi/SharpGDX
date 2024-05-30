@@ -13,7 +13,7 @@ public class SizeToAction : TemporalAction {
 	private float startWidth, startHeight;
 	private float endWidth, endHeight;
 
-	protected void begin () {
+	protected override void begin () {
 		startWidth = target.getWidth();
 		startHeight = target.getHeight();
 	}

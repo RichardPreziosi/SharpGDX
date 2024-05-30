@@ -35,7 +35,7 @@ public class TiledMap : Map {
 		this.ownedResources = resources;
 	}
 
-	public void dispose () {
+	public override void dispose () {
 		if (ownedResources != null) {
 			foreach (Disposable resource in ownedResources) {
 				resource.dispose();

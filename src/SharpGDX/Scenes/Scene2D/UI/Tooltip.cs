@@ -96,7 +96,7 @@ where T: Actor{
 		this.touchIndependent = touchIndependent;
 	}
 
-	public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
+	public override bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
 		if (instant) {
 			container.toFront();
 			return false;
@@ -105,7 +105,7 @@ where T: Actor{
 		return false;
 	}
 
-	public bool mouseMoved (InputEvent @event, float x, float y) {
+	public override bool mouseMoved (InputEvent @event, float x, float y) {
 		if (container.hasParent()) return false;
 		setContainerPosition(@event.getListenerActor(), x, y);
 		return true;
@@ -134,7 +134,7 @@ where T: Actor{
 		container.setOrigin(point.x, point.y);
 	}
 
-	public void enter (InputEvent @event, float x, float y, int pointer, Actor? fromActor) {
+	public override void enter (InputEvent @event, float x, float y, int pointer, Actor? fromActor) {
 		if (pointer != -1) return;
 		if (touchIndependent && Gdx.input.isTouched()) return;
 		Actor actor = @event.getListenerActor();
@@ -143,7 +143,7 @@ where T: Actor{
 		manager.enter(this);
 	}
 
-	public void exit (InputEvent @event, float x, float y, int pointer, Actor? toActor) {
+	public override void exit (InputEvent @event, float x, float y, int pointer, Actor? toActor) {
 		if (toActor != null && toActor.isDescendantOf(@event.getListenerActor())) return;
 		hide();
 	}

@@ -19,7 +19,7 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
  * 
  * @author Nathan Sweet */
 public class RotateToAction : TemporalAction {
-	private float start, end;
+	private float _start, _end;
 
 	private bool useShortestDirection = false;
 
@@ -31,29 +31,29 @@ public class RotateToAction : TemporalAction {
 		this.useShortestDirection = useShortestDirection;
 	}
 
-	protected void begin () {
-		start = target.getRotation();
+	protected override void begin () {
+		_start = target.getRotation();
 	}
 
 	protected override void update (float percent) {
 		float rotation;
 		if (percent == 0)
-			rotation = start;
+			rotation = _start;
 		else if (percent == 1)
-			rotation = end;
+			rotation = _end;
 		else if (useShortestDirection)
-			rotation = MathUtils.lerpAngleDeg(this.start, this.end, percent);
+			rotation = MathUtils.lerpAngleDeg(this._start, this._end, percent);
 		else
-			rotation = start + (end - start) * percent;
+			rotation = _start + (_end - _start) * percent;
 		target.setRotation(rotation);
 	}
 
 	public float getRotation () {
-		return end;
+		return _end;
 	}
 
 	public void setRotation (float rotation) {
-		this.end = rotation;
+		this._end = rotation;
 	}
 
 	public bool isUseShortestDirection () {

@@ -33,7 +33,7 @@ public class ClickListener : InputListener {
 		this.button = button;
 	}
 
-	public virtual bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
+	public override bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
 		if (pressed) return false;
 		if (pointer == 0 && this.button != -1 && button != this.button) return false;
 		pressed = true;
@@ -45,7 +45,7 @@ public class ClickListener : InputListener {
 		return true;
 	}
 
-	public void touchDragged (InputEvent @event, float x, float y, int pointer) {
+		public override void touchDragged (InputEvent @event, float x, float y, int pointer) {
 		if (pointer != pressedPointer || cancelled) return;
 		pressed = isOver(@event.getListenerActor(), x, y);
 		if (!pressed) {
@@ -54,7 +54,7 @@ public class ClickListener : InputListener {
 		}
 	}
 
-	public void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
+		public override void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
 		if (pointer == pressedPointer) {
 			if (!cancelled) {
 				bool touchUpOver = isOver(@event.getListenerActor(), x, y);
@@ -75,11 +75,11 @@ public class ClickListener : InputListener {
 		}
 	}
 
-	public void enter (InputEvent @event, float x, float y, int pointer,  Actor? fromActor) {
+		public override void enter (InputEvent @event, float x, float y, int pointer,  Actor? fromActor) {
 		if (pointer == -1 && !cancelled) over = true;
 	}
 
-	public void exit (InputEvent @event, float x, float y, int pointer, Actor? toActor) {
+		public override void exit (InputEvent @event, float x, float y, int pointer, Actor? toActor) {
 		if (pointer == -1 && !cancelled) over = false;
 	}
 

@@ -55,7 +55,7 @@ namespace SharpGDX.Desktop
 		}
 
 		/** @param visibility whether the window will be visible on creation. (default true) */
-		public void setInitialVisible(bool visibility)
+		public virtual void setInitialVisible(bool visibility)
 		{
 			this.initialVisible = visibility;
 		}

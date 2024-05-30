@@ -12,7 +12,7 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 	/** Drawable for a {@link TextureRegion}.
  * @author Nathan Sweet */
 public class TextureRegionDrawable : BaseDrawable , ITransformDrawable {
-	private TextureRegion region;
+	private TextureRegion? region;
 
 	/** Creates an uninitialized TextureRegionDrawable. The texture region must be set before use. */
 	public TextureRegionDrawable () {
@@ -33,7 +33,7 @@ public class TextureRegionDrawable : BaseDrawable , ITransformDrawable {
 		setRegion(drawable.region);
 	}
 
-	public void draw (IBatch batch, float x, float y, float width, float height) {
+		public override void draw (IBatch batch, float x, float y, float width, float height) {
 		batch.draw(region, x, y, width, height);
 	}
 
@@ -42,7 +42,7 @@ public class TextureRegionDrawable : BaseDrawable , ITransformDrawable {
 		batch.draw(region, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
 	}
 
-	public void setRegion (TextureRegion region) {
+	public void setRegion (TextureRegion? region) {
 		this.region = region;
 		if (region != null) {
 			setMinWidth(region.getRegionWidth());
@@ -55,7 +55,7 @@ public class TextureRegionDrawable : BaseDrawable , ITransformDrawable {
 	}
 
 	/** Creates a new drawable that renders the same as this drawable tinted the specified color. */
-	public IDrawable tint (Color tint) {
+	public virtual IDrawable tint (Color tint) {
 		Sprite sprite;
 		if (region is TextureAtlas.AtlasRegion)
 			sprite = new TextureAtlas.AtlasSprite((TextureAtlas.AtlasRegion)region);

@@ -69,7 +69,7 @@ namespace SharpGDX.Shims
 		return false;
 	}
 
-	public ShortBuffer put(ShortBuffer buf)
+		public override ShortBuffer put(ShortBuffer buf)
 	{
 		throw new ReadOnlyBufferException();
 	}
@@ -84,7 +84,7 @@ namespace SharpGDX.Shims
 		throw new ReadOnlyBufferException();
 	}
 
-		public ShortBuffer put(short[] src, int off, int len)
+		public override ShortBuffer put(short[] src, int off, int len)
 	{
 		throw new ReadOnlyBufferException();
 	}

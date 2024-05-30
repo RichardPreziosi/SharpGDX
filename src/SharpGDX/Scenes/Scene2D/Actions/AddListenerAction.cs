@@ -37,7 +37,7 @@ public class AddListenerAction : Action {
 		this.capture = capture;
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		listener = null;
 	}

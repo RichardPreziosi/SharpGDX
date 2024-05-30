@@ -37,7 +37,7 @@ where T: Actor{
 		setActor(actor);
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 		if (isTransform()) {
 			applyTransform(batch, computeTransform());
@@ -101,7 +101,7 @@ where T: Actor{
 		return _background;
 	}
 
-	public void layout () {
+	public override void layout () {
 		if (actor == null) return;
 
 		float padLeft = this._padLeft.get(this), padBottom = this._padBottom.get(this);
@@ -168,22 +168,22 @@ where T: Actor{
 	public T? getActor () {
 		return actor;
 	}
-	
-	public bool removeActor (Actor actor) {
+
+	public override bool removeActor (Actor actor) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor != this.actor) return false;
 		setActor(null);
 		return true;
 	}
 
-	public bool removeActor (Actor actor, bool unfocus) {
+	public override bool removeActor (Actor actor, bool unfocus) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor != this.actor) return false;
 		this.actor = null;
 		return base.removeActor(actor, unfocus);
 	}
 
-	public Actor removeActorAt (int index, bool unfocus) {
+	public override Actor removeActorAt (int index, bool unfocus) {
 		Actor actor = base.removeActorAt(index, unfocus);
 		if (actor == this.actor) this.actor = null;
 		return actor;
@@ -573,7 +573,7 @@ where T: Actor{
 		return this;
 	}
 
-	public float getMinWidth () {
+	public override float getMinWidth () {
 		return _minWidth.get(actor) + _padLeft.get(this) + _padRight.get(this);
 	}
 
@@ -581,7 +581,7 @@ where T: Actor{
 		return _minHeight;
 	}
 
-	public float getMinHeight () {
+	public override float getMinHeight () {
 		return _minHeight.get(actor) + _padTop.get(this) + _padBottom.get(this);
 	}
 
@@ -589,7 +589,7 @@ where T: Actor{
 		return _prefWidth;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		float v = _prefWidth.get(actor);
 		if (_background != null) v = Math.Max(v, _background.getMinWidth());
 		return Math.Max(getMinWidth(), v + _padLeft.get(this) + _padRight.get(this));
@@ -599,7 +599,7 @@ where T: Actor{
 		return _prefHeight;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		float v = _prefHeight.get(actor);
 		if (_background != null) v = Math.Max(v, _background.getMinHeight());
 		return Math.Max(getMinHeight(), v + _padTop.get(this) + _padBottom.get(this));
@@ -609,7 +609,7 @@ where T: Actor{
 		return _maxWidth;
 	}
 
-	public float getMaxWidth () {
+	public override float getMaxWidth () {
 		float v = _maxWidth.get(actor);
 		if (v > 0) v += _padLeft.get(this) + _padRight.get(this);
 		return v;
@@ -619,7 +619,7 @@ where T: Actor{
 		return _maxHeight;
 	}
 
-	public float getMaxHeight () {
+	public override float getMaxHeight () {
 		float v = _maxHeight.get(actor);
 		if (v > 0) v += _padTop.get(this) + _padBottom.get(this);
 		return v;
@@ -707,7 +707,7 @@ where T: Actor{
 		return _clip;
 	}
 
-	public Actor? hit (float x, float y, bool touchable) {
+	public override Actor? hit (float x, float y, bool touchable) {
 		if (_clip) {
 			if (touchable && getTouchable() == Touchable.disabled) return null;
 			if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
@@ -715,7 +715,7 @@ where T: Actor{
 		return base.hit(x, y, touchable);
 	}
 
-	public void drawDebug (ShapeRenderer shapes) {
+	public override void drawDebug (ShapeRenderer shapes) {
 		validate();
 		if (isTransform()) {
 			applyTransform(shapes, computeTransform());

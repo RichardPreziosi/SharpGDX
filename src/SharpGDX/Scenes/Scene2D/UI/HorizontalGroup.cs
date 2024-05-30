@@ -33,7 +33,7 @@ public class HorizontalGroup : WidgetGroup {
 		setTouchable(Touchable.childrenOnly);
 	}
 
-	public void invalidate () {
+	public override void invalidate () {
 		base.invalidate();
 		sizeInvalid = true;
 	}
@@ -112,7 +112,7 @@ public class HorizontalGroup : WidgetGroup {
 		}
 	}
 
-	public void layout () {
+	public override void layout () {
 		if (sizeInvalid) computeSize();
 
 		if (_wrap) {
@@ -551,7 +551,7 @@ public class HorizontalGroup : WidgetGroup {
 		return this;
 	}
 
-	protected void drawDebugBounds (ShapeRenderer shapes) {
+	protected override void drawDebugBounds (ShapeRenderer shapes) {
 		base.drawDebugBounds(shapes);
 		if (!getDebug()) return;
 		shapes.set(ShapeRenderer.ShapeType.Line);

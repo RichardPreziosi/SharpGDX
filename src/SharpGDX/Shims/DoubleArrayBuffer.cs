@@ -59,7 +59,7 @@ internal	protected readonly int offset;
 		return backingArray[offset + index];
 	}
 
-	public DoubleBuffer get(double[] dest, int off, int len)
+	public override DoubleBuffer get(double[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length)

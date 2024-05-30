@@ -13,7 +13,7 @@ namespace SharpGDX.Shims
 
 		}
 
-		public void close()
+		public override void close()
 		{
 			throw new NotImplementedException();
 		}

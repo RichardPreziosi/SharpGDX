@@ -142,7 +142,7 @@ namespace SharpGDX.Utils
 
 			}
 
-			public byte[] toByteArray()
+			public override byte[] toByteArray()
 			{
 				//lock (this)
 				//{
@@ -150,6 +150,9 @@ namespace SharpGDX.Utils
 				//	return base.toByteArray();
 				//}
 
+				// TODO: Maybe this works?
+
+				return base.toByteArray();
 				throw new NotImplementedException();
 			}
 

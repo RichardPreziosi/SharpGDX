@@ -124,15 +124,15 @@ public class TextField : Widget , IDisableable {
 		setSize(getPrefWidth(), getPrefHeight());
 	}
 
-	protected void initialize () {
+	protected virtual void initialize () {
 		addListener(inputListener = createInputListener());
 	}
 
-	protected InputListener createInputListener () {
+	protected virtual InputListener createInputListener () {
 		return new TextFieldClickListener(this);
 	}
 
-	protected int letterUnderCursor (float x) {
+	protected virtual int letterUnderCursor (float x) {
 		x -= textOffset + fontOffset - style.font.getData().cursorX - this.glyphPositions.get(visibleTextStart);
 		IDrawable background = getBackgroundDrawable();
 		if (background != null) x -= style.background.getLeftWidth();
@@ -198,7 +198,7 @@ public class TextField : Widget , IDisableable {
 		this.onlyFontChars = onlyFontChars;
 	}
 
-	public void setStyle (TextFieldStyle style) {
+	public virtual void setStyle (TextFieldStyle style) {
 		if (style == null) throw new IllegalArgumentException("style cannot be null.");
 		this.style = style;
 
@@ -213,7 +213,7 @@ public class TextField : Widget , IDisableable {
 		return style;
 	}
 
-	protected void calculateOffsets () {
+	protected virtual void calculateOffsets () {
 		float visibleWidth = getWidth();
 		IDrawable background = getBackgroundDrawable();
 		if (background != null) visibleWidth -= background.getLeftWidth() + background.getRightWidth();
@@ -283,7 +283,7 @@ public class TextField : Widget , IDisableable {
 		return style.background;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		bool focused = hasKeyboardFocus();
 		if (focused != this.focused || (focused && !blinkTask.isScheduled())) {
 			this.focused = focused;
@@ -642,7 +642,7 @@ public class TextField : Widget , IDisableable {
 	}
 
 	/** Sets the selected text. */
-	public void setSelection (int selectionStart, int selectionEnd) {
+	public virtual void setSelection (int selectionStart, int selectionEnd) {
 		if (selectionStart < 0) throw new IllegalArgumentException("selectionStart must be >= 0");
 		if (selectionEnd < 0) throw new IllegalArgumentException("selectionEnd must be >= 0");
 		selectionStart = Math.Min(text.Length, selectionStart);
@@ -694,11 +694,11 @@ public class TextField : Widget , IDisableable {
 		this.clipboard = clipboard;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		return 150;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		float topAndBottom = 0, minHeight = 0;
 		if (style.background != null) {
 			topAndBottom = Math.Max(topAndBottom, style.background.getBottomHeight() + style.background.getTopHeight());
@@ -757,7 +757,7 @@ public class TextField : Widget , IDisableable {
 		return disabled;
 	}
 
-	protected void moveCursor (bool forward, bool jump) {
+	protected virtual void moveCursor (bool forward, bool jump) {
 		int limit = forward ? text.Length : 0;
 		int charOffset = forward ? 0 : -1;
 		while ((forward ? ++cursor < limit : --cursor > limit) && jump) {
@@ -765,7 +765,7 @@ public class TextField : Widget , IDisableable {
 		}
 	}
 
-	protected bool continueCursor (int index, int offset) {
+	protected virtual bool continueCursor (int index, int offset) {
 		char c = text[index + offset];
 		return isWordCharacter(c);
 	}
@@ -831,7 +831,7 @@ public class TextField : Widget , IDisableable {
 			_textField = textField;
 		}
 
-		public void clicked (InputEvent @event, float x, float y) {
+		public override void clicked (InputEvent @event, float x, float y) {
 			int count = getTapCount() % 4;
 			if (count == 0) _textField.clearSelection();
 			if (count == 2) {
@@ -841,7 +841,7 @@ public class TextField : Widget , IDisableable {
 			if (count == 3) _textField.selectAll();
 		}
 
-		public bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
+		public override bool touchDown (InputEvent @event, float x, float y, int pointer, int button) {
 			if (!base.touchDown(@event, x, y, pointer, button)) return false;
 			if (pointer == 0 && button != 0) return false;
 			if (_textField.disabled) return true;
@@ -854,17 +854,17 @@ public class TextField : Widget , IDisableable {
 			return true;
 		}
 
-		public void touchDragged (InputEvent @event, float x, float y, int pointer) {
+		public override void touchDragged (InputEvent @event, float x, float y, int pointer) {
 			base.touchDragged(@event, x, y, pointer);
 			setCursorPosition(x, y);
 		}
 
-		public void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
+		public override void touchUp (InputEvent @event, float x, float y, int pointer, int button) {
 			if (_textField.selectionStart == _textField.cursor) _textField.hasSelection = false;
 			base.touchUp(@event, x, y, pointer, button);
 		}
 
-		protected void setCursorPosition (float x, float y) {
+		protected virtual void setCursorPosition (float x, float y) {
 			_textField.cursor = _textField.letterUnderCursor(x);
 
 			_textField.cursorOn = _textField.focused;
@@ -872,15 +872,15 @@ public class TextField : Widget , IDisableable {
 			if (_textField.focused) Timer.schedule(_textField.blinkTask, _textField.blinkTime, _textField.blinkTime);
 		}
 
-		protected void goHome (bool jump) {
+		protected virtual void goHome (bool jump) {
 			_textField.cursor = 0;
 		}
 
-		protected void goEnd (bool jump) {
+		protected virtual void goEnd (bool jump) {
 			_textField.cursor = _textField.text.Length;
 		}
 
-		public bool keyDown (InputEvent @event, int keycode) {
+		public override bool keyDown (InputEvent @event, int keycode) {
 			if (_textField.disabled) return false;
 
 			_textField.cursorOn = _textField.focused;
@@ -1014,7 +1014,7 @@ public class TextField : Widget , IDisableable {
 			}
 		}
 
-		public bool keyUp (InputEvent @event, int keycode) {
+		public override bool keyUp (InputEvent @event, int keycode) {
 			if (_textField.disabled) return false;
 			_textField.keyRepeatTask.cancel();
 			return true;
@@ -1024,12 +1024,12 @@ public class TextField : Widget , IDisableable {
 		 * typed character, depending on the OS.
 		 * @param character The character that triggered a possible focus traversal.
 		 * @return true if the focus should change to the {@link TextField#next(boolean) next} input field. */
-		protected bool checkFocusTraversal (char character) {
+		protected virtual bool checkFocusTraversal (char character) {
 			return _textField.focusTraversal && (character == TAB
 			                                     || ((character == CARRIAGE_RETURN || character == NEWLINE) && (UIUtils.isAndroid || UIUtils.isIos)));
 		}
 
-		public bool keyTyped (InputEvent @event, char character) {
+		public override bool keyTyped (InputEvent @event, char character) {
 			if (_textField.disabled) return false;
 
 			// Disallow "typing" most ASCII control characters, which would show up as a space when onlyFontChars is true.

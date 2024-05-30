@@ -314,7 +314,7 @@ public class ScrollPane : WidgetGroup {
 		return style;
 	}
 
-	public void act (float delta) {
+	public override void act (float delta) {
 		base.act(delta);
 
 		bool panning = flickScrollListener.getGestureDetector().isPanning();
@@ -412,7 +412,7 @@ public class ScrollPane : WidgetGroup {
 		}
 	}
 
-	public void layout () {
+	public override void layout () {
 		IDrawable bg = style.background, hScrollKnob = style.hScrollKnob, vScrollKnob = style.vScrollKnob;
 		float bgLeftWidth = 0, bgRightWidth = 0, bgTopHeight = 0, bgBottomHeight = 0;
 		if (bg != null) {
@@ -547,7 +547,7 @@ public class ScrollPane : WidgetGroup {
 		}
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		if (actor == null) return;
 
 		validate();
@@ -619,7 +619,7 @@ public class ScrollPane : WidgetGroup {
 		this.velocityY = velocityY;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		float width = 0;
 		if (actor is ILayout)
 			width = ((ILayout)actor).getPrefWidth();
@@ -639,7 +639,7 @@ public class ScrollPane : WidgetGroup {
 		return width;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		float height = 0;
 		if (actor is ILayout)
 			height = ((ILayout)actor).getPrefHeight();
@@ -659,11 +659,11 @@ public class ScrollPane : WidgetGroup {
 		return height;
 	}
 
-	public float getMinWidth () {
+	public override float getMinWidth () {
 		return 0;
 	}
 
-	public float getMinHeight () {
+	public override float getMinHeight () {
 		return 0;
 	}
 
@@ -681,27 +681,27 @@ public class ScrollPane : WidgetGroup {
 		return actor;
 	}
 
-	public bool removeActor (Actor actor) {
+	public override bool removeActor (Actor actor) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor != this.actor) return false;
 		setActor(null);
 		return true;
 	}
 
-	public bool removeActor (Actor actor, bool unfocus) {
+	public override bool removeActor (Actor actor, bool unfocus) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor != this.actor) return false;
 		this.actor = null;
 		return base.removeActor(actor, unfocus);
 	}
 
-	public Actor removeActorAt (int index, bool unfocus) {
+	public override Actor removeActorAt (int index, bool unfocus) {
 		Actor actor = base.removeActorAt(index, unfocus);
 		if (actor == this.actor) this.actor = null;
 		return actor;
 	}
 
-	public Actor? hit (float x, float y, bool touchable) {
+	public override Actor? hit (float x, float y, bool touchable) {
 		if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
 		if (touchable && getTouchable() == Touchable.enabled && isVisible()) {
 			if (_scrollX && touchScrollH && hScrollBounds.contains(x, y)) return this;
@@ -1050,7 +1050,7 @@ public class ScrollPane : WidgetGroup {
 		this._cancelTouchFocus = cancelTouchFocus;
 	}
 
-	public void drawDebug (ShapeRenderer shapes) {
+	public override void drawDebug (ShapeRenderer shapes) {
 		drawDebugBounds(shapes);
 		applyTransform(shapes, computeTransform());
 		if (clipBegin(actorArea.x, actorArea.y, actorArea.width, actorArea.height)) {

@@ -29,7 +29,7 @@ public class SpriteDrawable : BaseDrawable , ITransformDrawable {
 		setSprite(drawable.sprite);
 	}
 
-	public void draw (IBatch batch, float x, float y, float width, float height) {
+		public override void draw (IBatch batch, float x, float y, float width, float height) {
 		Color spriteColor = sprite.getColor();
 		float oldColor = spriteColor.toFloatBits();
 		sprite.setColor(spriteColor.mul(batch.getColor()));

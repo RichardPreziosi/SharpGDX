@@ -14,7 +14,7 @@ public class MoveToAction : TemporalAction {
 	private float endX, endY;
 	private int alignment = Align.bottomLeft;
 
-	protected void begin () {
+	protected override void begin () {
 		startX = target.getX(alignment);
 		startY = target.getY(alignment);
 	}
@@ -34,7 +34,7 @@ public class MoveToAction : TemporalAction {
 		target.setPosition(x, y, alignment);
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		alignment = Align.bottomLeft;
 	}

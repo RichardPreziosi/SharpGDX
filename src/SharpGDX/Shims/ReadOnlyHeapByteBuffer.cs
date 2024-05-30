@@ -79,7 +79,7 @@ namespace SharpGDX.Shims
 		throw new ReadOnlyBufferException();
 	}
 
-	public ByteBuffer put(byte[] src, int off, int len)
+	public override ByteBuffer put(byte[] src, int off, int len)
 	{
 		throw new ReadOnlyBufferException();
 	}

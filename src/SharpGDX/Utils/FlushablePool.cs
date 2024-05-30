@@ -27,7 +27,7 @@ public abstract class FlushablePool<T> : Pool<T> {
 		
 	}
 
-	public T obtain () {
+		public override T obtain () {
 		T result = base.obtain();
 		obtained.add(result);
 		return result;
@@ -39,12 +39,12 @@ public abstract class FlushablePool<T> : Pool<T> {
 		obtained.clear();
 	}
 
-	public void free (T obj) {
+		public override void free (T obj) {
 		obtained.removeValue(obj, true);
 		base.free(obj);
 	}
 
-	public void freeAll (Array<T> objects) {
+		public override void freeAll (Array<T> objects) {
 		obtained.removeAll(objects, true);
 		base.freeAll(objects);
 	}

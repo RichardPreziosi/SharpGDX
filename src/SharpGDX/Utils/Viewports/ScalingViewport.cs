@@ -40,7 +40,7 @@ public class ScalingViewport : Viewport {
 		setCamera(camera);
 	}
 
-	public void update (int screenWidth, int screenHeight, bool centerCamera) {
+	public override void update (int screenWidth, int screenHeight, bool centerCamera) {
 		Vector2 scaled = scaling.apply(getWorldWidth(), getWorldHeight(), screenWidth, screenHeight);
 		int viewportWidth = (int)Math.Round(scaled.x);
 		int viewportHeight = (int)Math.Round(scaled.y);

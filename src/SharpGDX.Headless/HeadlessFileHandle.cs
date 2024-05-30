@@ -16,14 +16,14 @@ public sealed class HeadlessFileHandle : FileHandle
 	{
 	}
 
-	public FileHandle child(string name)
+	public override FileHandle child(string name)
 	{
 		return _file.getPath().Length == 0
 			? new HeadlessFileHandle(new File(name), _type)
 			: new HeadlessFileHandle(new File(_file, name), _type);
 	}
 
-	public File file()
+	public override File file()
 	{
 		return _type switch
 		{
@@ -33,14 +33,14 @@ public sealed class HeadlessFileHandle : FileHandle
 		};
 	}
 
-	public FileHandle parent()
+	public override FileHandle parent()
 	{
 		var parent = _file.getParentFile() ?? (_type == IFiles.FileType.Absolute ? new File("/") : new File(""));
 
 		return new HeadlessFileHandle(parent, _type);
 	}
 
-	public FileHandle sibling(string name)
+	public override FileHandle sibling(string name)
 	{
 		if (_file.getPath().Length == 0)
 		{

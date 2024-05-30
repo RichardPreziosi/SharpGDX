@@ -21,7 +21,7 @@ namespace SharpGDX.Scenes.Scene2D
 	abstract public bool act(float delta);
 
 	/** Sets the state of the action so it can be run again. */
-	public void restart()
+	public virtual void restart()
 	{
 	}
 
@@ -58,7 +58,7 @@ namespace SharpGDX.Scenes.Scene2D
 
 	/** Sets the actor this action will manipulate. If no target actor is set, {@link #setActor(Actor)} will set the target actor
 	 * when the action is added to an actor. */
-	public void setTarget(Actor target)
+	public virtual void setTarget(Actor target)
 	{
 		this.target = target;
 	}
@@ -75,7 +75,7 @@ namespace SharpGDX.Scenes.Scene2D
 	 * The default implementation calls {@link #restart()}.
 	 * <p>
 	 * If a subclass has optional state, it must override this method, call super, and reset the optional state. */
-	public void reset()
+	public virtual void reset()
 	{
 		actor = null;
 		target = null;

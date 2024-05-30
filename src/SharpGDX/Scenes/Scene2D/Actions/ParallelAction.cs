@@ -65,14 +65,14 @@ public class ParallelAction : Action {
 		}
 	}
 
-	public void restart () {
+	public override void restart () {
 		complete = false;
 		Array<Action> actions = this.actions;
 		for (int i = 0, n = actions.size; i < n; i++)
 			actions.get(i).restart();
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		actions.clear();
 	}

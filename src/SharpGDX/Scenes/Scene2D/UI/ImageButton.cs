@@ -57,7 +57,7 @@ public class ImageButton : Button {
 		return new Image((IDrawable)null, Scaling.fit);
 	}
 
-	public void setStyle (ButtonStyle style) {
+	public override void setStyle (ButtonStyle style) {
 		if (!(style is ImageButtonStyle)) throw new IllegalArgumentException("style must be an ImageButtonStyle.");
 		this.style = (ImageButtonStyle)style;
 		base.setStyle(style);
@@ -65,7 +65,7 @@ public class ImageButton : Button {
 		if (image != null) updateImage();
 	}
 
-	public ImageButtonStyle getStyle () {
+	public override ImageButtonStyle getStyle () {
 		return style;
 	}
 

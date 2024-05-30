@@ -141,13 +141,13 @@ namespace SharpGDX.Utils
 		base.swap(first, second);
 	}
 
-	public bool removeValue(T value, bool identity)
+		public override bool removeValue(T value, bool identity)
 	{
 		modified();
 		return base.removeValue(value, identity);
 	}
 
-	public T removeIndex(int index)
+		public override T removeIndex(int index)
 	{
 		modified();
 		return base.removeIndex(index);
@@ -170,7 +170,7 @@ namespace SharpGDX.Utils
 		return base.pop();
 	}
 
-	public void clear()
+		public override void clear()
 	{
 		modified();
 		base.clear();

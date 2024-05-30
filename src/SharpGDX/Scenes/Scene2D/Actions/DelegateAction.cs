@@ -10,14 +10,14 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 /** Base class for an action that wraps another action.
  * @author Nathan Sweet */
 abstract public class DelegateAction : Action {
-	protected Action action;
+	protected Action? action;
 
 	/** Sets the wrapped action. */
-	public void setAction (Action action) {
+	public void setAction (Action? action) {
 		this.action = action;
 	}
 
-	public Action getAction () {
+	public Action? getAction () {
 		return action;
 	}
 
@@ -33,21 +33,21 @@ abstract public class DelegateAction : Action {
 		}
 	}
 
-	public void restart () {
+	public override void restart () {
 		if (action != null) action.restart();
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		action = null;
 	}
 
-	public void setActor (Actor actor) {
+	public override void setActor (Actor actor) {
 		if (action != null) action.setActor(actor);
 		base.setActor(actor);
 	}
 
-	public void setTarget (Actor target) {
+	public override void setTarget (Actor target) {
 		if (action != null) action.setTarget(target);
 		base.setTarget(target);
 	}

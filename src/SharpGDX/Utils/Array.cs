@@ -167,7 +167,7 @@ namespace SharpGDX.Utils
 		items[index] = value;
 	}
 
-	public void insert(int index, T value)
+	public virtual void insert(int index, T value)
 	{
 		if (index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 		T[] items = this.items;
@@ -288,7 +288,7 @@ namespace SharpGDX.Utils
 	 * @param value May be null.
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if value was found and removed, false otherwise */
-	public bool removeValue(T? value, bool identity)
+	public virtual bool removeValue(T? value, bool identity)
 	{
 		T[] items = this.items;
 		if (identity || value == null)
@@ -317,7 +317,7 @@ namespace SharpGDX.Utils
 	}
 
 	/** Removes and returns the item at the specified index. */
-	public T removeIndex(int index)
+	public virtual T removeIndex(int index)
 	{
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 		T[] items = this.items;
@@ -395,7 +395,7 @@ namespace SharpGDX.Utils
 	}
 
 	/** Removes and returns the last item. */
-	public T pop()
+	public virtual T pop()
 	{
 		if (size == 0) throw new IllegalStateException("Array is empty.");
 		--size;
@@ -430,7 +430,7 @@ namespace SharpGDX.Utils
 		return size == 0;
 	}
 
-	public void clear()
+	public virtual void clear()
 	{
 		Array.Fill(items,default, 0, size);
 		size = 0;

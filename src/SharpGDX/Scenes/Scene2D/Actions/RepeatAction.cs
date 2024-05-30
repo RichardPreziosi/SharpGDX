@@ -31,7 +31,7 @@ public class RepeatAction : DelegateAction {
 		finished = true;
 	}
 
-	public void restart () {
+	public override void restart () {
 		base.restart();
 		executedCount = 0;
 		finished = false;

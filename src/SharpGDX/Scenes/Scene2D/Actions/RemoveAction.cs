@@ -25,7 +25,7 @@ public class RemoveAction : Action {
 		this.action = action;
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		action = null;
 	}

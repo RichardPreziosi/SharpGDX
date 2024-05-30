@@ -34,7 +34,7 @@ public class DelayAction : DelegateAction {
 		time = duration;
 	}
 
-	public void restart () {
+	public override void restart () {
 		base.restart();
 		time = 0;
 	}

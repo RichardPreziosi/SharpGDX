@@ -28,7 +28,7 @@ public class Group : Actor , ICullable {
 	bool transform = true;
 	private Rectangle? cullingArea;
 
-	public virtual void act (float delta) {
+		public override void act (float delta) {
 		base.act(delta);
 		Actor[] actors = children.begin();
 		for (int i = 0, n = children.size; i < n; i++)
@@ -38,7 +38,7 @@ public class Group : Actor , ICullable {
 
 	/** Draws the group and its children. The default implementation calls {@link #applyTransform(Batch, Matrix4)} if needed, then
 	 * {@link #drawChildren(Batch, float)}, then {@link #resetTransform(Batch)} if needed. */
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		if (transform) applyTransform(batch, computeTransform());
 		drawChildren(batch, parentAlpha);
 		if (transform) resetTransform(batch);
@@ -119,7 +119,7 @@ public class Group : Actor , ICullable {
 
 	/** Draws this actor's debug lines if {@link #getDebug()} is true and, regardless of {@link #getDebug()}, calls
 	 * {@link Actor#drawDebug(ShapeRenderer)} on each child. */
-	public void drawDebug (ShapeRenderer shapes) {
+	public virtual void drawDebug (ShapeRenderer shapes) {
 		drawDebugBounds(shapes);
 		if (transform) applyTransform(shapes, computeTransform());
 		drawDebugChildren(shapes);
@@ -239,12 +239,12 @@ public class Group : Actor , ICullable {
 	}
 
 	/** Called when actors are added to or removed from the group. */
-	protected void childrenChanged () {
+	protected virtual void childrenChanged () {
 	}
 
 	/** Adds an actor as a child of this group, removing it from its previous parent. If the actor is already a child of this
 	 * group, no changes are made. */
-	public void addActor (Actor actor) {
+	public virtual void addActor (Actor actor) {
 		if (actor.parent != null) {
 			if (actor.parent == this) return;
 			actor.parent.removeActor(actor, false);
@@ -258,7 +258,7 @@ public class Group : Actor , ICullable {
 	/** Adds an actor as a child of this group at a specific index, removing it from its previous parent. If the actor is already a
 	 * child of this group, no changes are made.
 	 * @param index May be greater than the number of children. */
-	public void addActorAt (int index, Actor actor) {
+	public virtual void addActorAt (int index, Actor actor) {
 		if (actor.parent != null) {
 			if (actor.parent == this) return;
 			actor.parent.removeActor(actor, false);
@@ -274,7 +274,7 @@ public class Group : Actor , ICullable {
 
 	/** Adds an actor as a child of this group immediately before another child actor, removing it from its previous parent. If the
 	 * actor is already a child of this group, no changes are made. */
-	public void addActorBefore (Actor actorBefore, Actor actor) {
+	public virtual void addActorBefore (Actor actorBefore, Actor actor) {
 		if (actor.parent != null) {
 			if (actor.parent == this) return;
 			actor.parent.removeActor(actor, false);
@@ -305,12 +305,12 @@ public class Group : Actor , ICullable {
 	}
 
 	/** Removes an actor from this group and unfocuses it. Calls {@link #removeActor(Actor, boolean)} with true. */
-	public bool removeActor (Actor actor) {
+	public virtual bool removeActor (Actor actor) {
 		return removeActor(actor, true);
 	}
 
 	/** Removes an actor from this group. Calls {@link #removeActorAt(int, boolean)} with the actor's child index. */
-	public bool removeActor (Actor actor, bool unfocus) {
+	public virtual bool removeActor (Actor actor, bool unfocus) {
 		int index = children.indexOf(actor, true);
 		if (index == -1) return false;
 		removeActorAt(index, unfocus);
@@ -322,7 +322,7 @@ public class Group : Actor , ICullable {
 	 * {@link Action#setPool(com.badlogic.gdx.utils.Pool) pool}, if any. This is not done automatically.
 	 * @param unfocus If true, {@link Stage#unfocus(Actor)} is called.
 	 * @return the actor removed from this group. */
-	public Actor removeActorAt (int index, bool unfocus) {
+	public virtual Actor removeActorAt (int index, bool unfocus) {
 		Actor actor = children.removeIndex(index);
 		Stage stage = getStage();
 		if (stage != null) {
@@ -341,7 +341,7 @@ public class Group : Actor , ICullable {
 	}
 
 	/** Removes all actors from this group. */
-	public void clearChildren (bool unfocus) {
+	public virtual void clearChildren (bool unfocus) {
 		Actor[] actors = children.begin();
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = actors[i];
@@ -357,14 +357,14 @@ public class Group : Actor , ICullable {
 		childrenChanged();
 	}
 
-	/** Removes all children, actions, and listeners from this group. The children are unfocused. */
-	public void clear () {
+		/** Removes all children, actions, and listeners from this group. The children are unfocused. */
+		public override void clear () {
 		base.clear();
 		clearChildren(true);
 	}
 
 	/** Removes all children, actions, and listeners from this group. */
-	public void clear (bool unfocus) {
+	public  void clear (bool unfocus) {
 		base.clear();
 		clearChildren(unfocus);
 	}
@@ -386,7 +386,7 @@ public class Group : Actor , ICullable {
 		return null;
 	}
 
-	protected void setStage (Stage stage) {
+		internal protected override void setStage (Stage stage) {
 		base.setStage(stage);
 		Actor[] childrenArray = children.items;
 		for (int i = 0, n = children.size; i < n; i++)
@@ -465,7 +465,7 @@ public class Group : Actor , ICullable {
 	}
 
 	/** Calls {@link #setDebug(boolean, boolean)} with {@code true, true}. */
-	public Group debugAll () {
+	public virtual Group debugAll () {
 		setDebug(true, true);
 		return this;
 	}

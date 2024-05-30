@@ -443,8 +443,8 @@ public class Cell<T> : Cell,IPoolable
 		return this;
 	}
 
-	/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
-	public Cell<T> Space (float space) {
+		/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
+		public  Cell<T> Space (float space) {
 		if (space < 0) throw new IllegalArgumentException("space cannot be < 0: " + space);
 		Space(Fixed.valueOf(space));
 		return this;

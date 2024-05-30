@@ -356,19 +356,19 @@ public class GestureDetector : InputAdapter {
 			return false;
 		}
 
-		public bool tap (float x, float y, int count, int button) {
+		public virtual bool tap (float x, float y, int count, int button) {
 			return false;
 		}
 
-		public bool longPress (float x, float y) {
+		public virtual bool longPress (float x, float y) {
 			return false;
 		}
 
-		public bool fling (float velocityX, float velocityY, int button) {
+		public virtual bool fling (float velocityX, float velocityY, int button) {
 			return false;
 		}
 
-		public bool pan (float x, float y, float deltaX, float deltaY) {
+		public virtual bool pan (float x, float y, float deltaX, float deltaY) {
 			return false;
 		}
 
@@ -380,7 +380,7 @@ public class GestureDetector : InputAdapter {
 			return false;
 		}
 
-		public bool pinch (Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+		public virtual bool pinch (Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
 			return false;
 		}
 

@@ -78,7 +78,7 @@ public class Image : Widget {
 		setSize(getPrefWidth(), getPrefHeight());
 	}
 
-	public void layout () {
+	public override void layout () {
 		if (drawable == null) return;
 
 		float regionWidth = drawable.getMinWidth();
@@ -105,7 +105,7 @@ public class Image : Widget {
 			imageY = (int)(height / 2 - imageHeight / 2);
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		Color color = getColor();
@@ -163,11 +163,11 @@ public class Image : Widget {
 		return align;
 	}
 
-	public float getMinWidth () {
+	public override float getMinWidth () {
 		return 0;
 	}
 
-	public float getMinHeight () {
+	public override float getMinHeight () {
 		return 0;
 	}
 

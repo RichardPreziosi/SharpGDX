@@ -125,7 +125,7 @@ public class Window : Table {
 		if (_window._isMovable && _window.edge == 0 && y <= height && y >= height - padTop && x >= left && x <= right) _window.edge = MOVE;
 	}
 
-	public bool touchDown(InputEvent @event, float x, float y, int pointer, int button) {
+		public override bool touchDown(InputEvent @event, float x, float y, int pointer, int button) {
 				if (button == 0) {
 					updateEdge(x, y);
 					_window.dragging = _window.edge != 0;
@@ -137,12 +137,12 @@ public class Window : Table {
 				return _window.edge != 0 || _window._isModal;
 			}
 
-			public void touchUp(InputEvent @event, float x, float y, int pointer, int button)
+		public override void touchUp(InputEvent @event, float x, float y, int pointer, int button)
 {
 	_window.dragging = false;
 }
 
-public void touchDragged(InputEvent @event, float x, float y, int pointer)
+		public override void touchDragged(InputEvent @event, float x, float y, int pointer)
 {
 	if (!_window.dragging) return;
 	float width = _window.getWidth(), height = _window.getHeight();
@@ -193,28 +193,28 @@ public void touchDragged(InputEvent @event, float x, float y, int pointer)
 	_window.setBounds((float)Math.Round(windowX), (float)Math.Round(windowY), (float)Math.Round(width), (float)Math.Round(height));
 }
 
-public bool mouseMoved(InputEvent @event, float x, float y)
+		public override bool mouseMoved(InputEvent @event, float x, float y)
 {
 	updateEdge(x, y);
 	return _window._isModal;
 }
 
-public bool scrolled(InputEvent @event, float x, float y, int amount)
+		public bool scrolled(InputEvent @event, float x, float y, int amount)
 {
 	return _window._isModal;
 }
 
-public bool keyDown(InputEvent @event, int keycode)
+		public override bool keyDown(InputEvent @event, int keycode)
 {
 	return _window._isModal;
 }
 
-public bool keyUp(InputEvent @event, int keycode)
+		public override bool keyUp(InputEvent @event, int keycode)
 {
 	return _window._isModal;
 }
 
-public bool keyTyped(InputEvent @event, char character)
+		public override bool keyTyped(InputEvent @event, char character)
 {
 	return _window._isModal;
 }
@@ -266,7 +266,7 @@ public bool keyTyped(InputEvent @event, char character)
 		}
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		Stage stage = getStage();
 		if (stage != null) {
 			if (stage.getKeyboardFocus() == null) stage.setKeyboardFocus(this);
@@ -302,7 +302,7 @@ public bool keyTyped(InputEvent @event, char character)
 		drawTitleTable = false; // Avoid drawing the title table again in drawChildren.
 	}
 
-	public Actor? hit (float x, float y, bool touchable) {
+	public override Actor? hit (float x, float y, bool touchable) {
 		if (!isVisible()) return null;
 		Actor hit = base.hit(x, y, touchable);
 		if (hit == null && _isModal && (!touchable || getTouchable() == Touchable.enabled)) return this;

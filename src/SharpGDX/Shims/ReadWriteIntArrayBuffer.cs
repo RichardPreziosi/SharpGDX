@@ -103,7 +103,7 @@ namespace SharpGDX.Shims
 		return this;
 	}
 
-	public IntBuffer put(int[] src, int off, int len)
+		public override IntBuffer put(int[] src, int off, int len)
 	{
 		int length = src.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length)

@@ -41,7 +41,7 @@ public abstract class Viewport {
 	 * called from {@link ApplicationListener#resize(int, int)} or {@link Screen#resize(int, int)}.
 	 * <p>
 	 * The default implementation only calls {@link #apply(boolean)}. */
-	public void update (int screenWidth, int screenHeight, bool centerCamera) {
+	public virtual void update (int screenWidth, int screenHeight, bool centerCamera) {
 		apply(centerCamera);
 	}
 

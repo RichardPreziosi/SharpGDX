@@ -127,7 +127,7 @@ namespace SharpGDX.Utils
 		}
 
 		/** Returns the old value associated with the specified key, or null. */
-		public V? put(K key, V? value)
+		public virtual V? put(K key, V? value)
 		{
 			int i = locateKey(key);
 			if (i >= 0)
@@ -240,7 +240,7 @@ namespace SharpGDX.Utils
 		}
 
 		/** Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger. */
-		public void clear(int maximumCapacity)
+		public virtual void clear(int maximumCapacity)
 		{
 			int tableSize = ObjectSet<K>.tableSize(maximumCapacity, loadFactor);
 			if (keyTable.Length <= tableSize)
@@ -253,7 +253,7 @@ namespace SharpGDX.Utils
 			resize(tableSize);
 		}
 
-		public void clear()
+		public virtual void clear()
 		{
 			if (size == 0) return;
 			size = 0;
@@ -614,7 +614,7 @@ namespace SharpGDX.Utils
 				_hasNext = false;
 			}
 
-			public void remove()
+			public virtual void remove()
 			{
 				int i = currentIndex;
 				if (i < 0) throw new IllegalStateException("next must be called before remove.");
@@ -721,13 +721,13 @@ namespace SharpGDX.Utils
 			}
 
 			/** Returns a new array containing the remaining values. */
-			public Array<V> toArray()
+			public virtual Array<V> toArray()
 			{
 				return toArray(new Array<V>(true, map.size));
 			}
 
 			/** Adds the remaining values to the specified array. */
-			public Array<V> toArray(Array<V> array)
+			public virtual Array<V> toArray(Array<V> array)
 			{
 				while (_hasNext)
 					array.add(Current);
@@ -767,13 +767,13 @@ namespace SharpGDX.Utils
 			}
 
 			/** Returns a new array containing the remaining keys. */
-			public Array<K> toArray()
+			public virtual Array<K> toArray()
 			{
 				return toArray(new Array<K>(true, map.size));
 			}
 
 			/** Adds the remaining keys to the array. */
-			public Array<K> toArray(Array<K> array)
+			public virtual Array<K> toArray(Array<K> array)
 			{
 				while (_hasNext)
 					array.add(Current);

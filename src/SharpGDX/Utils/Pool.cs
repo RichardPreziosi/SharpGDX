@@ -51,7 +51,7 @@ namespace SharpGDX.Utils
 
 		/** Returns an object from this pool. The object may be new (from {@link #newObject()}) or reused (previously
 		 * {@link #free(Object) freed}). */
-		public T obtain()
+		public virtual T obtain()
 		{
 			return freeObjects.size == 0 ? newObject() : freeObjects.pop();
 		}
@@ -61,7 +61,7 @@ namespace SharpGDX.Utils
 		 * pool.
 		 * <p>
 		 * The pool does not check if an object is already freed, so the same object must not be freed multiple times. */
-		public void free(T obj)
+		public virtual void free(T obj)
 		{
 			if (obj == null) throw new IllegalArgumentException("object cannot be null.");
 			if (freeObjects.size < max)
@@ -103,7 +103,7 @@ namespace SharpGDX.Utils
 		 * <p>
 		 * The pool does not check if an object is already freed, so the same object must not be freed multiple times.
 		 * @see #free(Object) */
-		public void freeAll(Array<T> objects)
+		public virtual void freeAll(Array<T> objects)
 		{
 			if (objects == null) throw new IllegalArgumentException("objects cannot be null.");
 			Array<T> freeObjects = this.freeObjects;

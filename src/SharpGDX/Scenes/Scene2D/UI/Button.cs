@@ -166,7 +166,7 @@ public class Button : Table , IDisableable {
 		this.programmaticChangeEvents = programmaticChangeEvents;
 	}
 
-	public void setStyle (ButtonStyle style) {
+	public virtual void setStyle (ButtonStyle style) {
 		if (style == null) throw new IllegalArgumentException("style cannot be null.");
 		this.style = style;
 
@@ -175,7 +175,7 @@ public class Button : Table , IDisableable {
 
 	/** Returns the button's style. Modifying the returned style may not have an effect until {@link #setStyle(ButtonStyle)} is
 	 * called. */
-	public ButtonStyle getStyle () {
+	public virtual ButtonStyle getStyle () {
 		return style;
 	}
 
@@ -208,7 +208,7 @@ public class Button : Table , IDisableable {
 		return style.up;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public virtual void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		setBackground(getBackgroundDrawable());
@@ -242,7 +242,7 @@ public class Button : Table , IDisableable {
 			Gdx.graphics.requestRendering();
 	}
 
-	public float getPrefWidth () {
+		public override float getPrefWidth () {
 		float width = base.getPrefWidth();
 		if (style.up != null) width = Math.Max(width, style.up.getMinWidth());
 		if (style.down != null) width = Math.Max(width, style.down.getMinWidth());
@@ -250,7 +250,7 @@ public class Button : Table , IDisableable {
 		return width;
 	}
 
-	public float getPrefHeight () {
+		public override float getPrefHeight () {
 		float height = base.getPrefHeight();
 		if (style.up != null) height = Math.Max(height, style.up.getMinHeight());
 		if (style.down != null) height = Math.Max(height, style.down.getMinHeight());
@@ -258,11 +258,11 @@ public class Button : Table , IDisableable {
 		return height;
 	}
 
-	public float getMinWidth () {
+		public override float getMinWidth () {
 		return getPrefWidth();
 	}
 
-	public float getMinHeight () {
+		public override float getMinHeight () {
 		return getPrefHeight();
 	}
 

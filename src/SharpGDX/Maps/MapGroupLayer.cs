@@ -18,7 +18,7 @@ public class MapGroupLayer : MapLayer {
 		return layers;
 	}
 
-	public void invalidateRenderOffset () {
+	public override void invalidateRenderOffset () {
 		base.invalidateRenderOffset();
 		for (int i = 0; i < layers.size(); i++) {
 			MapLayer child = layers.get(i);

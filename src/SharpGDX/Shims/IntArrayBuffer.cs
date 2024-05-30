@@ -58,7 +58,7 @@ namespace SharpGDX.Shims
 		return backingArray[offset + index];
 	}
 
-		public IntBuffer get(int[] dest, int off, int len)
+		public override IntBuffer get(int[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if (off < 0 || len < 0 || (long)len + (long)off > length)

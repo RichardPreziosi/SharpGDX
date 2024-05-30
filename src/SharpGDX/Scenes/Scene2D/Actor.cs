@@ -273,7 +273,7 @@ public class Actor {
 	}
 
 	/** Removes all actions and listeners on this actor. */
-	public void clear () {
+	public virtual void clear () {
 		clearActions();
 		clearListeners();
 	}
@@ -285,7 +285,7 @@ public class Actor {
 
 	/** Called by the framework when this actor or any ascendant is added to a group that is in the stage.
 	 * @param stage May be null if the actor or any ascendant is no longer in a stage. */
-	internal protected void setStage (Stage stage) {
+	internal protected virtual void setStage (Stage stage) {
 		this.stage = stage;
 	}
 
@@ -935,7 +935,7 @@ public class Actor {
 	}
 
 	/** Draws a rectangle for the bounds of this actor if {@link #getDebug()} is true. */
-	protected void drawDebugBounds (ShapeRenderer shapes) {
+	protected virtual void drawDebugBounds (ShapeRenderer shapes) {
 		if (!_debug) return;
 		shapes.set(ShapeRenderer.ShapeType.Line);
 		if (stage != null) shapes.setColor(stage.getDebugColor());
@@ -943,7 +943,7 @@ public class Actor {
 	}
 
 	/** If true, {@link #drawDebug(ShapeRenderer)} will be called for this actor. */
-	public void setDebug (bool enabled) {
+	public virtual void setDebug (bool enabled) {
 		_debug = enabled;
 		if (enabled) Stage.debug = true;
 	}
@@ -953,7 +953,7 @@ public class Actor {
 	}
 
 	/** Calls {@link #setDebug(boolean)} with {@code true}. */
-	public Actor debug () {
+	public virtual Actor debug () {
 		setDebug(true);
 		return this;
 	}

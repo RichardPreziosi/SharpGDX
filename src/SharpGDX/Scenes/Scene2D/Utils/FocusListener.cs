@@ -24,11 +24,11 @@ abstract public class FocusListener : IEventListener {
 	}
 
 	/** @param actor The event target, which is the actor that emitted the focus event. */
-	public void keyboardFocusChanged (FocusEvent @event, Actor actor, bool focused) {
+	public virtual void keyboardFocusChanged (FocusEvent @event, Actor actor, bool focused) {
 	}
 
 	/** @param actor The event target, which is the actor that emitted the focus event. */
-	public void scrollFocusChanged (FocusEvent @event, Actor actor, bool focused) {
+	public virtual void scrollFocusChanged (FocusEvent @event, Actor actor, bool focused) {
 	}
 
 	/** Fired when an actor gains or loses keyboard or scroll focus. Can be cancelled to prevent losing or gaining focus.

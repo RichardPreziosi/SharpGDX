@@ -108,7 +108,7 @@ namespace SharpGDX.Files
 
 		/** Returns a java.io.File that represents this file handle. Note the returned file will only be usable for
 		 * {@link FileType#Absolute} and {@link FileType#External} file handles. */
-		public File file()
+		public virtual File file()
 		{
 			if (_type == FileType.External) return new File(Gdx.files.getExternalStoragePath(), _file.getPath());
 			return _file;
@@ -646,7 +646,7 @@ public bool isDirectory()
 }
 
 /** Returns a handle to the child with the specified name. */
-public FileHandle child(String name)
+public virtual FileHandle child(String name)
 {
 	if (_file.getPath().Length == 0) return new FileHandle(new File(name), _type);
 	return new FileHandle(new File(_file, name), _type);
@@ -654,13 +654,13 @@ public FileHandle child(String name)
 
 /** Returns a handle to the sibling with the specified name.
  * @throws GdxRuntimeException if this file is the root. */
-public FileHandle sibling(String name)
+public virtual FileHandle sibling(String name)
 {
 	if (_file.getPath().Length == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
 	return new FileHandle(new File(_file.getParent(), name), _type);
 }
 
-public FileHandle? parent()
+public virtual FileHandle? parent()
 {
 	File parent = _file.getParentFile();
 	if (parent == null)

@@ -80,7 +80,7 @@ namespace SharpGDX.Utils.Compression.LZ
 		_stream = null;
 	}
 
-	public void Init () // TODO: throws IOException
+	public virtual void Init () // TODO: throws IOException
 		{
 		_bufferOffset = 0;
 		_pos = 0;
@@ -89,7 +89,7 @@ namespace SharpGDX.Utils.Compression.LZ
 		ReadBlock();
 	}
 
-	public void MovePos () // TODO: throws IOException
+	public virtual void MovePos () // TODO: throws IOException
 	{
 		_pos++;
 		if (_pos > _posLimit) {

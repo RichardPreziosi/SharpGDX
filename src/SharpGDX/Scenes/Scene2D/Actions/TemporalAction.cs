@@ -49,30 +49,30 @@ abstract public class TemporalAction : Action {
 
 	/** Called the first time {@link #act(float)} is called. This is a good place to query the {@link #actor actor's} starting
 	 * state. */
-	protected void begin () {
+	protected virtual void begin () {
 	}
 
 	/** Called the last time {@link #act(float)} is called. */
-	protected void end () {
+	protected virtual void end () {
 	}
 
 	/** Called each frame.
 	 * @param percent The percentage of completion for this action, growing from 0 to 1 over the duration. If
 	 *           {@link #setReverse(bool) reversed}, this will shrink from 1 to 0. */
-	abstract protected void update (float percent);
+	protected abstract void update (float percent);
 
 	/** Skips to the end of the transition. */
 	public void finish () {
 		time = duration;
 	}
 
-	public void restart () {
+	public override void restart () {
 		time = 0;
 		began = false;
 		complete = false;
 	}
 
-	public void reset () {
+	public override void reset () {
 		base.reset();
 		reverse = false;
 		interpolation = null;

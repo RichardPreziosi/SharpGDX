@@ -232,7 +232,7 @@ public abstract class FloatBuffer : Buffer , IComparable<FloatBuffer> {
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception BufferUnderflowException if {@code len} is greater than {@code remaining()}.
 	 * @since Android 1.0 */
-	public FloatBuffer get (float[] dest, int off, int len) {
+	public virtual FloatBuffer get (float[] dest, int off, int len) {
 		int length = dest.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length) {
 			throw new IndexOutOfBoundsException();
@@ -348,7 +348,7 @@ public abstract class FloatBuffer : Buffer , IComparable<FloatBuffer> {
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public FloatBuffer put (float[] src, int off, int len) {
+	public virtual FloatBuffer put (float[] src, int off, int len) {
 		int length = src.Length;
 		if (off < 0 || len < 0 || (long)off + (long)len > length) {
 			throw new IndexOutOfBoundsException();
@@ -372,7 +372,7 @@ public abstract class FloatBuffer : Buffer , IComparable<FloatBuffer> {
 	 * @exception IllegalArgumentException if {@code src} is this buffer.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public FloatBuffer put (FloatBuffer src) {
+	public virtual FloatBuffer put (FloatBuffer src) {
 		if (src == this) {
 			throw new IllegalArgumentException();
 		}

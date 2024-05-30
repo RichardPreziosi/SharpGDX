@@ -1254,7 +1254,7 @@ namespace SharpGDX.Graphics.G2D
 			this.active = active;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+		public virtual void save (Writer output) // TODO: throws IOException 
 		{
 			if (!alwaysActive)
 				output.write("active: " + active + "\n");
@@ -1262,7 +1262,7 @@ namespace SharpGDX.Graphics.G2D
 				active = true;
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException
+		public virtual void load (BufferedReader reader) // TODO: throws IOException
 			{
 			if (!alwaysActive)
 				active = readBoolean(reader, "active");
@@ -1287,14 +1287,14 @@ namespace SharpGDX.Graphics.G2D
 			this.value = value;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 	{
 			base.save(output);
 			if (!active) return;
 			output.write("value: " + value + "\n");
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException 
+			public override void load (BufferedReader reader) // TODO: throws IOException 
 {
 			base.load(reader);
 			if (!active) return;

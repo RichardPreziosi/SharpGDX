@@ -97,7 +97,7 @@ public class MapLayer {
 	}
 
 	/** set the renderOffsetDirty state to true, when this layer or any parents' offset has changed **/
-	public void invalidateRenderOffset () {
+	public virtual void invalidateRenderOffset () {
 		renderOffsetDirty = true;
 	}
 

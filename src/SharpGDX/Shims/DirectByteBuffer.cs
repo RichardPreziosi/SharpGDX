@@ -61,7 +61,7 @@ namespace SharpGDX.Shims
 		 * 
 		 * @see java.nio.ByteBuffer#get(byte[], int, int)
 		 */
-		public ByteBuffer get(byte[] dest, int off, int len)
+		public override ByteBuffer get(byte[] dest, int off, int len)
 		{
 			int length = dest.Length;
 			if (off < 0 || len < 0 || (long)off + (long)len > length)

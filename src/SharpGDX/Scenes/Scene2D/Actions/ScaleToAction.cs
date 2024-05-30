@@ -13,7 +13,7 @@ public class ScaleToAction : TemporalAction {
 	private float startX, startY;
 	private float endX, endY;
 
-	protected void begin () {
+	protected override void begin () {
 		startX = target.getScaleX();
 		startY = target.getScaleY();
 	}

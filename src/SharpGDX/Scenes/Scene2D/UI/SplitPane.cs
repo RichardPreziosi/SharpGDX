@@ -239,7 +239,7 @@ public class SplitPane : WidgetGroup {
 		handleBounds.set(0, bottomAreaHeight, width, handleHeight);
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		Stage stage = getStage();
 		if (stage == null) return;
 
@@ -343,19 +343,19 @@ public class SplitPane : WidgetGroup {
 		invalidate();
 	}
 
-	public void addActor (Actor actor) {
+	public override void addActor (Actor actor) {
 		throw new UnsupportedOperationException("Use SplitPane#setWidget.");
 	}
 
-	public void addActorAt (int index, Actor actor) {
+	public override void addActorAt (int index, Actor actor) {
 		throw new UnsupportedOperationException("Use SplitPane#setWidget.");
 	}
 
-	public void addActorBefore (Actor actorBefore, Actor actor) {
+	public override void addActorBefore (Actor actorBefore, Actor actor) {
 		throw new UnsupportedOperationException("Use SplitPane#setWidget.");
 	}
 
-	public bool removeActor (Actor actor) {
+	public override bool removeActor (Actor actor) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor == firstWidget) {
 			setFirstWidget(null);
@@ -368,7 +368,7 @@ public class SplitPane : WidgetGroup {
 		return true;
 	}
 
-	public bool removeActor (Actor actor, bool unfocus) {
+	public override bool removeActor (Actor actor, bool unfocus) {
 		if (actor == null) throw new IllegalArgumentException("actor cannot be null.");
 		if (actor == firstWidget) {
 			base.removeActor(actor, unfocus);
@@ -385,7 +385,7 @@ public class SplitPane : WidgetGroup {
 		return false;
 	}
 
-	public Actor removeActorAt (int index, bool unfocus) {
+	public override Actor removeActorAt (int index, bool unfocus) {
 		Actor actor = base.removeActorAt(index, unfocus);
 		if (actor == firstWidget) {
 			base.removeActor(actor, unfocus);

@@ -9,7 +9,7 @@ namespace SharpGDX.Shims
 {
 	public class FilterInputStream : InputStream, ICloseable
 	{
-		public int read()
+		public override int read()
 		{
 			return @in._stream.ReadByte();
 		}

@@ -40,16 +40,15 @@
 
 		}
 
-		public FloatBuffer asFloatBuffer()
+		public override FloatBuffer asFloatBuffer()
 		{
-			throw new NotImplementedException();
-			//return DirectReadWriteFloatBufferAdapter.wrap(this);
+			return DirectReadWriteFloatBufferAdapter.wrap(this);
 		}
 
-		public IntBuffer asIntBuffer()
+		public override IntBuffer asIntBuffer()
 		{
-			throw new NotImplementedException();
-			//return order() == ByteOrder.nativeOrder() ? DirectReadWriteIntBufferAdapter.wrap(this) : base.asIntBuffer();
+			// TODO: return order() == ByteOrder.nativeOrder() ? DirectReadWriteIntBufferAdapter.wrap(this) :
+				return base.asIntBuffer();
 		}
 
 		public override ShortBuffer asShortBuffer()
@@ -138,7 +137,7 @@
 		 * 
 		 * @see java.nio.ByteBuffer#put(byte[], int, int)
 		 */
-		public ByteBuffer put(byte[] src, int off, int len)
+		public override ByteBuffer put(byte[] src, int off, int len)
 		{
 			if (off < 0 || len < 0 || (long)off + (long)len > src.Length)
 			{

@@ -78,12 +78,12 @@ namespace SharpGDX.Shims
 		throw new ReadOnlyBufferException();
 	}
 
-		public DoubleBuffer put(double[] src, int off, int len)
+		public override DoubleBuffer put(double[] src, int off, int len)
 	{
 		throw new ReadOnlyBufferException();
 	}
 
-	public  DoubleBuffer put(DoubleBuffer buf)
+		public override DoubleBuffer put(DoubleBuffer buf)
 	{
 		throw new ReadOnlyBufferException();
 	}

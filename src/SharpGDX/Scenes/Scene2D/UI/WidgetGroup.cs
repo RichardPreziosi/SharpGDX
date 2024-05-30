@@ -36,27 +36,27 @@ public class WidgetGroup : Group , ILayout {
 			addActor(actor);
 	}
 
-	public float getMinWidth () {
+	public virtual float getMinWidth () {
 		return getPrefWidth();
 	}
 
-	public float getMinHeight () {
+	public virtual float getMinHeight () {
 		return getPrefHeight();
 	}
 
-	public float getPrefWidth () {
+	public virtual float getPrefWidth () {
 		return 0;
 	}
 
-	public float getPrefHeight () {
+	public virtual float getPrefHeight () {
 		return 0;
 	}
 
-	public float getMaxWidth () {
+	public virtual float getMaxWidth () {
 		return 0;
 	}
 
-	public float getMaxHeight () {
+	public virtual float getMaxHeight () {
 		return 0;
 	}
 
@@ -109,7 +109,7 @@ public class WidgetGroup : Group , ILayout {
 		return _needsLayout;
 	}
 
-	public void invalidate () {
+		public virtual void invalidate () {
 		_needsLayout = true;
 	}
 
@@ -119,11 +119,11 @@ public class WidgetGroup : Group , ILayout {
 		if (parent is ILayout) ((ILayout)parent).invalidateHierarchy();
 	}
 
-	protected void childrenChanged () {
+		protected override void childrenChanged () {
 		invalidateHierarchy();
 	}
 
-	protected void sizeChanged () {
+		protected override void sizeChanged () {
 		invalidate();
 	}
 
@@ -140,19 +140,19 @@ public class WidgetGroup : Group , ILayout {
 		this.fillParent = fillParent;
 	}
 
-	public void layout () {
+	public virtual void layout () {
 	}
 
 	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
 	 * out. */
-	public Actor hit (float x, float y, bool touchable) {
+	public virtual Actor hit (float x, float y, bool touchable) {
 		validate();
 		return base.hit(x, y, touchable);
 	}
 
-	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
-	 * out. */
-	public void draw (IBatch batch, float parentAlpha) {
+		/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
+		 * out. */
+		public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 		base.draw(batch, parentAlpha);
 	}

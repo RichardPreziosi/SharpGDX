@@ -345,7 +345,7 @@ namespace SharpGDX.Shims
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception BufferUnderflowException if {@code len} is greater than {@code remaining()}.
 	 * @since Android 1.0 */
-	public ByteBuffer get(byte[] dest, int off, int len)
+	public virtual ByteBuffer get(byte[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if ((off < 0) || (len < 0) || ((long)off + (long)len > length))
@@ -618,7 +618,7 @@ namespace SharpGDX.Shims
 	 * @exception IndexOutOfBoundsException if either {@code off} or {@code len} is invalid.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public ByteBuffer put(byte[] src, int off, int len)
+	public virtual ByteBuffer put(byte[] src, int off, int len)
 	{
 		int length = src.Length;
 		if ((off < 0) || (len < 0) || ((long)off + (long)len > length))

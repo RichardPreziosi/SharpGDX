@@ -104,7 +104,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		_remove.add(index);
 	}
 
-	public bool removeValue (T value, bool identity) {
+		public override bool removeValue (T value, bool identity) {
 		if (iterating > 0) {
 			int index = indexOf(value, identity);
 			if (index == -1) return false;
@@ -114,7 +114,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		return base.removeValue(value, identity);
 	}
 
-	public T removeIndex (int index) {
+		public override T removeIndex (int index) {
 		if (iterating > 0) {
 			remove(index);
 			return get(index);
@@ -143,7 +143,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		base.set(index, value);
 	}
 
-	public void insert (int index, T value) {
+		public override void insert (int index, T value) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.insert(index, value);
 	}
@@ -158,7 +158,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		base.swap(first, second);
 	}
 
-	public T pop () {
+		public override T pop () {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		return base.pop();
 	}

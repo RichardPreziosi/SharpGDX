@@ -10,19 +10,19 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 /** An action that has an int, whose value is transitioned over time.
  * @author Nathan Sweet */
 public class IntAction : TemporalAction {
-	private int start, end;
+	private int _start, _end;
 	private int value;
 
 	/** Creates an IntAction that transitions from 0 to 1. */
 	public IntAction () {
-		start = 0;
-		end = 1;
+		_start = 0;
+		_end = 1;
 	}
 
 	/** Creates an IntAction that transitions from start to end. */
 	public IntAction (int start, int end) {
-		this.start = start;
-		this.end = end;
+		this._start = start;
+		this._end = end;
 	}
 
 	/** Creates a FloatAction that transitions from start to end. */
@@ -30,8 +30,8 @@ public class IntAction : TemporalAction {
 	: base(duration)
 	{
 		
-		this.start = start;
-		this.end = end;
+		this._start = start;
+		this._end = end;
 	}
 
 	/** Creates a FloatAction that transitions from start to end. */
@@ -39,21 +39,21 @@ public class IntAction : TemporalAction {
 	: base(duration, interpolation)
 	{
 		
-		this.start = start;
-		this.end = end;
+		this._start = start;
+		this._end = end;
 	}
 
-	protected void begin () {
-		value = start;
+	protected override void begin () {
+		value = _start;
 	}
 
 	protected override void update (float percent) {
 		if (percent == 0)
-			value = start;
+			value = _start;
 		else if (percent == 1)
-			value = end;
+			value = _end;
 		else
-			value = (int)(start + (end - start) * percent);
+			value = (int)(_start + (_end - _start) * percent);
 	}
 
 	/** Gets the current int value. */
@@ -67,20 +67,20 @@ public class IntAction : TemporalAction {
 	}
 
 	public int getStart () {
-		return start;
+		return _start;
 	}
 
 	/** Sets the value to transition from. */
 	public void setStart (int start) {
-		this.start = start;
+		this._start = start;
 	}
 
 	public int getEnd () {
-		return end;
+		return _end;
 	}
 
 	/** Sets the value to transition to. */
 	public void setEnd (int end) {
-		this.end = end;
+		this._end = end;
 	}
 }

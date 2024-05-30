@@ -79,12 +79,12 @@ namespace SharpGDX.Shims
 		throw new ReadOnlyBufferException();
 	}
 
-	public FloatBuffer put(FloatBuffer buf)
+		public override FloatBuffer put(FloatBuffer buf)
 	{
 		throw new ReadOnlyBufferException();
 	}
 
-		public FloatBuffer put(float[] src, int off, int len)
+		public override FloatBuffer put(float[] src, int off, int len)
 	{
 		throw new ReadOnlyBufferException();
 	}

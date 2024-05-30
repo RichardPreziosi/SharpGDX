@@ -68,7 +68,7 @@ internal CharSequenceAdapter(string chseq)
 		return sequence[index];
 	}
 
-	public CharBuffer get(char[] dest, int off, int len)
+	public override CharBuffer get(char[] dest, int off, int len)
 	{
 		int length = dest.Length;
 		if ((off < 0) || (len < 0) || (long)off + (long)len > length)
@@ -125,7 +125,7 @@ internal CharSequenceAdapter(string chseq)
 		throw new ReadOnlyBufferException();
 	}
 
-	public CharBuffer put(char[] src, int off, int len)
+		public override CharBuffer put(char[] src, int off, int len)
 	{
 		if ((off < 0) || (len < 0) || (long)off + (long)len > src.Length)
 		{
@@ -140,7 +140,7 @@ internal CharSequenceAdapter(string chseq)
 		throw new ReadOnlyBufferException();
 	}
 
-	public CharBuffer put(String src, int start, int end)
+		public override CharBuffer put(String src, int start, int end)
 	{
 		if ((start < 0) || (end < 0) || (long)start + (long)end > src.Length)
 		{

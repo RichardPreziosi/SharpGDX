@@ -46,7 +46,7 @@ namespace SharpGDX.Utils.Compression.LZ
 		}
 	}
 
-	public void Init () // TODO: throws IOException 
+		public override void Init () // TODO: throws IOException 
 		{
 		base.Init();
 		for (int i = 0; i < _hashSizeSum; i++)
@@ -55,7 +55,7 @@ namespace SharpGDX.Utils.Compression.LZ
 		ReduceOffsets(-1);
 	}
 
-	public void MovePos () // TODO: throws IOException 
+	public override void MovePos () // TODO: throws IOException 
 		{
 		if (++_cyclicBufferPos >= _cyclicBufferSize) _cyclicBufferPos = 0;
 		base.MovePos();

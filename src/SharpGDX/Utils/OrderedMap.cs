@@ -60,7 +60,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		_keys = new (map._keys);
 	}
 
-	public V? put (K key, V value)
+		public override V? put (K key, V value)
 	{
 		throw new NotImplementedException();
 		//int i = locateKey(key);
@@ -125,12 +125,12 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		return true;
 	}
 
-	public void clear (int maximumCapacity) {
+		public override void clear (int maximumCapacity) {
 		_keys.clear();
 		base.clear(maximumCapacity);
 	}
 
-	public void clear () {
+		public override void clear () {
 		_keys.clear();
 		base.clear();
 	}
@@ -294,14 +294,14 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 				//currentIndex = -1;
 			}
 
-		public Array<K> toArray (Array<K> array) {
+			public override Array<K> toArray (Array<K> array) {
 			array.addAll(keys, nextIndex, keys.size - nextIndex);
 			nextIndex = keys.size;
 			_hasNext = false;
 			return array;
 		}
 
-		public Array<K> toArray () {
+			public override Array<K> toArray () {
 			return toArray(new (true, keys.size - nextIndex));
 		}
 	}
@@ -333,7 +333,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 			//return value;
 		}
 
-		public void remove ()
+			public override void remove ()
 		{
 			throw new NotImplementedException();
 			//if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
@@ -342,7 +342,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 			//currentIndex = -1;
 		}
 
-		public Array<V> toArray (Array<V> array) {
+			public override Array<V> toArray (Array<V> array) {
 			throw new NotImplementedException();
 			//	int n = this.keys.size;
 			//array.ensureCapacity(n - nextIndex);
@@ -355,7 +355,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 			//return array;
 		}
 
-		public Array<V> toArray () {
+			public override Array<V> toArray () {
 			return toArray(new (true, keys.size - nextIndex));
 		}
 	}

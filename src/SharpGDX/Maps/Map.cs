@@ -49,6 +49,6 @@ public class Map : Disposable {
 	}
 
 	/** Disposes all resources like {@link Texture} instances that the map may own. */
-	public void dispose () {
+	public virtual void dispose () {
 	}
 }

@@ -623,7 +623,7 @@ public class Sprite : TextureRegion {
 		return color;
 	}
 
-	public void setRegion (float u, float v, float u2, float v2) {
+		public override void setRegion (float u, float v, float u2, float v2) {
 		base.setRegion(u, v, u2, v2);
 
 		float[] vertices = this.vertices;
@@ -640,25 +640,25 @@ public class Sprite : TextureRegion {
 		vertices[IBatch.V4] = v2;
 	}
 
-	public void setU (float u) {
+		public override void setU (float u) {
 		base.setU(u);
 		vertices[IBatch.U1] = u;
 		vertices[IBatch.U2] = u;
 	}
 
-	public void setV (float v) {
+		public override void setV (float v) {
 		base.setV(v);
 		vertices[IBatch.V2] = v;
 		vertices[IBatch.V3] = v;
 	}
 
-	public void setU2 (float u2) {
+		public override void setU2 (float u2) {
 		base.setU2(u2);
 		vertices[IBatch.U3] = u2;
 		vertices[IBatch.U4] = u2;
 	}
 
-	public void setV2 (float v2) {
+		public override void setV2 (float v2) {
 		base.setV2(v2);
 		vertices[IBatch.V1] = v2;
 		vertices[IBatch.V4] = v2;
@@ -679,10 +679,10 @@ public class Sprite : TextureRegion {
 		flip(performX, performY);
 	}
 
-	/** boolean parameters x,y are not setting a state, but performing a flip
-	 * @param x perform horizontal flip
-	 * @param y perform vertical flip */
-	public virtual void flip (bool x, bool y) {
+		/** boolean parameters x,y are not setting a state, but performing a flip
+		 * @param x perform horizontal flip
+		 * @param y perform vertical flip */
+		public override void flip (bool x, bool y) {
 		base.flip(x, y);
 		float[] vertices = this.vertices;
 		if (x) {
@@ -703,7 +703,7 @@ public class Sprite : TextureRegion {
 		}
 	}
 
-	public void scroll (float xAmount, float yAmount) {
+		public override void scroll (float xAmount, float yAmount) {
 		float[] vertices = this.vertices;
 		if (xAmount != 0) {
 			float u = (vertices[IBatch.U1] + xAmount) % 1;

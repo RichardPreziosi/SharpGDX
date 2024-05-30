@@ -62,7 +62,7 @@ public class OrderedSet<T> : ObjectSet<T> {
 		items = new (set.items);
 	}
 
-	public bool add (T key) {
+		public override bool add (T key) {
 		if (!base.add(key)) return false;
 		items.add(key);
 		return true;
@@ -128,12 +128,12 @@ public class OrderedSet<T> : ObjectSet<T> {
 		return true;
 	}
 
-	public void clear (int maximumCapacity) {
+		public override void clear (int maximumCapacity) {
 		items.clear();
 		base.clear(maximumCapacity);
 	}
 
-	public void clear () {
+		public override void clear () {
 		items.clear();
 		base.clear();
 	}

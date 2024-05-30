@@ -41,7 +41,7 @@ public class TextButton : Button {
 		return new Label(text, style);
 	}
 
-	public void setStyle (ButtonStyle style) {
+	public override void setStyle (ButtonStyle style) {
 		if (style == null) throw new NullPointerException("style cannot be null");
 		if (!(style is TextButtonStyle)) throw new IllegalArgumentException("style must be a TextButtonStyle.");
 		this.style = (TextButtonStyle)style;
@@ -56,7 +56,7 @@ public class TextButton : Button {
 		}
 	}
 
-	public TextButtonStyle getStyle () {
+	public override TextButtonStyle getStyle () {
 		return style;
 	}
 
@@ -84,7 +84,7 @@ public class TextButton : Button {
 		return style.fontColor;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		label.getStyle().fontColor = getFontColor();
 		base.draw(batch, parentAlpha);
 	}

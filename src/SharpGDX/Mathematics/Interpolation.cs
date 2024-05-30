@@ -486,7 +486,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			return 1 - base.apply(1 - a);
 		}
 	}

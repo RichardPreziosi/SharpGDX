@@ -30,7 +30,7 @@ public class TiledDrawable : TextureRegionDrawable {
 		
 	}
 
-	public void draw (IBatch batch, float x, float y, float width, float height) {
+		public override void draw (IBatch batch, float x, float y, float width, float height) {
 		float oldColor = batch.getPackedColor();
 		batch.setColor(batch.getColor().mul(color));
 
@@ -273,7 +273,7 @@ public class TiledDrawable : TextureRegionDrawable {
 		this.align = align;
 	}
 
-	public TiledDrawable tint (Color tint) {
+		public override TiledDrawable tint (Color tint) {
 		TiledDrawable drawable = new TiledDrawable(this);
 		drawable.color.set(tint);
 		drawable.setLeftWidth(getLeftWidth());

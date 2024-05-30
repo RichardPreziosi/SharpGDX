@@ -62,7 +62,7 @@ public class DistanceFieldFont : BitmapFont {
 		
 	}
 
-	protected void load (BitmapFontData data) {
+	protected override void load (BitmapFontData data) {
 		base.load(data);
 
 		// Distance field font rendering requires font texture to be filtered linear.

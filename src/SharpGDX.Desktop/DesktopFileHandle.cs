@@ -17,19 +17,19 @@ namespace SharpGDX.Desktop
 		
 	}
 
-	public FileHandle child(String name)
+		public override FileHandle child(String name)
 	{
 		if (_file.getPath().Length == 0) return new DesktopFileHandle(new File(name), _type);
 		return new DesktopFileHandle(new File(_file, name), _type);
 	}
 
-	public FileHandle sibling(String name)
+		public override FileHandle sibling(String name)
 	{
 		if (_file.getPath().Length == 0) throw new GdxRuntimeException("Cannot get the sibling of the root.");
 		return new DesktopFileHandle(new File(_file.getParent(), name), _type);
 	}
 
-	public FileHandle parent()
+		public override FileHandle parent()
 	{
 		File parent = _file.getParentFile();
 		if (parent == null)
@@ -42,7 +42,7 @@ namespace SharpGDX.Desktop
 		return new DesktopFileHandle(parent, _type);
 	}
 
-	public File file()
+		public override File file()
 	{
 		if (_type == IFiles.FileType.External) return new File(DesktopFiles.externalPath, _file.getPath());
 		if (_type == IFiles.FileType.Local) return new File(DesktopFiles.localPath, _file.getPath());

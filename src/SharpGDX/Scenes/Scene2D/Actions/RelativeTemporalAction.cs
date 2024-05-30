@@ -12,7 +12,7 @@ namespace SharpGDX.Scenes.Scene2D.Actions;
 abstract public class RelativeTemporalAction : TemporalAction {
 	private float lastPercent;
 
-	protected void begin () {
+	protected override void begin () {
 		lastPercent = 0;
 	}
 

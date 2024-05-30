@@ -40,12 +40,12 @@ where T: Event{
 		listener = new EventActionEventListener(this);
 	}
 
-	public void restart () {
+	public override void restart () {
 		result = false;
 		active = false;
 	}
 
-	public void setTarget (Actor newTarget) {
+	public override void setTarget (Actor newTarget) {
 		if (target != null) target.removeListener(listener);
 		base.setTarget(newTarget);
 		if (newTarget != null) newTarget.addListener(listener);

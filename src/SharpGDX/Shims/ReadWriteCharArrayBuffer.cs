@@ -103,7 +103,7 @@ internal 	ReadWriteCharArrayBuffer(char[] array)
 		return this;
 	}
 
-	public CharBuffer put(char[] src, int off, int len)
+		public override CharBuffer put(char[] src, int off, int len)
 	{
 		int length = src.Length;
 		if (off < 0 || len < 0 || (long)len + (long)off > length)

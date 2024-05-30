@@ -26,7 +26,7 @@ public class BaseDrawable : IDrawable {
 		minHeight = drawable.getMinHeight();
 	}
 
-	public void draw (IBatch batch, float x, float y, float width, float height) {
+	public virtual void draw (IBatch batch, float x, float y, float width, float height) {
 	}
 
 	public float getLeftWidth () {
