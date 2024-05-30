@@ -96,7 +96,7 @@ public class ImageButton : Button {
 		image.setDrawable(getImageDrawable());
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		updateImage();
 		base.draw(batch, parentAlpha);
 	}

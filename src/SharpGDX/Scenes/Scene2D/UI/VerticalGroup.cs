@@ -112,7 +112,7 @@ public class VerticalGroup : WidgetGroup {
 		}
 	}
 
-	public void layout () {
+	public override void layout () {
 		if (sizeInvalid) computeSize();
 
 		if (_wrap) {

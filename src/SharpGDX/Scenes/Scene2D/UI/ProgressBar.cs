@@ -72,11 +72,11 @@ public class ProgressBar : Widget , IDisableable {
 
 	/** Returns the progress bar's style. Modifying the returned style may not have an effect until
 	 * {@link #setStyle(ProgressBarStyle)} is called. */
-	public ProgressBarStyle getStyle () {
+	public virtual ProgressBarStyle getStyle () {
 		return style;
 	}
 
-	public void act (float delta) {
+	public override void act (float delta) {
 		base.act(delta);
 		if (animateTime > 0) {
 			animateTime -= delta;
@@ -85,7 +85,7 @@ public class ProgressBar : Widget , IDisableable {
 		}
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		ProgressBarStyle style = this.style;
 		bool disabled = this.disabled;
 		IDrawable knob = style.knob, currentKnob = getKnobDrawable();
@@ -207,22 +207,22 @@ public class ProgressBar : Widget , IDisableable {
 		return visualInterpolation.apply((getVisualValue() - min) / (max - min));
 	}
 
-	protected IDrawable? getBackgroundDrawable () {
+	protected virtual IDrawable? getBackgroundDrawable () {
 		if (disabled && style.disabledBackground != null) return style.disabledBackground;
 		return style.background;
 	}
 
-	protected IDrawable? getKnobDrawable () {
+	protected virtual IDrawable? getKnobDrawable () {
 		if (disabled && style.disabledKnob != null) return style.disabledKnob;
 		return style.knob;
 	}
 
-	protected IDrawable getKnobBeforeDrawable () {
+	protected virtual IDrawable getKnobBeforeDrawable () {
 		if (disabled && style.disabledKnobBefore != null) return style.disabledKnobBefore;
 		return style.knobBefore;
 	}
 
-	protected IDrawable getKnobAfterDrawable () {
+	protected virtual IDrawable getKnobAfterDrawable () {
 		if (disabled && style.disabledKnobAfter != null) return style.disabledKnobAfter;
 		return style.knobAfter;
 	}

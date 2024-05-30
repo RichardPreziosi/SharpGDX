@@ -117,25 +117,25 @@ namespace SharpGDX.Utils
 			resize(items.Length);
 	}
 
-	public void set(int index, T value)
+		public override void set(int index, T value)
 	{
 		modified();
 		base.set(index, value);
 	}
 
-	public void insert(int index, T value)
+		public override void insert(int index, T value)
 	{
 		modified();
 		base.insert(index, value);
 	}
 
-	public void insertRange(int index, int count)
+		public override void insertRange(int index, int count)
 	{
 		modified();
 		base.insertRange(index, count);
 	}
 
-	public void swap(int first, int second)
+		public override void swap(int first, int second)
 	{
 		modified();
 		base.swap(first, second);
@@ -152,19 +152,19 @@ namespace SharpGDX.Utils
 		modified();
 		return base.removeIndex(index);
 	}
-	public void removeRange(int start, int end)
+		public override void removeRange(int start, int end)
 	{
 		modified();
 		base.removeRange(start, end);
 	}
 
-	public bool removeAll(Array< T> array, bool identity)
+		public override bool removeAll(Array< T> array, bool identity)
 	{
 		modified();
 		return base.removeAll(array, identity);
 	}
 
-	public T pop()
+		public override T pop()
 	{
 		modified();
 		return base.pop();
@@ -176,37 +176,37 @@ namespace SharpGDX.Utils
 		base.clear();
 	}
 
-	public void sort()
+		public override void sort()
 	{
 		modified();
 		base.sort();
 	}
 
-	public void sort(IComparer< T> comparator)
+		public override void sort(IComparer< T> comparator)
 	{
 		modified();
 		base.sort(comparator);
 	}
 
-	public void reverse()
+		public override void reverse()
 	{
 		modified();
 		base.reverse();
 	}
 
-	public void shuffle()
+		public override void shuffle()
 	{
 		modified();
 		base.shuffle();
 	}
 
-	public void truncate(int newSize)
+		public override void truncate(int newSize)
 	{
 		modified();
 		base.truncate(newSize);
 	}
 
-	public T[] setSize(int newSize)
+		public override T[] setSize(int newSize)
 	{
 		modified();
 		return base.setSize(newSize);

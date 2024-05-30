@@ -116,9 +116,9 @@ public class FrameBufferCubemap : GLFrameBuffer<Cubemap> {
 		}
 	}
 
-	/** Makes the frame buffer current so everything gets drawn to it, must be followed by call to either {@link #nextSide()} or
-	 * {@link #bindSide(com.badlogic.gdx.graphics.Cubemap.CubemapSide)} to activate the side to render onto. */
-	public void bind () {
+		/** Makes the frame buffer current so everything gets drawn to it, must be followed by call to either {@link #nextSide()} or
+		 * {@link #bindSide(com.badlogic.gdx.graphics.Cubemap.CubemapSide)} to activate the side to render onto. */
+		public override void bind () {
 		currentSide = -1;
 		base.bind();
 	}

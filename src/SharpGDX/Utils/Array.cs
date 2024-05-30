@@ -161,7 +161,7 @@ namespace SharpGDX.Utils
 		return items[index];
 	}
 
-	public void set(int index, T value)
+	public virtual void set(int index, T value)
 	{
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 		items[index] = value;
@@ -182,7 +182,7 @@ namespace SharpGDX.Utils
 
 	/** Inserts the specified number of items at the specified index. The new items will have values equal to the values at those
 	 * indices before the insertion. */
-	public void insertRange(int index, int count)
+	public virtual void insertRange(int index, int count)
 	{
 		if (index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 		int sizeNeeded = size + count;
@@ -191,7 +191,7 @@ namespace SharpGDX.Utils
 		size = sizeNeeded;
 	}
 
-	public void swap(int first, int second)
+	public virtual void swap(int first, int second)
 	{
 		if (first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
 		if (second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
@@ -331,8 +331,8 @@ namespace SharpGDX.Utils
 		return value;
 	}
 
-	/** Removes the items between the specified indices, inclusive. */
-	public void removeRange(int start, int end)
+		/** Removes the items between the specified indices, inclusive. */
+		public virtual void removeRange(int start, int end)
 	{
 		int n = size;
 		if (end >= n) throw new IndexOutOfBoundsException("end can't be >= size: " + end + " >= " + size);
@@ -354,7 +354,7 @@ namespace SharpGDX.Utils
 	/** Removes from this array all of elements contained in the specified array.
 	 * @param identity True to use ==, false to use .equals().
 	 * @return true if this array was modified. */
-	public bool removeAll(Array<T> array, bool identity)
+	public virtual bool removeAll(Array<T> array, bool identity)
 	{
 		int size = this.size;
 		int startSize = size;
@@ -458,7 +458,7 @@ namespace SharpGDX.Utils
 
 	/** Sets the array size, leaving any values beyond the current size null.
 	 * @return {@link #items} */
-	public T[] setSize(int newSize)
+	public virtual T[] setSize(int newSize)
 	{
 		truncate(newSize);
 		if (newSize > items.Length) resize(Math.Max(8, newSize));
@@ -478,13 +478,13 @@ namespace SharpGDX.Utils
 
 	/** Sorts this array. The array elements must implement {@link Comparable}. This method is not thread safe (uses
 	 * {@link Sort#instance()}). */
-	public void sort()
+	public virtual void sort()
 	{
 		Sort<T>.instance().sort(items, 0, size);
 	}
 
 	/** Sorts the array. This method is not thread safe (uses {@link Sort#instance()}). */
-	public void sort(IComparer<T> comparator)
+	public virtual void sort(IComparer<T> comparator)
 	{
 		Sort<T>.instance().sort(items, comparator, 0, size);
 	}
@@ -519,7 +519,7 @@ namespace SharpGDX.Utils
 		return Select<T>.instance().selectIndex(items, comparator, kthLowest, size);
 	}
 
-	public void reverse()
+	public virtual void reverse()
 	{
 		T[] items = this.items;
 		for (int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++)
@@ -531,7 +531,7 @@ namespace SharpGDX.Utils
 		}
 	}
 
-	public void shuffle()
+	public virtual void shuffle()
 	{
 		T[] items = this.items;
 		for (int i = size - 1; i >= 0; i--)
@@ -570,7 +570,7 @@ namespace SharpGDX.Utils
 
 	/** Reduces the size of the array to the specified size. If the array is already smaller than the specified size, no action is
 	 * taken. */
-	public void truncate(int newSize)
+	public virtual void truncate(int newSize)
 	{
 		if (newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
 		if (size <= newSize) return;

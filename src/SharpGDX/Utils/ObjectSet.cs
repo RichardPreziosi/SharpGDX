@@ -191,7 +191,7 @@ namespace SharpGDX.Utils
 	}
 
 	/** Returns true if the key was removed. */
-	public bool remove(T key)
+	public virtual bool remove(T key)
 	{
 		int i = locateKey(key);
 		if (i < 0) return false;
@@ -338,7 +338,7 @@ namespace SharpGDX.Utils
 		return GetEnumerator();
 	}
 
-	public String toString(String separator)
+	public virtual String toString(String separator)
 	{
 		if (size == 0) return "";
 		StringBuilder buffer = new StringBuilder(32);
@@ -437,7 +437,7 @@ namespace SharpGDX.Utils
 		_hasNext = false;
 	}
 
-	public void remove()
+	public virtual void remove()
 	{
 		int i = currentIndex;
 		if (i < 0) throw new IllegalStateException("next must be called before remove.");
@@ -487,7 +487,7 @@ namespace SharpGDX.Utils
 	public void Dispose(){}
 
 	/** Adds the remaining values to the array. */
-	public Array<T> toArray(Array<T> array)
+	public virtual Array<T> toArray(Array<T> array)
 	{
 		while (_hasNext)
 			array.add(Current);
@@ -495,7 +495,7 @@ namespace SharpGDX.Utils
 	}
 
 	/** Returns a new array containing the remaining values. */
-	public Array<T> toArray()
+	public virtual Array<T> toArray()
 	{
 		return toArray(new Array<T>(true, set.size));
 	}

@@ -10,7 +10,7 @@ public abstract class Tooltip : InputListener
 	internal Actor targetActor;
 	internal bool always;
 	internal bool instant;
-	public void hide()
+	public virtual void hide()
 	{
 		manager.hide(this);
 	}
@@ -148,7 +148,7 @@ where T: Actor{
 		hide();
 	}
 
-	public void hide () {
+	public override void hide () {
 		manager.hide(this);
 	}
 }

@@ -37,7 +37,7 @@ public class TextureRegionDrawable : BaseDrawable , ITransformDrawable {
 		batch.draw(region, x, y, width, height);
 	}
 
-	public void draw (IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
+	public virtual void draw (IBatch batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
 		float scaleY, float rotation) {
 		batch.draw(region, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
 	}

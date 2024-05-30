@@ -646,7 +646,7 @@ namespace SharpGDX.Shims
 	 * @exception IllegalArgumentException if {@code src} is this buffer.
 	 * @exception ReadOnlyBufferException if no changes may be made to the contents of this buffer.
 	 * @since Android 1.0 */
-	public ByteBuffer put(ByteBuffer src)
+	public virtual ByteBuffer put(ByteBuffer src)
 	{
 		if (src == this)
 		{

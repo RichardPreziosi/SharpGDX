@@ -268,7 +268,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			return (float)Math.Pow(a, power);
 		}
 	}
@@ -279,7 +279,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			return (float)Math.Pow(a - 1, power) * (power % 2 == 0 ? -1 : 1) + 1;
 		}
 	}
@@ -309,7 +309,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			return ((float)Math.Pow(value, power * (a - 1)) - min) * scale;
 		}
 	}
@@ -321,7 +321,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			return 1 - ((float)Math.Pow(value, -power * a) - min) * scale;
 		}
 	}
@@ -369,7 +369,7 @@ public abstract class Interpolation {
 			
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			if (a == 0) return 0;
 			a = 1 - a;
 			return (1 - (float)Math.Pow(value, power * (a - 1)) * MathUtils.sin(a * bounces) * scale);
@@ -397,7 +397,7 @@ public abstract class Interpolation {
 			return base.apply(a);
 		}
 
-		public float apply (float a) {
+			public override float apply (float a) {
 			if (a <= 0.5f) return (1 - @out(1 - a * 2)) / 2;
 			return @out(a * 2 - 1) / 2 + 0.5f;
 		}

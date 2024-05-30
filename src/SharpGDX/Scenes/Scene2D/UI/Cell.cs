@@ -116,7 +116,7 @@ namespace SharpGDX.Scenes.Scene2D.UI
 		internal Value padTop, padLeft, padBottom, padRight;
 
 /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
-public Cell Space(float space)
+public virtual Cell Space(float space)
 {
 	if (space < 0) throw new IllegalArgumentException("space cannot be < 0: " + space);
 	Space(Fixed.valueOf(space));
@@ -444,7 +444,7 @@ public class Cell<T> : Cell,IPoolable
 	}
 
 		/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
-		public  Cell<T> Space (float space) {
+		public override Cell<T> Space (float space) {
 		if (space < 0) throw new IllegalArgumentException("space cannot be < 0: " + space);
 		Space(Fixed.valueOf(space));
 		return this;

@@ -216,7 +216,7 @@ public abstract class GLTexture : Disposable {
 		}
 	}
 
-	public void dispose () {
+	public virtual void dispose () {
 		delete();
 	}
 

@@ -145,7 +145,7 @@ public class SplitPane : WidgetGroup {
 		return style;
 	}
 
-	public void layout () {
+	public override void layout () {
 		clampSplitAmount();
 		if (!vertical)
 			calculateHorizBoundsAndPositions();
@@ -166,7 +166,7 @@ public class SplitPane : WidgetGroup {
 		}
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		float first = firstWidget == null ? 0
 			: (firstWidget is ILayout ? ((ILayout)firstWidget).getPrefWidth() : firstWidget.getWidth());
 		float second = secondWidget == null ? 0
@@ -175,7 +175,7 @@ public class SplitPane : WidgetGroup {
 		return first + style.handle.getMinWidth() + second;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		float first = firstWidget == null ? 0
 			: (firstWidget is ILayout ? ((ILayout)firstWidget).getPrefHeight() : firstWidget.getHeight());
 		float second = secondWidget == null ? 0
@@ -184,14 +184,14 @@ public class SplitPane : WidgetGroup {
 		return first + style.handle.getMinHeight() + second;
 	}
 
-	public float getMinWidth () {
+	public override float getMinWidth () {
 		float first = firstWidget is ILayout ? ((ILayout)firstWidget).getMinWidth() : 0;
 		float second = secondWidget is ILayout ? ((ILayout)secondWidget).getMinWidth() : 0;
 		if (vertical) return Math.Max(first, second);
 		return first + style.handle.getMinWidth() + second;
 	}
 
-	public float getMinHeight () {
+	public override float getMinHeight () {
 		float first = firstWidget is ILayout ? ((ILayout)firstWidget).getMinHeight() : 0;
 		float second = secondWidget is ILayout ? ((ILayout)secondWidget).getMinHeight() : 0;
 		if (!vertical) return Math.Max(first, second);

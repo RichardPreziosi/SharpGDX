@@ -150,7 +150,7 @@ where T: Actor{
 		if (actor is ILayout) ((ILayout)actor).validate();
 	}
 
-	public void setCullingArea (Rectangle cullingArea) {
+	public override void setCullingArea (Rectangle cullingArea) {
 		base.setCullingArea(cullingArea);
 		if (_fillX == 1 && _fillY == 1 && actor is ICullable) ((ICullable)actor).setCullingArea(cullingArea);
 	}

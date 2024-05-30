@@ -126,13 +126,13 @@ public class Touchpad : Widget {
 		return style;
 	}
 
-	public Actor hit (float x, float y, bool touchable) {
+	public override Actor hit (float x, float y, bool touchable) {
 		if (touchable && this.getTouchable() != Touchable.enabled) return null;
 		if (!isVisible()) return null;
 		return touchBounds.contains(x, y) ? this : null;
 	}
 
-	public void layout () {
+	public override void layout () {
 		// Recalc pad and deadzone bounds
 		float halfWidth = getWidth() / 2;
 		float halfHeight = getHeight() / 2;
@@ -146,7 +146,7 @@ public class Touchpad : Widget {
 		knobPercent.set(0, 0);
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		Color c = getColor();
@@ -168,11 +168,11 @@ public class Touchpad : Widget {
 		}
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		return style.background != null ? style.background.getMinWidth() : 0;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		return style.background != null ? style.background.getMinHeight() : 0;
 	}
 

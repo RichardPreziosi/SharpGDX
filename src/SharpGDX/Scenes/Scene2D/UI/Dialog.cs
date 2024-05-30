@@ -121,7 +121,7 @@ public class Dialog : Window {
 			}
 		}
 
-	protected void setStage (Stage stage) {
+	internal protected override void setStage (Stage stage) {
 		if (stage == null)
 			addListener(focusListener);
 		else

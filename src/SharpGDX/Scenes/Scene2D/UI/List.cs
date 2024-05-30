@@ -178,7 +178,7 @@ public List (ListStyle style)
 		return style;
 	}
 
-	public void layout () {
+	public override void layout () {
 		BitmapFont font = style.font;
 		IDrawable selectedDrawable = style.selection;
 
@@ -203,7 +203,7 @@ public List (ListStyle style)
 		}
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		drawBackground(batch, parentAlpha);
@@ -397,12 +397,12 @@ public List (ListStyle style)
 		return itemHeight;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		validate();
 		return prefWidth;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		validate();
 		return prefHeight;
 	}

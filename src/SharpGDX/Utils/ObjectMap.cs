@@ -189,7 +189,7 @@ namespace SharpGDX.Utils
 		}
 
 		/** Returns the value for the removed key, or null if the key is not in the map. */
-		public V? remove(K key)
+		public virtual V? remove(K key)
 		{
 			int i = locateKey(key);
 			if (i < 0) return default;
@@ -437,7 +437,7 @@ namespace SharpGDX.Utils
 			return toString(", ", true);
 		}
 
-		protected String toString(String separator, bool braces)
+		protected virtual String toString(String separator, bool braces)
 		{
 			if (size == 0) return braces ? "{}" : "";
 			StringBuilder buffer = new StringBuilder(32);
@@ -480,7 +480,7 @@ namespace SharpGDX.Utils
 		 * <p>
 		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
 		 * Use the {@link Entries} constructor for nested or multithreaded iteration. */
-		public Entries entries()
+		public virtual Entries entries()
 		{
 			if (Collections.allocateIterators) return new Entries(this);
 			if (entries1 == null)
@@ -507,7 +507,7 @@ namespace SharpGDX.Utils
 		 * <p>
 		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
 		 * Use the {@link Values} constructor for nested or multithreaded iteration. */
-		public Values values()
+		public virtual Values values()
 		{
 			if (Collections.allocateIterators) return new Values(this);
 			if (values1 == null)
@@ -534,7 +534,7 @@ namespace SharpGDX.Utils
 		 * <p>
 		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
 		 * Use the {@link Keys} constructor for nested or multithreaded iteration. */
-		public Keys keys()
+		public virtual Keys keys()
 		{
 			if (Collections.allocateIterators) return new Keys(this);
 			if (keys1 == null)

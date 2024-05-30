@@ -117,9 +117,9 @@ public class Group : Actor , ICullable {
 		children.end();
 	}
 
-	/** Draws this actor's debug lines if {@link #getDebug()} is true and, regardless of {@link #getDebug()}, calls
-	 * {@link Actor#drawDebug(ShapeRenderer)} on each child. */
-	public virtual void drawDebug (ShapeRenderer shapes) {
+		/** Draws this actor's debug lines if {@link #getDebug()} is true and, regardless of {@link #getDebug()}, calls
+		 * {@link Actor#drawDebug(ShapeRenderer)} on each child. */
+		public override void drawDebug (ShapeRenderer shapes) {
 		drawDebugBounds(shapes);
 		if (transform) applyTransform(shapes, computeTransform());
 		drawDebugChildren(shapes);
@@ -214,7 +214,7 @@ public class Group : Actor , ICullable {
 	/** Children completely outside of this rectangle will not be drawn. This is only valid for use with unrotated and unscaled
 	 * actors.
 	 * @param cullingArea May be null. */
-	public void setCullingArea (Rectangle? cullingArea) {
+	public virtual void setCullingArea (Rectangle? cullingArea) {
 		this.cullingArea = cullingArea;
 	}
 
@@ -224,7 +224,7 @@ public class Group : Actor , ICullable {
 		return cullingArea;
 	}
 
-	public Actor? hit (float x, float y, bool touchable) {
+		public override Actor? hit (float x, float y, bool touchable) {
 		if (touchable && getTouchable() == Touchable.disabled) return null;
 		if (!isVisible()) return null;
 		Vector2 point = tmp;

@@ -122,7 +122,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		return base.removeIndex(index);
 	}
 
-	public void removeRange (int start, int end) {
+	public override void removeRange (int start, int end) {
 		if (iterating > 0) {
 			for (int i = end; i >= start; i--)
 				remove(i);
@@ -130,7 +130,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 			base.removeRange(start, end);
 	}
 
-	public void clear () {
+		public override void clear () {
 		if (iterating > 0) {
 			_clear = size;
 			return;
@@ -138,7 +138,7 @@ public class DelayedRemovalArray<T> : Array<T> {
 		base.clear();
 	}
 
-	public void set (int index, T value) {
+		public override void set (int index, T value) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.set(index, value);
 	}
@@ -148,12 +148,12 @@ public class DelayedRemovalArray<T> : Array<T> {
 		base.insert(index, value);
 	}
 
-	public void insertRange (int index, int count) {
+		public override void insertRange (int index, int count) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.insertRange(index, count);
 	}
 
-	public void swap (int first, int second) {
+		public override void swap (int first, int second) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.swap(first, second);
 	}
@@ -163,32 +163,32 @@ public class DelayedRemovalArray<T> : Array<T> {
 		return base.pop();
 	}
 
-	public void sort () {
+		public override void sort () {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.sort();
 	}
 
-	public void sort (IComparer<T> comparator) {
+		public override void sort (IComparer<T> comparator) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.sort(comparator);
 	}
 
-	public void reverse () {
+		public override void reverse () {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.reverse();
 	}
 
-	public void shuffle () {
+		public override void shuffle () {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.shuffle();
 	}
 
-	public void truncate (int newSize) {
+		public override void truncate (int newSize) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		base.truncate(newSize);
 	}
 
-	public T[] setSize (int newSize) {
+		public override T[] setSize (int newSize) {
 		if (iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
 		return base.setSize(newSize);
 	}

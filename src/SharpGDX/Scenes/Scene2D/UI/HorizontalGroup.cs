@@ -275,13 +275,13 @@ public class HorizontalGroup : WidgetGroup {
 		}
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (_wrap) return 0;
 		if (sizeInvalid) computeSize();
 		return prefWidth;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (sizeInvalid) computeSize();
 		return prefHeight;
 	}

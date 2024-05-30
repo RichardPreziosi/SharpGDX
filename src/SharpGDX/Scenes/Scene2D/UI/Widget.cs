@@ -76,7 +76,7 @@ public class Widget : Actor , ILayout {
 		return _needsLayout;
 	}
 
-	public void invalidate () {
+	public virtual void invalidate () {
 		_needsLayout = true;
 	}
 

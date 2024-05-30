@@ -372,11 +372,11 @@ public class GestureDetector : InputAdapter {
 			return false;
 		}
 
-		public bool panStop (float x, float y, int pointer, int button) {
+		public virtual bool panStop (float x, float y, int pointer, int button) {
 			return false;
 		}
 
-		public bool zoom (float initialDistance, float distance) {
+		public virtual bool zoom (float initialDistance, float distance) {
 			return false;
 		}
 

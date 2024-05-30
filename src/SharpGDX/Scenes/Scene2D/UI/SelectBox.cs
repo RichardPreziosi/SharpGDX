@@ -180,7 +180,7 @@ private class SelectBoxSelection : ArraySelection<T>
 		return items;
 	}
 
-	public void layout () {
+	public override void layout () {
 		IDrawable bg = style.background;
 		BitmapFont font = style.font;
 
@@ -239,7 +239,7 @@ private class SelectBoxSelection : ArraySelection<T>
 		return style.fontColor;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		IDrawable background = getBackgroundDrawable();
@@ -345,12 +345,12 @@ private class SelectBoxSelection : ArraySelection<T>
 		return disabled;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		validate();
 		return prefWidth;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		validate();
 		return prefHeight;
 	}

@@ -171,12 +171,12 @@ public class Image : Widget {
 		return 0;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		if (drawable != null) return drawable.getMinWidth();
 		return 0;
 	}
 
-	public float getPrefHeight () {
+	public override float getPrefHeight () {
 		if (drawable != null) return drawable.getMinHeight();
 		return 0;
 	}

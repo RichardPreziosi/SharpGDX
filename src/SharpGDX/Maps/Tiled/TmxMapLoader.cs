@@ -22,7 +22,7 @@ namespace SharpGDX.Maps.Tiled;
 /** @brief synchronous loader for TMX maps created with the Tiled tool */
 public class TmxMapLoader : BaseTmxMapLoader<TmxMapLoader.Parameters> {
 
-	public class Parameters : BaseTmxMapLoader<Parameters>.Parameters {
+	public new class Parameters : BaseTmxMapLoader<Parameters>.Parameters {
 
 	}
 

@@ -132,7 +132,7 @@ public class ImageTextButton : Button {
 		return style.fontColor;
 	}
 
-	public void draw (IBatch batch, float parentAlpha) {
+	public override void draw (IBatch batch, float parentAlpha) {
 		updateImage();
 		label.getStyle().fontColor = getFontColor();
 		base.draw(batch, parentAlpha);

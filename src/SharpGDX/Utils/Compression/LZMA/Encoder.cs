@@ -166,7 +166,7 @@ namespace SharpGDX.Utils.Compression.LZMA
 			_highCoder.Init();
 		}
 
-		public void Encode (RangeCoder.Encoder rangeEncoder, int symbol, int posState)
+		public virtual void Encode (RangeCoder.Encoder rangeEncoder, int symbol, int posState)
 			// TODO: throws IOException 
 			{
 				if (symbol < Base.kNumLowLenSymbols) {
@@ -229,7 +229,7 @@ namespace SharpGDX.Utils.Compression.LZMA
 				UpdateTable(posState);
 		}
 
-		public void Encode (RangeCoder.Encoder rangeEncoder, int symbol, int posState)
+			public override void Encode (RangeCoder.Encoder rangeEncoder, int symbol, int posState)
 	// TODO:throws IOException
 	{
 		base.Encode(rangeEncoder, symbol, posState);

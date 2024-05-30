@@ -344,7 +344,7 @@ public class TextField : Widget , IDisableable {
 		}
 	}
 
-	protected float getTextY (BitmapFont font, IDrawable? background) {
+	protected virtual float getTextY (BitmapFont font, IDrawable? background) {
 		float height = getHeight();
 		float textY = textHeight / 2 + font.getDescent();
 		if (background != null) {
@@ -358,12 +358,12 @@ public class TextField : Widget , IDisableable {
 	}
 
 	/** Draws selection rectangle **/
-	protected void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
+	protected virtual void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
 		selection.draw(batch, x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth,
 			textHeight);
 	}
 
-	protected void drawText (IBatch batch, BitmapFont font, float x, float y) {
+	protected virtual void drawText (IBatch batch, BitmapFont font, float x, float y) {
 		font.draw(batch, displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, 0, Align.left, false);
 	}
 
@@ -371,7 +371,7 @@ public class TextField : Widget , IDisableable {
 		font.draw(batch, messageText, x, y, 0, messageText.Length, maxWidth, textHAlign, false, "...");
 	}
 
-	protected void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
+	protected virtual void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
 		cursorPatch.draw(batch,
 			x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset + font.getData().cursorX,
 			y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);

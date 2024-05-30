@@ -87,7 +87,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		}
 	}
 
-	public V remove (K key) {
+		public override V remove (K key) {
 		_keys.removeValue(key, false);
 		return base.remove(key);
 	}
@@ -143,11 +143,11 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		return entries();
 	}
 
-	/** Returns an iterator for the entries in the map. Remove is supported.
-	 * <p>
-	 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
-	 * Use the {@link OrderedMapEntries} constructor for nested or multithreaded iteration. */
-	public Entries entries () {
+		/** Returns an iterator for the entries in the map. Remove is supported.
+		 * <p>
+		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
+		 * Use the {@link OrderedMapEntries} constructor for nested or multithreaded iteration. */
+		public override Entries entries () {
 		if (Collections.allocateIterators) return new OrderedMapEntries(this);
 		if (entries1 == null) {
 			entries1 = new OrderedMapEntries(this);
@@ -165,11 +165,11 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		return entries2;
 	}
 
-	/** Returns an iterator for the values in the map. Remove is supported.
-	 * <p>
-	 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
-	 * Use the {@link OrderedMapValues} constructor for nested or multithreaded iteration. */
-	public Values values () {
+		/** Returns an iterator for the values in the map. Remove is supported.
+		 * <p>
+		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
+		 * Use the {@link OrderedMapValues} constructor for nested or multithreaded iteration. */
+		public override Values values () {
 		if (Collections.allocateIterators) return new (this);
 		if (values1 == null) {
 			values1 = new (this);
@@ -187,11 +187,11 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		return values2;
 	}
 
-	/** Returns an iterator for the keys in the map. Remove is supported.
-	 * <p>
-	 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
-	 * Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration. */
-	public Keys keys () {
+		/** Returns an iterator for the keys in the map. Remove is supported.
+		 * <p>
+		 * If {@link Collections#allocateIterators} is false, the same iterator instance is returned each time this method is called.
+		 * Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration. */
+		public override Keys keys () {
 		if (Collections.allocateIterators) return new (this);
 		if (keys1 == null) {
 			keys1 = new (this);
@@ -209,7 +209,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 		return keys2;
 	}
 
-	protected String toString (String separator, bool braces) {
+		protected override String toString (String separator, bool braces) {
 		if (size == 0) return braces ? "{}" : "";
 		StringBuilder buffer = new StringBuilder(32);
 		if (braces) buffer.Append('{');
@@ -253,7 +253,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 			return entry;
 		}
 
-		public void remove () {
+			public override void remove () {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			map.remove(entry.key);
 			nextIndex--;
@@ -286,7 +286,7 @@ public class OrderedMap<K, V> : ObjectMap<K, V> {
 			return key;
 		}
 
-		public void remove () {
+			public override void remove () {
 			throw new NotImplementedException();
 				//if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
 				//((OrderedMap)map).removeIndex(currentIndex);

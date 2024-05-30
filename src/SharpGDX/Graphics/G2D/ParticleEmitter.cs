@@ -1341,17 +1341,17 @@ namespace SharpGDX.Graphics.G2D
 		}
 
 		/** permanently scales the range by a scalar. */
-		public void scale (float scale) {
+		public virtual void scale (float scale) {
 			lowMin *= scale;
 			lowMax *= scale;
 		}
 
-		public void set (RangedNumericValue value) {
+		public virtual void set (RangedNumericValue value) {
 			this.lowMin = value.lowMin;
 			this.lowMax = value.lowMax;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 	{
 			base.save(output);
 			if (!active) return;
@@ -1359,7 +1359,7 @@ namespace SharpGDX.Graphics.G2D
 			output.write("lowMax: " + lowMax + "\n");
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException 
+			public override void load (BufferedReader reader) // TODO: throws IOException 
 	{
 			base.load(reader);
 			if (!active) return;
@@ -1410,20 +1410,20 @@ namespace SharpGDX.Graphics.G2D
 			this.highMax = highMax;
 		}
 
-		public void scale (float scale) {
+			public override void scale (float scale) {
 			base.scale(scale);
 			highMin *= scale;
 			highMax *= scale;
 		}
 
-		public void set (RangedNumericValue value) {
+			public override void set (RangedNumericValue value) {
 			if (value is ScaledNumericValue)
 				set((ScaledNumericValue)value);
 			else
 				base.set(value);
 		}
 
-		public void set (ScaledNumericValue value) {
+			public virtual void set (ScaledNumericValue value) {
 			base.set(value);
 			this.highMin = value.highMin;
 			this.highMax = value.highMax;
@@ -1488,7 +1488,7 @@ namespace SharpGDX.Graphics.G2D
 			return startValue + (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 	{
 			base.save(output);
 			if (!active) return;
@@ -1503,7 +1503,7 @@ namespace SharpGDX.Graphics.G2D
 				output.write("timeline" + i + ": " + timeline[i] + "\n");
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException 
+			public override void load (BufferedReader reader) // TODO: throws IOException 
 	{
 			base.load(reader);
 			if (!active) return;
@@ -1541,14 +1541,14 @@ namespace SharpGDX.Graphics.G2D
 			this.independent = independent;
 		}
 
-		public void set (RangedNumericValue value) {
+			public override void set (RangedNumericValue value) {
 			if (value is IndependentScaledNumericValue)
 				set((IndependentScaledNumericValue)value);
 			else
 				base.set(value);
 		}
 
-		public void set (ScaledNumericValue value) {
+			public override void set (ScaledNumericValue value) {
 			if (value is IndependentScaledNumericValue)
 				set((IndependentScaledNumericValue)value);
 			else
@@ -1560,13 +1560,13 @@ namespace SharpGDX.Graphics.G2D
 			independent = value.independent;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 	{
 			base.save(output);
 			output.write("independent: " + independent + "\n");
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException
+			public override void load (BufferedReader reader) // TODO: throws IOException
 {
 			base.load(reader);
 			// For backwards compatibility, independent property may not be defined
@@ -1653,7 +1653,7 @@ namespace SharpGDX.Graphics.G2D
 			return temp;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 		{
 			base.save(output);
 			if (!active) return;
@@ -1665,7 +1665,7 @@ namespace SharpGDX.Graphics.G2D
 				output.write("timeline" + i + ": " + timeline[i] + "\n");
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException
+			public override void load (BufferedReader reader) // TODO: throws IOException
 			{
 			base.load(reader);
 			if (!active) return;
@@ -1715,7 +1715,7 @@ namespace SharpGDX.Graphics.G2D
 			this.side = side;
 		}
 
-		public void save (Writer output) // TODO: throws IOException 
+			public override void save (Writer output) // TODO: throws IOException 
 			{
 			base.save(output);
 			if (!active) return;
@@ -1726,7 +1726,7 @@ namespace SharpGDX.Graphics.G2D
 			}
 		}
 
-		public void load (BufferedReader reader) // TODO: throws IOException 
+			public override void load (BufferedReader reader) // TODO: throws IOException 
 			{
 			base.load(reader);
 			if (!active) return;

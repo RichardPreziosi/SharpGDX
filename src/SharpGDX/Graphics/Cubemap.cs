@@ -197,8 +197,8 @@ public class Cubemap : GLTexture {
 		return 0;
 	}
 
-	/** Disposes all resources associated with the cubemap */
-	public void dispose () {
+		/** Disposes all resources associated with the cubemap */
+		public override void dispose () {
 		// this is a hack. reason: we have to set the glHandle to 0 for textures that are
 		// reloaded through the asset manager as we first remove (and thus dispose) the texture
 		// and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to

@@ -87,7 +87,7 @@ public class OrderedSet<T> : ObjectSet<T> {
 			add(keys[i]);
 	}
 
-	public bool remove (T key) {
+		public override bool remove (T key) {
 		if (!base.remove(key)) return false;
 		items.removeValue(key, false);
 		return true;
@@ -174,7 +174,7 @@ public class OrderedSet<T> : ObjectSet<T> {
 		return buffer.ToString();
 	}
 
-	public String toString (String separator) {
+		public override String toString (String separator) {
 		return items.toString(separator);
 	}
 
@@ -203,20 +203,20 @@ public class OrderedSet<T> : ObjectSet<T> {
 			return key;
 		}
 
-		public void remove () {
+			public override void remove () {
 			if (nextIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			nextIndex--;
 			((OrderedSet<T>)set).removeIndex(nextIndex);
 		}
 
-		public Array<T> toArray (Array<T> array) {
+			public override Array<T> toArray (Array<T> array) {
 			array.addAll(items, nextIndex, items.size - nextIndex);
 			nextIndex = items.size;
 		_hasNext = false;
 			return array;
 		}
 
-		public Array<T> toArray () {
+			public override Array<T> toArray () {
 			return toArray(new(true, set.size - nextIndex));
 		}
 	}

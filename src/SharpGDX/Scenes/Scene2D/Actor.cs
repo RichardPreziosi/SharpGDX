@@ -187,7 +187,7 @@ public class Actor {
 	 * The default implementation returns this actor if the point is within this actor's bounds and this actor is visible.
 	 * @param touchable If true, hit detection will respect the {@link #setTouchable(Touchable) touchability}.
 	 * @see Touchable */
-	public Actor? hit (float x, float y, bool touchable) {
+	public virtual Actor? hit (float x, float y, bool touchable) {
 		if (touchable && this.touchable != Touchable.enabled) return null;
 		if (!isVisible()) return null;
 		return x >= 0 && x < width && y >= 0 && y < height ? this : null;
@@ -930,7 +930,7 @@ public class Actor {
 	}
 
 	/** Draws this actor's debug lines if {@link #getDebug()} is true. */
-	public void drawDebug (ShapeRenderer shapes) {
+	public virtual void drawDebug (ShapeRenderer shapes) {
 		drawDebugBounds(shapes);
 	}
 

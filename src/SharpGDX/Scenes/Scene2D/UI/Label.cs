@@ -132,7 +132,7 @@ public Label (String? text, LabelStyle style) {
 		return text;
 	}
 
-	public void invalidate () {
+	public override void invalidate () {
 		base.invalidate();
 		prefSizeInvalid = true;
 	}

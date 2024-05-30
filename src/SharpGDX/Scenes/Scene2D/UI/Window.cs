@@ -289,7 +289,7 @@ public class Window : Table {
 		style.stageBackground.draw(batch, x, y, width, height);
 	}
 
-	protected void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
+	protected override void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
 		base.drawBackground(batch, parentAlpha, x, y);
 
 		// Manually draw the title table before clipping is done.
@@ -354,7 +354,7 @@ public class Window : Table {
 		return dragging;
 	}
 
-	public float getPrefWidth () {
+	public override float getPrefWidth () {
 		return Math.Max(base.getPrefWidth(), titleTable.getPrefWidth() + getPadLeft() + getPadRight());
 	}
 

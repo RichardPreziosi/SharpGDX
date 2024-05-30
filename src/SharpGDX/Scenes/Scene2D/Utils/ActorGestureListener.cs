@@ -73,14 +73,14 @@ public class ActorGestureListener : IEventListener {
 				return true;
 			}
 
-			public bool panStop(float stageX, float stageY, int pointer, int button)
+			public override bool panStop(float stageX, float stageY, int pointer, int button)
 			{
 				_actorGestureListener.actor.stageToLocalCoordinates(tmpCoords.set(stageX, stageY));
 				_actorGestureListener.panStop(_actorGestureListener.@event, tmpCoords.x, tmpCoords.y, pointer, button);
 				return true;
 			}
 
-			public bool zoom(float initialDistance, float distance)
+			public override bool zoom(float initialDistance, float distance)
 			{
 				_actorGestureListener.zoom(_actorGestureListener.@event, initialDistance, distance);
 				return true;

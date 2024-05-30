@@ -143,9 +143,9 @@ public class WidgetGroup : Group , ILayout {
 	public virtual void layout () {
 	}
 
-	/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
-	 * out. */
-	public virtual Actor hit (float x, float y, bool touchable) {
+		/** If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
+		 * out. */
+		public override Actor hit (float x, float y, bool touchable) {
 		validate();
 		return base.hit(x, y, touchable);
 	}

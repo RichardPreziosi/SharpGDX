@@ -208,7 +208,7 @@ public class Button : Table , IDisableable {
 		return style.up;
 	}
 
-	public virtual void draw (IBatch batch, float parentAlpha) {
+		public override void draw (IBatch batch, float parentAlpha) {
 		validate();
 
 		setBackground(getBackgroundDrawable());

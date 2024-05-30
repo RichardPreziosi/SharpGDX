@@ -99,12 +99,12 @@ public class Stack : WidgetGroup {
 		return minHeight;
 	}
 
-	public float getMaxWidth () {
+	public override float getMaxWidth () {
 		if (sizeInvalid) computeSize();
 		return maxWidth;
 	}
 
-	public float getMaxHeight () {
+	public override float getMaxHeight () {
 		if (sizeInvalid) computeSize();
 		return maxHeight;
 	}

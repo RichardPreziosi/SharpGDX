@@ -190,7 +190,7 @@ public class TextArea : TextField {
 
 	// OVERRIDE from TextField
 
-	protected void sizeChanged () {
+	protected override void sizeChanged () {
 		lastText = null; // Cause calculateOffsets to recalculate the line breaks.
 
 		// The number of lines showed must be updated whenever the height is updated
@@ -200,7 +200,7 @@ public class TextArea : TextField {
 		linesShowing = (int)Math.Floor(availableHeight / font.getLineHeight());
 	}
 
-	protected float getTextY (BitmapFont font, IDrawable? background) {
+	protected override float getTextY (BitmapFont font, IDrawable? background) {
 		float textY = getHeight();
 		if (background != null) {
 			textY = textY - background.getTopHeight();
@@ -209,7 +209,7 @@ public class TextArea : TextField {
 		return textY;
 	}
 
-	protected void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
+	protected override void drawSelection (IDrawable selection, IBatch batch, BitmapFont font, float x, float y) {
 		int i = firstLineShowing * 2;
 		float offsetY = 0;
 		int minIndex = Math.Min(cursor, selectionStart);
@@ -252,7 +252,7 @@ public class TextArea : TextField {
 		}
 	}
 
-	protected void drawText (IBatch batch, BitmapFont font, float x, float y) {
+	protected override void drawText (IBatch batch, BitmapFont font, float x, float y) {
 		float offsetY = -(style.font.getLineHeight() - textHeight) / 2;
 		for (int i = firstLineShowing * 2; i < (firstLineShowing + linesShowing) * 2 && i < linesBreak.size; i += 2) {
 			font.draw(batch, displayText, x, y + offsetY, linesBreak.items[i], linesBreak.items[i + 1], 0, Align.left, false);
@@ -260,7 +260,7 @@ public class TextArea : TextField {
 		}
 	}
 
-	protected void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
+	protected override void drawCursor (IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y) {
 		cursorPatch.draw(batch, x + getCursorX(), y + getCursorY(), cursorPatch.getMinWidth(), font.getLineHeight());
 	}
 

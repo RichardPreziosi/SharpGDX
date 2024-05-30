@@ -116,9 +116,9 @@ public class Table : WidgetGroup {
 		}
 	}
 
-	/** Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
-	 * drawable. */
-	protected void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
+		/** Called to draw the background, before clipping is applied (if enabled). Default implementation draws the background
+		 * drawable. */
+		protected virtual void drawBackground (IBatch batch, float parentAlpha, float x, float y) {
 		if (_background == null) return;
 		Color color = getColor();
 		batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
@@ -161,7 +161,7 @@ public class Table : WidgetGroup {
 		return _background;
 	}
 
-	public virtual Actor? hit (float x, float y, bool touchable) {
+		public override Actor? hit (float x, float y, bool touchable) {
 		if (_clip) {
 			if (touchable && getTouchable() == Touchable.disabled) return null;
 			if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
@@ -192,7 +192,7 @@ public class Table : WidgetGroup {
 		return _clip;
 	}
 
-	public void invalidate () {
+		public override void invalidate () {
 		sizeInvalid = true;
 		base.invalidate();
 	}
@@ -1245,7 +1245,7 @@ public class Table : WidgetGroup {
 		}
 	}
 
-	protected void drawDebugBounds (ShapeRenderer shapes) {
+		protected override void drawDebugBounds (ShapeRenderer shapes) {
 	}
 
 	private void drawDebugRects (ShapeRenderer shapes) {
