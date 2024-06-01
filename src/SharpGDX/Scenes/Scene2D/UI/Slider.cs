@@ -19,7 +19,7 @@ public class Slider : ProgressBar {
 	int draggingPointer = -1;
 	bool mouseOver;
 	private Interpolation visualInterpolationInverse = Interpolation.linear;
-	private float[] snapValues;
+	private float[]? snapValues;
 	private float threshold;
 
 	public Slider (float min, float max, float stepSize, bool vertical, Skin skin) 

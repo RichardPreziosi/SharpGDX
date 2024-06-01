@@ -28,8 +28,8 @@ public class TextButton : Button {
 		setSkin(skin);
 	}
 
-	public TextButton (String? text, TextButtonStyle style) 
-	:base(){
+	public TextButton (String? text, TextButtonStyle style)
+	{
 		setStyle(style);
 		label = newLabel(text, new Label.LabelStyle(style.font, style.fontColor));
 		label.setAlignment(Align.center);

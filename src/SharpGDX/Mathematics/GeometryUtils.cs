@@ -49,7 +49,7 @@ public sealed class GeometryUtils {
 
 	/** Returns true if the barycentric coordinates are inside the triangle. */
 	static public bool barycoordInsideTriangle (Vector2 barycentric) {
-		return barycentric.x >= 0 && barycentric.y >= 0 && barycentric.x + barycentric.y <= 1;
+		return barycentric is { x: >= 0, y: >= 0 } && barycentric.x + barycentric.y <= 1;
 	}
 
 	/** Returns interpolated values given the barycentric coordinates of a point in a triangle and the values at each vertex.

@@ -23,9 +23,9 @@ public class ParticleEffectLoader : SynchronousAssetLoader<ParticleEffect, Parti
 	public override ParticleEffect load(AssetManager am, String fileName, FileHandle file, ParticleEffectParameter param)
 	{
 		ParticleEffect effect = new ParticleEffect();
-		if (param != null && param.atlasFile != null)
+		if (param is { atlasFile: not null })
 			effect.load(file, am.get< TextureAtlas>(param.atlasFile, typeof(TextureAtlas)), param.atlasPrefix);
-		else if (param != null && param.imagesDir != null)
+		else if (param is { imagesDir: not null })
 			effect.load(file, param.imagesDir);
 		else
 			effect.load(file, file.parent());

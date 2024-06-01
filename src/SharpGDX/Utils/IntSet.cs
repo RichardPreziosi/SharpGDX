@@ -309,7 +309,7 @@ namespace SharpGDX.Utils
 			}
 		}
 
-		public int hashCode()
+		public override int GetHashCode()
 		{
 			int h = size;
 			int[] keyTable = this.keyTable;

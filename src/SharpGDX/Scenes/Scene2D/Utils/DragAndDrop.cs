@@ -9,9 +9,9 @@ namespace SharpGDX.Scenes.Scene2D.Utils
 public class DragAndDrop {
 	static readonly Vector2 tmpVector = new Vector2();
 
-	Source dragSource;
-	Payload payload;
-	Actor dragActor;
+	Source? dragSource;
+	Payload? payload;
+	Actor? dragActor;
 	bool removeDragActor;
 	Target target;
 	bool isValidTarget;

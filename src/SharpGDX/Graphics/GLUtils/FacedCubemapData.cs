@@ -13,12 +13,12 @@ namespace SharpGDX.Graphics.GLUtils
  * @author Vincent Nousquet */
 public class FacedCubemapData : ICubemapData {
 
-	protected readonly ITextureData[] data = new ITextureData[6];
+	protected readonly ITextureData?[] data = new ITextureData[6];
 
 	/** Construct an empty Cubemap. Use the load(...) methods to set the texture of each side. Every side of the cubemap must be
 	 * set before it can be used. */
 	public FacedCubemapData () 
-	: this((ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null, (ITextureData)null)
+	: this((ITextureData?)null, (ITextureData?)null, (ITextureData?)null, (ITextureData?)null, (ITextureData?)null, (ITextureData?)null)
 	{
 		
 	}
@@ -26,9 +26,9 @@ public class FacedCubemapData : ICubemapData {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public FacedCubemapData (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
 		FileHandle positiveZ, FileHandle negativeZ) 
-	: this(ITextureData.Factory.loadFromFile(positiveX, false), ITextureData.Factory.loadFromFile(negativeX, false),
-		ITextureData.Factory.loadFromFile(positiveY, false), ITextureData.Factory.loadFromFile(negativeY, false),
-		ITextureData.Factory.loadFromFile(positiveZ, false), ITextureData.Factory.loadFromFile(negativeZ, false))
+	: this(ITextureData.Factory.LoadFromFile(positiveX, false), ITextureData.Factory.LoadFromFile(negativeX, false),
+		ITextureData.Factory.LoadFromFile(positiveY, false), ITextureData.Factory.LoadFromFile(negativeY, false),
+		ITextureData.Factory.LoadFromFile(positiveZ, false), ITextureData.Factory.LoadFromFile(negativeZ, false))
 	{
 		
 	}
@@ -36,9 +36,9 @@ public class FacedCubemapData : ICubemapData {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public FacedCubemapData (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
 		FileHandle positiveZ, FileHandle negativeZ, bool useMipMaps) 
-	: this(ITextureData.Factory.loadFromFile(positiveX, useMipMaps), ITextureData.Factory.loadFromFile(negativeX, useMipMaps),
-		ITextureData.Factory.loadFromFile(positiveY, useMipMaps), ITextureData.Factory.loadFromFile(negativeY, useMipMaps),
-		ITextureData.Factory.loadFromFile(positiveZ, useMipMaps), ITextureData.Factory.loadFromFile(negativeZ, useMipMaps))
+	: this(ITextureData.Factory.LoadFromFile(positiveX, useMipMaps), ITextureData.Factory.LoadFromFile(negativeX, useMipMaps),
+		ITextureData.Factory.LoadFromFile(positiveY, useMipMaps), ITextureData.Factory.LoadFromFile(negativeY, useMipMaps),
+		ITextureData.Factory.LoadFromFile(positiveZ, useMipMaps), ITextureData.Factory.LoadFromFile(negativeZ, useMipMaps))
 	{
 		
 	}
@@ -52,8 +52,8 @@ public class FacedCubemapData : ICubemapData {
 	}
 
 	/** Construct a Cubemap with the specified {@link Pixmap}s for the sides, optionally generating mipmaps. */
-	public FacedCubemapData (Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ,
-		Pixmap negativeZ, bool useMipMaps) 
+	public FacedCubemapData (Pixmap? positiveX, Pixmap? negativeX, Pixmap? positiveY, Pixmap? negativeY, Pixmap? positiveZ,
+		Pixmap? negativeZ, bool useMipMaps) 
 	: this(positiveX == null ? null : new PixmapTextureData(positiveX, null, useMipMaps, false),
 		negativeX == null ? null : new PixmapTextureData(negativeX, null, useMipMaps, false),
 		positiveY == null ? null : new PixmapTextureData(positiveY, null, useMipMaps, false),
@@ -77,8 +77,8 @@ public class FacedCubemapData : ICubemapData {
 	}
 
 	/** Construct a Cubemap with the specified {@link TextureData}'s for the sides */
-	public FacedCubemapData (ITextureData positiveX, ITextureData negativeX, ITextureData positiveY, ITextureData negativeY,
-		ITextureData positiveZ, ITextureData negativeZ) {
+	public FacedCubemapData (ITextureData? positiveX, ITextureData? negativeX, ITextureData? positiveY, ITextureData? negativeY,
+		ITextureData? positiveZ, ITextureData? negativeZ) {
 		data[0] = positiveX;
 		data[1] = negativeX;
 		data[2] = positiveY;
@@ -88,7 +88,7 @@ public class FacedCubemapData : ICubemapData {
 	}
 
 	public bool isManaged () {
-		foreach (ITextureData data in this.data)
+		foreach (ITextureData? data in this.data)
 			if (!data.isManaged()) return false;
 		return true;
 	}
@@ -99,7 +99,7 @@ public class FacedCubemapData : ICubemapData {
 	 * @param side The {@link CubemapSide}
 	 * @param file The texture {@link FileHandle} */
 	public void load (Cubemap.CubemapSide side, FileHandle file) {
-		data[side.index] = ITextureData.Factory.loadFromFile(file, false);
+		data[side.index] = ITextureData.Factory.LoadFromFile(file, false);
 	}
 
 	/** Sets the specified side of this cubemap to the specified {@link Pixmap}, overwriting any previous data set to that side.
@@ -107,7 +107,7 @@ public class FacedCubemapData : ICubemapData {
 	 * taken in account.
 	 * @param side The {@link CubemapSide}
 	 * @param pixmap The {@link Pixmap} */
-	public void load (Cubemap.CubemapSide side, Pixmap pixmap) {
+	public void load (Cubemap.CubemapSide side, Pixmap? pixmap) {
 		data[side.index] = pixmap == null ? null : new PixmapTextureData(pixmap, null, false, false);
 	}
 

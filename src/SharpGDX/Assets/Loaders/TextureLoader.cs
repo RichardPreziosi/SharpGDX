@@ -39,7 +39,7 @@ public class TextureLoader : AsynchronousAssetLoader<Texture, TextureLoader.Text
 				info.texture = parameter.texture;
 			}
 
-			info.data = ITextureData.Factory.loadFromFile(file, format, genMipMaps);
+			info.data = ITextureData.Factory.LoadFromFile(file, format, genMipMaps);
 		} else {
 			info.data = parameter.textureData;
 			info.texture = parameter.texture;
@@ -62,7 +62,7 @@ public class TextureLoader : AsynchronousAssetLoader<Texture, TextureLoader.Text
 		return texture;
 	}
 
-	public override Array<AssetDescriptor<Texture>> getDependencies (String fileName, FileHandle file, TextureParameter parameter) {
+	public override Array<AssetDescriptor<Texture>>? getDependencies (String fileName, FileHandle file, TextureParameter parameter) {
 		return null;
 	}
 

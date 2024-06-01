@@ -25,7 +25,7 @@ public class FileTextureArrayData : ITextureArrayData {
 		this.depth = files.Length;
 		textureDatas = new ITextureData[files.Length];
 		for (int i = 0; i < files.Length; i++) {
-			textureDatas[i] = ITextureData.Factory.loadFromFile(files[i], format, useMipMaps);
+			textureDatas[i] = ITextureData.Factory.LoadFromFile(files[i], format, useMipMaps);
 		}
 	}
 

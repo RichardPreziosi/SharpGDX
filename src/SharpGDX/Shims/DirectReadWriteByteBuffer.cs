@@ -47,6 +47,7 @@
 
 		public override IntBuffer asIntBuffer()
 		{
+
 			// TODO: return order() == ByteOrder.nativeOrder() ? DirectReadWriteIntBufferAdapter.wrap(this) :
 				return base.asIntBuffer();
 		}

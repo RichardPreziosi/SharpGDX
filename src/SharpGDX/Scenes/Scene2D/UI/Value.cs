@@ -48,7 +48,7 @@ abstract public class Value {
 
 		static public Fixed valueOf (float value) {
 			if (value == 0) return zero;
-			if (value >= -10 && value <= 100 && value == (int)value) {
+			if (value is >= -10 and <= 100 && value == (int)value) {
 				Fixed @fixed = cache[(int)value + 10];
 				if (@fixed == null) cache[(int)value + 10] = @fixed = new Fixed(value);
 				return @fixed;

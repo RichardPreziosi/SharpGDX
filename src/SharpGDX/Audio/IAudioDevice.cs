@@ -16,18 +16,20 @@ namespace SharpGDX.Audio
 		/// <returns>Whether this AudioDevice is in mono or stereo mode.</returns>
 		public bool IsMono();
 
-		/** Writes the array of 16-bit signed PCM samples to the audio device and blocks until they have been processed.
-		 *
-		 * @param samples The samples.
-		 * @param offset The offset into the samples array
-		 * @param numSamples the number of samples to write to the device */
+		/// <summary>
+		/// Writes the array of 16-bit signed PCM samples to the audio device and blocks until they have been processed.
+		/// </summary>
+		/// <param name="samples">The samples.</param>
+		/// <param name="offset">The offset into the samples array.</param>
+		/// <param name="numSamples">The number of samples to write to the device.</param>
 		public void WriteSamples(short[] samples, int offset, int numSamples);
 
-		/** Writes the array of float PCM samples to the audio device and blocks until they have been processed.
-		 *
-		 * @param samples The samples.
-		 * @param offset The offset into the samples array
-		 * @param numSamples the number of samples to write to the device */
+		/// <summary>
+		/// Writes the array of float PCM samples to the audio device and blocks until they have been processed.
+		/// </summary>
+		/// <param name="samples">The samples.</param>
+		/// <param name="offset">The offset into the samples array.</param>
+		/// <param name="numSamples">The number of samples to write to the device.</param>
 		public void WriteSamples(float[] samples, int offset, int numSamples);
 
 		/// <summary>

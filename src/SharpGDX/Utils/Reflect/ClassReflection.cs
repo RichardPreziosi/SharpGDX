@@ -9,7 +9,8 @@ namespace SharpGDX.Utils.Reflect
 {
 	/** Utilities for Class reflection.
  * @author nexsoftware */
-public sealed class ClassReflection {
+	public sealed class ClassReflection
+	{
 
 		//	/** Returns the Class object associated with the class or interface with the supplied string name. */
 		//	static public Class forName (String name) throws ReflectionException {
@@ -111,38 +112,46 @@ public sealed class ClassReflection {
 		 * parameter types. */
 		static public Constructor getConstructor(Type c, Type[] parameterTypes) // TODO: throws ReflectionException
 		{
-				try {
-					// TODO: I think this should maybe search private/internal?
+			try
+			{
+				// TODO: I think this should maybe search private/internal?
 				return new Constructor(c.GetConstructor(parameterTypes));
-			} 
-				// TODO: Will it actually throw this? -RP
-				catch (SecurityException e) {
-					throw new ReflectionException("Security violation occurred while getting constructor for class: '" + c.Name + "'.",
-						e);
-	}
-				// TODO: Will it actually throw this? -RP
-			// TODO:catch (NoSuchMethodException e) {
-			catch(Exception e){
-					throw new ReflectionException("Constructor not found for class: " + c.Name, e);
-}
 			}
-
-		/** Returns a {@link Constructor} that represents the constructor for the supplied class which takes the supplied parameter
-		 * types. */
-		static public Constructor getDeclaredConstructor(Type c, Type[]parameterTypes) // TODO: throws ReflectionException
-		{
-				try {
-					// TODO: I think this should only search public/protected?
-				return new Constructor(c.GetConstructor(parameterTypes));
-			} catch (SecurityException e) {
-					throw new ReflectionException("Security violation while getting constructor for class: " + c.Name, e);
-	}
+			// TODO: Will it actually throw this? -RP
+			catch (SecurityException e)
+			{
+				throw new ReflectionException(
+					"Security violation occurred while getting constructor for class: '" + c.Name + "'.",
+					e);
+			}
+			// TODO: Will it actually throw this? -RP
 			// TODO:catch (NoSuchMethodException e) {
 			catch (Exception e)
 			{
 				throw new ReflectionException("Constructor not found for class: " + c.Name, e);
-}
 			}
+		}
+
+		/** Returns a {@link Constructor} that represents the constructor for the supplied class which takes the supplied parameter
+		 * types. */
+		static public Constructor
+			getDeclaredConstructor(Type c, Type[] parameterTypes) // TODO: throws ReflectionException
+		{
+			try
+			{
+				// TODO: I think this should only search public/protected?
+				return new Constructor(c.GetConstructor(parameterTypes));
+			}
+			catch (SecurityException e)
+			{
+				throw new ReflectionException("Security violation while getting constructor for class: " + c.Name, e);
+			}
+			// TODO:catch (NoSuchMethodException e) {
+			catch (Exception e)
+			{
+				throw new ReflectionException("Constructor not found for class: " + c.Name, e);
+			}
+		}
 
 		//	/** Returns the elements of this enum class or null if this Class object does not represent an enum type. */
 		//	static public Object[] getEnumConstants (Class c) {

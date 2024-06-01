@@ -282,7 +282,7 @@ namespace SharpGDX.Shims
 	 * 
 	 * @return the hash code calculated from the remaining ints.
 	 * @since Android 1.0 */
-	public int hashCode()
+	public override int GetHashCode()
 	{
 		int myPosition = _position;
 		int hash = 0;

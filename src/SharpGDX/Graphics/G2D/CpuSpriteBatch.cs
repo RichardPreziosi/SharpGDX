@@ -270,7 +270,7 @@ public class CpuSpriteBatch : SpriteBatch {
 
 		if (texture != lastTexture)
 			switchTexture(texture);
-		else if (idx == vertices.Length) base.flush();
+		else if (idx == vertices.Length) flush();
 
 		// bottom left and top right corner points relative to origin
 		 float worldOriginX = x + originX;
@@ -392,7 +392,7 @@ public class CpuSpriteBatch : SpriteBatch {
 
 		if (region.texture != lastTexture)
 			switchTexture(region.texture);
-		else if (idx == vertices.Length) base.flush();
+		else if (idx == vertices.Length) flush();
 
 		// bottom left and top right corner points relative to origin
 		 float worldOriginX = x + originX;
@@ -523,7 +523,7 @@ public class CpuSpriteBatch : SpriteBatch {
 
 		if (region.texture != lastTexture)
 			switchTexture(region.texture);
-		else if (idx == vertices.Length) base.flush();
+		else if (idx == vertices.Length) flush();
 
 		Affine2 t = transform;
 
@@ -598,7 +598,7 @@ public class CpuSpriteBatch : SpriteBatch {
 			}
 
 			if (count > 0) {
-				base.flush();
+				flush();
 				copyCount = Math.Min(vertices.Length, count);
 			}
 		} while (count > 0);

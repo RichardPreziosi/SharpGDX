@@ -109,11 +109,11 @@ namespace SharpGDX.Scenes.Scene2D.UI
 		internal int column, row;
 		internal Actor? actor;
 		internal bool endRow;
-		internal Value minWidth, minHeight;
-		internal Value prefWidth, prefHeight;
-		internal Value maxWidth, maxHeight;
-		internal Value spaceTop, spaceLeft, spaceBottom, spaceRight;
-		internal Value padTop, padLeft, padBottom, padRight;
+		internal Value? minWidth, minHeight;
+		internal Value? prefWidth, prefHeight;
+		internal Value? maxWidth, maxHeight;
+		internal Value? spaceTop, spaceLeft, spaceBottom, spaceRight;
+		internal Value? padTop, padLeft, padBottom, padRight;
 
 /** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. The space cannot be < 0. */
 public virtual Cell Space(float space)
@@ -175,8 +175,7 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value. */
 	public Cell<T> Size (Value size) {
-		if (size == null) throw new IllegalArgumentException("size cannot be null.");
-		minWidth = size;
+		minWidth = size ?? throw new IllegalArgumentException("size cannot be null.");
 		minHeight = size;
 		prefWidth = size;
 		prefHeight = size;
@@ -187,10 +186,8 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified values. */
 	public Cell<T> Size (Value width, Value height) {
-		if (width == null) throw new IllegalArgumentException("width cannot be null.");
-		if (height == null) throw new IllegalArgumentException("height cannot be null.");
-		minWidth = width;
-		minHeight = height;
+		minWidth = width ?? throw new IllegalArgumentException("width cannot be null.");
+		minHeight = height ?? throw new IllegalArgumentException("height cannot be null.");
 		prefWidth = width;
 		prefHeight = height;
 		maxWidth = width;
@@ -212,8 +209,7 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the minWidth, prefWidth, and maxWidth to the specified value. */
 	public Cell<T> Width (Value width) {
-		if (width == null) throw new IllegalArgumentException("width cannot be null.");
-		minWidth = width;
+		minWidth = width ?? throw new IllegalArgumentException("width cannot be null.");
 		prefWidth = width;
 		maxWidth = width;
 		return this;
@@ -227,8 +223,7 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the minHeight, prefHeight, and maxHeight to the specified value. */
 	public Cell<T> Height (Value height) {
-		if (height == null) throw new IllegalArgumentException("height cannot be null.");
-		minHeight = height;
+		minHeight = height ?? throw new IllegalArgumentException("height cannot be null.");
 		prefHeight = height;
 		maxHeight = height;
 		return this;
@@ -242,30 +237,25 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the minWidth and minHeight to the specified value. */
 	public Cell<T> MinSize (Value size) {
-		if (size == null) throw new IllegalArgumentException("size cannot be null.");
-		minWidth = size;
+		minWidth = size ?? throw new IllegalArgumentException("size cannot be null.");
 		minHeight = size;
 		return this;
 	}
 
 	/** Sets the minWidth and minHeight to the specified values. */
 	public Cell<T> MinSize (Value width, Value height) {
-		if (width == null) throw new IllegalArgumentException("width cannot be null.");
-		if (height == null) throw new IllegalArgumentException("height cannot be null.");
-		minWidth = width;
-		minHeight = height;
+		minWidth = width ?? throw new IllegalArgumentException("width cannot be null.");
+		minHeight = height ?? throw new IllegalArgumentException("height cannot be null.");
 		return this;
 	}
 
 	public Cell<T> MinWidth (Value minWidth) {
-		if (minWidth == null) throw new IllegalArgumentException("minWidth cannot be null.");
-		this.minWidth = minWidth;
+		this.minWidth = minWidth ?? throw new IllegalArgumentException("minWidth cannot be null.");
 		return this;
 	}
 
 	public Cell<T> MinHeight (Value minHeight) {
-		if (minHeight == null) throw new IllegalArgumentException("minHeight cannot be null.");
-		this.minHeight = minHeight;
+		this.minHeight = minHeight ?? throw new IllegalArgumentException("minHeight cannot be null.");
 		return this;
 	}
 
@@ -293,30 +283,25 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the prefWidth and prefHeight to the specified value. */
 	public Cell<T> PrefSize (Value size) {
-		if (size == null) throw new IllegalArgumentException("size cannot be null.");
-		prefWidth = size;
+		prefWidth = size ?? throw new IllegalArgumentException("size cannot be null.");
 		prefHeight = size;
 		return this;
 	}
 
 	/** Sets the prefWidth and prefHeight to the specified values. */
 	public Cell<T> PrefSize (Value width, Value height) {
-		if (width == null) throw new IllegalArgumentException("width cannot be null.");
-		if (height == null) throw new IllegalArgumentException("height cannot be null.");
-		prefWidth = width;
-		prefHeight = height;
+		prefWidth = width ?? throw new IllegalArgumentException("width cannot be null.");
+		prefHeight = height ?? throw new IllegalArgumentException("height cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PrefWidth (Value prefWidth) {
-		if (prefWidth == null) throw new IllegalArgumentException("prefWidth cannot be null.");
-		this.prefWidth = prefWidth;
+		this.prefWidth = prefWidth ?? throw new IllegalArgumentException("prefWidth cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PrefHeight (Value prefHeight) {
-		if (prefHeight == null) throw new IllegalArgumentException("prefHeight cannot be null.");
-		this.prefHeight = prefHeight;
+		this.prefHeight = prefHeight ?? throw new IllegalArgumentException("prefHeight cannot be null.");
 		return this;
 	}
 
@@ -344,32 +329,27 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the maxWidth and maxHeight to the specified value. If the max size is 0, no maximum size is used. */
 	public Cell<T> MaxSize (Value size) {
-		if (size == null) throw new IllegalArgumentException("size cannot be null.");
-		maxWidth = size;
+		maxWidth = size ?? throw new IllegalArgumentException("size cannot be null.");
 		maxHeight = size;
 		return this;
 	}
 
 	/** Sets the maxWidth and maxHeight to the specified values. If the max size is 0, no maximum size is used. */
 	public Cell<T> MaxSize (Value width, Value height) {
-		if (width == null) throw new IllegalArgumentException("width cannot be null.");
-		if (height == null) throw new IllegalArgumentException("height cannot be null.");
-		maxWidth = width;
-		maxHeight = height;
+		maxWidth = width ?? throw new IllegalArgumentException("width cannot be null.");
+		maxHeight = height ?? throw new IllegalArgumentException("height cannot be null.");
 		return this;
 	}
 
 	/** If the maxWidth is 0, no maximum width is used. */
 	public Cell<T> MaxWidth (Value maxWidth) {
-		if (maxWidth == null) throw new IllegalArgumentException("maxWidth cannot be null.");
-		this.maxWidth = maxWidth;
+		this.maxWidth = maxWidth ?? throw new IllegalArgumentException("maxWidth cannot be null.");
 		return this;
 	}
 
 	/** If the maxHeight is 0, no maximum height is used. */
 	public Cell<T> MaxHeight (Value maxHeight) {
-		if (maxHeight == null) throw new IllegalArgumentException("maxHeight cannot be null.");
-		this.maxHeight = maxHeight;
+		this.maxHeight = maxHeight ?? throw new IllegalArgumentException("maxHeight cannot be null.");
 		return this;
 	}
 
@@ -399,8 +379,7 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value. */
 	public new Cell<T> Space (Value space) {
-		if (space == null) throw new IllegalArgumentException("space cannot be null.");
-		spaceTop = space;
+		spaceTop = space ?? throw new IllegalArgumentException("space cannot be null.");
 		spaceLeft = space;
 		spaceBottom = space;
 		spaceRight = space;
@@ -408,38 +387,30 @@ public class Cell<T> : Cell,IPoolable
 	}
 
 	public Cell<T> Space (Value top, Value left, Value bottom, Value right) {
-		if (top == null) throw new IllegalArgumentException("top cannot be null.");
-		if (left == null) throw new IllegalArgumentException("left cannot be null.");
-		if (bottom == null) throw new IllegalArgumentException("bottom cannot be null.");
-		if (right == null) throw new IllegalArgumentException("right cannot be null.");
-		spaceTop = top;
-		spaceLeft = left;
-		spaceBottom = bottom;
-		spaceRight = right;
+		spaceTop = top ?? throw new IllegalArgumentException("top cannot be null.");
+		spaceLeft = left ?? throw new IllegalArgumentException("left cannot be null.");
+		spaceBottom = bottom ?? throw new IllegalArgumentException("bottom cannot be null.");
+		spaceRight = right ?? throw new IllegalArgumentException("right cannot be null.");
 		return this;
 	}
 
 	public Cell<T> SpaceTop (Value spaceTop) {
-		if (spaceTop == null) throw new IllegalArgumentException("spaceTop cannot be null.");
-		this.spaceTop = spaceTop;
+		this.spaceTop = spaceTop ?? throw new IllegalArgumentException("spaceTop cannot be null.");
 		return this;
 	}
 
 	public Cell<T> SpaceLeft (Value spaceLeft) {
-		if (spaceLeft == null) throw new IllegalArgumentException("spaceLeft cannot be null.");
-		this.spaceLeft = spaceLeft;
+		this.spaceLeft = spaceLeft ?? throw new IllegalArgumentException("spaceLeft cannot be null.");
 		return this;
 	}
 
 	public Cell<T> SpaceBottom (Value spaceBottom) {
-		if (spaceBottom == null) throw new IllegalArgumentException("spaceBottom cannot be null.");
-		this.spaceBottom = spaceBottom;
+		this.spaceBottom = spaceBottom ?? throw new IllegalArgumentException("spaceBottom cannot be null.");
 		return this;
 	}
 
 	public Cell<T> SpaceRight (Value spaceRight) {
-		if (spaceRight == null) throw new IllegalArgumentException("spaceRight cannot be null.");
-		this.spaceRight = spaceRight;
+		this.spaceRight = spaceRight ?? throw new IllegalArgumentException("spaceRight cannot be null.");
 		return this;
 	}
 
@@ -490,8 +461,7 @@ public class Cell<T> : Cell,IPoolable
 
 	/** Sets the padTop, padLeft, padBottom, and padRight to the specified value. */
 	public Cell<T> Pad (Value pad) {
-		if (pad == null) throw new IllegalArgumentException("pad cannot be null.");
-		padTop = pad;
+		padTop = pad ?? throw new IllegalArgumentException("pad cannot be null.");
 		padLeft = pad;
 		padBottom = pad;
 		padRight = pad;
@@ -499,38 +469,30 @@ public class Cell<T> : Cell,IPoolable
 	}
 
 	public Cell<T> Pad (Value top, Value left, Value bottom, Value right) {
-		if (top == null) throw new IllegalArgumentException("top cannot be null.");
-		if (left == null) throw new IllegalArgumentException("left cannot be null.");
-		if (bottom == null) throw new IllegalArgumentException("bottom cannot be null.");
-		if (right == null) throw new IllegalArgumentException("right cannot be null.");
-		padTop = top;
-		padLeft = left;
-		padBottom = bottom;
-		padRight = right;
+		padTop = top ?? throw new IllegalArgumentException("top cannot be null.");
+		padLeft = left ?? throw new IllegalArgumentException("left cannot be null.");
+		padBottom = bottom ?? throw new IllegalArgumentException("bottom cannot be null.");
+		padRight = right ?? throw new IllegalArgumentException("right cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PadTop (Value padTop) {
-		if (padTop == null) throw new IllegalArgumentException("padTop cannot be null.");
-		this.padTop = padTop;
+		this.padTop = padTop ?? throw new IllegalArgumentException("padTop cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PadLeft (Value padLeft) {
-		if (padLeft == null) throw new IllegalArgumentException("padLeft cannot be null.");
-		this.padLeft = padLeft;
+		this.padLeft = padLeft ?? throw new IllegalArgumentException("padLeft cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PadBottom (Value padBottom) {
-		if (padBottom == null) throw new IllegalArgumentException("padBottom cannot be null.");
-		this.padBottom = padBottom;
+		this.padBottom = padBottom ?? throw new IllegalArgumentException("padBottom cannot be null.");
 		return this;
 	}
 
 	public Cell<T> PadRight (Value padRight) {
-		if (padRight == null) throw new IllegalArgumentException("padRight cannot be null.");
-		this.padRight = padRight;
+		this.padRight = padRight ?? throw new IllegalArgumentException("padRight cannot be null.");
 		return this;
 	}
 
@@ -796,8 +758,8 @@ public class Cell<T> : Cell,IPoolable
 		return minWidth;
 	}
 
-	public float GetMinWidth () {
-		return minWidth.get(actor);
+	public float? GetMinWidth () {
+		return minWidth?.get(actor);
 	}
 
 	/** @return May be null if this cell is row defaults. */
@@ -805,8 +767,8 @@ public class Cell<T> : Cell,IPoolable
 		return minHeight;
 	}
 
-	public float GetMinHeight () {
-		return minHeight.get(actor);
+	public float? GetMinHeight () {
+		return minHeight?.get(actor);
 	}
 
 	/** @return May be null if this cell is row defaults. */
@@ -814,8 +776,8 @@ public class Cell<T> : Cell,IPoolable
 		return prefWidth;
 	}
 
-	public float GetPrefWidth () {
-		return prefWidth.get(actor);
+	public float? GetPrefWidth () {
+		return prefWidth?.get(actor);
 	}
 
 	/** @return May be null if this cell is row defaults. */
@@ -823,8 +785,8 @@ public class Cell<T> : Cell,IPoolable
 		return prefHeight;
 	}
 
-	public float GetPrefHeight () {
-		return prefHeight.get(actor);
+	public float? GetPrefHeight () {
+		return prefHeight?.get(actor);
 	}
 
 	/** @return May be null if this cell is row defaults. */
@@ -832,8 +794,8 @@ public class Cell<T> : Cell,IPoolable
 		return maxWidth;
 	}
 
-	public float GetMaxWidth () {
-		return maxWidth.get(actor);
+	public float? GetMaxWidth () {
+		return maxWidth?.get(actor);
 	}
 
 	/** @return May be null if this cell is row defaults. */
@@ -841,8 +803,8 @@ public class Cell<T> : Cell,IPoolable
 		return maxHeight;
 	}
 
-	public float GetMaxHeight () {
-		return maxHeight.get(actor);
+	public float? GetMaxHeight () {
+		return maxHeight?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -850,8 +812,8 @@ public class Cell<T> : Cell,IPoolable
 		return spaceTop;
 	}
 
-	public float GetSpaceTop () {
-		return spaceTop.get(actor);
+	public float? GetSpaceTop () {
+		return spaceTop?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -859,8 +821,8 @@ public class Cell<T> : Cell,IPoolable
 		return spaceLeft;
 	}
 
-	public float GetSpaceLeft () {
-		return spaceLeft.get(actor);
+	public float? GetSpaceLeft () {
+		return spaceLeft?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -868,8 +830,8 @@ public class Cell<T> : Cell,IPoolable
 		return spaceBottom;
 	}
 
-	public float GetSpaceBottom () {
-		return spaceBottom.get(actor);
+	public float? GetSpaceBottom () {
+		return spaceBottom?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -877,8 +839,8 @@ public class Cell<T> : Cell,IPoolable
 		return spaceRight;
 	}
 
-	public float GetSpaceRight () {
-		return spaceRight.get(actor);
+	public float? GetSpaceRight () {
+		return spaceRight?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -886,8 +848,8 @@ public class Cell<T> : Cell,IPoolable
 		return padTop;
 	}
 
-	public float GetPadTop () {
-		return padTop.get(actor);
+	public float? GetPadTop () {
+		return padTop?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -895,8 +857,8 @@ public class Cell<T> : Cell,IPoolable
 		return padLeft;
 	}
 
-	public float GetPadLeft () {
-		return padLeft.get(actor);
+	public float? GetPadLeft () {
+		return padLeft?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -904,8 +866,8 @@ public class Cell<T> : Cell,IPoolable
 		return padBottom;
 	}
 
-	public float GetPadBottom () {
-		return padBottom.get(actor);
+	public float? GetPadBottom () {
+		return padBottom?.get(actor);
 	}
 
 	/** @return May be null if this value is not set. */
@@ -913,18 +875,18 @@ public class Cell<T> : Cell,IPoolable
 		return padRight;
 	}
 
-	public float GetPadRight () {
-		return padRight.get(actor);
+	public float ?GetPadRight () {
+		return padRight?.get(actor);
 	}
 
 	/** Returns {@link #getPadLeft()} plus {@link #getPadRight()}. */
-	public float GetPadX () {
-		return padLeft.get(actor) + padRight.get(actor);
+	public float? GetPadX () {
+		return padLeft?.get(actor) + padRight?.get(actor);
 	}
 
 	/** Returns {@link #getPadTop()} plus {@link #getPadBottom()}. */
-	public float GetPadY () {
-		return padTop.get(actor) + padBottom.get(actor);
+	public float? GetPadY () {
+		return padTop?.get(actor) + padBottom?.get(actor);
 	}
 
 	public float? GetFillX () {

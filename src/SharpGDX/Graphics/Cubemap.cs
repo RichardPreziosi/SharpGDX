@@ -113,9 +113,9 @@ public class Cubemap : GLTexture {
 	/** Construct a Cubemap with the specified texture files for the sides, optionally generating mipmaps. */
 	public Cubemap (FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY, FileHandle positiveZ,
 		FileHandle negativeZ, bool useMipMaps) 
-	: this(ITextureData.Factory.loadFromFile(positiveX, useMipMaps), ITextureData.Factory.loadFromFile(negativeX, useMipMaps),
-		ITextureData.Factory.loadFromFile(positiveY, useMipMaps), ITextureData.Factory.loadFromFile(negativeY, useMipMaps),
-		ITextureData.Factory.loadFromFile(positiveZ, useMipMaps), ITextureData.Factory.loadFromFile(negativeZ, useMipMaps))
+	: this(ITextureData.Factory.LoadFromFile(positiveX, useMipMaps), ITextureData.Factory.LoadFromFile(negativeX, useMipMaps),
+		ITextureData.Factory.LoadFromFile(positiveY, useMipMaps), ITextureData.Factory.LoadFromFile(negativeY, useMipMaps),
+		ITextureData.Factory.LoadFromFile(positiveZ, useMipMaps), ITextureData.Factory.LoadFromFile(negativeZ, useMipMaps))
 	{
 		
 	}

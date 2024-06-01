@@ -552,13 +552,13 @@ namespace SharpGDX.Desktop
 		public override unsafe void setUndecorated(bool undecorated)
 		{
 			getWindow().getConfig().setDecorated(!undecorated);
-			GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Decorated, undecorated ? false : true);
+			GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Decorated, !undecorated);
 		}
 
 		public override unsafe void setResizable(bool resizable)
 		{
 			getWindow().getConfig().setResizable(resizable);
-			GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Resizable, resizable ? true : false);
+			GLFW.SetWindowAttrib(window.getWindowPtr(), WindowAttribute.Resizable, resizable);
 		}
 
 		public override void setVSync(bool vsync)

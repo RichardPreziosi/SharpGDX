@@ -241,8 +241,8 @@ namespace SharpGDX.Desktop.Audio
 				AL.GetSource(sourceId, ALGetSourcei.SourceState, out var state);
 				if (state != (int)ALSourceState.Playing && state != (int)ALSourceState.Paused)
 				{
-					long oldSoundId = sourceToSoundId.remove(sourceId);
-					if (oldSoundId != null) soundIdToSource.remove(oldSoundId);
+					long? oldSoundId = sourceToSoundId.remove(sourceId);
+					if (oldSoundId != null) soundIdToSource.remove(oldSoundId.Value);
 					if (isMusic)
 					{
 						idleSources.removeIndex(i);
@@ -272,8 +272,8 @@ namespace SharpGDX.Desktop.Audio
 			if (noDevice) return;
 			AL.SourceStop(sourceID);
 			AL.Source(sourceID, ALSourcei.Buffer, 0);
-			long soundId = sourceToSoundId.remove(sourceID);
-			if (soundId != null) soundIdToSource.remove(soundId);
+			long? soundId = sourceToSoundId.remove(sourceID);
+			if (soundId != null) soundIdToSource.remove(soundId.Value);
 			idleSources.add(sourceID);
 		}
 
@@ -286,8 +286,8 @@ namespace SharpGDX.Desktop.Audio
 				AL.GetSource(sourceID, ALGetSourcei.Buffer, out var buffer);
 				if (buffer == bufferID)
 				{
-					long soundId = sourceToSoundId.remove(sourceID);
-					if (soundId != null) soundIdToSource.remove(soundId);
+					long? soundId = sourceToSoundId.remove(sourceID);
+					if (soundId != null) soundIdToSource.remove(soundId.Value);
 					AL.SourceStop(sourceID);
 					AL.Source(sourceID, ALSourcei.Buffer, 0);
 				}
@@ -304,8 +304,8 @@ namespace SharpGDX.Desktop.Audio
 
 				if (source == bufferID)
 				{
-					long soundId = sourceToSoundId.remove(sourceID);
-					if (soundId != null) soundIdToSource.remove(soundId);
+					long? soundId = sourceToSoundId.remove(sourceID);
+					if (soundId != null) soundIdToSource.remove(soundId.Value);
 					AL.SourceStop(sourceID);
 				}
 			}
@@ -350,26 +350,26 @@ namespace SharpGDX.Desktop.Audio
 
 		public long getSoundId(int sourceId)
 		{
-			long soundId = sourceToSoundId.get(sourceId);
-			return soundId != null ? soundId : -1;
+			long? soundId = sourceToSoundId.get(sourceId);
+			return soundId != null ? soundId.Value : -1;
 		}
 
 		public int getSourceId(long soundId)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			return sourceId != null ? sourceId : -1;
+			int? sourceId = soundIdToSource.get(soundId);
+			return sourceId != null ? sourceId.Value : -1;
 		}
 
 		public void stopSound(long soundId)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			if (sourceId != null) AL.SourceStop(sourceId);
+			int? sourceId = soundIdToSource.get(soundId);
+			if (sourceId != null) AL.SourceStop(sourceId.Value);
 		}
 
 		public void pauseSound(long soundId)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			if (sourceId != null) AL.SourcePause(sourceId);
+			int? sourceId = soundIdToSource.get(soundId);
+			if (sourceId != null) AL.SourcePause(sourceId.Value);
 		}
 
 		public void resumeSound(long soundId)
@@ -382,20 +382,20 @@ namespace SharpGDX.Desktop.Audio
 
 		public void setSoundGain(long soundId, float volume)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			if (sourceId != null) AL.Source(sourceId, ALSourcef.Gain, volume);
+			int? sourceId = soundIdToSource.get(soundId);
+			if (sourceId != null) AL.Source(sourceId.Value, ALSourcef.Gain, volume);
 		}
 
 		public void setSoundLooping(long soundId, bool looping)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			if (sourceId != null) AL.Source(sourceId, ALSourceb.Looping, looping ? true : false);
+			int? sourceId = soundIdToSource.get(soundId);
+			if (sourceId != null) AL.Source(sourceId.Value, ALSourceb.Looping, looping);
 		}
 
 		public void setSoundPitch(long soundId, float pitch)
 		{
-			int sourceId = soundIdToSource.get(soundId);
-			if (sourceId != null) AL.Source(sourceId, ALSourcef.Pitch, pitch);
+			int? sourceId = soundIdToSource.get(soundId);
+			if (sourceId != null) AL.Source(sourceId.Value, ALSourcef.Pitch, pitch);
 		}
 
 		public void setSoundPan(long soundId, float pan, float volume)

@@ -109,7 +109,7 @@ public class Texture : GLTexture {
 	}
 
 	public Texture (FileHandle file, Pixmap.Format? format, bool useMipMaps) 
-	: this(ITextureData.Factory.loadFromFile(file, format, useMipMaps))
+	: this(ITextureData.Factory.LoadFromFile(file, format, useMipMaps))
 	{
 		
 	}

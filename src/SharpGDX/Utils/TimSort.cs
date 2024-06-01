@@ -675,14 +675,14 @@ namespace SharpGDX.Utils
 						a[dest++] = a[cursor2++];
 						count2++;
 						count1 = 0;
-						if (--len2 == 0) goto endOfOuter;;
+						if (--len2 == 0) goto endOfOuter;
 					}
 					else
 					{
 						a[dest++] = tmp[cursor1++];
 						count1++;
 						count2 = 0;
-						if (--len1 == 1) goto endOfOuter;;
+						if (--len1 == 1) goto endOfOuter;
 					}
 				} while ((count1 | count2) < minGallop);
 
@@ -701,10 +701,10 @@ namespace SharpGDX.Utils
 						cursor1 += count1;
 						len1 -= count1;
 						if (len1 <= 1) // len1 == 1 || len1 == 0
-							goto endOfOuter;;
+							goto endOfOuter;
 					}
 					a[dest++] = a[cursor2++];
-					if (--len2 == 0) goto endOfOuter;;
+					if (--len2 == 0) goto endOfOuter;
 
 					count2 = gallopLeft(tmp[cursor1], a, cursor2, len2, 0, c);
 					if (count2 != 0)
@@ -713,10 +713,10 @@ namespace SharpGDX.Utils
 						dest += count2;
 						cursor2 += count2;
 						len2 -= count2;
-						if (len2 == 0) goto endOfOuter;;
+						if (len2 == 0) goto endOfOuter;
 					}
 					a[dest++] = tmp[cursor1++];
-					if (--len1 == 1) goto endOfOuter;;
+					if (--len1 == 1) goto endOfOuter;
 					minGallop--;
 				} while (count1 >= MIN_GALLOP | count2 >= MIN_GALLOP);
 				if (minGallop < 0) minGallop = 0;
@@ -797,14 +797,14 @@ namespace SharpGDX.Utils
 						a[dest--] = a[cursor1--];
 						count1++;
 						count2 = 0;
-						if (--len1 == 0) goto endOfOuter;;
+						if (--len1 == 0) goto endOfOuter;
 					}
 					else
 					{
 						a[dest--] = tmp[cursor2--];
 						count2++;
 						count1 = 0;
-						if (--len2 == 1) goto endOfOuter;;
+						if (--len2 == 1) goto endOfOuter;
 					}
 				} while ((count1 | count2) < minGallop);
 
@@ -822,10 +822,10 @@ namespace SharpGDX.Utils
 						cursor1 -= count1;
 						len1 -= count1;
 						Array.Copy(a, cursor1 + 1, a, dest + 1, count1);
-						if (len1 == 0) goto endOfOuter;;
+						if (len1 == 0) goto endOfOuter;
 					}
 					a[dest--] = tmp[cursor2--];
-					if (--len2 == 1) goto endOfOuter;;
+					if (--len2 == 1) goto endOfOuter;
 
 					count2 = len2 - gallopLeft(a[cursor1], tmp, 0, len2, len2 - 1, c);
 					if (count2 != 0)
@@ -835,10 +835,10 @@ namespace SharpGDX.Utils
 						len2 -= count2;
 						Array.Copy(tmp, cursor2 + 1, a, dest + 1, count2);
 						if (len2 <= 1) // len2 == 1 || len2 == 0
-							goto endOfOuter;;
+							goto endOfOuter;
 					}
 					a[dest--] = a[cursor1--];
-					if (--len1 == 0) goto endOfOuter;;
+					if (--len1 == 0) goto endOfOuter;
 					minGallop--;
 				} while (count1 >= MIN_GALLOP | count2 >= MIN_GALLOP);
 				if (minGallop < 0) minGallop = 0;

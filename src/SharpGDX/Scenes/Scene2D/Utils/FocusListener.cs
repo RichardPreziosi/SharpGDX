@@ -36,7 +36,7 @@ abstract public class FocusListener : IEventListener {
 	public class FocusEvent : Event {
 		private bool focused;
 		private Type type;
-		private Actor relatedActor;
+		private Actor? relatedActor;
 
 		public override void reset () {
 			base.reset();

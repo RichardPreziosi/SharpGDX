@@ -345,7 +345,7 @@ namespace SharpGDX.Utils
 		}
 	}
 
-	public int hashCode()
+	public override int GetHashCode()
 	{
 		int h = size;
 		K[] keyTable = this.keyTable;
@@ -358,7 +358,7 @@ namespace SharpGDX.Utils
 		return h;
 	}
 
-	public override bool Equals(Object obj)
+	public override bool Equals(Object? obj)
 	{
 		if (obj == this) return true;
 		if (!(obj is ObjectIntMap<K>)) return false;

@@ -146,7 +146,7 @@ public class DistanceFieldFont : BitmapFont {
 		}
 
 		private float getSmoothingFactor () {
-			 DistanceFieldFont font = (DistanceFieldFont)base.getFont();
+			 DistanceFieldFont font = (DistanceFieldFont)getFont();
 			return font.getDistanceFieldSmoothing() * font.getScaleX();
 		}
 

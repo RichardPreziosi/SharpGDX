@@ -181,7 +181,7 @@ public class IntMap<V> : IEnumerable<IntMap<V>.Entry> {
 		}
 	}
 
-	public V get (int key) {
+	public V? get (int key) {
 		if (key == 0) return hasZeroValue ? zeroValue : default;
 		int i = locateKey(key);
 		return i >= 0 ? valueTable[i] : default;

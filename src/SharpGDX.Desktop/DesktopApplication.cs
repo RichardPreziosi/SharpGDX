@@ -584,7 +584,7 @@ namespace SharpGDX.Desktop
 			}
 			else
 			{
-				GLFW.WindowHint(WindowHintBool.Decorated, config.windowDecorated ? true : false);
+				GLFW.WindowHint(WindowHintBool.Decorated, config.windowDecorated);
 				windowHandle = GLFW.CreateWindow(config.windowWidth, config.windowHeight, config.title, null,
 					sharedContextWindow);
 			}

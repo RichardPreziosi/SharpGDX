@@ -84,25 +84,25 @@ public class CustomTexture3DData : ITexture3DData {
 		if (pixels == null) {
 
 			int numChannels;
-			if (glFormat == GL30.GL_RED || glFormat == GL30.GL_RED_INTEGER || glFormat == GL30.GL_LUMINANCE
-				|| glFormat == GL30.GL_ALPHA) {
+			if (glFormat == GL30.GL_RED || glFormat == GL30.GL_RED_INTEGER || glFormat == GL20.GL_LUMINANCE
+				|| glFormat == GL20.GL_ALPHA) {
 				numChannels = 1;
-			} else if (glFormat == GL30.GL_RG || glFormat == GL30.GL_RG_INTEGER || glFormat == GL30.GL_LUMINANCE_ALPHA) {
+			} else if (glFormat == GL30.GL_RG || glFormat == GL30.GL_RG_INTEGER || glFormat == GL20.GL_LUMINANCE_ALPHA) {
 				numChannels = 2;
-			} else if (glFormat == GL30.GL_RGB || glFormat == GL30.GL_RGB_INTEGER) {
+			} else if (glFormat == GL20.GL_RGB || glFormat == GL30.GL_RGB_INTEGER) {
 				numChannels = 3;
-			} else if (glFormat == GL30.GL_RGBA || glFormat == GL30.GL_RGBA_INTEGER) {
+			} else if (glFormat == GL20.GL_RGBA || glFormat == GL30.GL_RGBA_INTEGER) {
 				numChannels = 4;
 			} else {
 				throw new GdxRuntimeException("unsupported glFormat: " + glFormat);
 			}
 
 			int bytesPerChannel;
-			if (glType == GL30.GL_UNSIGNED_BYTE || glType == GL30.GL_BYTE) {
+			if (glType == GL20.GL_UNSIGNED_BYTE || glType == GL20.GL_BYTE) {
 				bytesPerChannel = 1;
-			} else if (glType == GL30.GL_UNSIGNED_SHORT || glType == GL30.GL_SHORT || glType == GL30.GL_HALF_FLOAT) {
+			} else if (glType == GL20.GL_UNSIGNED_SHORT || glType == GL20.GL_SHORT || glType == GL30.GL_HALF_FLOAT) {
 				bytesPerChannel = 2;
-			} else if (glType == GL30.GL_UNSIGNED_INT || glType == GL30.GL_INT || glType == GL30.GL_FLOAT) {
+			} else if (glType == GL20.GL_UNSIGNED_INT || glType == GL20.GL_INT || glType == GL20.GL_FLOAT) {
 				bytesPerChannel = 4;
 			} else {
 				throw new GdxRuntimeException("unsupported glType: " + glType);

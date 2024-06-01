@@ -53,7 +53,7 @@ where P: BaseTmxMapLoader<P>.Parameters
 	protected int mapHeightInPixels;
 
 	protected TiledMap map;
-	protected IntMap<MapObject> idToObject;
+	protected IntMap<MapObject>? idToObject;
 	protected Array<Runnable> runOnEndOfLoadTiled;
 
 	public BaseTmxMapLoader (IFileHandleResolver resolver) 

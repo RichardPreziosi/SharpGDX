@@ -59,7 +59,7 @@ namespace SharpGDX.Desktop
 
 		void set(DesktopApplicationConfiguration config)
 		{
-			base.setWindowConfiguration(config);
+			setWindowConfiguration(config);
 			_disableAudio = config._disableAudio;
 			audioDeviceSimultaneousSources = config.audioDeviceSimultaneousSources;
 			audioDeviceBufferSize = config.audioDeviceBufferSize;

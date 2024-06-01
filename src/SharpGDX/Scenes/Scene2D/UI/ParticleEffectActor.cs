@@ -19,16 +19,14 @@ public class ParticleEffectActor : Actor , Disposable {
 	private bool resetOnStart;
 	private bool autoRemove;
 
-	public ParticleEffectActor (ParticleEffect particleEffect, bool resetOnStart) 
-	: base()
+	public ParticleEffectActor (ParticleEffect particleEffect, bool resetOnStart)
 	{
 		
 		this.particleEffect = particleEffect;
 		this.resetOnStart = resetOnStart;
 	}
 
-	public ParticleEffectActor (FileHandle particleFile, TextureAtlas atlas) 
-	: base()
+	public ParticleEffectActor (FileHandle particleFile, TextureAtlas atlas)
 	{
 		
 		particleEffect = new ParticleEffect();
@@ -36,8 +34,7 @@ public class ParticleEffectActor : Actor , Disposable {
 		ownsEffect = true;
 	}
 
-	public ParticleEffectActor (FileHandle particleFile, FileHandle imagesDir) 
-	: base()
+	public ParticleEffectActor (FileHandle particleFile, FileHandle imagesDir)
 	{
 		
 		particleEffect = new ParticleEffect();

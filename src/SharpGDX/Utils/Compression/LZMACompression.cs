@@ -48,8 +48,7 @@ public class Lzma {
 	static public void compress (InputStream @in, OutputStream @out) // TODO: throws IOException 
 	{
 		CommandLine @params = new CommandLine();
-		bool eos = false;
-		if (@params.Eos) eos = true;
+		bool eos = @params.Eos;
 		LZMA.Encoder encoder = new LZMA.Encoder();
 		if (!encoder.SetAlgorithm(@params.Algorithm)) throw new RuntimeException("Incorrect compression mode");
 		if (!encoder.SetDictionarySize(@params.DictionarySize)) throw new RuntimeException("Incorrect dictionary size");
@@ -75,7 +74,7 @@ public class Lzma {
 	}
 
 	/** Decompresses the given {@link InputStream} into the given {@link OutputStream}.
-	 * 
+	 *
 	 * @param in the {@link InputStream} to decompress
 	 * @param out the {@link OutputStream} to decompress to
 	 * @throws IOException */

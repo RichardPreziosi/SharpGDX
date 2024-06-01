@@ -261,7 +261,7 @@ public override bool justTouched()
 
 public override bool isTouched(int pointer)
 {
-	return pointer == 0 ? isTouched() : false;
+	return pointer == 0 && isTouched();
 }
 
 public override float getPressure()

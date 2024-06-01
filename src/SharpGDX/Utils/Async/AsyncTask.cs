@@ -10,6 +10,6 @@ namespace SharpGDX.Utils.Async
  * @author badlogic */
 	public interface IAsyncTask<T>
 	{
-		public T call();// TODO: throws Exception;
+		public T? call();// TODO: throws Exception;
 	}
 }

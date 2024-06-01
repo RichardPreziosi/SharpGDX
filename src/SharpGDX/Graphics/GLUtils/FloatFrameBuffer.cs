@@ -35,7 +35,7 @@ public class FloatFrameBuffer : FrameBuffer {
 	public FloatFrameBuffer (int width, int height, bool hasDepth) {
 		checkExtensions();
 		FloatFrameBufferBuilder bufferBuilder = new FloatFrameBufferBuilder(width, height);
-		bufferBuilder.addFloatAttachment(GL30.GL_RGBA32F, GL30.GL_RGBA, GL30.GL_FLOAT, false);
+		bufferBuilder.addFloatAttachment(GL30.GL_RGBA32F, GL20.GL_RGBA, GL20.GL_FLOAT, false);
 		if (hasDepth) bufferBuilder.addBasicDepthRenderBuffer();
 		this.bufferBuilder = bufferBuilder;
 

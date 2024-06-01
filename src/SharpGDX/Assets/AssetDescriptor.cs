@@ -12,9 +12,11 @@ public class AssetDescriptor<T> : IAssetDescriptor
 	{
 	}
 
-	/**
-	 * Creates an AssetDescriptor with an already resolved name.
-	 */
+	/// <summary>
+	///     Creates an AssetDescriptor with an already resolved name.
+	/// </summary>
+	/// <param name="file">TODO</param>
+	/// <param name="assetType">TODO</param>
 	public AssetDescriptor(FileHandle file, Type assetType)
 		: this(file, assetType, null)
 	{
@@ -27,9 +29,12 @@ public class AssetDescriptor<T> : IAssetDescriptor
 		Parameters = @params;
 	}
 
-	/**
-	 * Creates an AssetDescriptor with an already resolved name.
-	 */
+	/// <summary>
+	///     Creates an AssetDescriptor with an already resolved name.
+	/// </summary>
+	/// <param name="file">TODO</param>
+	/// <param name="assetType">TODO</param>
+	/// <param name="params">TODO</param>
 	public AssetDescriptor(FileHandle file, Type assetType, AssetLoaderParameters<T>? @params)
 	{
 		FileName = file.path();
@@ -38,10 +43,13 @@ public class AssetDescriptor<T> : IAssetDescriptor
 		Parameters = @params;
 	}
 
-	/**
-	 * The resolved file. May be null if the fileName has not been resolved yet.
-	 */
-	public FileHandle File { get; set; }
+	/// <summary>
+	///     The resolved file.
+	/// </summary>
+	/// <remarks>
+	///     May be null if the fileName has not been resolved yet.
+	/// </remarks>
+	public FileHandle? File { get; set; }
 
 	public string FileName { get; }
 

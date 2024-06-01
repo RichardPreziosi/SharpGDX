@@ -93,9 +93,9 @@ public class GestureDetector : InputAdapter {
 			if (listener == null) throw new IllegalArgumentException("listener cannot be null.");
 		this.tapRectangleWidth = halfTapRectangleWidth;
 		this.tapRectangleHeight = halfTapRectangleHeight;
-		this.tapCountInterval = (long)(tapCountInterval * 1000000000l);
+		this.tapCountInterval = (long)(tapCountInterval * 1000000000L);
 		this.longPressSeconds = longPressDuration;
-		this.maxFlingDelay = (long)(maxFlingDelay * 1000000000l);
+		this.maxFlingDelay = (long)(maxFlingDelay * 1000000000L);
 		this.listener = listener;
 	}
 
@@ -255,7 +255,7 @@ public class GestureDetector : InputAdapter {
 	 * @return whether the user touched the screen for as much or more than the given duration. */
 	public bool isLongPressed (float duration) {
 		if (touchDownTime == 0) return false;
-		return TimeUtils.nanoTime() - touchDownTime > (long)(duration * 1000000000l);
+		return TimeUtils.nanoTime() - touchDownTime > (long)(duration * 1000000000L);
 	}
 
 	public bool isPanning () {
@@ -290,7 +290,7 @@ public class GestureDetector : InputAdapter {
 	/** @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive
 	 *           taps. */
 	public void setTapCountInterval (float tapCountInterval) {
-		this.tapCountInterval = (long)(tapCountInterval * 1000000000l);
+		this.tapCountInterval = (long)(tapCountInterval * 1000000000L);
 	}
 
 	public void setLongPressSeconds (float longPressSeconds) {

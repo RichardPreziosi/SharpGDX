@@ -21,7 +21,7 @@ namespace SharpGDX.Scenes.Scene2D.UI
  * @author Nathan Sweet */
 public class Skin : Disposable {
 	ObjectMap<Type, ObjectMap<String, Object>> resources = new ();
-	TextureAtlas atlas;
+	TextureAtlas? atlas;
 	float _scale = 1;
 
 	private readonly ObjectMap<String, Type> jsonClassTags = new (defaultTagClasses.Length);

@@ -143,7 +143,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 				T texture = createTexture(attachmentSpec);
 				textureAttachments.add(texture);
 				if (attachmentSpec.isColorTexture()) {
-					gl.glFramebufferTexture2D(GL20.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0 + colorTextureCounter, GL30.GL_TEXTURE_2D,
+					gl.glFramebufferTexture2D(GL20.GL_FRAMEBUFFER, GL20.GL_COLOR_ATTACHMENT0 + colorTextureCounter, GL20.GL_TEXTURE_2D,
 						texture.getTextureObjectHandle(), 0);
 					colorTextureCounter++;
 				} else if (attachmentSpec.isDepth) {
@@ -433,7 +433,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 		}
 
 		public GLFrameBufferBuilder<U> addDepthTextureAttachment (int internalFormat, int type) {
-			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL30.GL_DEPTH_COMPONENT,
+			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL20.GL_DEPTH_COMPONENT,
 				type);
 			spec.isDepth = true;
 			textureAttachmentSpecs.add(spec);
@@ -441,7 +441,7 @@ public abstract class GLFrameBuffer<T> : GLFrameBuffer, Disposable
 		}
 
 		public GLFrameBufferBuilder<U> addStencilTextureAttachment (int internalFormat, int type) {
-			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL30.GL_STENCIL_ATTACHMENT,
+			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, GL20.GL_STENCIL_ATTACHMENT,
 				type);
 			spec.isStencil = true;
 			textureAttachmentSpecs.add(spec);

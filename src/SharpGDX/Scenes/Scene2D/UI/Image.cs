@@ -15,11 +15,11 @@ public class Image : Widget {
 	private Scaling scaling;
 	private int align = Align.center;
 	private float imageX, imageY, imageWidth, imageHeight;
-	private IDrawable drawable;
+	private IDrawable? drawable;
 
 	/** Creates an image with no drawable, stretched, and aligned center. */
 	public Image () 
-	: this((IDrawable)null)
+	: this((IDrawable?)null)
 	{
 		
 	}
