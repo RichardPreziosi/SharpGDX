@@ -45,8 +45,8 @@ public class VertexArray : IVertexData {
 		this.attributes = attributes;
 		byteBuffer = BufferUtils.newUnsafeByteBuffer(this.attributes.vertexSize * numVertices);
 		buffer = byteBuffer.asFloatBuffer();
-		((Buffer)buffer).flip();
-		((Buffer)byteBuffer).flip();
+		buffer.flip();
+		byteBuffer.flip();
 	}
 
 	public void dispose () {
@@ -65,10 +65,11 @@ public class VertexArray : IVertexData {
 		return byteBuffer.capacity() / attributes.vertexSize;
 	}
 
-	public void setVertices (float[] vertices, int offset, int count) {
+	public void setVertices(float[] vertices, int offset, int count)
+	{
 		BufferUtils.copy(vertices, byteBuffer, count, offset);
-		((Buffer)buffer).position(0);
-		((Buffer)buffer).limit(count);
+		buffer.position(0);
+		buffer.limit(count);
 	}
 
 	public void updateVertices (int targetOffset, float[] vertices, int sourceOffset, int count) {
@@ -93,11 +94,11 @@ public class VertexArray : IVertexData {
 				shader.enableVertexAttribute(location);
 
 				if (attribute.type == GL20.GL_FLOAT) {
-					((Buffer)buffer).position(attribute.offset / 4);
+					buffer.position(attribute.offset / 4);
 					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
 						attributes.vertexSize, buffer);
 				} else {
-					((Buffer)byteBuffer).position(attribute.offset);
+					byteBuffer.position(attribute.offset);
 					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
 						attributes.vertexSize, byteBuffer);
 				}

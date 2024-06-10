@@ -168,7 +168,10 @@ public class SpriteBatch : IBatch {
 
 	public void end () {
 		if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before end.");
-		if (idx > 0) flush();
+		if (idx > 0)
+		{
+			flush();
+		}
 		lastTexture = null;
 		drawing = false;
 

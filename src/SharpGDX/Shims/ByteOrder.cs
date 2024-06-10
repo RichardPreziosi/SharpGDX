@@ -25,8 +25,9 @@ namespace SharpGDX.Shims
 		private static readonly ByteOrder NATIVE_ORDER;
 
 		static ByteOrder (){
+			// TODO: Important
 // if (Platform.getMemorySystem().isLittleEndian()) {
-			NATIVE_ORDER = LITTLE_ENDIAN;
+			//NATIVE_ORDER = LITTLE_ENDIAN;
 // } else {
 // NATIVE_ORDER = BIG_ENDIAN;
 // }

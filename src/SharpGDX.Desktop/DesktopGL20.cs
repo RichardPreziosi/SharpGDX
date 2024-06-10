@@ -741,6 +741,7 @@ namespace SharpGDX.Desktop
 			var length = @string.Length;
 			//GL.glShaderSource(shader, 1, new string[] { @string }, ref length);
 			GL.ShaderSource(shader,  @string); //, new string[] { @string }, new int[@string.Length]);
+			
 		}
 
 		public void glStencilFunc(int func, int @ref, int mask)

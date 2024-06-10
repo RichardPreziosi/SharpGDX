@@ -40,6 +40,7 @@ sealed class DirectReadWriteFloatBufferAdapter : FloatBuffer , HasArrayBufferVie
 			// TODO: Not sure if this stays or not. -RP
 			var data = byteBuffer.byteArray.buffer();
 			float[] sdata = new float[_capacity];
+			var g = byteBuffer.byteArray.byteOffset();
 			System.Buffer.BlockCopy(data, byteBuffer.byteArray.byteOffset(), sdata, 0, _capacity);
 			floatArray = new Float32Array(sdata);
 		}

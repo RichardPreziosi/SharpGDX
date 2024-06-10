@@ -12,4 +12,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Buffers\" />
+  </ItemGroup>
+
 </Project>
