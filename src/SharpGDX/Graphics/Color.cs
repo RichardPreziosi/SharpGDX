@@ -9,7 +9,7 @@ namespace SharpGDX.Graphics
 	public class Color
 	{
 		public static readonly Color WHITE = new Color(1, 1, 1, 1);
-		public static readonly Color LIGHT_GRAY = new Color(0xbfbfbfff);
+		public static readonly Color LIGHT_GRAY = new Color(unchecked((int)0xbfbfbfff));
 		public static readonly Color GRAY = new Color(0x7f7f7fff);
 		public static readonly Color DARK_GRAY = new Color(0x3f3f3fff);
 		public static readonly Color BLACK = new Color(0, 0, 0, 1);
@@ -23,7 +23,7 @@ namespace SharpGDX.Graphics
 		public static readonly Color NAVY = new Color(0, 0, 0.5f, 1);
 		public static readonly Color ROYAL = new Color(0x4169e1ff);
 		public static readonly Color SLATE = new Color(0x708090ff);
-		public static readonly Color SKY = new Color(0x87ceebff);
+		public static readonly Color SKY = new Color(unchecked((int)0x87ceebff));
 		public static readonly Color CYAN = new Color(0, 1, 1, 1);
 		public static readonly Color TEAL = new Color(0, 0.5f, 0.5f, 1);
 
@@ -33,25 +33,25 @@ namespace SharpGDX.Graphics
 		public static readonly Color FOREST = new Color(0x228b22ff);
 		public static readonly Color OLIVE = new Color(0x6b8e23ff);
 
-		public static readonly Color YELLOW = new Color(0xffff00ff);
-		public static readonly Color GOLD = new Color(0xffd700ff);
-		public static readonly Color GOLDENROD = new Color(0xdaa520ff);
-		public static readonly Color ORANGE = new Color(0xffa500ff);
+		public static readonly Color YELLOW = new Color(unchecked((int)0xffff00ff));
+		public static readonly Color GOLD = new Color(unchecked((int)0xffd700ff));
+		public static readonly Color GOLDENROD = new Color(unchecked((int)0xdaa520ff));
+		public static readonly Color ORANGE = new Color(unchecked((int)0xffa500ff));
 
-		public static readonly Color BROWN = new Color(0x8b4513ff);
-		public static readonly Color TAN = new Color(0xd2b48cff);
-		public static readonly Color FIREBRICK = new Color(0xb22222ff);
+		public static readonly Color BROWN = new Color(unchecked((int)0x8b4513ff));
+		public static readonly Color TAN = new Color(unchecked((int)0xd2b48cff));
+		public static readonly Color FIREBRICK = new Color(unchecked((int)0xb22222ff));
 
-		public static readonly Color RED = new Color(0xff0000ff);
-		public static readonly Color SCARLET = new Color(0xff341cff);
-		public static readonly Color CORAL = new Color(0xff7f50ff);
-		public static readonly Color SALMON = new Color(0xfa8072ff);
-		public static readonly Color PINK = new Color(0xff69b4ff);
+		public static readonly Color RED = new Color(unchecked((int)0xff0000ff));
+		public static readonly Color SCARLET = new Color(unchecked((int)0xff341cff));
+		public static readonly Color CORAL = new Color(unchecked((int)0xff7f50ff));
+		public static readonly Color SALMON = new Color(unchecked((int)0xfa8072ff));
+		public static readonly Color PINK = new Color(unchecked((int)0xff69b4ff));
 		public static readonly Color MAGENTA = new Color(1, 0, 1, 1);
 
-		public static readonly Color PURPLE = new Color(0xa020f0ff);
-		public static readonly Color VIOLET = new Color(0xee82eeff);
-		public static readonly Color MAROON = new Color(0xb03060ff);
+		public static readonly Color PURPLE = new Color(unchecked((int)0xa020f0ff));
+		public static readonly Color VIOLET = new Color(unchecked((int)0xee82eeff));
+		public static readonly Color MAROON = new Color(unchecked((int)0xb03060ff));
 
 		/** the red, green, blue and alpha components **/
 		public float r, g, b, a;
@@ -66,13 +66,7 @@ namespace SharpGDX.Graphics
 		{
 			rgba8888ToColor(this, rgba8888);
 		}
-
-		public Color(uint rgba8888)
-		{
-			// TODO: 
-			rgba8888ToColor(this, unchecked((int)rgba8888));
-		}
-
+		
 		/** Constructor, sets the components of the color
 		 * 
 		 * @param r the red component

@@ -27,7 +27,7 @@
 		 * expand the 0-254 back to 0-255, else colors cannot be fully opaque. */
 		public static float intToFloatColor(int value)
 		{
-			return (float)BitConverter.Int64BitsToDouble(value & 0xfeffffff);
+			return BitConverter.Int32BitsToSingle(value & unchecked((int)0xfeffffff));
 		}
 
 		public static float intBitsToFloat(int value)
