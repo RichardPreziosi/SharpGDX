@@ -38,9 +38,13 @@ namespace SharpGDX.Shims
 				System.Buffer.BlockCopy(src, offset, result, 0, result.Length);
 				b.put(result);
 			}
-			else if (dst is FloatBuffer)
+			else if (dst is FloatBuffer d)
 			{
 				dst.limit(numFloats);
+				dst.position(0);
+				float[] result = new float[numFloats];
+				Array.Copy(src, offset, result, 0, result.Length);
+				d.put(result);
 			}
 
 			// TODO: copyJni(src, dst, numFloats, offset);

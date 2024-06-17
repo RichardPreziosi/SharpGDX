@@ -1212,4 +1212,20 @@ public class GL20Interceptor : GLInterceptor, GL20
 		gl20.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
 		check();
 	}
+
+	public override void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride,
+		byte[] ptr)
+	{
+		calls++;
+		gl20.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+		check();
+	}
+
+	public override void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride,
+		float[] ptr)
+	{
+		calls++;
+		gl20.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+		check();
+	}
 }

@@ -244,5 +244,8 @@ namespace SharpGDX.Graphics.Profiling
 	public abstract void glVertexAttrib4fv(int indx, FloatBuffer values);
 	public abstract void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, Buffer ptr);
 	public abstract void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, int ptr);
+	public abstract void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, byte[] ptr);
+
+	public abstract void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, float[] ptr);
 	}
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SharpGDX.Shims;
 using SharpGDX.Utils;
 using SharpGDX.Mathematics;
 using Buffer = SharpGDX.Shims.Buffer;
+using SharpGDX.Utils.Compression;
 
 namespace SharpGDX.Graphics.GLUtils
 {
@@ -25,6 +27,8 @@ public class VertexArray : IVertexData {
 	readonly VertexAttributes attributes;
 	readonly FloatBuffer buffer;
 	readonly ByteBuffer byteBuffer;
+	private readonly MemoryStream _stream;
+	private byte[] bb;
 	bool isBound = false;
 
 	/** Constructs a new interleaved VertexArray
@@ -47,6 +51,9 @@ public class VertexArray : IVertexData {
 		buffer = byteBuffer.asFloatBuffer();
 		buffer.flip();
 		byteBuffer.flip();
+
+		_stream = new MemoryStream(this.attributes.vertexSize * numVertices);
+		bb = new byte[this.attributes.vertexSize * numVertices];
 	}
 
 	public void dispose () {
@@ -67,9 +74,21 @@ public class VertexArray : IVertexData {
 
 	public void setVertices(float[] vertices, int offset, int count)
 	{
-		BufferUtils.copy(vertices, byteBuffer, count, offset);
-		buffer.position(0);
-		buffer.limit(count);
+			// TODO: Is this the proper use of offset and count?
+			BufferUtils.copy(vertices, byteBuffer, count, offset);
+			BufferUtils.copy(vertices, buffer, count, offset);
+			buffer.position(0);
+			buffer.limit(count);
+
+			//_stream.Write(MemoryMarshal.Cast<float, byte>(vertices.AsSpan(offset)));
+			
+			//_stream.SetLength(count << 2);
+			//var s = _stream.ToArray();
+
+			// TODO: Is this the correct use of offset and count?
+			System.Buffer.BlockCopy(vertices, 0, bb, offset, count << 2);
+
+			var s = string.Join(", ", bb.Take(80));
 	}
 
 	public void updateVertices (int targetOffset, float[] vertices, int sourceOffset, int count) {
@@ -83,44 +102,70 @@ public class VertexArray : IVertexData {
 		bind(shader, null);
 	}
 
-	public void bind (ShaderProgram shader, int[] locations) {
+	public void bind(ShaderProgram shader, int[] locations)
+	{
 		int numAttributes = attributes.size();
 		((Buffer)byteBuffer).limit(buffer.limit() * 4);
-		if (locations == null) {
-			for (int i = 0; i < numAttributes; i++) {
-				 VertexAttribute attribute = attributes.get(i);
-				 int location = shader.getAttributeLocation(attribute.alias);
+		if (locations == null)
+		{
+			for (int i = 0; i < numAttributes; i++)
+			{
+				VertexAttribute attribute = attributes.get(i);
+				int location = shader.getAttributeLocation(attribute.alias);
 				if (location < 0) continue;
 				shader.enableVertexAttribute(location);
 
-				if (attribute.type == GL20.GL_FLOAT) {
-					buffer.position(attribute.offset / 4);
-					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
-						attributes.vertexSize, buffer);
-				} else {
-					byteBuffer.position(attribute.offset);
-					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
-						attributes.vertexSize, byteBuffer);
+				if (attribute.type == GL20.GL_FLOAT)
+				{
+					//buffer.position(attribute.offset / 4);
+					//shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
+					//	attributes.vertexSize, buffer);
+					
+					// TODO: This is not right, it's creating a new array each call, just trying to get it to work though. -RP
+					// TODO: Is this the correct segment length from the original byte[]?
+					var array = MemoryMarshal.Cast<byte, float>(bb.AsSpan(attribute.offset, attributes.vertexSize * attribute.numComponents * 4))
+						.ToArray();
+						shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, attributes.vertexSize, array);
 				}
-			}
-		} else {
-			for (int i = 0; i < numAttributes; i++) {
-				 VertexAttribute attribute = attributes.get(i);
-				 int location = locations[i];
+				else
+				{
+						//byteBuffer.position(attribute.offset);
+						//shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
+						//	attributes.vertexSize, byteBuffer);
+
+						// TODO: This is not right, it's creating a new array each call, just trying to get it to work though. -RP
+						// TODO: Is this the correct segment length from the original byte[]?
+						var array = bb.AsSpan(attribute.offset, attributes.vertexSize * attribute.numComponents)
+							.ToArray();
+						
+						shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, attributes.vertexSize, array);
+					}
+				}
+		}
+		else
+		{
+			for (int i = 0; i < numAttributes; i++)
+			{
+				VertexAttribute attribute = attributes.get(i);
+				int location = locations[i];
 				if (location < 0) continue;
 				shader.enableVertexAttribute(location);
 
-				if (attribute.type == GL20.GL_FLOAT) {
+				if (attribute.type == GL20.GL_FLOAT)
+				{
 					((Buffer)buffer).position(attribute.offset / 4);
 					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
 						attributes.vertexSize, buffer);
-				} else {
+				}
+				else
+				{
 					((Buffer)byteBuffer).position(attribute.offset);
 					shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
 						attributes.vertexSize, byteBuffer);
 				}
 			}
 		}
+
 		isBound = true;
 	}
 

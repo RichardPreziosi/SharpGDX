@@ -644,16 +644,30 @@ public class ShaderProgram : Disposable {
 		checkManaged();
 		gl.glVertexAttribPointer(location, size, type, normalize, stride, buffer);
 	}
-		
-	/** Sets the vertex attribute with the given name. The {@link ShaderProgram} must be bound for this to work.
-		 *
-		 * @param name the attribute name
-		 * @param size the number of components, must be >= 1 and <= 4
-		 * @param type the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
-		 *           GL20.GL_UNSIGNED_SHORT,GL20.GL_FIXED, or GL20.GL_FLOAT. GL_FIXED will not work on the desktop
-		 * @param normalize whether fixed point data should be normalized. Will not work on the desktop
-		 * @param stride the stride in bytes between successive attributes
-		 * @param offset byte offset into the vertex buffer object bound to GL20.GL_ARRAY_BUFFER. */
+
+	public void setVertexAttribute(int location, int size, int type, bool normalize, int stride, byte[] buffer)
+	{
+		GL20 gl = Gdx.gl20;
+		checkManaged();
+		gl.glVertexAttribPointer(location, size, type, normalize, stride, buffer);
+	}
+
+	public void setVertexAttribute(int location, int size, int type, bool normalize, int stride, float[] buffer)
+	{
+		GL20 gl = Gdx.gl20;
+		checkManaged();
+		gl.glVertexAttribPointer(location, size, type, normalize, stride, buffer);
+	}
+
+		/** Sets the vertex attribute with the given name. The {@link ShaderProgram} must be bound for this to work.
+			 *
+			 * @param name the attribute name
+			 * @param size the number of components, must be >= 1 and <= 4
+			 * @param type the type, must be one of GL20.GL_BYTE, GL20.GL_UNSIGNED_BYTE, GL20.GL_SHORT,
+			 *           GL20.GL_UNSIGNED_SHORT,GL20.GL_FIXED, or GL20.GL_FLOAT. GL_FIXED will not work on the desktop
+			 * @param normalize whether fixed point data should be normalized. Will not work on the desktop
+			 * @param stride the stride in bytes between successive attributes
+			 * @param offset byte offset into the vertex buffer object bound to GL20.GL_ARRAY_BUFFER. */
 		public void setVertexAttribute (String name, int size, int type, bool normalize, int stride, int offset) {
 		GL20 gl = Gdx.gl20;
 		checkManaged();

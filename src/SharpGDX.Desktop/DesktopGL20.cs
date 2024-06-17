@@ -1146,15 +1146,34 @@ namespace SharpGDX.Desktop
 			if (buffer is ByteBuffer)
 			{
 				if (type == GL20.GL_BYTE)
-					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
+				{
+					var array = new byte[buffer.limit()];
+					Array.Copy(((ByteBuffer)buffer).array(), buffer.position(), array, 0, array.Length);
+
+					var s = string.Join(", ", array);
+					//GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, array);
+				}
 				else if (type == GL20.GL_UNSIGNED_BYTE)
-					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
+				{
+					var array = new byte[buffer.limit()];
+					Array.Copy(((ByteBuffer)buffer).array(), buffer.position(), array, 0, array.Length);
+					var s = string.Join(", ", array);
+					//GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, array);
+				}
 				else if (type == GL20.GL_SHORT)
 					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
 				else if (type == GL20.GL_UNSIGNED_SHORT)
 					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asShortBuffer().array());
 				else if (type == GL20.GL_FLOAT)
-					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer().array());
+				{
+					var array = new float[buffer.limit()];
+					Array.Copy(((ByteBuffer)buffer).asFloatBuffer().array(), buffer.position(), array, 0, array.Length);
+					var s = string.Join(", ", array);
+					//GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((ByteBuffer)buffer).asFloatBuffer().array());
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, array);
+				}
 				else
 					throw new GdxRuntimeException("Can't use " + buffer.GetType().Name + " with type " + type
 						+ " with this method. Use ByteBuffer and one of GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT or GL_FLOAT for type. Blame LWJGL");
@@ -1165,7 +1184,11 @@ namespace SharpGDX.Desktop
 			{
 				if (type == GL20.GL_FLOAT)
 				{
-					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((FloatBuffer)buffer).array());
+					var array = new float[buffer.limit()];
+					Array.Copy(((FloatBuffer)buffer).array(), buffer.position(), array, 0, array.Length);
+					var s = string.Join(", ", array);
+					GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, array);
+					//GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ((FloatBuffer)buffer).array());
 				}
 				else
 					throw new GdxRuntimeException(
@@ -1187,6 +1210,16 @@ namespace SharpGDX.Desktop
 		}
 
 		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, int ptr)
+		{
+			GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ptr);
+		}
+
+		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, byte[] ptr)
+		{
+			GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ptr);
+		}
+
+		public void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, float[] ptr)
 		{
 			GL.VertexAttribPointer(indx, size, (VertexAttribPointerType)type, normalized, stride, ptr);
 		}

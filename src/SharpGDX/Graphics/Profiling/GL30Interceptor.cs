@@ -1057,9 +1057,23 @@ public class GL30Interceptor : GLInterceptor , GL30 {
 		check();
 	}
 
+	public override void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, byte[] ptr)
+	{
+		calls++;
+		gl30.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+		check();
+	}
+
+	public override void glVertexAttribPointer(int indx, int size, int type, bool normalized, int stride, float[] ptr)
+	{
+		calls++;
+		gl30.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+		check();
+	}
+
 	// GL30 Unique
 
-		public void glReadBuffer (int mode) {
+	public void glReadBuffer (int mode) {
 		calls++;
 		gl30.glReadBuffer(mode);
 		check();
