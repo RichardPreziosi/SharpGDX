@@ -85,6 +85,8 @@ public class VertexArray : IVertexData {
 			//_stream.SetLength(count << 2);
 			//var s = _stream.ToArray();
 
+			Array.Resize(ref bb, count << 2);
+
 			// TODO: Is this the correct use of offset and count?
 			System.Buffer.BlockCopy(vertices, 0, bb, offset, count << 2);
 
@@ -117,27 +119,50 @@ public class VertexArray : IVertexData {
 
 				if (attribute.type == GL20.GL_FLOAT)
 				{
-					//buffer.position(attribute.offset / 4);
-					//shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
-					//	attributes.vertexSize, buffer);
-					
-					// TODO: This is not right, it's creating a new array each call, just trying to get it to work though. -RP
-					// TODO: Is this the correct segment length from the original byte[]?
-					var array = MemoryMarshal.Cast<byte, float>(bb.AsSpan(attribute.offset, attributes.vertexSize * attribute.numComponents * 4))
+						buffer.position(attribute.offset / 4);
+						//shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
+						//	attributes.vertexSize, buffer);
+
+						var farray = new float[buffer.limit()];
+						Array.Copy(((FloatBuffer)buffer).array(), buffer.position(), farray, 0, farray.Length);
+						var fs = string.Join(", ", farray);
+
+						// TODO: This is not right, it's creating a new array each call, just trying to get it to work though. -RP
+						// TODO: Is this the correct segment length from the original byte[]?
+						
+						var array = MemoryMarshal.Cast<byte, float>(bb.AsSpan(attribute.offset, bb.Length - attribute.offset))
 						.ToArray();
+					var s = string.Join(", ", array);
+
+
+					if (s != fs)
+					{
+						var g = 1;
+					}
+
 						shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, attributes.vertexSize, array);
 				}
 				else
 				{
-						//byteBuffer.position(attribute.offset);
+						byteBuffer.position(attribute.offset);
 						//shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized,
 						//	attributes.vertexSize, byteBuffer);
 
+
+						var farray = new byte[byteBuffer.limit()];
+						Array.Copy(((ByteBuffer)byteBuffer).array(), byteBuffer.position(), farray, 0, farray.Length);
+						var fs = string.Join(", ", farray);
 						// TODO: This is not right, it's creating a new array each call, just trying to get it to work though. -RP
 						// TODO: Is this the correct segment length from the original byte[]?
-						var array = bb.AsSpan(attribute.offset, attributes.vertexSize * attribute.numComponents)
+						var array = bb.AsSpan(attribute.offset, bb.Length - attribute.offset)
 							.ToArray();
-						
+						var s = string.Join(", ", array);
+
+						if (s != fs)
+						{
+							var g = 1;
+						}
+
 						shader.setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, attributes.vertexSize, array);
 					}
 				}
