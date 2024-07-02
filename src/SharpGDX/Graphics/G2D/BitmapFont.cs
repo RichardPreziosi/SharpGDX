@@ -1,4 +1,5 @@
-﻿using SharpGDX.Files;
+﻿using System.Text.RegularExpressions;
+using SharpGDX.Files;
 using SharpGDX.Shims;
 using SharpGDX;
 using SharpGDX.Mathematics;
@@ -34,7 +35,7 @@ public class BitmapFont : Disposable {
 	/** Creates a BitmapFont using the default 15pt Liberation Sans font included in the libgdx JAR file. This is convenient to
 	 * easily display text without bothering without generating a bitmap font yourself. */
 	public BitmapFont () 
-	: this(Gdx.files.classpath("com/badlogic/gdx/utils/lsans-15.fnt"), Gdx.files.classpath("com/badlogic/gdx/utils/lsans-15.png"),
+	: this(Gdx.files.classpath("SharpGDX.lsans-15.fnt"), Gdx.files.classpath("SharpGDX.lsans-15.png"),
 		false, true)
 	{
 		
@@ -44,7 +45,7 @@ public class BitmapFont : Disposable {
 	 * easily display text without bothering without generating a bitmap font yourself.
 	 * @param flip If true, the glyphs will be flipped for use with a perspective where 0,0 is the upper left corner. */
 	public BitmapFont (bool flip) 
-	: this(Gdx.files.classpath("com/badlogic/gdx/utils/lsans-15.fnt"), Gdx.files.classpath("com/badlogic/gdx/utils/lsans-15.png"),
+	: this(Gdx.files.classpath("SharpGDX.lsans-15.fnt"), Gdx.files.classpath("SharpGDX.lsans-15.png"),
 		flip, true)
 	{
 		
@@ -166,7 +167,10 @@ public class BitmapFont : Disposable {
 		foreach (Glyph[] page in data.glyphs) {
 			if (page == null) continue;
 			foreach (Glyph glyph in page)
-				if (glyph != null) data.setGlyphRegion(glyph, regions.get(glyph.page));
+				if (glyph != null)
+				{
+					data.setGlyphRegion(glyph, regions.get(glyph.page));
+				}
 		}
 		if (data.missingGlyph != null) data.setGlyphRegion(data.missingGlyph, regions.get(data.missingGlyph.page));
 	}
@@ -470,306 +474,353 @@ public class BitmapFont : Disposable {
 
 		public void load (FileHandle fontFile, bool flip)
 		{
-			throw new NotImplementedException();
-			//if (imagePaths != null) throw new IllegalStateException("Already loaded.");
+				if (imagePaths != null) throw new IllegalStateException("Already loaded.");
 
-			//name = fontFile.nameWithoutExtension();
+				name = fontFile.nameWithoutExtension();
 
-			//BufferedReader reader = new BufferedReader(new InputStreamReader(fontFile.read()), 512);
-			//try {
-			//	String line = reader.readLine(); // info
-			//	if (line == null) throw new GdxRuntimeException("File is empty.");
+				BufferedReader reader = new BufferedReader(new InputStreamReader(fontFile.read()), 512);
+				try
+				{
+					String line = reader.readLine(); // info
+					if (line == null) throw new GdxRuntimeException("File is empty.");
 
-			//	line = line.Substring(line.IndexOf("padding=") + 8);
-			//	String[] padding = line.Substring(0, line.IndexOf(' ')).Split(",", 4);
-			//	if (padding.Length != 4) throw new GdxRuntimeException("Invalid padding.");
-			//	padTop = int.Parse(padding[0]);
-			//	padRight = int.Parse(padding[1]);
-			//	padBottom = int.Parse(padding[2]);
-			//	padLeft = int.Parse(padding[3]);
-			//	float padY = padTop + padBottom;
+					line = line.Substring(line.IndexOf("padding=") + 8);
+					String[] padding = line.Substring(0, line.IndexOf(' ')).Split(",", 4);
+					if (padding.Length != 4) throw new GdxRuntimeException("Invalid padding.");
+					padTop = int.Parse(padding[0]);
+					padRight = int.Parse(padding[1]);
+					padBottom = int.Parse(padding[2]);
+					padLeft = int.Parse(padding[3]);
+					float padY = padTop + padBottom;
 
-			//	line = reader.readLine();
-			//	if (line == null) throw new GdxRuntimeException("Missing common header.");
-			//	String[] common = line.Split(" ", 9); // At most we want the 6th element; i.e. "page=N"
+					line = reader.readLine();
+					if (line == null) throw new GdxRuntimeException("Missing common header.");
+					String[] common = line.Split(" ", 9); // At most we want the 6th element; i.e. "page=N"
 
-			//	// At least lineHeight and base are required.
-			//	if (common.Length < 3) throw new GdxRuntimeException("Invalid common header.");
+					// At least lineHeight and base are required.
+					if (common.Length < 3) throw new GdxRuntimeException("Invalid common header.");
 
-			//	if (!common[1].StartsWith("lineHeight=")) throw new GdxRuntimeException("Missing: lineHeight");
-			//	lineHeight = int.Parse(common[1].Substring(11));
+					if (!common[1].StartsWith("lineHeight=")) throw new GdxRuntimeException("Missing: lineHeight");
+					lineHeight = int.Parse(common[1].Substring(11));
 
-			//	if (!common[2].StartsWith("base=")) throw new GdxRuntimeException("Missing: base");
-			//	float baseLine = int.Parse(common[2].Substring(5));
+					if (!common[2].StartsWith("base=")) throw new GdxRuntimeException("Missing: base");
+					float baseLine = int.Parse(common[2].Substring(5));
 
-			//	int pageCount = 1;
-			//	if (common.Length >= 6 && common[5] != null && common[5].StartsWith("pages=")) {
-			//		try {
-			//			pageCount = Math.Max(1, int.Parse(common[5].Substring(6)));
-			//		} catch (FormatException ignored) { // Use one page.
-			//		}
-			//	}
+					int pageCount = 1;
+					if (common.Length >= 6 && common[5] != null && common[5].StartsWith("pages="))
+					{
+						try
+						{
+							pageCount = Math.Max(1, int.Parse(common[5].Substring(6)));
+						}
+						catch (FormatException ignored)
+						{ // Use one page.
+						}
+					}
 
-			//	imagePaths = new String[pageCount];
+					imagePaths = new String[pageCount];
 
-			//	// Read each page definition.
-			//	for (int p = 0; p < pageCount; p++) {
-			//		// Read each "page" info line.
-			//		line = reader.readLine();
-			//		if (line == null) throw new GdxRuntimeException("Missing additional page definitions.");
+					// Read each page definition.
+					for (int p = 0; p < pageCount; p++)
+					{
+						// Read each "page" info line.
+						line = reader.readLine();
+						if (line == null) throw new GdxRuntimeException("Missing additional page definitions.");
 
-			//		// Expect ID to mean "index".
-			//		Matcher matcher = Pattern.compile(".*id=(\\d+)").matcher(line);
-			//		if (matcher.find()) {
-			//			String id = matcher.group(1);
-			//			try {
-			//				int pageID = int.Parse(id);
-			//				if (pageID != p) throw new GdxRuntimeException("Page IDs must be indices starting at 0: " + id);
-			//			} catch (FormatException ex) {
-			//				throw new GdxRuntimeException("Invalid page id: " + id, ex);
-			//			}
-			//		}
+						// Expect ID to mean "index".
+						var matcher = new Regex(".*id=(\\d+)", RegexOptions.Compiled).Match(line);
+						if (matcher.Success)
+						{
+							// TODO: Should probably be 0
+							String id = matcher.Groups[1].ToString();
+							try
+							{
+								int pageID = int.Parse(id);
+								if (pageID != p) throw new GdxRuntimeException("Page IDs must be indices starting at 0: " + id);
+							}
+							catch (FormatException ex)
+							{
+								throw new GdxRuntimeException("Invalid page id: " + id, ex);
+							}
+						}
 
-			//		matcher = Pattern.compile(".*file=\"?([^\"]+)\"?").matcher(line);
-			//		if (!matcher.find()) throw new GdxRuntimeException("Missing: file");
-			//		String fileName = matcher.group(1);
+						matcher = new Regex(".*file=\"?([^\"]+)\"?", RegexOptions.Compiled).Match(line);
+						if (!matcher.Success) throw new GdxRuntimeException("Missing: file");
+						String fileName = matcher.Groups[1].ToString();
 
-			//		imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
-			//	}
-			//	descent = 0;
+						imagePaths[p] = fontFile.parent().child(fileName).path().Replace("\\\\", "/");
+					}
+					descent = 0;
 
-			//	while (true) {
-			//		line = reader.readLine();
-			//		if (line == null) break; // EOF
-			//		if (line.StartsWith("kernings ")) break; // Starting kernings block.
-			//		if (line.StartsWith("metrics ")) break; // Starting metrics block.
-			//		if (!line.StartsWith("char ")) continue;
+					while (true)
+					{
+						line = reader.readLine();
+						if (line == null) break; // EOF
+						if (line.StartsWith("kernings ")) break; // Starting kernings block.
+						if (line.StartsWith("metrics ")) break; // Starting metrics block.
+						if (!line.StartsWith("char ")) continue;
 
-			//		Glyph glyph = new Glyph();
+						Glyph glyph = new Glyph();
 
-			//		StringTokenizer tokens = new StringTokenizer(line, " =");
-			//		tokens.nextToken();
-			//		tokens.nextToken();
-			//		int ch = int.Parse(tokens.nextToken());
-			//		if (ch <= 0)
-			//			missingGlyph = glyph;
-			//		else if (ch <= Character.MAX_VALUE)
-			//			setGlyph(ch, glyph);
-			//		else
-			//			continue;
-			//		glyph.id = ch;
-			//		tokens.nextToken();
-			//		glyph.srcX = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		glyph.srcY = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		glyph.width = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		glyph.height = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		glyph.xoffset = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		if (flip)
-			//			glyph.yoffset = int.Parse(tokens.nextToken());
-			//		else
-			//			glyph.yoffset = -(glyph.height + int.Parse(tokens.nextToken()));
-			//		tokens.nextToken();
-			//		glyph.xadvance = int.Parse(tokens.nextToken());
+						var tokens = Regex.Matches(line, "(?<==)(-?\\d+)");
+						//var tokens = line.Split("=");
+						//tokens.MoveNext();
+						//tokens.MoveNext();
+						//tokens.nextToken();
+						//tokens.nextToken();
+						int ch = int.Parse(tokens[0].Value);
+						if (ch <= 0)
+							missingGlyph = glyph;
+						else if (ch <= char.MaxValue)
+							setGlyph(ch, glyph);
+						else
+							continue;
+						glyph.id = ch;
+						//tokens.nextToken();
+						glyph.srcX = int.Parse(tokens[1].Value);
+						//tokens.nextToken();
+						glyph.srcY = int.Parse(tokens[2].Value);
+						//tokens.nextToken();
+						glyph.width = int.Parse(tokens[3].Value);
+						//tokens.nextToken();
+						glyph.height = int.Parse(tokens[4].Value);
+						//tokens.nextToken();
+						glyph.xoffset = int.Parse(tokens[5].Value);
+						//tokens.nextToken();
+						if (flip)
+							glyph.yoffset = int.Parse(tokens[6].Value);
+						else
+							glyph.yoffset = -(glyph.height + int.Parse(tokens[6].Value));
+						//tokens.nextToken();
+						glyph.xadvance = int.Parse(tokens[7].Value);
 
-			//		// Check for page safely, it could be omitted or invalid.
-			//		if (tokens.hasMoreTokens()) tokens.nextToken();
-			//		if (tokens.hasMoreTokens()) {
-			//			try {
-			//				glyph.page = int.Parse(tokens.nextToken());
-			//			} catch (FormatException ignored) {
-			//			}
-			//		}
+						// Check for page safely, it could be omitted or invalid.
+						//if (tokens.hasMoreTokens()) tokens.nextToken();
+						//if (tokens.hasMoreTokens())
 
-			//		if (glyph.width > 0 && glyph.height > 0) descent = Math.Min(baseLine + glyph.yoffset, descent);
-			//	}
-			//	descent += padBottom;
+						if(tokens.Count >= 10)
+						{
+							try
+							{
+								// TODO: Verify that 9 is correct
+								glyph.page = int.Parse(tokens[9].Value);
+							}
+							catch (FormatException ignored)
+							{
+							}
+						}
 
-			//	while (true) {
-			//		line = reader.readLine();
-			//		if (line == null) break;
-			//		if (!line.StartsWith("kerning ")) break;
+						if (glyph.width > 0 && glyph.height > 0) descent = Math.Min(baseLine + glyph.yoffset, descent);
+					}
+					descent += padBottom;
 
-			//		StringTokenizer tokens = new StringTokenizer(line, " =");
-			//		tokens.nextToken();
-			//		tokens.nextToken();
-			//		int first = int.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		int second = int.Parse(tokens.nextToken());
-			//		if (first < 0 || first > Character.MAX_VALUE || second < 0 || second > Character.MAX_VALUE) continue;
-			//		Glyph glyph = getGlyph((char)first);
-			//		tokens.nextToken();
-			//		int amount = int.Parse(tokens.nextToken());
-			//		if (glyph != null) { // Kernings may exist for glyph pairs not contained in the font.
-			//			glyph.setKerning(second, amount);
-			//		}
-			//	}
+					while (true)
+					{
+						line = reader.readLine();
+						if (line == null) break;
+						if (!line.StartsWith("kerning ")) break;
 
-			//	bool hasMetricsOverride = false;
-			//	float overrideAscent = 0;
-			//	float overrideDescent = 0;
-			//	float overrideDown = 0;
-			//	float overrideCapHeight = 0;
-			//	float overrideLineHeight = 0;
-			//	float overrideSpaceXAdvance = 0;
-			//	float overrideXHeight = 0;
+						var tokens = Regex.Matches(line, "(?<==)(-?\\d+)");
+						//tokens.nextToken();
+					//	tokens.nextToken();
+						int first = int.Parse(tokens[0].Value);
+						//tokens.nextToken();
+						int second = int.Parse(tokens[1].Value);
+						if (first < 0 || first > char.MaxValue || second < 0 || second > char.MaxValue) continue;
+						Glyph glyph = getGlyph((char)first);
+						//tokens.nextToken();
+						int amount = int.Parse(tokens[2].Value);
+						if (glyph != null)
+						{ // Kernings may exist for glyph pairs not contained in the font.
+							glyph.setKerning(second, amount);
+						}
+					}
 
-			//	// Metrics override
-			//	if (line != null && line.StartsWith("metrics ")) {
+					bool hasMetricsOverride = false;
+					float overrideAscent = 0;
+					float overrideDescent = 0;
+					float overrideDown = 0;
+					float overrideCapHeight = 0;
+					float overrideLineHeight = 0;
+					float overrideSpaceXAdvance = 0;
+					float overrideXHeight = 0;
 
-			//		hasMetricsOverride = true;
+					// Metrics override
+					if (line != null && line.StartsWith("metrics "))
+					{
 
-			//		StringTokenizer tokens = new StringTokenizer(line, " =");
-			//		tokens.nextToken();
-			//		tokens.nextToken();
-			//		overrideAscent = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideDescent = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideDown = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideCapHeight = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideLineHeight = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideSpaceXAdvance = float.Parse(tokens.nextToken());
-			//		tokens.nextToken();
-			//		overrideXHeight = float.Parse(tokens.nextToken());
-			//	}
+						hasMetricsOverride = true;
 
-			//	Glyph spaceGlyph = getGlyph(' ');
-			//	if (spaceGlyph == null) {
-			//		spaceGlyph = new Glyph();
-			//		spaceGlyph.id = ' ';
-			//		Glyph xadvanceGlyph = getGlyph('l');
-			//		if (xadvanceGlyph == null) xadvanceGlyph = getFirstGlyph();
-			//		spaceGlyph.xadvance = xadvanceGlyph.xadvance;
-			//		setGlyph(' ', spaceGlyph);
-			//	}
-			//	if (spaceGlyph.width == 0) {
-			//		spaceGlyph.width = (int)(padLeft + spaceGlyph.xadvance + padRight);
-			//		spaceGlyph.xoffset = (int)-padLeft;
-			//	}
-			//	spaceXadvance = spaceGlyph.xadvance;
+					var tokens = Regex.Matches(line, "(?<==)(-?\\d+)");
+					//	tokens.nextToken();
+					//	tokens.nextToken();
+						overrideAscent = float.Parse(tokens[0].Value);
+					//	tokens.nextToken();
+						overrideDescent = float.Parse(tokens[1].Value);
+					//	tokens.nextToken();
+						overrideDown = float.Parse(tokens[2].Value);
+					//	tokens.nextToken();
+						overrideCapHeight = float.Parse(tokens[3].Value);
+					//	tokens.nextToken();
+						overrideLineHeight = float.Parse(tokens[4].Value);
+					//	tokens.nextToken();
+						overrideSpaceXAdvance = float.Parse(tokens[5].Value);
+					//	tokens.nextToken();
+						overrideXHeight = float.Parse(tokens[6].Value);
+					}
 
-			//	Glyph xGlyph = null;
-			//	foreach (char xChar in xChars) {
-			//		xGlyph = getGlyph(xChar);
-			//		if (xGlyph != null) break;
-			//	}
-			//	if (xGlyph == null) xGlyph = getFirstGlyph();
-			//	xHeight = xGlyph.height - padY;
+					Glyph spaceGlyph = getGlyph(' ');
+					if (spaceGlyph == null)
+					{
+						spaceGlyph = new Glyph();
+						spaceGlyph.id = ' ';
+						Glyph xadvanceGlyph = getGlyph('l');
+						if (xadvanceGlyph == null) xadvanceGlyph = getFirstGlyph();
+						spaceGlyph.xadvance = xadvanceGlyph.xadvance;
+						setGlyph(' ', spaceGlyph);
+					}
+					if (spaceGlyph.width == 0)
+					{
+						spaceGlyph.width = (int)(padLeft + spaceGlyph.xadvance + padRight);
+						spaceGlyph.xoffset = (int)-padLeft;
+					}
+					spaceXadvance = spaceGlyph.xadvance;
 
-			//	Glyph capGlyph = null;
-			//	foreach (char capChar in capChars) {
-			//		capGlyph = getGlyph(capChar);
-			//		if (capGlyph != null) break;
-			//	}
-			//	if (capGlyph == null) {
-			//		foreach (Glyph[] page in this.glyphs) {
-			//			if (page == null) continue;
-			//			foreach (Glyph glyph in page) {
-			//				if (glyph == null || glyph.height == 0 || glyph.width == 0) continue;
-			//				capHeight = Math.Max(capHeight, glyph.height);
-			//			}
-			//		}
-			//	} else
-			//		capHeight = capGlyph.height;
-			//	capHeight -= padY;
+					Glyph xGlyph = null;
+					foreach (char xChar in xChars)
+					{
+						xGlyph = getGlyph(xChar);
+						if (xGlyph != null) break;
+					}
+					if (xGlyph == null) xGlyph = getFirstGlyph();
+					xHeight = xGlyph.height - padY;
 
-			//	ascent = baseLine - capHeight;
-			//	down = -lineHeight;
-			//	if (flip) {
-			//		ascent = -ascent;
-			//		down = -down;
-			//	}
+					Glyph capGlyph = null;
+					foreach (char capChar in capChars)
+					{
+						capGlyph = getGlyph(capChar);
+						if (capGlyph != null) break;
+					}
+					if (capGlyph == null)
+					{
+						foreach (Glyph[] page in this.glyphs)
+						{
+							if (page == null) continue;
+							foreach (Glyph glyph in page)
+							{
+								if (glyph == null || glyph.height == 0 || glyph.width == 0) continue;
+								capHeight = Math.Max(capHeight, glyph.height);
+							}
+						}
+					}
+					else
+						capHeight = capGlyph.height;
+					capHeight -= padY;
 
-			//	if (hasMetricsOverride) {
-			//		this.ascent = overrideAscent;
-			//		this.descent = overrideDescent;
-			//		this.down = overrideDown;
-			//		this.capHeight = overrideCapHeight;
-			//		this.lineHeight = overrideLineHeight;
-			//		this.spaceXadvance = overrideSpaceXAdvance;
-			//		this.xHeight = overrideXHeight;
-			//	}
+					ascent = baseLine - capHeight;
+					down = -lineHeight;
+					if (flip)
+					{
+						ascent = -ascent;
+						down = -down;
+					}
 
-			//} catch (Exception ex) {
-			//	throw new GdxRuntimeException("Error loading font file: " + fontFile, ex);
-			//} finally {
-			//	StreamUtils.closeQuietly(reader);
-			//}
-		}
+					if (hasMetricsOverride)
+					{
+						this.ascent = overrideAscent;
+						this.descent = overrideDescent;
+						this.down = overrideDown;
+						this.capHeight = overrideCapHeight;
+						this.lineHeight = overrideLineHeight;
+						this.spaceXadvance = overrideSpaceXAdvance;
+						this.xHeight = overrideXHeight;
+					}
+
+				}
+				catch (Exception ex)
+				{
+					throw new GdxRuntimeException("Error loading font file: " + fontFile, ex);
+				}
+				finally
+				{
+					StreamUtils.closeQuietly(reader);
+				}
+			}
 
 		public void setGlyphRegion (Glyph glyph, TextureRegion region)
 		{
-			throw new NotImplementedException();
-			//Texture texture = region.getTexture();
-			//float invTexWidth = 1.0f / texture.getWidth();
-			//float invTexHeight = 1.0f / texture.getHeight();
+				Texture texture = region.getTexture();
+				float invTexWidth = 1.0f / texture.getWidth();
+				float invTexHeight = 1.0f / texture.getHeight();
 
-			//float offsetX = 0, offsetY = 0;
-			//float u = region.u;
-			//float v = region.v;
-			//float regionWidth = region.getRegionWidth();
-			//float regionHeight = region.getRegionHeight();
-			//if (region is TextureAtlas.AtlasRegion) {
-			//	// Compensate for whitespace stripped from left and top edges.
-			//	TextureAtlas.AtlasRegion atlasRegion = (TextureAtlas.AtlasRegion)region;
-			//	offsetX = atlasRegion.offsetX;
-			//	offsetY = atlasRegion.originalHeight - atlasRegion.packedHeight - atlasRegion.offsetY;
-			//}
+				float offsetX = 0, offsetY = 0;
+				float u = region.u;
+				float v = region.v;
+				float regionWidth = region.getRegionWidth();
+				float regionHeight = region.getRegionHeight();
+				if (region is TextureAtlas.AtlasRegion)
+				{
+					// Compensate for whitespace stripped from left and top edges.
+					TextureAtlas.AtlasRegion atlasRegion = (TextureAtlas.AtlasRegion)region;
+					offsetX = atlasRegion.offsetX;
+					offsetY = atlasRegion.originalHeight - atlasRegion.packedHeight - atlasRegion.offsetY;
+				}
 
-			//float x = glyph.srcX;
-			//float x2 = glyph.srcX + glyph.width;
-			//float y = glyph.srcY;
-			//float y2 = glyph.srcY + glyph.height;
+				float x = glyph.srcX;
+				float x2 = glyph.srcX + glyph.width;
+				float y = glyph.srcY;
+				float y2 = glyph.srcY + glyph.height;
 
-			//// Shift glyph for left and top edge stripped whitespace. Clip glyph for right and bottom edge stripped whitespace.
-			//// Note if the font region has padding, whitespace stripping must not be used.
-			//if (offsetX > 0) {
-			//	x -= offsetX;
-			//	if (x < 0) {
-			//		glyph.width += x;
-			//		glyph.xoffset -= x;
-			//		x = 0;
-			//	}
-			//	x2 -= offsetX;
-			//	if (x2 > regionWidth) {
-			//		glyph.width -= x2 - regionWidth;
-			//		x2 = regionWidth;
-			//	}
-			//}
-			//if (offsetY > 0) {
-			//	y -= offsetY;
-			//	if (y < 0) {
-			//		glyph.height += y;
-			//		if (glyph.height < 0) glyph.height = 0;
-			//		y = 0;
-			//	}
-			//	y2 -= offsetY;
-			//	if (y2 > regionHeight) {
-			//		float amount = y2 - regionHeight;
-			//		glyph.height -= amount;
-			//		glyph.yoffset += amount;
-			//		y2 = regionHeight;
-			//	}
-			//}
+				// Shift glyph for left and top edge stripped whitespace. Clip glyph for right and bottom edge stripped whitespace.
+				// Note if the font region has padding, whitespace stripping must not be used.
+				if (offsetX > 0)
+				{
+					x -= offsetX;
+					if (x < 0)
+					{
+						glyph.width = (int)(glyph.width+ x);
+						glyph.xoffset = (int)(glyph.xoffset - x);
+						x = 0;
+					}
+					x2 -= offsetX;
+					if (x2 > regionWidth)
+					{
+						glyph.width = (int)(glyph.width - x2 - regionWidth);
+						x2 = regionWidth;
+					}
+				}
+				if (offsetY > 0)
+				{
+					y -= offsetY;
+					if (y < 0)
+					{
+						glyph.height =(int)(glyph.height+ y);
+						if (glyph.height < 0) glyph.height = 0;
+						y = 0;
+					}
+					y2 -= offsetY;
+					if (y2 > regionHeight)
+					{
+						float amount = y2 - regionHeight;
+						glyph.height = (int)(glyph.height - amount);
+						glyph.yoffset = (int)(glyph.yoffset + amount);
+						y2 = regionHeight;
+					}
+				}
 
-			//glyph.u = u + x * invTexWidth;
-			//glyph.u2 = u + x2 * invTexWidth;
-			//if (flipped) {
-			//	glyph.v = v + y * invTexHeight;
-			//	glyph.v2 = v + y2 * invTexHeight;
-			//} else {
-			//	glyph.v2 = v + y * invTexHeight;
-			//	glyph.v = v + y2 * invTexHeight;
-			//}
-		}
+				glyph.u = u + x * invTexWidth;
+				glyph.u2 = u + x2 * invTexWidth;
+				if (flipped)
+				{
+					glyph.v = v + y * invTexHeight;
+					glyph.v2 = v + y2 * invTexHeight;
+				}
+				else
+				{
+					glyph.v2 = v + y * invTexHeight;
+					glyph.v = v + y2 * invTexHeight;
+				}
+			}
 
 		/** Sets the line height, which is the distance from one line of text to the next. */
 		public void setLineHeight (float height) {

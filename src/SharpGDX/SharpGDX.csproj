@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lsans-15.fnt" />
+    <None Remove="lsans-15.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="lsans-15.fnt" />
+    <EmbeddedResource Include="lsans-15.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="gdx2d.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

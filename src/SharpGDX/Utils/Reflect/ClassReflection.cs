@@ -115,7 +115,7 @@ namespace SharpGDX.Utils.Reflect
 			try
 			{
 				// TODO: I think this should maybe search private/internal?
-				return new Constructor(c.GetConstructor(parameterTypes));
+				return new Constructor(c.GetConstructor(parameterTypes ?? []));
 			}
 			// TODO: Will it actually throw this? -RP
 			catch (SecurityException e)

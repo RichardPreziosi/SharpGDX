@@ -116,7 +116,10 @@ namespace SharpGDX.Files
 
 		private static InputStream getResourceAsStream(string resource)
 		{
-			throw new NotImplementedException();
+			System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
+			Stream resFilestream = a.GetManifestResourceStream(resource);
+			
+				return new InputStream(resFilestream);
 		}
 
 		/** Returns a stream for reading this file as bytes.
@@ -126,7 +129,7 @@ namespace SharpGDX.Files
 			if (_type == FileType.Classpath || (_type == FileType.Internal && !file().exists())
 			                                || (_type == FileType.Local && !file().exists()))
 			{
-				InputStream input = FileHandle.getResourceAsStream("/" + _file.getPath().Replace('\\', '/'));
+				InputStream input = FileHandle.getResourceAsStream(_file.getPath().Replace('\\', '/'));
 				if (input == null) throw new GdxRuntimeException("File not found: " + _file + " (" + _type + ")");
 				return input;
 			}

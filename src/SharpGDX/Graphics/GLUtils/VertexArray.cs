@@ -27,7 +27,6 @@ public class VertexArray : IVertexData {
 	readonly VertexAttributes attributes;
 	readonly FloatBuffer buffer;
 	readonly ByteBuffer byteBuffer;
-	private readonly MemoryStream _stream;
 	private byte[] bb;
 	bool isBound = false;
 
@@ -52,7 +51,6 @@ public class VertexArray : IVertexData {
 		buffer.flip();
 		byteBuffer.flip();
 
-		_stream = new MemoryStream(this.attributes.vertexSize * numVertices);
 		bb = new byte[this.attributes.vertexSize * numVertices];
 	}
 
@@ -79,12 +77,7 @@ public class VertexArray : IVertexData {
 			BufferUtils.copy(vertices, buffer, count, offset);
 			buffer.position(0);
 			buffer.limit(count);
-
-			//_stream.Write(MemoryMarshal.Cast<float, byte>(vertices.AsSpan(offset)));
 			
-			//_stream.SetLength(count << 2);
-			//var s = _stream.ToArray();
-
 			Array.Resize(ref bb, count << 2);
 
 			// TODO: Is this the correct use of offset and count?

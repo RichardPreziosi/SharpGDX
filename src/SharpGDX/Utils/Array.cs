@@ -87,7 +87,7 @@ namespace SharpGDX.Utils
 	 * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
 	 *           memory copy. */
 	public Array(bool ordered, T[] array, int start, int count)
-	: this(ordered, count, array.GetType().GetGenericTypeDefinition())
+	: this(ordered, count, array.GetType().GetElementType())
 		{
 		size = count;
 		Array.Copy(array, start, items, 0, size);

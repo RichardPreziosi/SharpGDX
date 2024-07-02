@@ -25,9 +25,9 @@ public sealed class Constructor {
 		}
 
 		/** Returns the Class object representing the class or interface that declares the constructor. */
-		public Type getDeclaringClass () {
-			throw new NotImplementedException();
-			// TODO: return constructor.getDeclaringClass();
+		public Type getDeclaringClass ()
+		{
+			return constructor.DeclaringType;
 		}
 
 		public bool isAccessible () {
@@ -44,20 +44,28 @@ public sealed class Constructor {
 		 * initialization parameters. */
 		public Object newInstance (Object[] args) // TODO:  throws ReflectionException 
 	{
-		throw new NotImplementedException();
-		// TODO: try {
-		//	return constructor.newInstance(args);
-		//} catch (IllegalArgumentException e) {
-		//	throw new ReflectionException("Illegal argument(s) supplied to constructor for class: " + getDeclaringClass().Name,
-		//		e);
-		//} catch (InstantiationException e) {
-		//	throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
-		//} catch (IllegalAccessException e) {
-		//	throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
-		//} catch (InvocationTargetException e) {
-		//	throw new ReflectionException("Exception occurred in constructor for class: " + getDeclaringClass().Name, e);
-		//}
-	}
+		try
+			{
+				return constructor.Invoke(args);
+			}
+			catch (IllegalArgumentException e)
+			{
+				throw new ReflectionException("Illegal argument(s) supplied to constructor for class: " + getDeclaringClass().Name,
+					e);
+			}
+		//catch (InstantiationException e)
+		//	{
+		//		throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
+		//	}
+		//	catch (IllegalAccessException e)
+		//	{
+		//		throw new ReflectionException("Could not instantiate instance of class: " + getDeclaringClass().Name, e);
+		//	}
+		//	catch (InvocationTargetException e)
+		//	{
+		//		throw new ReflectionException("Exception occurred in constructor for class: " + getDeclaringClass().Name, e);
+		//	}
+		}
 
 }
 }
