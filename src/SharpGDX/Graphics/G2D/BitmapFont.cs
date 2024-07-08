@@ -384,7 +384,7 @@ public class BitmapFont : Disposable {
 		public float u, v, u2, v2;
 		public int xoffset, yoffset;
 		public int xadvance;
-		public byte[][] kerning;
+		public sbyte[][] kerning;
 		public bool fixedWidth;
 
 		/** The index to the texture page that holds this glyph. */
@@ -392,17 +392,18 @@ public class BitmapFont : Disposable {
 
 		public int getKerning (char ch) {
 			if (kerning != null) {
-				byte[] page = kerning[ch >>> LOG2_PAGE_SIZE];
+				sbyte[] page = kerning[ch >>> LOG2_PAGE_SIZE];
 				if (page != null) return page[ch & PAGE_SIZE - 1];
 			}
 			return 0;
 		}
 
-		public void setKerning (int ch, int value) {
-			if (kerning == null) kerning = new byte[PAGES][];
-			byte[] page = kerning[ch >>> LOG2_PAGE_SIZE];
-			if (page == null) kerning[ch >>> LOG2_PAGE_SIZE] = page = new byte[PAGE_SIZE];
-			page[ch & PAGE_SIZE - 1] = (byte)value;
+		public void setKerning(int ch, int value)
+		{
+			if (kerning == null) kerning = new sbyte[PAGES][];
+			sbyte[] page = kerning[ch >>> LOG2_PAGE_SIZE];
+			if (page == null) kerning[ch >>> LOG2_PAGE_SIZE] = page = new sbyte[PAGE_SIZE];
+			page[ch & PAGE_SIZE - 1] = (sbyte)value;
 		}
 
 		public override String ToString () {
@@ -569,6 +570,7 @@ public class BitmapFont : Disposable {
 						//tokens.nextToken();
 						//tokens.nextToken();
 						int ch = int.Parse(tokens[0].Value);
+						
 						if (ch <= 0)
 							missingGlyph = glyph;
 						else if (ch <= char.MaxValue)
@@ -593,7 +595,7 @@ public class BitmapFont : Disposable {
 							glyph.yoffset = -(glyph.height + int.Parse(tokens[6].Value));
 						//tokens.nextToken();
 						glyph.xadvance = int.Parse(tokens[7].Value);
-
+						
 						// Check for page safely, it could be omitted or invalid.
 						//if (tokens.hasMoreTokens()) tokens.nextToken();
 						//if (tokens.hasMoreTokens())
@@ -630,6 +632,7 @@ public class BitmapFont : Disposable {
 						Glyph glyph = getGlyph((char)first);
 						//tokens.nextToken();
 						int amount = int.Parse(tokens[2].Value);
+						
 						if (glyph != null)
 						{ // Kernings may exist for glyph pairs not contained in the font.
 							glyph.setKerning(second, amount);
@@ -668,7 +671,7 @@ public class BitmapFont : Disposable {
 					//	tokens.nextToken();
 						overrideXHeight = float.Parse(tokens[6].Value);
 					}
-
+					
 					Glyph spaceGlyph = getGlyph(' ');
 					if (spaceGlyph == null)
 					{
@@ -685,7 +688,7 @@ public class BitmapFont : Disposable {
 						spaceGlyph.xoffset = (int)-padLeft;
 					}
 					spaceXadvance = spaceGlyph.xadvance;
-
+					
 					Glyph xGlyph = null;
 					foreach (char xChar in xChars)
 					{
@@ -879,8 +882,10 @@ public class BitmapFont : Disposable {
 
 			do {
 				char ch = str[start++];
+					
 				if (ch == '\r') continue; // Ignore.
 				Glyph glyph = getGlyph(ch);
+					
 				if (glyph == null) {
 					if (missingGlyph == null) continue;
 					glyph = missingGlyph;
@@ -891,8 +896,8 @@ public class BitmapFont : Disposable {
 					: (lastGlyph.xadvance + lastGlyph.getKerning(ch)) * scaleX);
 				lastGlyph = glyph;
 
-				// "[[" is an escaped left square bracket, skip second character.
-				if (markupEnabled && ch == '[' && start < end && str[start] == '[') start++;
+					// "[[" is an escaped left square bracket, skip second character.
+					if (markupEnabled && ch == '[' && start < end && str[start] == '[') start++;
 			} while (start < end);
 			if (lastGlyph != null) {
 				float lastGlyphWidth = lastGlyph.fixedWidth ? lastGlyph.xadvance * scaleX

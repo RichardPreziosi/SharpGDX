@@ -35,7 +35,7 @@ namespace Drop
 
 		// load the drop sound effect and the rain background "music"
 		dropSound = Gdx.audio.newSound(Gdx.files.@internal("drop.wav"));
-		rainMusic = Gdx.audio.newMusic(Gdx.files.@internal("rain.mp3"));
+		rainMusic = Gdx.audio.newMusic(Gdx.files.@internal("rain.wav"));
 		rainMusic.setLooping(true);
 
 		// create the camera and the SpriteBatch

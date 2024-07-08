@@ -101,6 +101,7 @@ public class GlyphLayout : IPoolable {
 
 		// Avoid wrapping one line per character, which is very inefficient.
 		if (wrap) targetWidth = Math.Max(targetWidth, fontData.spaceXadvance * 3);
+		
 		bool wrapOrTruncate = wrap || truncate != null;
 
 		int currentColor = color.toIntBits(), nextColor = currentColor;
