@@ -6,6 +6,9 @@ url: https://just-the-docs.github.io
 
 search_enabled: true
 
+plugins:
+  - jekyll-default-layout
+
 color_scheme: dark
 
 aux_links:
