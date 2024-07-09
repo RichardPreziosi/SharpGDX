@@ -1,8 +1,12 @@
 title: Just the Docs Template
 description: A starter template for a Jeykll site using the Just the Docs theme!
-remote-theme: just-the-docs
+remote_theme: just-the-docs
 
 url: https://just-the-docs.github.io
+
+search_enabled: true
+
+color_scheme: dark
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
