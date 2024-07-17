@@ -12,16 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="bucket.png">
+    <None Update="assets\bucket.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="droplet.png">
+    <None Update="assets\drop.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="drop.wav">
+    <None Update="assets\droplet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="rain.wav">
+    <None Update="assets\rain.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
